@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:edutec_hub/model/sliderDetails.dart';
+import 'package:edutec_hub/data/models/sliderDetails.dart';
 import 'package:flutter/material.dart';
 
 class SlidersContainer extends StatelessWidget {

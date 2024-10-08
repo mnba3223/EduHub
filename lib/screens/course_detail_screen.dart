@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../blocs/course_list_bloc.dart';
 
-class CourseDetailScreen extends ConsumerWidget {
+class CourseDetailScreen extends StatelessWidget {
   final String courseId;
 
-  const CourseDetailScreen({super.key, required this.courseId});
+  const CourseDetailScreen({Key? key, required this.courseId})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget build(BuildContext context) {
+    // For now, we'll use a dummy course. In a real app, you'd fetch this from a repository or API.
+    final course = Course(
+      id: courseId,
+      title: 'Course $courseId',
+      description: 'This is the detailed description for Course $courseId.',
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.courseDetailsTitle)),
-      body: Center(
-        child: Text('Course Details for course $courseId'),
+      appBar: AppBar(
+        title: Text(course.title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              course.title,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              course.description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement enrollment functionality
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Enrolled in ${course.title}')),
+                );
+              },
+              child: const Text('Enroll'),
+            ),
+          ],
+        ),
       ),
     );
   }

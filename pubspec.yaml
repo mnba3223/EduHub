@@ -1,5 +1,5 @@
 name: edutec_hub
-description: "A new Flutter project for course booking with Riverpod, GoRouter, and multi-language support."
+description: "A new Flutter project for course booking with BLoC, GoRouter, and multi-language support."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -12,26 +12,39 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_riverpod: ^2.4.9
-  riverpod_annotation: ^2.3.3
+  flutter_bloc: ^8.1.3
+  bloc: ^8.1.2
   go_router: ^13.0.1
   intl: ^0.19.0
   easy_localization: ^3.0.5
   carousel_slider: ^5.0.0
   cached_network_image: ^3.4.1
+  lottie: ^3.1.2
+  dio: ^5.7.0
+  flutter_stripe: ^11.1.0
+  package_info_plus: ^8.0.2
+  open_filex: ^4.5.0
+  url_launcher: ^6.3.0
+  equatable: ^2.0.5
+  external_path: ^2.0.1
+  permission_handler: ^11.3.1
+  flutter_svg: ^2.0.10+1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
   build_runner: ^2.4.7
-  riverpod_generator: ^2.3.9
-  custom_lint: ^0.5.7
-  riverpod_lint: ^2.3.7
+  bloc_test: ^9.1.5
+  mockito: ^5.4.4
   flutter_flavorizr: ^2.2.1
+
 
 flutter:
   uses-material-design: true
-  generate: true
+  # generate: true
 
   assets:
     - assets/images/
@@ -40,6 +53,7 @@ flutter:
     - assets/hotel/
     - assets/introduction_animation/
     - assets/translations/
+    - assets/animations/
 
   fonts:
     - family: WorkSans
