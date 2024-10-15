@@ -14,10 +14,12 @@ void main() async {
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('zh', 'TW'),
+        Locale('zh', 'CN'),
         Locale('ja', 'JP')
       ],
       path: 'assets/translations',
       fallbackLocale: const Locale('zh', 'TW'),
+      startLocale: const Locale('zh', 'TW'),
       assetLoader: const CsvAssetLoader(),
       child: BlocProvider(
         create: (context) => AppBloc(),

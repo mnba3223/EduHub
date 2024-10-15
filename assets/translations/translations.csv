@@ -1,11 +1,24 @@
-key,en_US,zh_TW,ja_JP
-app_title,EduTec Hub,教育科技中心,教育テックハブ
-home_screen_title,Home,首頁,ホーム
-course_list_screen_title,Courses,課程列表,コース一覧
-course_detail_screen_title,Course Details,課程詳情,コース詳細
-bottom_bar_home,Home,首頁,ホーム
-bottom_bar_courses,Courses,課程,コース
-bottom_bar_profile,Profile,個人資料,プロフィール
-welcome,Welcome to EduTec Hub,歡迎使用教育科技中心,EduTecハブへようこそ
-select_language,Please select your language:,請選擇您的語言:,言語を選択してください：
-button_close,Close,關閉,閉じる
+key,en_US,zh_TW,zh_CN,ja_JP
+app_title,EduTec Hub,教育科技中心,教育科技中心,教育テックハブ
+home_screen_title,Home,首頁,主页,ホーム
+course_list_screen_title,Courses,課程列表,课程列表,コース一覧
+course_detail_screen_title,Course Details,課程詳情,课程详情,コース詳細
+bottom_bar_home,Home,首頁,主页,ホーム
+bottom_bar_courses,Courses,課程,课程,コース
+bottom_bar_profile,Profile,個人資料,个人资料,プロフィール
+welcome,Welcome to EduTec Hub,歡迎使用教育科技中心,欢迎使用教育科技中心,EduTecハブへようこそ
+select_language,Please select your language:,請選擇您的語言:,请选择您的语言:,言語を選択してください：
+button_close,Close,關閉,关闭,閉じる
+loginAs,Login as,登入身份,登录身份,ログイン者
+student,Student,學生,学生,学生
+parent,Parent,家長,家长,保護者
+letsSignIn,Let's Sign In,登入,登录,サインインしましょう
+welcomeBack,Welcome Back,歡迎回來,欢迎回来,おかえりなさい
+youHaveBeenMissed,You have been missed,不要錯過了,不要錯過了,お待ちしていました
+resetPassword,Reset Password,重設密碼,重置密码,パスワードをリセット
+grNumber,GR Number,學號,学号,学籍番号
+password,Password,密碼,密码,パスワード
+signIn,Sign In,登入,登录,サインイン
+termAndConditionAgreement,By signing in, you agree to our,登入即表示您同意我們的,登录即表示您同意我们的,サインインすることで、以下に同意したことになります
+termsAndCondition,Terms and Conditions,條款和條件,条款和条件,利用規約
+privacyPolicy,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
