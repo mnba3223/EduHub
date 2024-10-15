@@ -94,7 +94,7 @@ class UiUtils {
   }
 
   static String getImagePath(String imageName) {
-    return "assets/images/$imageName";
+    return "assets/images/school/$imageName";
   }
 
   static ColorScheme getColorScheme(BuildContext context) {

@@ -1,11 +1,24 @@
+import 'package:edutec_hub/cubit/signInCubit.dart';
+import 'package:edutec_hub/data/repositories/authRepository.dart';
+import 'package:edutec_hub/screens/auth/parentLoginScreen.dart';
+import 'package:edutec_hub/screens/auth/studentLoginScreen.dart';
+import 'package:edutec_hub/screens/student/student_booking_screen.dart';
+import 'package:edutec_hub/screens/student/student_home_screen.dart';
+import 'package:edutec_hub/ui/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../ui/auth/authScreen.dart';
+import '../screens/auth/authScreen.dart';
 import '../screens/course_list_screen.dart';
 import '../screens/course_detail_screen.dart';
 
 class AppRouter {
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKeyParent = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKeyTeacher = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKeyStudent = GlobalKey<NavigatorState>();
   static final router = GoRouter(
+    navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
         path: '/',
@@ -21,6 +34,93 @@ class AppRouter {
           final id = state.pathParameters['id'] ?? '';
           return CourseDetailScreen(courseId: id);
         },
+      ),
+      GoRoute(
+        path: '/parent-login',
+        builder: (context, state) => BlocProvider(
+          create: (context) => SignInCubit(AuthRepository()),
+          child: const ParentLoginScreen(),
+        ),
+      ),
+      //  GoRoute(
+      //   path: '/teacher-login',
+      //   builder: (context, state) => BlocProvider(
+      //     create: (context) => SignInCubit(AuthRepository()),
+      //     child: const TeacherLoginScreen(),
+      //   ),
+      // ),
+      GoRoute(
+        path: '/student-login',
+        builder: (context, state) => BlocProvider(
+          create: (context) => SignInCubit(AuthRepository()),
+          child: const StudentLoginScreen(),
+        ),
+      ),
+      // GoRoute(
+      //   path: '/studentHome',
+      //   builder: (context, state) => StudentHomeScreen(),
+      // ),
+      //  ShellRoute(
+      //   navigatorKey: _shellNavigatorKeyParent,
+      //   builder: (context, state, child) {
+      //     return ScaffoldWithNavBar(child: child, role: 'parent');
+      //   },
+      //   routes: [
+      //     GoRoute(
+      //       path: '/parent-home',
+      //       pageBuilder: (context, state) => NoTransitionPage(
+      //         child: ParentHomeScreen(),
+      //       ),
+      //     ),
+      //     // Add more parent-specific routes here
+      //   ],
+      // ),
+      // ShellRoute(
+      //   navigatorKey: _shellNavigatorKeyTeacher,
+      //   builder: (context, state, child) {
+      //     return ScaffoldWithNavBar(child: child, role: 'teacher');
+      //   },
+      //   routes: [
+      //     GoRoute(
+      //       path: '/teacher-home',
+      //       pageBuilder: (context, state) => NoTransitionPage(
+      //         child: TeacherHomeScreen(),
+      //       ),
+      //     ),
+      //     // Add more teacher-specific routes here
+      //   ],
+      // ),
+      ShellRoute(
+        navigatorKey: _shellNavigatorKeyStudent,
+        builder: (context, state, child) {
+          return ScaffoldWithNavBar(child: child, role: 'student');
+        },
+        routes: [
+          GoRoute(
+            path: '/student-home',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: StudentHomeScreen(),
+            ),
+          ),
+          // GoRoute(
+          //   path: '/student-announcements',
+          //   pageBuilder: (context, state) => NoTransitionPage(
+          //     child: StudentAnnouncementsScreen(),
+          //   ),
+          // ),
+          GoRoute(
+            path: '/student-booking',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: StudentBookingScreen(),
+            ),
+          ),
+          // GoRoute(
+          //   path: '/student-more',
+          //   pageBuilder: (context, state) => NoTransitionPage(
+          //     child: StudentMoreScreen(),
+          //   ),
+          // ),
+        ],
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -4,6 +4,7 @@ import 'package:edutec_hub/utils/uiUtils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -153,9 +154,11 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                             ),
                             CustomRoundedButton(
                               onTap: () {
+                                /// to student login
                                 // Navigator.of(context).pushNamed(
                                 //   Routes.studentLogin,
                                 // );
+                                context.go('/student-login');
                               },
                               widthPercentage: 0.8,
                               backgroundColor:
@@ -169,8 +172,10 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                             ),
                             CustomRoundedButton(
                               onTap: () {
+                                /// to parent login
                                 // Navigator.of(context)
                                 //     .pushNamed(Routes.parentLogin);
+                                context.go('/parent-login');
                               },
                               widthPercentage: 0.8,
                               backgroundColor:

@@ -1,6 +1,6 @@
 import 'package:edutec_hub/cubit/authCubit.dart';
 import 'package:edutec_hub/cubit/signInCubit.dart';
-import 'package:edutec_hub/ui/auth/termsAndConditionAndPrivacyPolicyContainer.dart';
+import 'package:edutec_hub/screens/auth/termsAndConditionAndPrivacyPolicyContainer.dart';
 
 import 'package:edutec_hub/ui/custom_widget/customCircularProgressIndicator.dart';
 import 'package:edutec_hub/ui/custom_widget/customRoundedButton.dart';
@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class StudentLoginScreen extends StatefulWidget {
   const StudentLoginScreen({super.key});
@@ -319,12 +320,13 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
                         builder: (context, state) {
                           return CustomRoundedButton(
                             onTap: () {
-                              if (state is SignInInProgress) {
-                                return;
-                              }
-                              FocusScope.of(context).unfocus();
+                              context.go('/student-home');
+                              // if (state is SignInInProgress) {
+                              //   return;
+                              // }
+                              // FocusScope.of(context).unfocus();
 
-                              _signInStudent();
+                              // _signInStudent();
                             },
                             widthPercentage: 0.8,
                             backgroundColor:

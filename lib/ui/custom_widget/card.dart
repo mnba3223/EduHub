@@ -267,3 +267,317 @@ class MealsView extends StatelessWidget {
     );
   }
 }
+
+// class CourseListView extends StatelessWidget {
+//   const CourseListView({
+//     Key? key,
+//     required this.courseList,
+//   }) : super(key: key);
+
+//   final List<CourseListData> courseList;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 216,
+//       child: ListView.builder(
+//         padding: const EdgeInsets.symmetric(horizontal: 16),
+//         itemCount: courseList.length,
+//         scrollDirection: Axis.horizontal,
+//         itemBuilder: (context, index) {
+//           return CourseView(courseData: courseList[index]);
+//         },
+//       ),
+//     );
+//   }
+// }
+
+class CourseView extends StatelessWidget {
+  const CourseView({
+    Key? key,
+    required this.courseData,
+    required this.animationController,
+    required this.animation,
+  }) : super(key: key);
+
+  final CourseListData courseData;
+  final AnimationController animationController;
+  final Animation<double> animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (BuildContext context, Widget? child) {
+        return FadeTransition(
+          opacity: animation,
+          child: Transform(
+            transform: Matrix4.translationValues(
+                100 * (1.0 - animation.value), 0.0, 0.0),
+            child: SizedBox(
+              width: 130,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 32, left: 8, right: 8, bottom: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Color(int.parse(
+                                      '0xFF${courseData.endColor.substring(1)}'))
+                                  .withOpacity(0.6),
+                              offset: const Offset(1.1, 4.0),
+                              blurRadius: 8.0),
+                        ],
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(int.parse(
+                                '0xFF${courseData.startColor.substring(1)}')),
+                            Color(int.parse(
+                                '0xFF${courseData.endColor.substring(1)}')),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(8.0),
+                          bottomLeft: Radius.circular(8.0),
+                          topLeft: Radius.circular(8.0),
+                          topRight: Radius.circular(54.0),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 54, left: 16, right: 16, bottom: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              courseData.titleTxt,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                letterSpacing: 0.2,
+                                color: Colors.white,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 8),
+                            Expanded(
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                children: courseData.meals!
+                                    .map((meal) => Text(
+                                          meal,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10,
+                                            letterSpacing: 0.2,
+                                            color: Colors.white,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              '${courseData.startTimeText} - ${courseData.endTimeText}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 10,
+                                letterSpacing: 0.2,
+                                color: Colors.white,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: 84,
+                      height: 84,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 8,
+                    child: SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: Image.asset(courseData.imagePath),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+// class AnimatedCourseListView extends StatefulWidget {
+//   final List<CourseListData> courseList;
+
+//   const AnimatedCourseListView({Key? key, required this.courseList})
+//       : super(key: key);
+
+//   @override
+//   _AnimatedCourseListViewState createState() => _AnimatedCourseListViewState();
+// }
+
+// class _AnimatedCourseListViewState extends State<AnimatedCourseListView>
+//     with SingleTickerProviderStateMixin {
+//   late AnimationController _animationController;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _animationController = AnimationController(
+//       vsync: this,
+//       duration: const Duration(milliseconds: 1000),
+//     );
+//     _animationController.forward();
+//   }
+
+//   @override
+//   void dispose() {
+//     _animationController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 216,
+//       child: ListView.builder(
+//         padding: const EdgeInsets.symmetric(horizontal: 16),
+//         itemCount: widget.courseList.length,
+//         scrollDirection: Axis.horizontal,
+//         itemBuilder: (context, index) {
+//           final animation = Tween(begin: 0.0, end: 1.0).animate(
+//             CurvedAnimation(
+//               parent: _animationController,
+//               curve: Interval(
+//                 (1 / widget.courseList.length) * index,
+//                 1.0,
+//                 curve: Curves.fastOutSlowIn,
+//               ),
+//             ),
+//           );
+//           return AnimatedCourseView(
+//             courseData: widget.courseList[index],
+//             animation: animation,
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+class SelfAnimatedCourseListView extends StatefulWidget {
+  final List<CourseListData> courseList;
+
+  const SelfAnimatedCourseListView({
+    Key? key,
+    required this.courseList,
+  }) : super(key: key);
+
+  @override
+  _SelfAnimatedCourseListViewState createState() =>
+      _SelfAnimatedCourseListViewState();
+}
+
+class _SelfAnimatedCourseListViewState extends State<SelfAnimatedCourseListView>
+    with TickerProviderStateMixin {
+  late AnimationController mainScreenAnimationController;
+  late Animation<double> mainScreenAnimation;
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    mainScreenAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    mainScreenAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: mainScreenAnimationController,
+        curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn),
+      ),
+    );
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+
+    // 启动动画
+    mainScreenAnimationController.forward();
+    animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    mainScreenAnimationController.dispose();
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: mainScreenAnimationController,
+      builder: (BuildContext context, Widget? child) {
+        return FadeTransition(
+          opacity: mainScreenAnimation,
+          child: Transform(
+            transform: Matrix4.translationValues(
+                0.0, 30 * (1.0 - mainScreenAnimation.value), 0.0),
+            child: Container(
+              height: 216,
+              width: double.infinity,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(
+                    top: 0, bottom: 0, right: 16, left: 16),
+                itemCount: widget.courseList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  final int count = widget.courseList.length > 10
+                      ? 10
+                      : widget.courseList.length;
+                  final Animation<double> animation =
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                              parent: animationController,
+                              curve: Interval((1 / count) * index, 1.0,
+                                  curve: Curves.fastOutSlowIn)));
+
+                  return CourseView(
+                    courseData: widget.courseList[index],
+                    animation: animation,
+                    animationController: animationController,
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

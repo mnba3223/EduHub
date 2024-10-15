@@ -1,7 +1,7 @@
 import 'package:edutec_hub/cubit/authCubit.dart';
 import 'package:edutec_hub/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
-import 'package:edutec_hub/ui/auth/termsAndConditionAndPrivacyPolicyContainer.dart';
+import 'package:edutec_hub/screens/auth/termsAndConditionAndPrivacyPolicyContainer.dart';
 
 import 'package:edutec_hub/ui/custom_widget/customCircularProgressIndicator.dart';
 import 'package:edutec_hub/ui/custom_widget/customRoundedButton.dart';

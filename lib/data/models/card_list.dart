@@ -50,3 +50,83 @@ class MealsListData {
     ),
   ];
 }
+
+class CourseListData {
+  CourseListData({
+    this.imagePath = '',
+    this.titleTxt = '',
+    this.startTimeText = '',
+    this.endTimeText = '',
+    this.meals,
+    this.startColor = '',
+    this.endColor = '',
+  });
+
+  String imagePath;
+  String titleTxt;
+  String startTimeText;
+  String endTimeText;
+  List<String>? meals;
+  String startColor;
+  String endColor;
+
+  static List<CourseListData> todaysCourseList = <CourseListData>[
+    CourseListData(
+      imagePath: 'assets/fitness_app/breakfast.png',
+      titleTxt: 'Mathematics',
+      startTimeText: '09:00',
+      endTimeText: '10:30',
+      meals: <String>['Algebra', 'Geometry', 'Calculus'],
+      startColor: '#FA7D82',
+      endColor: '#FFB295',
+    ),
+    CourseListData(
+      imagePath: 'assets/fitness_app/snack.png',
+      titleTxt: 'Science',
+      startTimeText: '11:00',
+      endTimeText: '12:30',
+      meals: <String>['Physics', 'Chemistry', 'Biology'],
+      startColor: '#738AE6',
+      endColor: '#5C5EDD',
+    ),
+    CourseListData(
+      imagePath: 'assets/fitness_app/dinner.png',
+      titleTxt: 'English',
+      startTimeText: '14:00',
+      endTimeText: '15:30',
+      meals: <String>['Grammar', 'Literature', 'Composition'],
+      startColor: '#FE95B6',
+      endColor: '#FF5287',
+    ),
+  ];
+
+  static List<CourseListData> myCourseList = <CourseListData>[
+    CourseListData(
+      imagePath: 'assets/fitness_app/dinner.png',
+      titleTxt: 'History',
+      startTimeText: 'Mon, Wed',
+      endTimeText: '10:00 - 11:30',
+      meals: <String>['Ancient', 'Medieval', 'Modern'],
+      startColor: '#6F72CA',
+      endColor: '#1E1466',
+    ),
+    CourseListData(
+      imagePath: 'assets/fitness_app/dinner.png',
+      titleTxt: 'Art',
+      startTimeText: 'Tue, Thu',
+      endTimeText: '13:00 - 14:30',
+      meals: <String>['Drawing', 'Painting', 'Sculpture'],
+      startColor: '#31A05F',
+      endColor: '#316B49',
+    ),
+    CourseListData(
+      imagePath: 'assets/fitness_app/dinner.png',
+      titleTxt: 'Music',
+      startTimeText: 'Fri',
+      endTimeText: '15:00 - 16:30',
+      meals: <String>['Theory', 'Instrument', 'Vocals'],
+      startColor: '#FDA701',
+      endColor: '#FD6A02',
+    ),
+  ];
+}

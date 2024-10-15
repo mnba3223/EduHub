@@ -32,6 +32,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider: ^2.1.0
+  curved_navigation_bar: ^1.0.6
+  flutter_screenutil: ^5.9.3
+  table_calendar: ^3.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -54,6 +57,7 @@ flutter:
     - assets/introduction_animation/
     - assets/translations/
     - assets/animations/
+    - assets/images/school/ 
 
   fonts:
     - family: WorkSans
