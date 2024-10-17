@@ -3,6 +3,7 @@ import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:edutec_hub/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/screens/auth/studentLoginScreen.dart';
 import 'package:edutec_hub/screens/student/student_booking_screen.dart';
+import 'package:edutec_hub/screens/student/student_courses_screen.dart';
 import 'package:edutec_hub/screens/student/student_home_screen.dart';
 import 'package:edutec_hub/ui/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +121,10 @@ class AppRouter {
           //     child: StudentMoreScreen(),
           //   ),
           // ),
+          GoRoute(
+            path: '/student-courses',
+            builder: (context, state) => const StudentCoursesScreen(),
+          ),
         ],
       ),
     ],

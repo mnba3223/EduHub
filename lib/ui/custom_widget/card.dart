@@ -368,21 +368,22 @@ class CourseView extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Expanded(
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                children: courseData.meals!
-                                    .map((meal) => Text(
-                                          meal,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10,
-                                            letterSpacing: 0.2,
-                                            color: Colors.white,
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
+                                child: courseData.subTxt != null
+                                    ? ListView(
+                                        padding: EdgeInsets.zero,
+                                        children: courseData.subTxt!
+                                            .map((subTxt) => Text(
+                                                  subTxt,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 10,
+                                                    letterSpacing: 0.2,
+                                                    color: Colors.white,
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      )
+                                    : Container()),
                             SizedBox(height: 8),
                             Text(
                               '${courseData.startTimeText} - ${courseData.endTimeText}',

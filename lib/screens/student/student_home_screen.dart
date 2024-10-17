@@ -6,6 +6,7 @@ import 'package:edutec_hub/ui/custom_widget/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:go_router/go_router.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   @override
@@ -110,9 +111,21 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         Padding(
           padding:
               EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 10.h),
-          child: Text(
-            'my_courses'.tr(),
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'my_courses'.tr(),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => context.push('/student-courses'),
+                child: Text(
+                  'more'.tr(),
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
           ),
         ),
         SelfAnimatedCourseListView(
