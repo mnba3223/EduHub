@@ -5,6 +5,7 @@ import 'package:edutec_hub/ui/custom_widget/card.dart';
 import 'package:edutec_hub/ui/custom_widget/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   @override
@@ -21,10 +22,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           Expanded(
             child: ListView(
               children: [
-                // _buildSlider(),
-                // Expanded(child: CarouselWithIndicatorDemo()),
                 CustomCarouselWithIndicator(),
-                // _buildPlaceholderSlider(),
                 _buildTodaysCourse(),
                 _buildMyCourse(),
                 _buildContactBook(),
@@ -38,9 +36,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   }
 
   Widget _buildTopBar() {
-    return FixedHeightSmoothTopBar(
-      height: 180.h, // 使用 .h 來適應高度
-      ellipticalRadius: 40.r, // 使用 .r 來適應半徑
+    return FixedHeightSmoothTopBarV2(
+      height: 160.h,
+      // ellipticalRadius: 40.r,
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 60.h),
@@ -48,14 +46,13 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             children: [
               Row(
                 children: [
-                  // 头像
                   CircleAvatar(
                     backgroundColor: Colors.amber,
                     radius: 25,
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(left: 16.w), // 使用 .w 來適應左邊距
+                      padding: EdgeInsets.only(left: 16.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -63,21 +60,20 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             '陳小明',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18.sp, // 使用 .sp 來適應字體大小
+                              fontSize: 18.sp,
                             ),
                           ),
                           Text(
                             'student@gmail.com',
                             style: TextStyle(
                               color: Colors.white70,
-                              fontSize: 14.sp, // 使用 .sp 來適應字體大小
+                              fontSize: 14.sp,
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  // 设置图标
                   Icon(Icons.settings, color: Colors.white),
                 ],
               ),
@@ -88,62 +84,18 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     );
   }
 
-  Widget _buildSlider() {
-    return Container(
-      height: 200,
-      margin: EdgeInsets.all(20),
-      color: Colors.amber, // 替代實際的slider
-      child: Center(child: Text('Slider', style: TextStyle(fontSize: 24))),
-    );
-  }
-
-  Widget _buildPlaceholderSlider() {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 200.0,
-        enlargeCenterPage: true,
-        autoPlay: true,
-        aspectRatio: 16 / 9,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enableInfiniteScroll: true,
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        viewportFraction: 0.9,
-      ),
-      items: [Colors.red, Colors.green, Colors.blue]
-          .map((color) => Container(
-                color: color,
-                child: Center(
-                  child: Text(
-                    'Slide ${[
-                          Colors.red,
-                          Colors.green,
-                          Colors.blue
-                        ].indexOf(color) + 1}',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                ),
-              ))
-          .toList(),
-    );
-  }
-
   Widget _buildTodaysCourse() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+              EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 10.h),
           child: Text(
-            '今天課程',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            'todays_course'.tr(),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
         ),
-        // CourseListView(
-        //   // mainScreenAnimationController: widget.animationController,
-        //   // mainScreenAnimation: widget.animation,
-        //   courseList: CourseListData.todaysCourseList,
-        // ),
         SelfAnimatedCourseListView(
           courseList: CourseListData.todaysCourseList,
         ),
@@ -157,17 +109,12 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       children: [
         Padding(
           padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+              EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 10.h),
           child: Text(
-            '我的課程',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            'my_courses'.tr(),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
         ),
-        // CourseListView(
-        //   // mainScreenAnimationController: widget.animationController,
-        //   // mainScreenAnimation: widget.animation,
-        //   courseList: CourseListData.myCourseList,
-        // ),
         SelfAnimatedCourseListView(
           courseList: CourseListData.myCourseList,
         ),
@@ -177,41 +124,41 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Widget _buildContactBook() {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('聯絡簿',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10),
+          Text('contact_book'.tr(),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10.h),
           Container(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(15.w),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('日期'),
-                Text('課程'),
-                Text('MORE→'),
+                Text('date'.tr()),
+                Text('course'.tr()),
+                Text('${('more'.tr())}→'),
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           Container(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(15.w),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('日期'),
-                Text('課程'),
-                Text('MORE→'),
+                Text('date'.tr()),
+                Text('course'.tr()),
+                Text('${('more'.tr())}→'),
               ],
             ),
           ),
@@ -222,25 +169,25 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Widget _buildHomework() {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('作業',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10),
+          Text('homework'.tr(),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10.h),
           Container(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(15.w),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: Container(height: 10, color: Colors.grey)),
-                SizedBox(width: 10),
-                Text('MORE→'),
+                Expanded(child: Container(height: 10.h, color: Colors.grey)),
+                SizedBox(width: 10.w),
+                Text('${('more'.tr())}→'),
               ],
             ),
           ),
@@ -251,29 +198,29 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Widget _buildInfoCard(String title, Color color) {
     return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10.h),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Icon(Icons.egg_alt, color: Colors.orange),
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 10.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

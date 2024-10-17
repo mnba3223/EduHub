@@ -1,7 +1,9 @@
 import 'package:edutec_hub/ui/bar/top_bar.dart';
+import 'package:edutec_hub/ui/custom_widget/ccalendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StudentBookingScreen extends StatefulWidget {
   @override
@@ -43,67 +45,78 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
   String _getRandomStatus(int seed) {
     switch (seed % 4) {
       case 0:
-        return '已預約';
+        return 'booked'.tr();
       case 1:
-        return '可預約';
+        return 'available'.tr();
       case 2:
-        return '選擇預約(可多選)';
+        return 'select_multiple'.tr();
       default:
-        return '不可預約';
+        return 'unavailable'.tr();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: const Color.fromARGB(12, 0, 0, 0),
       body: Column(
         children: [
           _buildTopBar(),
-          TableCalendar(
-            firstDay: DateTime.utc(2021, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            onDaySelected: (
-              selectedDay,
-              focusedDay,
-            ) {
+          ReusableCalendar(
+            selectedDay: _selectedDay,
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
               });
             },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            calendarStyle: CalendarStyle(
-              defaultTextStyle: TextStyle(color: Colors.black),
-              weekendTextStyle: TextStyle(color: Colors.red),
-              selectedDecoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-              ),
-              selectedTextStyle: TextStyle(color: Colors.white),
-              todayDecoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.5),
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
           ),
+          //  _buildCalendarFormatToggle(),
+          // TableCalendar(
+          //   firstDay: DateTime.utc(2021, 1, 1),
+          //   lastDay: DateTime.utc(2030, 12, 31),
+          //   focusedDay: _focusedDay,
+          //   calendarFormat: _calendarFormat,
+          //   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          //   onDaySelected: (
+          //     selectedDay,
+          //     focusedDay,
+          //   ) {
+          //     setState(() {
+          //       _selectedDay = selectedDay;
+          //       _focusedDay = focusedDay;
+          //     });
+          //   },
+          //   onFormatChanged: (format) {
+          //     setState(() {
+          //       _calendarFormat = format;
+          //     });
+          //   },
+          //   calendarStyle: CalendarStyle(
+          //     defaultTextStyle: TextStyle(color: Colors.black),
+          //     weekendTextStyle: TextStyle(color: Colors.red),
+          //     selectedDecoration: BoxDecoration(
+          //       color: Colors.blue,
+          //       shape: BoxShape.circle,
+          //     ),
+          //     selectedTextStyle: TextStyle(color: Colors.white),
+          //     todayDecoration: BoxDecoration(
+          //       color: Colors.blue.withOpacity(0.5),
+          //       shape: BoxShape.circle,
+          //     ),
+          //   ),
+          //   headerStyle: HeaderStyle(
+          //     formatButtonVisible: false,
+          //     titleCentered: true,
+          //   ),
+          // ),
           SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildClassroomOption('Classroom 1', 1),
-              _buildClassroomOption('Classroom 2', 2),
-              _buildClassroomOption('Classroom 3', 3),
+              _buildClassroomOption('classroom_1'.tr(), 1),
+              _buildClassroomOption('classroom_2'.tr(), 2),
+              _buildClassroomOption('classroom_3'.tr(), 3),
             ],
           ),
           SizedBox(height: 16.h),
@@ -118,9 +131,9 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
   }
 
   Widget _buildTopBar() {
-    return FixedHeightSmoothTopBar(
+    return FixedHeightSmoothTopBarV2(
       height: 130.h,
-      ellipticalRadius: 30.r,
+      // ellipticalRadius: 30.r,
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 20.h),
@@ -128,7 +141,7 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
             children: [
               Center(
                 child: Text(
-                  '課程管理',
+                  'course_management'.tr(),
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 18.sp,
@@ -172,22 +185,16 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
 
   Widget _buildTimeSlot(String time, String status) {
     Color color;
-    switch (status) {
-      case '已預約':
-        color = Colors.grey;
-        break;
-      case '可預約':
-        color = Color(0xFF1E3A5F);
-        break;
-      case '選擇預約(可多選)':
-        color = Colors.brown;
-        break;
-      case '不可預約':
-        // color = const Color.fromARGB(255, 189, 122, 118);
-        color = Colors.grey;
-        break;
-      default:
-        color = Colors.grey;
+    if (status == 'booked'.tr()) {
+      color = Colors.grey;
+    } else if (status == 'available'.tr()) {
+      color = Color(0xFF1E3A5F);
+    } else if (status == 'select_multiple'.tr()) {
+      color = Colors.brown;
+    } else if (status == 'unavailable'.tr()) {
+      color = Colors.grey;
+    } else {
+      color = Colors.grey;
     }
 
     return Container(
@@ -204,7 +211,7 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Center(
-                child: Text(status, style: TextStyle(color: Colors.white)),
+                child: Text(status.tr(), style: TextStyle(color: Colors.white)),
               ),
             ),
           ),

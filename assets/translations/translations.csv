@@ -22,3 +22,18 @@ signIn,Sign In,登入,登录,サインイン
 termAndConditionAgreement,By signing in, you agree to our,登入即表示您同意我們的,登录即表示您同意我们的,サインインすることで、以下に同意したことになります
 termsAndCondition,Terms and Conditions,條款和條件,条款和条件,利用規約
 privacyPolicy,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
+course_management,Course Management,課程管理,课程管理,コース管理
+classroom_1,Classroom 1,教室 1,教室 1,教室 1
+classroom_2,Classroom 2,教室 2,教室 2,教室 2
+classroom_3,Classroom 3,教室 3,教室 3,教室 3
+booked,Booked,已預約,已预约,予約済み
+available,Available,可預約,可预约,予約可能
+select_multiple,Select (Multiple),選擇預約(可多選),选择预约(可多选),選択（複数可）
+unavailable,Unavailable,不可預約,不可预约,予約不可
+todays_course,Today's Courses,今天課程,今天课程,今日の授業
+my_courses,My Courses,預約教室,預約教室,マイコース
+contact_book,Contact Book,聯絡簿,联络簿,連絡帳
+homework,Homework,作業,作业,宿題
+date,Date,日期,日期,日付
+course,Course,課程,课程,コース
+more,MORE,更多,更多,もっと見る

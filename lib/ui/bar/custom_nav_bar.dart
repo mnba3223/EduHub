@@ -20,10 +20,13 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   Widget _buildCurvedNavigationBar(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: const Color.fromARGB(12, 0, 0, 0), // 設置為您想要的背景顏色
-      // color: Colors.white12, // 設置為您想要的導航欄顏色
+      // backgroundColor: const Color.fromARGB(12, 0, 0, 0), // 設置為您想要的背景顏色
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // color: const Color.fromARGB(12, 0, 0, 0), // 設置為您想要的導航欄顏色
+      color: Colors.white,
       // buttonBackgroundColor: Colors.pink[200], // 設置為您想要的選中項目顏色
       buttonBackgroundColor: const Color.fromARGB(12, 0, 0, 0), // 設置為您想要的背景顏色
+      // buttonBackgroundColor: Colors.transparent,
       height: 60,
       items: _getNavigationItems(),
       index: _calculateSelectedIndex(context),
