@@ -1,0 +1,9 @@
+{
+    "baseUrl": "https://lsbookdevapi.lsworkapp.com/",
+    "paths": {
+        "api/*": "https://qwait-api.lsworkapp.com"
+    }
+    ,
+    "localUrl": "https://lsbookdev.lsworkapp.com:5050",
+    "mode": "stage mode"
+}

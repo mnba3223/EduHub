@@ -1,10 +1,12 @@
 //database urls
 //Please add your admin panel url here and make sure you do not add '/' at the end of the url
+import 'package:edutec_hub/config/environment.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';
 
-const String baseUrl = "https://eschool.wrteam.me"; //https://eschool.wrteam.me
+const String baseUrl = LunchEnvironment.baseUrl; //https://eschool.wrteam.me
 
 //please do not change the below 2 values it's for convince of usage in code
+const String apiUrl = "$baseUrl/api/";
 const String databaseUrl = "$baseUrl/api/";
 const String storageUrl = "$baseUrl/storage/";
 //error message display duration

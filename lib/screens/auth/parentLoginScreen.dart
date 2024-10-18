@@ -104,10 +104,9 @@ class _ParentLoginScreenState extends State<ParentLoginScreen>
     }
 
     context.read<SignInCubit>().signInUser(
-          userId: _emailTextEditingController.text.trim(),
-          password: _passwordTextEditingController.text.trim(),
-          isStudentLogin: false,
-        );
+        userId: _emailTextEditingController.text.trim(),
+        password: _passwordTextEditingController.text.trim());
+    // isStudentLogin: false,
   }
 
   Widget _buildForgotPassword() {
@@ -274,12 +273,12 @@ class _ParentLoginScreenState extends State<ParentLoginScreen>
                           listener: (context, state) {
                             if (state is SignInSuccess) {
                               //
-                              context.read<AuthCubit>().authenticateUser(
-                                    jwtToken: state.jwtToken,
-                                    isStudent: state.isStudentLogIn,
-                                    parent: state.parent,
-                                    student: state.student,
-                                  );
+                              // context.read<AuthCubit>().authenticateUser(
+                              //       jwtToken: state.jwtToken,
+                              //       isStudent: state.isStudentLogIn,
+                              //       parent: state.parent,
+                              //       student: state.student,
+                              //     );
                               //somehow user logs out, the login will set count to 0
                               // SettingsRepository().setNotificationCount(0);
                               // Navigator.of(context).pushNamedAndRemoveUntil(

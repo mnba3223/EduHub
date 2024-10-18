@@ -1,9 +1,12 @@
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
+// import 'package:edutec_hub/data/models/teacher/teacher.dart'; // 假设您有一个 Teacher 模型
 import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// enum LoginType { normal, student, parent, teacher }
+enum UserRole { student, teacher, parent, unknown }
 
 abstract class SignInState extends Equatable {}
 
@@ -19,19 +22,15 @@ class SignInInProgress extends SignInState {
 
 class SignInSuccess extends SignInState {
   final String jwtToken;
-  final bool isStudentLogIn;
-  final Student student;
-
-  final Parent parent;
+  final UserRole role;
 
   SignInSuccess({
     required this.jwtToken,
-    required this.isStudentLogIn,
-    required this.student,
-    required this.parent,
+    required this.role,
   });
+
   @override
-  List<Object?> get props => [jwtToken, isStudentLogIn, student];
+  List<Object?> get props => [jwtToken, role];
 }
 
 class SignInFailure extends SignInState {
@@ -40,7 +39,7 @@ class SignInFailure extends SignInState {
   SignInFailure(this.errorMessage);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [errorMessage];
 }
 
 class SignInCubit extends Cubit<SignInState> {
@@ -51,35 +50,36 @@ class SignInCubit extends Cubit<SignInState> {
   Future<void> signInUser({
     required String userId,
     required String password,
-    required bool isStudentLogin,
   }) async {
     emit(SignInInProgress());
 
     try {
-      late Map<String, dynamic> result;
-
-      if (isStudentLogin) {
-        result = await _authRepository.signInStudent(
-          grNumber: userId,
-          password: password,
-        );
-      } else {
-        result = await _authRepository.signInParent(
-          email: userId,
-          password: password,
-        );
-      }
-
-      emit(
-        SignInSuccess(
-          jwtToken: result['jwtToken'],
-          isStudentLogIn: isStudentLogin,
-          student: isStudentLogin ? result['student'] : Student.fromJson({}),
-          parent: isStudentLogin ? Parent.fromJson({}) : result['parent'],
-        ),
+      final result = await _authRepository.signInNormal(
+        userId: userId,
+        password: password,
       );
+
+      final role = _parseRole(result['role']);
+
+      emit(SignInSuccess(
+        jwtToken: result['jwtToken'],
+        role: role,
+      ));
     } catch (e) {
       emit(SignInFailure(e.toString()));
+    }
+  }
+
+  UserRole _parseRole(String roleString) {
+    switch (roleString.toLowerCase()) {
+      case 'student':
+        return UserRole.student;
+      case 'teacher':
+        return UserRole.teacher;
+      case 'parent':
+        return UserRole.parent;
+      default:
+        return UserRole.unknown;
     }
   }
 }

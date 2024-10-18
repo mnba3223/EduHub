@@ -66,6 +66,55 @@ class AuthRepository {
     setParentDetails(Parent.fromJson({}));
   }
 
+  Future<Map<String, dynamic>> signInNormal({
+    required String userId,
+    required String password,
+  }) async {
+    try {
+      final result = await Api.post(
+        body: {
+          "name": userId,
+          "password": password,
+          // "login_type": "normal",
+        },
+        url: Api.login, // 假设您有一个通用的登录端点
+        useAuthToken: false,
+      );
+
+      return {
+        "jwtToken": result['token'],
+        "role": result['role'],
+      };
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> signInTeacher({
+    required String teacherId,
+    required String password,
+  }) async {
+    return {};
+    // try {
+    //   final result = await Api.post(
+    //     body: {
+    //       "teacher_id": teacherId,
+    //       "password": password,
+    //       "login_type": "teacher",
+    //     },
+    //     url: Api.teacherLogin, // 假设您有一个教师登录的端点
+    //     useAuthToken: false,
+    //   );
+
+    //   return {
+    //     "jwtToken": result['token'],
+    //     "teacher": Teacher.fromJson(result['data']), // 假设您有一个 Teacher.fromJson 构造函数
+    //   };
+    // } catch (e) {
+    //   throw ApiException(e.toString());
+    // }
+  }
+
   //RemoteDataSource
   Future<Map<String, dynamic>> signInStudent({
     required String grNumber,

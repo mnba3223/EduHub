@@ -2,9 +2,11 @@ import 'package:edutec_hub/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:edutec_hub/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/screens/auth/studentLoginScreen.dart';
+import 'package:edutec_hub/screens/student/student_announcement_screen.dart';
 import 'package:edutec_hub/screens/student/student_booking_screen.dart';
 import 'package:edutec_hub/screens/student/student_courses_screen.dart';
 import 'package:edutec_hub/screens/student/student_home_screen.dart';
+import 'package:edutec_hub/screens/student/student_more_screen.dart';
 import 'package:edutec_hub/ui/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,14 +96,12 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _shellNavigatorKeyStudent,
         builder: (context, state, child) {
-          return ScaffoldWithNavBar(child: child, role: 'student');
+          return ScaffoldWithNavBarV2(child: child, role: 'student');
         },
         routes: [
           GoRoute(
             path: '/student-home',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: StudentHomeScreen(),
-            ),
+            builder: (context, state) => StudentHomeScreen(),
           ),
           // GoRoute(
           //   path: '/student-announcements',
@@ -111,9 +111,7 @@ class AppRouter {
           // ),
           GoRoute(
             path: '/student-booking',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: StudentBookingScreen(),
-            ),
+            builder: (context, state) => StudentBookingScreen(),
           ),
           // GoRoute(
           //   path: '/student-more',
@@ -121,6 +119,14 @@ class AppRouter {
           //     child: StudentMoreScreen(),
           //   ),
           // ),
+          GoRoute(
+            path: '/student-announcements',
+            builder: (context, state) => StudentAnnouncementsScreen(),
+          ),
+          GoRoute(
+            path: '/student-more',
+            builder: (context, state) => StudentMoreScreen(),
+          ),
           GoRoute(
             path: '/student-courses',
             builder: (context, state) => const StudentCoursesScreen(),

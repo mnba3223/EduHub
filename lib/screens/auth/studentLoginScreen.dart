@@ -274,59 +274,81 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
                       child: BlocConsumer<SignInCubit, SignInState>(
                         listener: (context, state) {
                           if (state is SignInSuccess) {
-                            context.read<AuthCubit>().authenticateUser(
-                                  jwtToken: state.jwtToken,
-                                  isStudent: state.isStudentLogIn,
-                                  parent: state.parent,
-                                  student: state.student,
-                                );
-                            //if user logs out, the login will set count to 0
-                            // SettingsRepository().setNotificationCount(0);
-                            // if (
-                            //   context
-                            //         .read<AuthCubit>()
-                            //         .getStudentDetails()
-                            //         .isFeePaymentDue &&
-                            //     context
-                            //         .read<AppConfigurationCubit>()
-                            //         .isCompulsoryFeePaymentMode()) {
-                            //   Navigator.of(context).pushNamedAndRemoveUntil(
-                            //     Routes.studentFeePaymentDueScreen,
-                            //     (Route<dynamic> route) => false,
-                            //   );
-                            // } else {
-                            //   Navigator.of(context).pushNamedAndRemoveUntil(
-                            //     Routes.home,
-                            //     (Route<dynamic> route) => false,
-                            //   );
-                            // }
+                            if (state.role == UserRole.student) {
+                              // Navigate to student home
+                              context.go('/student-home');
+                            } else {
+                              // Handle unexpected role
+                              UiUtils.showCustomSnackBar(
+                                context: context,
+                                errorMessage: "Unexpected user role",
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.error,
+                              );
+                            }
                           } else if (state is SignInFailure) {
                             UiUtils.showCustomSnackBar(
                               context: context,
-                              errorMessage:
-                                  UiUtils.getErrorMessageFromErrorCode(
-                                context,
-                                state.errorMessage,
-                              ),
+                              errorMessage: state.errorMessage,
                               backgroundColor:
                                   Theme.of(context).colorScheme.error,
                             );
-                            // Navigator.of(context).pushNamedAndRemoveUntil(
-                            //   Routes.studentFeePaymentDueScreen,
-                            //   (Route<dynamic> route) => false,
-                            // );
                           }
+
+                          // if (state is SignInSuccess) {
+                          //   // context.read<AuthCubit>().authenticateUser(
+                          //   //       jwtToken: state.jwtToken,
+                          //   //       isStudent: state.isStudentLogIn,
+                          //   //       parent: state.parent,
+                          //   //       student: state.student,
+                          //   //     );
+                          //   //if user logs out, the login will set count to 0
+                          //   // SettingsRepository().setNotificationCount(0);
+                          //   // if (
+                          //   //   context
+                          //   //         .read<AuthCubit>()
+                          //   //         .getStudentDetails()
+                          //   //         .isFeePaymentDue &&
+                          //   //     context
+                          //   //         .read<AppConfigurationCubit>()
+                          //   //         .isCompulsoryFeePaymentMode()) {
+                          //   //   Navigator.of(context).pushNamedAndRemoveUntil(
+                          //   //     Routes.studentFeePaymentDueScreen,
+                          //   //     (Route<dynamic> route) => false,
+                          //   //   );
+                          //   // } else {
+                          //   //   Navigator.of(context).pushNamedAndRemoveUntil(
+                          //   //     Routes.home,
+                          //   //     (Route<dynamic> route) => false,
+                          //   //   );
+                          //   // }
+                          // } else if (state is SignInFailure) {
+                          //   UiUtils.showCustomSnackBar(
+                          //     context: context,
+                          //     errorMessage:
+                          //         UiUtils.getErrorMessageFromErrorCode(
+                          //       context,
+                          //       state.errorMessage,
+                          //     ),
+                          //     backgroundColor:
+                          //         Theme.of(context).colorScheme.error,
+                          //   );
+                          //   // Navigator.of(context).pushNamedAndRemoveUntil(
+                          //   //   Routes.studentFeePaymentDueScreen,
+                          //   //   (Route<dynamic> route) => false,
+                          //   // );
+                          // }
                         },
                         builder: (context, state) {
                           return CustomRoundedButton(
                             onTap: () {
-                              context.go('/student-home');
-                              // if (state is SignInInProgress) {
-                              //   return;
-                              // }
-                              // FocusScope.of(context).unfocus();
+                              // context.go('/student-home');
+                              if (state is SignInInProgress) {
+                                return;
+                              }
+                              FocusScope.of(context).unfocus();
 
-                              // _signInStudent();
+                              _signInStudent();
                             },
                             widthPercentage: 0.8,
                             backgroundColor:
