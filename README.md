@@ -20,4 +20,5 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-
+# gen file command
+flutter packages pub run build_runner build --delete-conflicting-outputs  

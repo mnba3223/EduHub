@@ -36,6 +36,10 @@ dependencies:
   flutter_screenutil: ^5.9.3
   table_calendar: ^3.1.2
   shared_preferences: ^2.3.2
+  retrofit: ^4.4.0
+  logger: ^2.4.0  # for logging purpose
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,6 +48,8 @@ dev_dependencies:
   bloc_test: ^9.1.5
   mockito: ^5.4.4
   flutter_flavorizr: ^2.2.1
+  retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
+
 
 
 flutter:

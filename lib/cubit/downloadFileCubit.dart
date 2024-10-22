@@ -79,12 +79,12 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
           return;
         }
 
-        await _subjectRepository.downloadStudyMaterialFile(
-          cancelToken: _cancelToken,
-          savePath: tempFileSavePath,
-          updateDownloadedPercentage: _downloadedFilePercentage,
-          url: studyMaterial.fileUrl,
-        );
+        // await _subjectRepository.downloadStudyMaterialFile(
+        //   cancelToken: _cancelToken,
+        //   savePath: tempFileSavePath,
+        //   updateDownloadedPercentage: _downloadedFilePercentage,
+        //   url: studyMaterial.fileUrl,
+        // );
 
         //download file
         String downloadFilePath = Platform.isAndroid && isPermissionGranted

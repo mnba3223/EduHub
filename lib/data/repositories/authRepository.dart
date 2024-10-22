@@ -1,8 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:edutec_hub/data/models/api_models.dart';
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
-import 'package:edutec_hub/utils/api.dart';
+import 'package:edutec_hub/utils/api_service.dart';
 import 'package:edutec_hub/utils/hiveBoxKeys.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -55,38 +58,68 @@ class AuthRepository {
   }
 
   Future<void> signOutUser() async {
-    try {
-      Api.post(body: {}, url: Api.logout, useAuthToken: true);
-    } catch (e) {
-      //
-    }
-    setIsLogIn(false);
-    setJwtToken("");
-    setStudentDetails(Student.fromJson({}));
-    setParentDetails(Parent.fromJson({}));
+    // try {
+    //   Api.post(body: {}, url: Api.logout, useAuthToken: true);
+    // } catch (e) {
+    //   //
+    // }
+    // setIsLogIn(false);
+    // setJwtToken("");
+    // setStudentDetails(Student.fromJson({}));
+    // setParentDetails(Parent.fromJson({}));
   }
 
-  Future<Map<String, dynamic>> signInNormal({
+  // Future<Map<String, dynamic>> signInNormal({
+  //   required String userId,
+  //   required String password,
+  // }) async {
+  //   // try {
+  //   return {};
+  //   //   final result = await Api.post(
+  //   //     body: {
+  //   //       "name": userId,
+  //   //       "password": password,
+  //   //       // "login_type": "normal",
+  //   //     },
+  //   //     url: Api.login, // 假设您有一个通用的登录端点
+  //   //     useAuthToken: false,
+  //   //   );
+  //   //   Api.setToken(result['token']);
+  //   //   // setIsLogIn(true);
+  //   //   // setJwtToken(result['token']);
+  //   //   return {
+  //   //     "jwtToken": result['token'],
+  //   //     "role": result['role'],
+  //   //   };
+  //   // } catch (e) {
+  //   //   throw ApiException(e.toString());
+  //   // }
+  // }
+
+  Future<LoginResponse> signInNormal({
     required String userId,
     required String password,
   }) async {
     try {
-      final result = await Api.post(
-        body: {
-          "name": userId,
-          "password": password,
-          // "login_type": "normal",
-        },
-        url: Api.login, // 假设您有一个通用的登录端点
-        useAuthToken: false,
-      );
+      final response = await StudentApi(DioClient().dio).login(LoginRequest(
+        name: userId,
+        password: password,
+      ));
 
-      return {
-        "jwtToken": result['token'],
-        "role": result['role'],
-      };
-    } catch (e) {
-      throw ApiException(e.toString());
+      // if (response.error) {
+      //   throw ApiException(
+      //     response.message,
+      //     errorCode: response.errorCode,
+      //   );
+      // }
+      await TokenManager.saveToken(response.token);
+      // // 保存到 Hive
+      // await setJwtToken(response.token);
+      // await setIsLogIn(true);
+
+      return response;
+    } on DioException catch (e) {
+      throw e.toApiException();
     }
   }
 
@@ -120,76 +153,79 @@ class AuthRepository {
     required String grNumber,
     required String password,
   }) async {
-    try {
-      // final fcmToken = await FirebaseMessaging.instance.getToken();
-      final body = {
-        "password": password,
-        "gr_number": grNumber,
-        // "fcm_id": fcmToken,
-        "device_type": Platform.isAndroid ? "android" : "ios",
-      };
+    return {};
+    // try {
+    //   // final fcmToken = await FirebaseMessaging.instance.getToken();
+    //   final body = {
+    //     "password": password,
+    //     "gr_number": grNumber,
+    //     // "fcm_id": fcmToken,
+    //     "device_type": Platform.isAndroid ? "android" : "ios",
+    //   };
 
-      final result = await Api.post(
-        body: body,
-        url: Api.studentLogin,
-        useAuthToken: false,
-      );
+    //   final result = await Api.post(
+    //     body: body,
+    //     url: Api.studentLogin,
+    //     useAuthToken: false,
+    //   );
 
-      return {
-        "jwtToken": result['token'],
-        "student": Student.fromJson(Map.from(result['data']))
-      };
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+    //   return {
+    //     "jwtToken": result['token'],
+    //     "student": Student.fromJson(Map.from(result['data']))
+    //   };
+    // } catch (e) {
+    //   if (kDebugMode) {
+    //     print(e);
+    //   }
 
-      throw ApiException(e.toString());
-    }
+    //   throw ApiException(e.toString());
+    // }
   }
 
   Future<Map<String, dynamic>> signInParent({
     required String email,
     required String password,
   }) async {
-    try {
-      // final fcmToken = await FirebaseMessaging.instance.getToken();
-      final body = {
-        "password": password,
-        "email": email,
-        // "fcm_id": fcmToken,
-        "device_type": Platform.isAndroid ? "android" : "ios",
-      };
+    return {};
+    // try {
 
-      final result =
-          await Api.post(body: body, url: Api.parentLogin, useAuthToken: false);
+    //   // final fcmToken = await FirebaseMessaging.instance.getToken();
+    //   final body = {
+    //     "password": password,
+    //     "email": email,
+    //     // "fcm_id": fcmToken,
+    //     "device_type": Platform.isAndroid ? "android" : "ios",
+    //   };
 
-      return {
-        "jwtToken": result['token'],
-        "parent": Parent.fromJson(Map.from(result['data']))
-      };
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
+    //   final result =
+    //       await Api.post(body: body, url: Api.parentLogin, useAuthToken: false);
+
+    //   return {
+    //     "jwtToken": result['token'],
+    //     "parent": Parent.fromJson(Map.from(result['data']))
+    //   };
+    // } catch (e) {
+    //   throw ApiException(e.toString());
+    // }
   }
 
   Future<void> resetPasswordRequest({
     required String grNumber,
     required DateTime dob,
   }) async {
-    try {
-      final body = {
-        "gr_no": grNumber,
-        "dob": DateFormat('yyyy-MM-dd').format(dob)
-      };
-      await Api.post(
-        body: body,
-        url: Api.requestResetPassword,
-        useAuthToken: false,
-      );
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
+    // try {
+    //   final body = {
+    //     "gr_no": grNumber,
+    //     "dob": DateFormat('yyyy-MM-dd').format(dob)
+    //   };
+    //   await Api.post(
+    //     body: body,
+    //     url: Api.requestResetPassword,
+    //     useAuthToken: false,
+    //   );
+    // } catch (e) {
+    //   throw ApiException(e.toString());
+    // }
   }
 
   Future<void> changePassword({
@@ -197,51 +233,51 @@ class AuthRepository {
     required String newPassword,
     required String newConfirmedPassword,
   }) async {
-    try {
-      final body = {
-        "current_password": currentPassword,
-        "new_password": newPassword,
-        "new_confirm_password": newConfirmedPassword
-      };
-      await Api.post(body: body, url: Api.changePassword, useAuthToken: true);
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
+    // try {
+    //   final body = {
+    //     "current_password": currentPassword,
+    //     "new_password": newPassword,
+    //     "new_confirm_password": newConfirmedPassword
+    //   };
+    //   await Api.post(body: body, url: Api.changePassword, useAuthToken: true);
+    // } catch (e) {
+    //   throw ApiException(e.toString());
+    // }
   }
 
   Future<void> forgotPassword({required String email}) async {
-    try {
-      final body = {"email": email};
-      await Api.post(body: body, url: Api.forgotPassword, useAuthToken: false);
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
+    // try {
+    //   final body = {"email": email};
+    //   await Api.post(body: body, url: Api.forgotPassword, useAuthToken: false);
+    // } catch (e) {
+    //   throw ApiException(e.toString());
+    // }
   }
 
-  Future<Student?> fetchStudentProfile() async {
-    try {
-      return Student.fromJson(
-        await Api.get(url: Api.studentProfile, useAuthToken: true).then(
-          (value) => value['data'],
-        ),
-      );
-    } catch (e) {
-      return null;
-      // throw ApiException(e.toString());
-    }
-  }
+  // Future<Student?> fetchStudentProfile() async {
+  //   try {
+  //     return Student.fromJson(
+  //       await Api.get(url: Api.studentProfile, useAuthToken: true).then(
+  //         (value) => value['data'],
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     return null;
+  //     // throw ApiException(e.toString());
+  //   }
+  // }
 
-  Future<Parent?> fetchParentProfile() async {
-    try {
-      return Parent.fromJson(
-        await Api.get(
-          url: Api.parentProfile,
-          useAuthToken: true,
-        ).then((value) => value['data']),
-      );
-    } catch (e) {
-      return null;
-      // throw ApiException(e.toString());
-    }
-  }
+  // Future<Parent?> fetchParentProfile() async {
+  //   try {
+  //     return Parent.fromJson(
+  //       await Api.get(
+  //         url: Api.parentProfile,
+  //         useAuthToken: true,
+  //       ).then((value) => value['data']),
+  //     );
+  //   } catch (e) {
+  //     return null;
+  //     // throw ApiException(e.toString());
+  //   }
+  // }
 }

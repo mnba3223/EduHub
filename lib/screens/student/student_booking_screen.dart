@@ -1,7 +1,10 @@
+import 'package:edutec_hub/blocs/student_booking_bloc.dart';
 import 'package:edutec_hub/ui/bar/top_bar.dart';
 import 'package:edutec_hub/ui/custom_widget/ccalendar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -71,45 +74,6 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
               });
             },
           ),
-          //  _buildCalendarFormatToggle(),
-          // TableCalendar(
-          //   firstDay: DateTime.utc(2021, 1, 1),
-          //   lastDay: DateTime.utc(2030, 12, 31),
-          //   focusedDay: _focusedDay,
-          //   calendarFormat: _calendarFormat,
-          //   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          //   onDaySelected: (
-          //     selectedDay,
-          //     focusedDay,
-          //   ) {
-          //     setState(() {
-          //       _selectedDay = selectedDay;
-          //       _focusedDay = focusedDay;
-          //     });
-          //   },
-          //   onFormatChanged: (format) {
-          //     setState(() {
-          //       _calendarFormat = format;
-          //     });
-          //   },
-          //   calendarStyle: CalendarStyle(
-          //     defaultTextStyle: TextStyle(color: Colors.black),
-          //     weekendTextStyle: TextStyle(color: Colors.red),
-          //     selectedDecoration: BoxDecoration(
-          //       color: Colors.blue,
-          //       shape: BoxShape.circle,
-          //     ),
-          //     selectedTextStyle: TextStyle(color: Colors.white),
-          //     todayDecoration: BoxDecoration(
-          //       color: Colors.blue.withOpacity(0.5),
-          //       shape: BoxShape.circle,
-          //     ),
-          //   ),
-          //   headerStyle: HeaderStyle(
-          //     formatButtonVisible: false,
-          //     titleCentered: true,
-          //   ),
-          // ),
           SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -185,6 +149,8 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
 
   Widget _buildTimeSlot(String time, String status) {
     Color color;
+    VoidCallback? onTap;
+
     if (status == 'booked'.tr()) {
       color = Colors.grey;
     } else if (status == 'available'.tr()) {
@@ -204,14 +170,29 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
           Text(time, style: TextStyle(color: Colors.grey)),
           SizedBox(width: 16.w),
           Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 16.h),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Center(
-                child: Text(status.tr(), style: TextStyle(color: Colors.white)),
+            child: GestureDetector(
+              onTap: () {
+                if (status == 'available'.tr()) {
+                  onTap = () {
+                    context.read<BookingBloc>().add(SelectTimeSlot(
+                          selectedDay: _selectedDay!,
+                          selectedTime: time,
+                          classroom: selectedClassroom,
+                        ));
+                    context.go('/booking-info');
+                  };
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Center(
+                  child:
+                      Text(status.tr(), style: TextStyle(color: Colors.white)),
+                ),
               ),
             ),
           ),

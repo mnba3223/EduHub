@@ -1,12 +1,17 @@
+import 'package:edutec_hub/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
+import 'package:edutec_hub/data/repositories/payment_repository.dart';
 import 'package:edutec_hub/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/screens/auth/studentLoginScreen.dart';
 import 'package:edutec_hub/screens/student/student_announcement_screen.dart';
+import 'package:edutec_hub/screens/student/student_booking_Info_screen.dart';
 import 'package:edutec_hub/screens/student/student_booking_screen.dart';
 import 'package:edutec_hub/screens/student/student_courses_screen.dart';
 import 'package:edutec_hub/screens/student/student_home_screen.dart';
 import 'package:edutec_hub/screens/student/student_more_screen.dart';
+import 'package:edutec_hub/screens/student/student_payment_complete_screen.dart';
+import 'package:edutec_hub/screens/student/student_payment_method_screen.dart';
 import 'package:edutec_hub/ui/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +64,22 @@ class AppRouter {
           child: const StudentLoginScreen(),
         ),
       ),
+      GoRoute(
+        path: '/booking-info',
+        builder: (context, state) => BlocProvider(
+          create: (context) => PaymentCubit(PaymentRepository()),
+          child: BookingInfoScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/payment-method',
+        builder: (context, state) => PaymentMethodScreen(),
+      ),
+      GoRoute(
+        path: '/payment-complete',
+        builder: (context, state) => PaymentCompleteScreen(),
+      ),
+
       // GoRoute(
       //   path: '/studentHome',
       //   builder: (context, state) => StudentHomeScreen(),

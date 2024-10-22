@@ -1,6 +1,7 @@
 {
     
-    "baseUrl": "http://localhost:5186/",
+
+    "baseUrl": "http://10.0.2.2:5240",
     "paths": {
         "api/*": "http://localhost:3000/*"
     }

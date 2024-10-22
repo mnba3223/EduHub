@@ -107,11 +107,12 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
       return;
     }
 
-    // context.read<SignInCubit>().signInUser(
-    //       userId: _grNumberTextEditingController.text.trim(),
-    //       password: _passwordTextEditingController.text.trim(),
-    //       isStudentLogin: true,
-    //     );
+    context.read<SignInCubit>().signInUser(
+          userId: _grNumberTextEditingController.text.trim(),
+          password: _passwordTextEditingController.text.trim(),
+
+          // isStudentLogin: true,
+        );
   }
 
   Widget _buildRequestResetPasswordContainer() {

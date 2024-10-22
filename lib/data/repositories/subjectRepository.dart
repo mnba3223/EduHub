@@ -1,85 +1,85 @@
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/data/models/lesson.dart';
 import 'package:edutec_hub/data/models/student/studentMaterial.dart';
-import 'package:edutec_hub/utils/api.dart';
+import 'package:edutec_hub/utils/api_service.dart';
 
 class SubjectRepository {
-  Future<List<Lesson>> getLessons({
-    required int subjectId,
-    required int childId,
-    required bool useParentApi,
-  }) async {
-    try {
-      //
-      Map<String, dynamic> queryParameters = {"subject_id": subjectId};
-      if (useParentApi) {
-        queryParameters.addAll({"child_id": childId});
-      }
+  // Future<List<Lesson>> getLessons({
+  //   required int subjectId,
+  //   required int childId,
+  //   required bool useParentApi,
+  // }) async {
+  //   try {
+  //     //
+  //     Map<String, dynamic> queryParameters = {"subject_id": subjectId};
+  //     if (useParentApi) {
+  //       queryParameters.addAll({"child_id": childId});
+  //     }
 
-      final result = await Api.get(
-        url:
-            useParentApi ? Api.lessonsOfSubjectParent : Api.getLessonsOfSubject,
-        useAuthToken: true,
-        queryParameters: queryParameters,
-      );
+  //     final result = await Api.get(
+  //       url:
+  //           useParentApi ? Api.lessonsOfSubjectParent : Api.getLessonsOfSubject,
+  //       useAuthToken: true,
+  //       queryParameters: queryParameters,
+  //     );
 
-      return (result['data'] as List)
-          .map((lesson) => Lesson.fromJson(Map.from(lesson)))
-          .toList();
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
-  }
+  //     return (result['data'] as List)
+  //         .map((lesson) => Lesson.fromJson(Map.from(lesson)))
+  //         .toList();
+  //   } catch (e) {
+  //     throw ApiException(e.toString());
+  //   }
+  // }
 
-  Future<List<StudyMaterial>> getStudyMaterialOfTopic({
-    required int lessonId,
-    required int topicId,
-    required bool useParentApi,
-    required int childId,
-  }) async {
-    try {
-      Map<String, dynamic> queryParameters = {
-        "topic_id": topicId,
-        "lesson_id": lessonId
-      };
-      if (useParentApi) {
-        queryParameters.addAll({"child_id": childId});
-      }
+  // Future<List<StudyMaterial>> getStudyMaterialOfTopic({
+  //   required int lessonId,
+  //   required int topicId,
+  //   required bool useParentApi,
+  //   required int childId,
+  // }) async {
+  //   try {
+  //     Map<String, dynamic> queryParameters = {
+  //       "topic_id": topicId,
+  //       "lesson_id": lessonId
+  //     };
+  //     if (useParentApi) {
+  //       queryParameters.addAll({"child_id": childId});
+  //     }
 
-      final result = await Api.get(
-        url: useParentApi
-            ? Api.getstudyMaterialsOfTopicParent
-            : Api.getstudyMaterialsOfTopic,
-        useAuthToken: true,
-        queryParameters: queryParameters,
-      );
+  //     final result = await Api.get(
+  //       url: useParentApi
+  //           ? Api.getstudyMaterialsOfTopicParent
+  //           : Api.getstudyMaterialsOfTopic,
+  //       useAuthToken: true,
+  //       queryParameters: queryParameters,
+  //     );
 
-      final studyMaterialJson = result['data'] as List;
-      final files = (studyMaterialJson.first['file'] ?? []) as List;
+  //     final studyMaterialJson = result['data'] as List;
+  //     final files = (studyMaterialJson.first['file'] ?? []) as List;
 
-      return files
-          .map((file) => StudyMaterial.fromJson(Map.from(file)))
-          .toList();
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
-  }
+  //     return files
+  //         .map((file) => StudyMaterial.fromJson(Map.from(file)))
+  //         .toList();
+  //   } catch (e) {
+  //     throw ApiException(e.toString());
+  //   }
+  // }
 
-  Future<void> downloadStudyMaterialFile({
-    required String url,
-    required String savePath,
-    required CancelToken cancelToken,
-    required Function updateDownloadedPercentage,
-  }) async {
-    try {
-      await Api.download(
-        cancelToken: cancelToken,
-        url: url,
-        savePath: savePath,
-        updateDownloadedPercentage: updateDownloadedPercentage,
-      );
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
-  }
+  // Future<void> downloadStudyMaterialFile({
+  //   required String url,
+  //   required String savePath,
+  //   required CancelToken cancelToken,
+  //   required void Function(double) updateDownloadedPercentage,
+  // }) async {
+  //   try {
+  //     await Api.download(
+  //       cancelToken: cancelToken,
+  //       url: url,
+  //       savePath: savePath,
+  //       updateDownloadedPercentage: updateDownloadedPercentage,
+  //     );
+  //   } catch (e) {
+  //     throw ApiException(e.toString());
+  //   }
+  // }
 }

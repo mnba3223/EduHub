@@ -59,10 +59,10 @@ class SignInCubit extends Cubit<SignInState> {
         password: password,
       );
 
-      final role = _parseRole(result['role']);
+      final role = _parseRole(result.role);
 
       emit(SignInSuccess(
-        jwtToken: result['jwtToken'],
+        jwtToken: result.token,
         role: role,
       ));
     } catch (e) {
