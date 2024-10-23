@@ -11,21 +11,23 @@ This is a tutoring school system built with Flutter.
 - easy_localization for multiple languages
 
 ## Directory Structure
-/
-└─ lib/                    # Main source code
-├─ data/               # Data layer
-│  ├─ models/          # Data models
-│  └─ repositories/    # Data access
-├─ presentation/       # Presentation layer
-│  ├─ screens/         # Full pages
-│  └─ ui/              # UI components
-├─ state_management/   # State management
-│  ├─ blocs/
-│  └─ cubit/
-├─ config/             # Configuration
-├─ theme/              # Theme settings
-└─ utils/              # Utilities
 
+```tree
+/
+└─ lib/                   # Main source code
+   ├─ data/              # Data layer
+   │  ├─ models/         # Data models
+   │  └─ repositories/   # Data access
+   ├─ presentation/      # Presentation layer
+   │  ├─ screens/        # Full pages
+   │  └─ ui/             # UI components
+   ├─ state_management/  # State management
+   │  ├─ blocs/          
+   │  └─ cubit/          
+   ├─ config/            # Configuration
+   ├─ theme/             # Theme settings
+   └─ utils/             # Utilities
+```
 
 ## Generate Files Command
 ```bash
