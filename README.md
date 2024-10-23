@@ -1,10 +1,18 @@
 # edutec_hub
-
- New version: 
+ this is a tutoring school system 
+ build by flutter 
+ 
+ flutter version: 
  3.24.3(stable)
  
+ # Framework 
+ bloc state management
+ dio, retrofit for api
+ go_router route config
+ easy_localization mutiple languages
+ 
 
-# 目錄結構
+# 目錄結構  Directory structure 
 
 /                         
 └─ lib                    # test
@@ -20,21 +28,6 @@
    ├─ config              # 設定區資料夾
    ├─ theme               # 主題
    └─ utils               # 工具類
-
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
 
 
 
