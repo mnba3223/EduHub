@@ -1,6 +1,9 @@
-import 'package:edutec_hub/blocs/student_booking_bloc.dart';
-import 'package:edutec_hub/ui/bar/top_bar.dart';
-import 'package:edutec_hub/ui/custom_widget/ccalendar.dart';
+import 'dart:developer';
+
+import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/data/models/student/time_slot.dart';
+import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui/custom_widget/ccalendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,16 +48,16 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
     }
   }
 
-  String _getRandomStatus(int seed) {
+  TimeSlotStatus _getRandomStatus(int seed) {
     switch (seed % 4) {
       case 0:
-        return 'booked'.tr();
+        return TimeSlotStatus.booked;
       case 1:
-        return 'available'.tr();
+        return TimeSlotStatus.available;
       case 2:
-        return 'select_multiple'.tr();
+        return TimeSlotStatus.selectMultiple;
       default:
-        return 'unavailable'.tr();
+        return TimeSlotStatus.unavailable;
     }
   }
 
@@ -147,20 +150,31 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
     return slots.map((slot) => _buildTimeSlot(slot.time, slot.status)).toList();
   }
 
-  Widget _buildTimeSlot(String time, String status) {
+  Widget _buildTimeSlot(String time, TimeSlotStatus status) {
     Color color;
     VoidCallback? onTap;
 
-    if (status == 'booked'.tr()) {
-      color = Colors.grey;
-    } else if (status == 'available'.tr()) {
-      color = Color(0xFF1E3A5F);
-    } else if (status == 'select_multiple'.tr()) {
-      color = Colors.brown;
-    } else if (status == 'unavailable'.tr()) {
-      color = Colors.grey;
-    } else {
-      color = Colors.grey;
+    switch (status) {
+      case TimeSlotStatus.available:
+        color = Color(0xFF1E3A5F);
+        onTap = () {
+          log('select time slot: $time');
+          context.read<BookingBloc>().add(SelectTimeSlot(
+                selectedDay: _selectedDay!,
+                selectedTime: time,
+                classroom: selectedClassroom,
+              ));
+          context.go('/booking-info');
+        };
+      case TimeSlotStatus.booked:
+        color = Colors.grey;
+        break;
+      case TimeSlotStatus.selectMultiple:
+        color = Colors.brown;
+        break;
+      case TimeSlotStatus.unavailable:
+        color = Colors.grey;
+        break;
     }
 
     return Container(
@@ -171,18 +185,23 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
           SizedBox(width: 16.w),
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                if (status == 'available'.tr()) {
-                  onTap = () {
-                    context.read<BookingBloc>().add(SelectTimeSlot(
-                          selectedDay: _selectedDay!,
-                          selectedTime: time,
-                          classroom: selectedClassroom,
-                        ));
-                    context.go('/booking-info');
-                  };
-                }
-              },
+              onTap: status == TimeSlotStatus.available
+                  ? () async {
+                      log('select time slot: $time');
+                      final bloc = context.read<BookingBloc>();
+                      bloc.add(SelectTimeSlot(
+                        selectedDay: _selectedDay!,
+                        selectedTime: time,
+                        classroom: selectedClassroom,
+                      ));
+
+                      // 等待状态更新
+                      await Future.delayed(Duration(milliseconds: 100));
+
+                      // 将当前的 bloc 作为 extra 参数传递
+                      context.go('/booking-info', extra: bloc);
+                    }
+                  : null,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 decoration: BoxDecoration(
@@ -190,21 +209,29 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Center(
-                  child:
-                      Text(status.tr(), style: TextStyle(color: Colors.white)),
+                  child: Text(
+                    _getStatusText(status).tr(),
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
   }
-}
 
-class TimeSlot {
-  final String time;
-  final String status;
-
-  TimeSlot({required this.time, required this.status});
+  String _getStatusText(TimeSlotStatus status) {
+    switch (status) {
+      case TimeSlotStatus.available:
+        return 'available';
+      case TimeSlotStatus.booked:
+        return 'booked';
+      case TimeSlotStatus.selectMultiple:
+        return 'select_multiple';
+      case TimeSlotStatus.unavailable:
+        return 'unavailable';
+    }
+  }
 }

@@ -2,7 +2,7 @@ import 'dart:math';
 
 // import 'package:eschool/app/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:edutec_hub/ui/errorMessageOverlayContainer.dart';
+import 'package:edutec_hub/presentation/ui/errorMessageOverlayContainer.dart';
 import 'package:edutec_hub/utils/constants.dart';
 import 'package:edutec_hub/utils/errorMessageKeysAndCodes.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';

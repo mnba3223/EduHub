@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/course_list_bloc.dart';
+import '../../state_management/blocs/course_list_bloc.dart';
 
 class CourseListScreen extends StatelessWidget {
   const CourseListScreen({Key? key}) : super(key: key);

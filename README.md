@@ -4,6 +4,24 @@
  3.24.3(stable)
  
 
+# 目錄結構
+
+/                         
+└─ lib                    # test
+   ├─ data                # 資料層
+   │  ├─ models           # 資料模型
+   │  └─ repositories     # 資料存取
+   ├─ presentation        # 表現層
+   │  ├─ screens          # 完整頁面
+   │  └─ ui               # UI 組件
+   ├─ state_management    # 狀態管理
+   │  ├─ blocs            
+   │  └─ cubit            
+   ├─ config              # 設定區資料夾
+   ├─ theme               # 主題
+   └─ utils               # 工具類
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

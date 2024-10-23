@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../blocs/course_list_bloc.dart';
+import '../../state_management/blocs/course_list_bloc.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final String courseId;

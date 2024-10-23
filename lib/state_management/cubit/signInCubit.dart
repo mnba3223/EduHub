@@ -23,10 +23,12 @@ class SignInInProgress extends SignInState {
 class SignInSuccess extends SignInState {
   final String jwtToken;
   final UserRole role;
+  final int userId; // 新增
 
   SignInSuccess({
     required this.jwtToken,
     required this.role,
+    required this.userId, // 新增
   });
 
   @override
@@ -62,9 +64,7 @@ class SignInCubit extends Cubit<SignInState> {
       final role = _parseRole(result.role);
 
       emit(SignInSuccess(
-        jwtToken: result.token,
-        role: role,
-      ));
+          jwtToken: result.token, role: role, userId: result.data?.id ?? 0));
     } catch (e) {
       emit(SignInFailure(e.toString()));
     }

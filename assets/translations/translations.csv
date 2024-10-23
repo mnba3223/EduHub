@@ -1,14 +1,25 @@
 key,en_US,zh_TW,zh_CN,ja_JP
+# App General
 app_title,EduTec Hub,教育科技中心,教育科技中心,教育テックハブ
+button_close,Close,關閉,关闭,閉じる
+more,More,更多,更多,その他
+
+# Navigation & Screens
 home_screen_title,Home,首頁,主页,ホーム
 course_list_screen_title,Courses,課程列表,课程列表,コース一覧
 course_detail_screen_title,Course Details,課程詳情,课程详情,コース詳細
+announcements_screen_title,Announcements,學校公告,学校公告,お知らせ
+
+# Bottom Navigation
 bottom_bar_home,Home,首頁,主页,ホーム
 bottom_bar_courses,Courses,課程,课程,コース
 bottom_bar_profile,Profile,個人資料,个人资料,プロフィール
+
+# Welcome & Language
 welcome,Welcome to EduTec Hub,歡迎使用教育科技中心,欢迎使用教育科技中心,EduTecハブへようこそ
 select_language,Please select your language:,請選擇您的語言:,请选择您的语言:,言語を選択してください：
-button_close,Close,關閉,关闭,閉じる
+
+# Authentication
 loginAs,Login as,登入身份,登录身份,ログイン者
 student,Student,學生,学生,学生
 parent,Parent,家長,家长,保護者
@@ -19,32 +30,70 @@ resetPassword,Reset Password,重設密碼,重置密码,パスワードをリセ�
 grNumber,GR Number,學號,学号,学籍番号
 password,Password,密碼,密码,パスワード
 signIn,Sign In,登入,登录,サインイン
+
+# Legal
 termAndConditionAgreement,By signing in, you agree to our,登入即表示您同意我們的,登录即表示您同意我们的,サインインすることで、以下に同意したことになります
 termsAndCondition,Terms and Conditions,條款和條件,条款和条件,利用規約
 privacyPolicy,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
+PP,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
+T&C,Terms & Conditions,條款及細則,条款及细则,利用規約
+
+# Course Management
 course_management,Course Management,課程管理,课程管理,コース管理
 classroom_1,Classroom 1,教室 1,教室 1,教室 1
 classroom_2,Classroom 2,教室 2,教室 2,教室 2
 classroom_3,Classroom 3,教室 3,教室 3,教室 3
+all_courses,All Courses,全部課程,全部課程,All Courses
+course,Course,課程,课程,コース
+todays_course,Today's Courses,今天課程,今天课程,今日の授業
+my_courses,My Courses,預約教室,預約教室,マイコース
+
+# Booking Status
 booked,Booked,已預約,已预约,予約済み
 available,Available,可預約,可预约,予約可能
 select_multiple,Select (Multiple),選擇預約(可多選),选择预约(可多选),選択（複数可）
 unavailable,Unavailable,不可預約,不可预约,予約不可
-todays_course,Today's Courses,今天課程,今天课程,今日の授業
-my_courses,My Courses,預約教室,預約教室,マイコース
+booking,Booking,預約,预约,予約
+
+# Communication & Learning
 contact_book,Contact Book,聯絡簿,联络簿,連絡帳
 homework,Homework,作業,作业,宿題
-date,Date,日期,日期,日付
-course,Course,課程,课程,コース
-more,MORE,更多,更多,もっと見る
-all_courses,All Courses,全部課程,全部課程,All Courses
-announcements_screen_title,Announcements,學校公告,学校公告,お知らせ
-more,More,更多,更多,その他
-booking,Booking,預約,预约,予約
-setting,Settings,設置,设置,設定
-homework,Homework,作業,作业,宿題
 learning,Learning,學習,学习,学習
-PP,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
-T&C,Terms & Conditions,條款及細則,条款及细则,利用規約
-contact_us,Contact Us,聯絡我們,联系我们,お問い合わせ
 bulletin_board,Bulletin Board,佈告欄,布告栏,掲示板
+contact_us,Contact Us,聯絡我們,联系我们,お問い合わせ
+
+# Date & Time
+date,Date,日期,日期,日付
+
+# Settings
+setting,Settings,設置,设置,設定
+
+# Booking Info Screen
+booking_info,Booking Information,預約資訊,预约信息,予約情報
+selected_date,Selected Date,選擇日期,选择日期,選択日
+selected_time,Selected Time,選擇時間,选择时间,選択時間
+classroom,Classroom,教室,教室,教室
+price,Price,價格,价格,価格
+proceed_to_payment,Proceed to Payment,前往付款,前往付款,支払いに進む
+no_booking_selected,No Booking Selected,尚未選擇預約,尚未选择预约,予約が選択されていません
+return_to_booking,Return to Booking,返回預約,返回预约,予約に戻る
+
+# Payment Method Screen
+payment_method,Payment Method,付款方式,付款方式,支払方法
+select_payment_method,Select Payment Method,選擇付款方式,选择付款方式,支払方法を選択
+credit_card,Credit Card,信用卡,信用卡,クレジットカード
+credit_card_description,Visa, Mastercard, American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express
+paypal,PayPal,PayPal,PayPal,PayPal
+paypal_description,Fast and secure payment,快速安全支付,快速安全支付,迅速で安全な支払い
+bank_transfer,Bank Transfer,銀行轉帳,银行转账,銀行振込
+bank_transfer_description,Direct bank transfer,直接銀行轉帳,直接银行转账,直接銀行振込
+
+# Payment Complete Screen
+payment_complete,Payment Complete,付款完成,付款完成,支払完了
+payment_successful,Payment Successful!,付款成功！,付款成功！,支払い完了！
+booking_confirmation_message,Your booking has been confirmed. Thank you for your payment.,您的預約已確認。感謝您的付款。,您的预约已确认。感谢您的付款。,予約が確認されました。ご支払いありがとうございます。
+booking_details,Booking Details,預約詳情,预约详情,予約詳細
+booking_id,Booking ID,預約編號,预约编号,予約番号
+amount_paid,Amount Paid,支付金額,支付金额,支払金額
+order_date,Order Date,訂單日期,订单日期,注文日
+order_time,Order Time,訂單時間,订单时间,注文時間

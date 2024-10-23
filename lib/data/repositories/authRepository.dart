@@ -101,25 +101,56 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await StudentApi(DioClient().dio).login(LoginRequest(
+      log('Starting login attempt for user: $userId');
+      final dio = DioClient().dio;
+      final api = StudentApi(dio);
+      final response = await api.login(LoginRequest(
         name: userId,
         password: password,
       ));
-
-      // if (response.error) {
-      //   throw ApiException(
-      //     response.message,
-      //     errorCode: response.errorCode,
-      //   );
-      // }
-      await TokenManager.saveToken(response.token);
+      await Future.wait([
+        TokenManager.saveToken(response.token),
+      ]);
       // // 保存到 Hive
       // await setJwtToken(response.token);
       // await setIsLogIn(true);
-
+      // log(" response ${response}");
       return response;
     } on DioException catch (e) {
       throw e.toApiException();
+    }
+  }
+
+  Future<LoginResponse> signInNormalDirect({
+    required String userId,
+    required String password,
+  }) async {
+    try {
+      final dio = Dio(BaseOptions(
+          baseUrl: 'http://10.0.2.2:5240',
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+          headers: {}));
+
+      log('Attempting login...');
+      final response = await dio.post<Map<String, dynamic>>(
+        '/api/Login',
+        data: {
+          'name': userId,
+          'password': password,
+        },
+      );
+
+      log('Response: ${response.data}');
+
+      final loginResponse = LoginResponse.fromJson(response.data!);
+      await TokenManager.saveToken(loginResponse.token);
+      return loginResponse;
+    } catch (e) {
+      log('Login error: $e');
+      rethrow;
     }
   }
 

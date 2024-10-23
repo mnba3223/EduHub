@@ -1,10 +1,10 @@
-import 'package:edutec_hub/ui/custom_widget/card.dart';
+import 'package:edutec_hub/presentation/ui/custom_widget/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:edutec_hub/ui/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/card_list.dart';
-import 'package:edutec_hub/ui/custom_widget/slider.dart';
+import 'package:edutec_hub/presentation/ui/custom_widget/slider.dart';
 
 class StudentCoursesScreen extends StatefulWidget {
   const StudentCoursesScreen({super.key});

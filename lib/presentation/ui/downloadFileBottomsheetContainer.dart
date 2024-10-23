@@ -1,9 +1,9 @@
 // import 'package:eschool/cubits/downloadFileCubit.dart';
 
-import 'package:edutec_hub/cubit/downloadFileCubit.dart';
+import 'package:edutec_hub/state_management/cubit/downloadFileCubit.dart';
 import 'package:edutec_hub/data/models/student/studentMaterial.dart';
-import 'package:edutec_hub/ui/custom_widget/bottomsheetTopTitleAndCloseButton.dart';
-import 'package:edutec_hub/ui/custom_widget/customRoundedButton.dart';
+import 'package:edutec_hub/presentation/ui/custom_widget/bottomsheetTopTitleAndCloseButton.dart';
+import 'package:edutec_hub/presentation/ui/custom_widget/customRoundedButton.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';
 import 'package:edutec_hub/utils/uiUtils.dart';
 import 'package:flutter/material.dart';

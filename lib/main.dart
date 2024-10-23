@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'app.dart';
 import 'utils/csv_asset_loader.dart';
-import 'blocs/app_bloc.dart';
+import 'state_management/blocs/app_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

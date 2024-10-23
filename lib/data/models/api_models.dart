@@ -40,16 +40,33 @@ class LoginResponse {
   final String token;
   // final String userId;
   final String role;
+  final LoginResponseData? data;
 
   LoginResponse({
     required this.token,
     // required this.userId,
+    required this.data,
     required this.role,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+}
+
+@JsonSerializable()
+class LoginResponseData {
+  final int id;
+  final String name;
+
+  LoginResponseData({
+    required this.id,
+    required this.name,
+  });
+
+  factory LoginResponseData.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseDataFromJson(json);
+  Map<String, dynamic> toJson() => _$LoginResponseDataToJson(this);
 }
 
 @JsonSerializable()

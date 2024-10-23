@@ -49,6 +49,9 @@ Map<String, dynamic> _$EmptyResponseToJson(EmptyResponse instance) =>
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
       token: json['token'] as String,
+      data: json['data'] == null
+          ? null
+          : LoginResponseData.fromJson(json['data'] as Map<String, dynamic>),
       role: json['role'] as String,
     );
 
@@ -56,6 +59,19 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
       'token': instance.token,
       'role': instance.role,
+      'data': instance.data,
+    };
+
+LoginResponseData _$LoginResponseDataFromJson(Map<String, dynamic> json) =>
+    LoginResponseData(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+    );
+
+Map<String, dynamic> _$LoginResponseDataToJson(LoginResponseData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
     };
 
 LoginRequest _$LoginRequestFromJson(Map<String, dynamic> json) => LoginRequest(

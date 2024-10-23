@@ -1,0 +1,113 @@
+{
+  "name": "",
+  "tree": [
+    {
+      "name": "lib",
+      "body": "test",
+      "index": 9,
+      "bold": false,
+      "path": "lib",
+      "children": [
+        {
+          "name": "config",
+          "body": "設定區資料夾",
+          "index": 9,
+          "bold": false,
+          "path": "lib/config",
+          "children": []
+        },
+        {
+          "name": "data",
+          "body": "資料層",
+          "index": 9,
+          "bold": false,
+          "path": "lib/data",
+          "children": [
+            {
+              "name": "models",
+              "body": "資料模型",
+              "index": 9,
+              "bold": false,
+              "path": "lib/data/models",
+              "children": []
+            },
+            {
+              "name": "repositories",
+              "body": "資料存取",
+              "index": 9,
+              "bold": false,
+              "path": "lib/data/repositories",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "presentation",
+          "body": "表現層",
+          "index": 9,
+          "bold": false,
+          "path": "lib/presentation",
+          "children": [
+            {
+              "name": "screens",
+              "body": "完整頁面",
+              "index": 9,
+              "bold": false,
+              "path": "lib/presentation/screens",
+              "children": []
+            },
+            {
+              "name": "ui",
+              "body": "UI 組件",
+              "index": 9,
+              "bold": false,
+              "path": "lib/presentation/ui",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "state_management",
+          "body": "狀態管理",
+          "index": 9,
+          "bold": false,
+          "path": "lib/state_management",
+          "children": [
+            {
+              "name": "blocs",
+              "body": "",
+              "index": 9,
+              "bold": false,
+              "path": "lib/state_management/blocs",
+              "children": []
+            },
+            {
+              "name": "cubit",
+              "body": "",
+              "index": 9,
+              "bold": false,
+              "path": "lib/state_management/cubit",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "theme",
+          "body": "主題",
+          "index": 9,
+          "bold": false,
+          "path": "lib/theme",
+          "children": []
+        },
+        {
+          "name": "utils",
+          "body": "工具類",
+          "index": 9,
+          "bold": false,
+          "path": "lib/utils",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

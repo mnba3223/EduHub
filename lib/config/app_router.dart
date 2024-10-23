@@ -1,24 +1,25 @@
-import 'package:edutec_hub/cubit/payment/payment_cubit.dart';
-import 'package:edutec_hub/cubit/signInCubit.dart';
+import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:edutec_hub/data/repositories/payment_repository.dart';
-import 'package:edutec_hub/screens/auth/parentLoginScreen.dart';
-import 'package:edutec_hub/screens/auth/studentLoginScreen.dart';
-import 'package:edutec_hub/screens/student/student_announcement_screen.dart';
-import 'package:edutec_hub/screens/student/student_booking_Info_screen.dart';
-import 'package:edutec_hub/screens/student/student_booking_screen.dart';
-import 'package:edutec_hub/screens/student/student_courses_screen.dart';
-import 'package:edutec_hub/screens/student/student_home_screen.dart';
-import 'package:edutec_hub/screens/student/student_more_screen.dart';
-import 'package:edutec_hub/screens/student/student_payment_complete_screen.dart';
-import 'package:edutec_hub/screens/student/student_payment_method_screen.dart';
-import 'package:edutec_hub/ui/bar/custom_nav_bar.dart';
+import 'package:edutec_hub/presentation/screens/auth/parentLoginScreen.dart';
+import 'package:edutec_hub/presentation/screens/auth/studentLoginScreen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_announcement_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_booking_Info_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_booking_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_courses_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_home_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_more_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_payment_complete_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_payment_method_screen.dart';
+import 'package:edutec_hub/presentation/ui/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../screens/auth/authScreen.dart';
-import '../screens/course_list_screen.dart';
-import '../screens/course_detail_screen.dart';
+import '../presentation/screens/auth/authScreen.dart';
+import '../presentation/screens/course_list_screen.dart';
+import '../presentation/screens/course_detail_screen.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -64,21 +65,6 @@ class AppRouter {
           child: const StudentLoginScreen(),
         ),
       ),
-      GoRoute(
-        path: '/booking-info',
-        builder: (context, state) => BlocProvider(
-          create: (context) => PaymentCubit(PaymentRepository()),
-          child: BookingInfoScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/payment-method',
-        builder: (context, state) => PaymentMethodScreen(),
-      ),
-      GoRoute(
-        path: '/payment-complete',
-        builder: (context, state) => PaymentCompleteScreen(),
-      ),
 
       // GoRoute(
       //   path: '/studentHome',
@@ -115,9 +101,44 @@ class AppRouter {
       //   ],
       // ),
       ShellRoute(
+        builder: (context, state, child) {
+          final bookingBloc = state.extra is BookingBloc
+              ? state.extra as BookingBloc
+              : BookingBloc();
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<BookingBloc>.value(
+                value: bookingBloc,
+              ),
+              BlocProvider<PaymentCubit>(
+                create: (context) => PaymentCubit(PaymentRepository()),
+              ),
+            ],
+            child: ScaffoldWithNavBarV2(child: child, role: 'student'),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: '/booking-info',
+            builder: (context, state) => BookingInfoScreen(),
+          ),
+          GoRoute(
+            path: '/payment-method',
+            builder: (context, state) => PaymentMethodScreen(),
+          ),
+          GoRoute(
+            path: '/payment-complete',
+            builder: (context, state) => PaymentCompleteScreen(),
+          ),
+        ],
+      ),
+      ShellRoute(
         navigatorKey: _shellNavigatorKeyStudent,
         builder: (context, state, child) {
-          return ScaffoldWithNavBarV2(child: child, role: 'student');
+          return BlocProvider<BookingBloc>(
+            create: (context) => BookingBloc(),
+            child: ScaffoldWithNavBarV2(child: child, role: 'student'),
+          );
         },
         routes: [
           GoRoute(
@@ -140,6 +161,7 @@ class AppRouter {
           //     child: StudentMoreScreen(),
           //   ),
           // ),
+
           GoRoute(
             path: '/student-announcements',
             builder: (context, state) => StudentAnnouncementsScreen(),

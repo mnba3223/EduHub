@@ -69,11 +69,13 @@ class PaymentCompleted extends BookingState {}
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc() : super(BookingInitial()) {
     on<SelectTimeSlot>((event, emit) {
+      print('SelectTimeSlot event received: ${event.selectedTime}');
       emit(TimeSlotSelected(
         selectedDay: event.selectedDay,
         selectedTime: event.selectedTime,
         classroom: event.classroom,
       ));
+      print('State emitted: TimeSlotSelected');
     });
 
     on<SelectPaymentMethod>((event, emit) {
