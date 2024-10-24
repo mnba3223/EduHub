@@ -267,15 +267,15 @@ class UiUtils {
     return Color(color);
   }
 
-  static String getErrorMessageFromErrorCode(
-    BuildContext context,
-    String errorCode,
-  ) {
-    return UiUtils.getTranslatedLabel(
-      context,
-      ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),
-    );
-  }
+  // static String getErrorMessageFromErrorCode(
+  //   BuildContext context,
+  //   String errorCode,
+  // ) {
+  //   return UiUtils.getTranslatedLabel(
+  //     context,
+  //     ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),
+  //   );
+  // }
 
   //0 = Pending/In Review , 1 = Accepted , 2 = Rejected
   static String getAssignmentSubmissionStatusKey(int status) {

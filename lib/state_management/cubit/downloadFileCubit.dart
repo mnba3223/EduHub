@@ -112,21 +112,21 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
         try {
           await thingsToDoAfterPermissionIsGiven(false);
         } catch (e) {
-          if (e.toString() == ErrorMessageKeysAndCode.fileNotFoundErrorCode) {
-            emit(
-              DownloadFileFailure(
-                ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(
-                    ErrorMessageKeysAndCode.fileNotFoundErrorCode),
-                isMessageKey: true,
-              ),
-            );
-          } else {
-            emit(
-              DownloadFileFailure(
-                e.toString(),
-              ),
-            );
-          }
+          // if (e.toString() == ErrorMessageKeysAndCode.fileNotFoundErrorCode) {
+          //   emit(
+          //     DownloadFileFailure(
+          //       ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(
+          //           ErrorMessageKeysAndCode.fileNotFoundErrorCode),
+          //       isMessageKey: true,
+          //     ),
+          //   );
+          // } else {
+          //   emit(
+          //     DownloadFileFailure(
+          //       e.toString(),
+          //     ),
+          //   );
+          // }
         }
       }
     } catch (e) {

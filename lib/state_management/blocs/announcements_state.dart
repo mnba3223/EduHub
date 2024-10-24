@@ -1,7 +1,11 @@
 import 'package:edutec_hub/data/models/Announcement.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class AnnouncementsState {
+abstract class AnnouncementsState extends Equatable {
   const AnnouncementsState();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class AnnouncementsInitial extends AnnouncementsState {}
@@ -11,11 +15,17 @@ class AnnouncementsLoading extends AnnouncementsState {}
 class AnnouncementsLoaded extends AnnouncementsState {
   final List<Announcement> announcements;
 
-  AnnouncementsLoaded(this.announcements);
+  const AnnouncementsLoaded(this.announcements);
+
+  @override
+  List<Object?> get props => [announcements];
 }
 
 class AnnouncementsError extends AnnouncementsState {
   final String message;
 
-  AnnouncementsError(this.message);
+  const AnnouncementsError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

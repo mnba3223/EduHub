@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/data/models/Announcement.dart';
-import 'package:edutec_hub/utils/api_service.dart';
+import 'package:edutec_hub/data/network/apis/announcement_api.dart';
+
+import 'package:edutec_hub/data/network/core/dio_client.dart';
+import 'package:edutec_hub/data/network/core/exceptions.dart';
 
 class AnnouncementRepository {
   final AnnouncementApi _api;

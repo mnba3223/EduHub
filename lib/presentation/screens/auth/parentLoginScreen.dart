@@ -288,11 +288,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen>
                             } else if (state is SignInFailure) {
                               UiUtils.showCustomSnackBar(
                                 context: context,
-                                errorMessage:
-                                    UiUtils.getErrorMessageFromErrorCode(
-                                  context,
-                                  state.errorMessage,
-                                ),
+                                errorMessage: state.errorMessage,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.error,
                               );
