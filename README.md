@@ -14,21 +14,25 @@ This is a tutoring school system built with Flutter.
 
 ```tree
 /
-└─ lib/                   # Main source code
-   ├─ data/              # Data layer
-   │  ├─ models/         # Data models
-   │  └─ repositories/   # Data access
+└─ lib/                        
+   ├─ data/                    # Data layer
+   │  ├─ models/              # Data models
+   │  ├─ network/            # Network related
+   │  │  ├─ config/         # API configurations
+   │  │  ├─ core/          # Core functionalities
+   │  │  ├─ interceptors/  # Network interceptors
+   │  │  └─ apis/         # API definitions
+   │  └─ repositories/    # Data access layer
    ├─ presentation/      # Presentation layer
-   │  ├─ screens/        # Full pages
-   │  └─ ui/             # UI components
-   ├─ state_management/  # State management
-   │  ├─ blocs/          
-   │  └─ cubit/          
-   ├─ config/            # Configuration
-   ├─ theme/             # Theme settings
-   └─ utils/             # Utilities
+   │  ├─ screens/       # Full pages
+   │  └─ ui_widget/     # UI components
+   ├─ state_management/ # State management
+   │  ├─ blocs/        # BLoC components
+   │  └─ cubit/        # Cubit components
+   ├─ config/          # Configuration
+   ├─ theme/           # Theme settings
+   └─ utils/           # Utilities
 ```
-
 ## Generate Files Command
 ```bash
 flutter packages pub run build_runner build --delete-conflicting-outputs
