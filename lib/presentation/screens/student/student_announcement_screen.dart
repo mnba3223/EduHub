@@ -5,7 +5,7 @@ import 'package:edutec_hub/utils/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class StudentAnnouncementsScreen extends StatelessWidget {

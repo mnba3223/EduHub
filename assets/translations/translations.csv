@@ -97,3 +97,25 @@ booking_id,Booking ID,預約編號,预约编号,予約番号
 amount_paid,Amount Paid,支付金額,支付金额,支払金額
 order_date,Order Date,訂單日期,订单日期,注文日
 order_time,Order Time,訂單時間,订单时间,注文時間
+
+# Payment Complete Screen (修改)
+upload_successful,Upload Successful!,上傳成功！,上传成功！,アップロード完了！
+payment_review_message,Your payment proof has been uploaded and is under review. We will process it within 1-2 business days.,您的付款憑證已上傳並正在審核中。我們將在1-2個工作日內處理。,您的付款凭证已上传并正在审核中。我们将在1-2个工作日内处理。,支払証明書がアップロードされ、現在確認中です。1-2営業日以内に処理いたします。
+booking_status,Booking Status,預約狀態,预约状态,予約状態
+under_review,Under Review,審核中,审核中,確認中
+return_to_home,Return to Home,返回首頁,返回首页,ホームに戻る
+
+
+# Payment Upload Screen
+upload_payment_proof,Upload Payment Proof,上傳付款憑證,上传付款凭证,支払証明書をアップロード
+payment_upload_instruction,Please upload your payment proof image below,請上傳您的付款憑證圖片,请上传您的付款凭证图片,支払証明書の画像をアップロードしてください
+click_to_upload,Click to upload payment proof,點擊上傳付款憑證,点击上传付款凭证,支払証明書をアップロードするにはクリック
+proof_uploaded,Payment proof uploaded,付款憑證已上傳,付款凭证已上传,支払証明書がアップロードされました
+tap_to_change,Tap to change image,點擊更換圖片,点击更换图片,タップして画像を変更
+confirm_payment,Confirm Payment,確認付款,确认付款,支払いを確認
+
+
+booking_history,Booking History,預約記錄,预约记录,予約履歴
+pending_review,Pending Review,待審核,待审核,審査待ち
+approved,Approved,已通過,已通过,承認済み
+rejected,Rejected,已拒絕,已拒绝,却下

@@ -3,10 +3,10 @@ import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:edutec_hub/presentation/screens/auth/termsAndConditionAndPrivacyPolicyContainer.dart';
 
-import 'package:edutec_hub/presentation/ui/custom_widget/customCircularProgressIndicator.dart';
-import 'package:edutec_hub/presentation/ui/custom_widget/customRoundedButton.dart';
-import 'package:edutec_hub/presentation/ui/custom_widget/customTextFieldContainer.dart';
-import 'package:edutec_hub/presentation/ui/custom_widget/passwordHideShowButton.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/customCircularProgressIndicator.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/customRoundedButton.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/customTextFieldContainer.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/passwordHideShowButton.dart';
 import 'package:edutec_hub/utils/constants.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';
 import 'package:edutec_hub/utils/uiUtils.dart';

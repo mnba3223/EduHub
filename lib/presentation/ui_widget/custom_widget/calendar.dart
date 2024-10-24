@@ -1,4 +1,4 @@
-import 'package:edutec_hub/presentation/ui/button/custom_button.dart';
+import 'package:edutec_hub/presentation/ui_widget/button/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

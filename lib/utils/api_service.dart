@@ -23,6 +23,19 @@ class ApiConfig {
   static const String databaseUrl = '$baseUrl/database/';
 }
 
+class AuthConfig {
+  static final List<String> publicPaths = [
+    '/api/Login',
+    '/login',
+    '/api/School', // 加入不需要認證的路徑
+    // 可以繼續添加其他不需要認證的路徑
+  ];
+
+  static bool isPublicPath(String path) {
+    return publicPaths.any((publicPath) => path.endsWith(publicPath));
+  }
+}
+
 // API 異常處理
 class ApiException implements Exception {
   final String message;
@@ -145,7 +158,11 @@ class AuthInterceptor extends QueuedInterceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    if (!options.path.contains('login')) {
+    bool isPublicPath = AuthConfig.isPublicPath(options.path);
+
+    // 設置通用 headers
+    options.headers['Content-Type'] = 'application/json';
+    if (!isPublicPath) {
       if (_accessToken == null) {
         _accessToken = await TokenManager.getToken();
       }
@@ -153,11 +170,8 @@ class AuthInterceptor extends QueuedInterceptor {
       if (_accessToken != null) {
         options.headers['Authorization'] = 'Bearer $_accessToken';
       }
-    }
-    bool isLoginRequest =
-        options.path.endsWith('/api/Login') || options.path.endsWith('/login');
-    if (isLoginRequest) {
-      // 登录请求不需要 Authorization header
+    } else {
+      // 確保公開路徑不帶 Authorization header
       options.headers.remove('Authorization');
     }
     // options.headers['Accept'] = 'application/json';
@@ -293,19 +307,40 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // 開發時看到完整錯誤信息
-    log("API Error: ${err.response?.data}");
-    log("Error URL: ${err.requestOptions.uri}");
-    log("Error Type: ${err.type}");
-    log("Status Code: ${err.response?.statusCode}");
+    if (kDebugMode) {
+      log("=== API Error Details ===");
+      log("URL: ${err.requestOptions.uri}");
+      log("Method: ${err.requestOptions.method}");
+      log("Headers: ${err.requestOptions.headers}");
+      log("Error Type: ${err.type}");
+      log("Status Code: ${err.response?.statusCode}");
+      log("Response Data: ${err.response?.data}");
+      log("Error Message: ${err.message}");
+      log("=====================");
+    }
 
     // 從回應中取得 message
     final responseData = err.response?.data;
-    final message = responseData is Map ? responseData['message'] : '未知錯誤';
+    String errorMessage;
+    try {
+      final responseData = err.response?.data;
+      if (responseData != null && responseData is Map) {
+        errorMessage = responseData['message'] ?? '未知錯誤';
+      } else if (err.type == DioExceptionType.connectionTimeout) {
+        errorMessage = '連接超時';
+      } else if (err.type == DioExceptionType.connectionError) {
+        errorMessage = '無法連接到伺服器';
+      } else {
+        errorMessage = '發生錯誤: ${err.message}';
+      }
+    } catch (e) {
+      errorMessage = '處理錯誤時發生異常';
+    }
 
     // 用 reject 直接拋出新的 DioException
-    handler.reject(DioException(
+    handler.next(DioException(
       requestOptions: err.requestOptions,
-      error: ApiException(message), // 確保這裡設置了 ApiException
+      error: ApiException(errorMessage),
       type: err.type,
       response: err.response,
     ));

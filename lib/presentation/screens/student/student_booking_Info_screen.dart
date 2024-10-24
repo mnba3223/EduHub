@@ -1,4 +1,6 @@
-import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
+import 'package:edutec_hub/data/models/booking/booking_info.dart';
+import 'package:edutec_hub/data/models/booking/booking_state.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,14 @@ class BookingInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookingBloc, BookingState>(
       builder: (context, state) {
-        if (state is TimeSlotSelected) {
+        if (state is BookingProgress) {
+          final bookingInfo = state.bookingInfo;
+          if (bookingInfo.selectedDay == null ||
+              bookingInfo.selectedTime == null ||
+              bookingInfo.classroom == null) {
+            return _buildErrorState(context);
+          }
+
           return Scaffold(
             body: Column(
               children: [
@@ -30,26 +39,26 @@ class BookingInfoScreen extends StatelessWidget {
                             icon: Icons.calendar_today,
                             title: 'selected_date'.tr(),
                             value: DateFormat('yyyy-MM-dd')
-                                .format(state.selectedDay),
+                                .format(bookingInfo.selectedDay!),
                           ),
                           SizedBox(height: 16.h),
                           _buildInfoCard(
                             context,
                             icon: Icons.access_time,
                             title: 'selected_time'.tr(),
-                            value: state.selectedTime,
+                            value: bookingInfo.selectedTime!,
                           ),
                           SizedBox(height: 16.h),
                           _buildInfoCard(
                             context,
                             icon: Icons.room,
                             title: 'classroom'.tr(),
-                            value: state.classroom.toString(),
+                            value: bookingInfo.classroom.toString(),
                           ),
                           SizedBox(height: 24.h),
                           _buildPriceCard(context),
                           SizedBox(height: 32.h),
-                          _buildPaymentButton(context, state),
+                          _buildPaymentButton(context, bookingInfo),
                         ],
                       ),
                     ),
@@ -188,23 +197,23 @@ class BookingInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentButton(BuildContext context, TimeSlotSelected state) {
+  Widget _buildPaymentButton(BuildContext context, BookingInfo bookingInfo) {
     return Container(
       width: double.infinity,
       height: 56.h,
       child: ElevatedButton(
         onPressed: () {
+          // 使用現有的 BookingInfo 來初始化支付
           context.read<PaymentCubit>().initiatePayment(
-                selectedDay: state.selectedDay,
-                selectedTime: state.selectedTime,
-                classroom: state.classroom,
+                selectedDay: bookingInfo.selectedDay!,
+                selectedTime: bookingInfo.selectedTime!,
+                classroom: bookingInfo.classroom!,
                 amount: 100.0,
                 courseId: 'COURSE_001',
               );
-          context.go('/payment-method');
+          context.push('/payment-upload');
         },
         style: ElevatedButton.styleFrom(
-          // primary: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),

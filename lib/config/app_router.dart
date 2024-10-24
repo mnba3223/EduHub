@@ -1,3 +1,5 @@
+import 'package:edutec_hub/presentation/screens/student/student_booking_history_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
@@ -13,7 +15,7 @@ import 'package:edutec_hub/presentation/screens/student/student_home_screen.dart
 import 'package:edutec_hub/presentation/screens/student/student_more_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_complete_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_method_screen.dart';
-import 'package:edutec_hub/presentation/ui/bar/custom_nav_bar.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +28,7 @@ class AppRouter {
   static final _shellNavigatorKeyParent = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyTeacher = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyStudent = GlobalKey<NavigatorState>();
+  static final _signInCubit = SignInCubit(AuthRepository()); // 創建單一實例
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     routes: [
@@ -60,8 +63,9 @@ class AppRouter {
       // ),
       GoRoute(
         path: '/student-login',
-        builder: (context, state) => BlocProvider(
-          create: (context) => SignInCubit(AuthRepository()),
+        builder: (context, state) => BlocProvider.value(
+          // 使用 value 提供已存在的實例
+          value: _signInCubit,
           child: const StudentLoginScreen(),
         ),
       ),
@@ -101,14 +105,16 @@ class AppRouter {
       //   ],
       // ),
       ShellRoute(
+        navigatorKey: _shellNavigatorKeyStudent,
         builder: (context, state, child) {
-          final bookingBloc = state.extra is BookingBloc
-              ? state.extra as BookingBloc
-              : BookingBloc();
           return MultiBlocProvider(
             providers: [
-              BlocProvider<BookingBloc>.value(
-                value: bookingBloc,
+              BlocProvider.value(
+                // 使用相同的實例
+                value: _signInCubit,
+              ),
+              BlocProvider<BookingBloc>(
+                create: (context) => BookingBloc(),
               ),
               BlocProvider<PaymentCubit>(
                 create: (context) => PaymentCubit(PaymentRepository()),
@@ -118,50 +124,15 @@ class AppRouter {
           );
         },
         routes: [
-          GoRoute(
-            path: '/booking-info',
-            builder: (context, state) => BookingInfoScreen(),
-          ),
-          GoRoute(
-            path: '/payment-method',
-            builder: (context, state) => PaymentMethodScreen(),
-          ),
-          GoRoute(
-            path: '/payment-complete',
-            builder: (context, state) => PaymentCompleteScreen(),
-          ),
-        ],
-      ),
-      ShellRoute(
-        navigatorKey: _shellNavigatorKeyStudent,
-        builder: (context, state, child) {
-          return BlocProvider<BookingBloc>(
-            create: (context) => BookingBloc(),
-            child: ScaffoldWithNavBarV2(child: child, role: 'student'),
-          );
-        },
-        routes: [
+          // 學生基本頁面
           GoRoute(
             path: '/student-home',
             builder: (context, state) => StudentHomeScreen(),
           ),
-          // GoRoute(
-          //   path: '/student-announcements',
-          //   pageBuilder: (context, state) => NoTransitionPage(
-          //     child: StudentAnnouncementsScreen(),
-          //   ),
-          // ),
           GoRoute(
             path: '/student-booking',
             builder: (context, state) => StudentBookingScreen(),
           ),
-          // GoRoute(
-          //   path: '/student-more',
-          //   pageBuilder: (context, state) => NoTransitionPage(
-          //     child: StudentMoreScreen(),
-          //   ),
-          // ),
-
           GoRoute(
             path: '/student-announcements',
             builder: (context, state) => StudentAnnouncementsScreen(),
@@ -173,6 +144,29 @@ class AppRouter {
           GoRoute(
             path: '/student-courses',
             builder: (context, state) => const StudentCoursesScreen(),
+          ),
+
+          GoRoute(
+            path: '/booking-history',
+            builder: (context, state) => BookingHistoryScreen(),
+          ),
+
+          // 預約相關頁面
+          GoRoute(
+            path: '/booking-info',
+            builder: (context, state) => BookingInfoScreen(),
+          ),
+          GoRoute(
+            path: '/payment-upload',
+            builder: (context, state) => PaymentUploadScreen(),
+          ),
+          GoRoute(
+            path: '/payment-method',
+            builder: (context, state) => PaymentMethodScreen(),
+          ),
+          GoRoute(
+            path: '/payment-complete',
+            builder: (context, state) => PaymentCompleteScreen(),
           ),
         ],
       ),

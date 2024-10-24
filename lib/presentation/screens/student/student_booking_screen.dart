@@ -1,9 +1,10 @@
 import 'dart:developer';
 
+import 'package:edutec_hub/data/models/booking/booking_event.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/data/models/student/time_slot.dart';
-import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
-import 'package:edutec_hub/presentation/ui/custom_widget/ccalendar.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,16 +105,36 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 20.h),
-          child: Column(
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, // 使用 spaceBetween 來分散對齊
             children: [
-              Center(
-                child: Text(
-                  'course_management'.tr(),
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 18.sp,
+              // 左側空白佔位，保持對稱
+              SizedBox(width: 24.sp), // 與右側按鈕寬度相同
+
+              // 中間標題
+              Expanded(
+                child: Center(
+                  child: Text(
+                    'course_management'.tr(),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 18.sp,
+                    ),
                   ),
                 ),
+              ),
+
+              // 右側歷史按鈕
+              IconButton(
+                icon: Icon(
+                  Icons.history,
+                  color: Colors.white70,
+                  size: 24.sp,
+                ),
+                onPressed: () {
+                  context.push('/booking-history');
+                },
               ),
             ],
           ),
@@ -199,7 +220,7 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
                       await Future.delayed(Duration(milliseconds: 100));
 
                       // 将当前的 bloc 作为 extra 参数传递
-                      context.go('/booking-info', extra: bloc);
+                      context.push('/booking-info', extra: bloc);
                     }
                   : null,
               child: Container(

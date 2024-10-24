@@ -1,5 +1,10 @@
-import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
+import 'dart:developer';
+
+import 'package:edutec_hub/data/models/booking/booking_event.dart';
+import 'package:edutec_hub/data/models/booking/booking_state.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,7 +109,7 @@ class PaymentCompleteScreen extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'payment_successful'.tr(),
+          'upload_successful'.tr(), // 改為上傳成功
           style: TextStyle(
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
@@ -114,7 +119,7 @@ class PaymentCompleteScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 32.w),
           child: Text(
-            'booking_confirmation_message'.tr(),
+            'payment_review_message'.tr(), // 改為審核中的提示訊息
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16.sp,
@@ -166,15 +171,9 @@ class PaymentCompleteScreen extends StatelessWidget {
           ),
           _buildDivider(),
           _buildSummaryItem(
-            'amount_paid'.tr(),
-            '\$100.00',
-            Icons.attach_money,
-          ),
-          _buildDivider(),
-          _buildSummaryItem(
-            'payment_method'.tr(),
-            'Credit Card',
-            Icons.credit_card,
+            'booking_status'.tr(),
+            'under_review'.tr(),
+            Icons.pending_actions,
           ),
         ],
       ),
@@ -243,8 +242,10 @@ class PaymentCompleteScreen extends StatelessWidget {
       height: 56.h,
       child: ElevatedButton(
         onPressed: () {
-          context.read<BookingBloc>().add(CompletePayment());
+          context.read<BookingBloc>().add(CompleteBooking());
           final authState = context.read<SignInCubit>().state;
+          log("back to booking: ${authState.toString()}");
+
           if (authState is SignInSuccess) {
             switch (authState.role) {
               case UserRole.student:

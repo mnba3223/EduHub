@@ -1,4 +1,4 @@
-import 'package:edutec_hub/presentation/ui/custom_widget/customRoundedButton.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/customRoundedButton.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';
 import 'package:edutec_hub/utils/uiUtils.dart';
 

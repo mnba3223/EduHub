@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:edutec_hub/presentation/ui/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
