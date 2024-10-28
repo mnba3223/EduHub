@@ -1,4 +1,7 @@
+import 'package:edutec_hub/data/repositories/homework_repository.dart';
 import 'package:edutec_hub/presentation/screens/student/student_booking_history_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_homework_detail_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
@@ -119,6 +122,9 @@ class AppRouter {
               BlocProvider<PaymentCubit>(
                 create: (context) => PaymentCubit(PaymentRepository()),
               ),
+              RepositoryProvider<HomeworkRepository>(
+                create: (context) => HomeworkRepositoryImpl(),
+              ),
             ],
             child: ScaffoldWithNavBarV2(child: child, role: 'student'),
           );
@@ -167,6 +173,22 @@ class AppRouter {
           GoRoute(
             path: '/payment-complete',
             builder: (context, state) => PaymentCompleteScreen(),
+          ),
+
+          //作業成績相關
+          GoRoute(
+            path: '/student-homework',
+            builder: (context, state) => StudentHomeworkListScreen(),
+            routes: [
+              GoRoute(
+                path: ':id',
+                name: 'student-homework-detail',
+                builder: (context, state) {
+                  final homeworkId = state.pathParameters['id'] ?? '';
+                  return StudentHomeworkDetailScreen(homeworkId: homeworkId);
+                },
+              ),
+            ],
           ),
         ],
       ),

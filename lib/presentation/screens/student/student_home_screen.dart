@@ -186,8 +186,21 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('homework'.tr(),
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('homework'.tr(),
+                  style:
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+              GestureDetector(
+                onTap: () => context.push('/student-homework'),
+                child: Text(
+                  'more'.tr(),
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 10.h),
           Container(
             padding: EdgeInsets.all(15.w),
