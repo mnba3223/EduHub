@@ -10,6 +10,10 @@ abstract class AnnouncementApi {
 
   @GET('/api/School')
   Future<List<Announcement>> getAnnouncements();
+  //get by id
+
+  @GET('/api/School/{id}')
+  Future<Announcement> getAnnouncementById(@Path('id') int id);
 
   @GET('/api/School')
   Future<List<Announcement>> searchAnnouncements(

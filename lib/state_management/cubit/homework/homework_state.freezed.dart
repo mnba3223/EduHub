@@ -23,6 +23,7 @@ mixin _$HomeworkState {
       throw _privateConstructorUsedError; // 添加當前查看的作業
   String? get error => throw _privateConstructorUsedError;
   DateTime? get selectedDate => throw _privateConstructorUsedError;
+  HomeworkStatus? get selectedStatus => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -43,7 +44,8 @@ abstract class $HomeworkStateCopyWith<$Res> {
       bool isLoading,
       Homework? currentHomework,
       String? error,
-      DateTime? selectedDate});
+      DateTime? selectedDate,
+      HomeworkStatus? selectedStatus});
 
   $HomeworkCopyWith<$Res>? get currentHomework;
 }
@@ -69,6 +71,7 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
     Object? currentHomework = freezed,
     Object? error = freezed,
     Object? selectedDate = freezed,
+    Object? selectedStatus = freezed,
   }) {
     return _then(_value.copyWith(
       homeworks: null == homeworks
@@ -95,6 +98,10 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      selectedStatus: freezed == selectedStatus
+          ? _value.selectedStatus
+          : selectedStatus // ignore: cast_nullable_to_non_nullable
+              as HomeworkStatus?,
     ) as $Val);
   }
 
@@ -127,7 +134,8 @@ abstract class _$$HomeworkStateImplCopyWith<$Res>
       bool isLoading,
       Homework? currentHomework,
       String? error,
-      DateTime? selectedDate});
+      DateTime? selectedDate,
+      HomeworkStatus? selectedStatus});
 
   @override
   $HomeworkCopyWith<$Res>? get currentHomework;
@@ -152,6 +160,7 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
     Object? currentHomework = freezed,
     Object? error = freezed,
     Object? selectedDate = freezed,
+    Object? selectedStatus = freezed,
   }) {
     return _then(_$HomeworkStateImpl(
       homeworks: null == homeworks
@@ -178,6 +187,10 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      selectedStatus: freezed == selectedStatus
+          ? _value.selectedStatus
+          : selectedStatus // ignore: cast_nullable_to_non_nullable
+              as HomeworkStatus?,
     ));
   }
 }
@@ -191,7 +204,8 @@ class _$HomeworkStateImpl implements _HomeworkState {
       this.isLoading = false,
       this.currentHomework,
       this.error,
-      this.selectedDate})
+      this.selectedDate,
+      this.selectedStatus})
       : _homeworks = homeworks,
         _filteredHomeworks = filteredHomeworks;
 
@@ -224,10 +238,12 @@ class _$HomeworkStateImpl implements _HomeworkState {
   final String? error;
   @override
   final DateTime? selectedDate;
+  @override
+  final HomeworkStatus? selectedStatus;
 
   @override
   String toString() {
-    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, isLoading: $isLoading, currentHomework: $currentHomework, error: $error, selectedDate: $selectedDate)';
+    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, isLoading: $isLoading, currentHomework: $currentHomework, error: $error, selectedDate: $selectedDate, selectedStatus: $selectedStatus)';
   }
 
   @override
@@ -245,7 +261,9 @@ class _$HomeworkStateImpl implements _HomeworkState {
                 other.currentHomework == currentHomework) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.selectedDate, selectedDate) ||
-                other.selectedDate == selectedDate));
+                other.selectedDate == selectedDate) &&
+            (identical(other.selectedStatus, selectedStatus) ||
+                other.selectedStatus == selectedStatus));
   }
 
   @override
@@ -256,7 +274,8 @@ class _$HomeworkStateImpl implements _HomeworkState {
       isLoading,
       currentHomework,
       error,
-      selectedDate);
+      selectedDate,
+      selectedStatus);
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -274,7 +293,8 @@ abstract class _HomeworkState implements HomeworkState {
       final bool isLoading,
       final Homework? currentHomework,
       final String? error,
-      final DateTime? selectedDate}) = _$HomeworkStateImpl;
+      final DateTime? selectedDate,
+      final HomeworkStatus? selectedStatus}) = _$HomeworkStateImpl;
 
   @override
   List<Homework> get homeworks;
@@ -288,6 +308,8 @@ abstract class _HomeworkState implements HomeworkState {
   String? get error;
   @override
   DateTime? get selectedDate;
+  @override
+  HomeworkStatus? get selectedStatus;
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.

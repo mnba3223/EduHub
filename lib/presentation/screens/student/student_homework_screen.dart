@@ -1,6 +1,6 @@
-// lib/presentation/screens/student/student_homework_list_screen.dart
 import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
 import 'package:flutter/material.dart';
@@ -18,75 +18,10 @@ class StudentHomeworkListScreen extends StatefulWidget {
       _StudentHomeworkListScreenState();
 }
 
-class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen> {
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
-  // 模擬數據
-  final List<Homework> mockHomeworks = [
-    Homework(
-      id: '1',
-      title: '數學作業 - 微積分練習',
-      description: '請完成課本第三章習題 1-10',
-      dueDate: DateTime.now().add(const Duration(days: 3)),
-      createdAt: DateTime.now(),
-      courseId: 'MATH101',
-      courseName: '微積分',
-      status: HomeworkStatus.pending,
-    ),
-    Homework(
-      id: '2',
-      title: '英文作業 - Essay',
-      description: 'Write a 500-word essay about your summer vacation',
-      dueDate: DateTime.now().add(const Duration(days: 5)),
-      createdAt: DateTime.now(),
-      courseId: 'ENG101',
-      courseName: '英文寫作',
-      status: HomeworkStatus.pending,
-    ),
-    Homework(
-      id: '3',
-      title: '物理作業 - 運動學',
-      description: '完成實驗報告',
-      dueDate: DateTime.now().subtract(const Duration(days: 2)),
-      createdAt: DateTime.now().subtract(const Duration(days: 7)),
-      courseId: 'PHY101',
-      courseName: '普通物理',
-      status: HomeworkStatus.submitted,
-      submitContent: '已完成實驗報告書',
-      submitDate: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    Homework(
-      id: '4',
-      title: '化學作業 - 元素週期表',
-      description: '完成元素特性分析',
-      dueDate: DateTime.now().subtract(const Duration(days: 5)),
-      createdAt: DateTime.now().subtract(const Duration(days: 10)),
-      courseId: 'CHE101',
-      courseName: '普通化學',
-      status: HomeworkStatus.graded,
-      submitContent: '元素特性分析報告',
-      submitDate: DateTime.now().subtract(const Duration(days: 5)),
-      score: 95,
-      teacherComment: '報告內容詳實，分析透徹',
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _selectedDay = _focusedDay;
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  HomeworkStatus? _selectedStatus = HomeworkStatus.pending; // 默認選中待完成
 
   @override
   Widget build(BuildContext context) {
@@ -97,27 +32,45 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
       child: BlocBuilder<HomeworkCubit, HomeworkState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('homework'.tr()),
-              bottom: TabBar(
-                controller: _tabController,
-                tabs: [
-                  Tab(text: 'pending_homework'.tr()),
-                  Tab(text: 'completed_homework'.tr()),
-                ],
-              ),
-            ),
+            appBar: null,
             body: Column(
               children: [
-                _buildCalendar(),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildPendingHomeworkList(),
-                      _buildCompletedHomeworkList(),
-                    ],
+                _buildTopBar(context),
+                _buildCalendar(context, state),
+                _buildStatusFilter(context),
+                if (state.selectedDate != null) ...[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      children: [
+                        Icon(Icons.calendar_today, size: 16.sp),
+                        SizedBox(width: 8.w),
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(state.selectedDate!),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        if (_selectedStatus != null) ...[
+                          SizedBox(width: 16.w),
+                          Text(
+                            '• ${_getStatusText(_selectedStatus!)}',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 8.h),
+                ],
+                Expanded(
+                  child: state.error != null
+                      ? Center(child: Text(state.error!))
+                      : _buildHomeworkList(context, state),
                 ),
               ],
             ),
@@ -127,19 +80,159 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
     );
   }
 
-  Widget _buildCalendar() {
+  Widget _buildTopBar(BuildContext context) {
+    return FixedHeightSmoothTopBarV2(
+      height: 130.h,
+      child: SafeArea(
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+                onPressed: () => Navigator.pop(context),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    'homework'.tr(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 40.w), // 為了平衡左邊的返回按鈕
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _getStatusText(HomeworkStatus status) {
+    switch (status) {
+      case HomeworkStatus.pending:
+        return 'pending'.tr();
+      case HomeworkStatus.submitted:
+        return 'submitted'.tr();
+      case HomeworkStatus.graded:
+        return 'graded'.tr();
+      case HomeworkStatus.overdue:
+        return 'overdue'.tr();
+    }
+  }
+
+  Widget _buildStatusFilter(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+      child: Row(
+        children: [
+          _buildFilterChip(
+            label: 'all'.tr(),
+            selected: _selectedStatus == null,
+            onSelected: (selected) {
+              setState(() => _selectedStatus = null);
+            },
+          ),
+          SizedBox(width: 8.w),
+          _buildFilterChip(
+            label: 'pending'.tr(),
+            selected: _selectedStatus == HomeworkStatus.pending,
+            onSelected: (selected) {
+              setState(() =>
+                  _selectedStatus = selected ? HomeworkStatus.pending : null);
+            },
+          ),
+          SizedBox(width: 8.w),
+          _buildFilterChip(
+            label: 'submitted'.tr(),
+            selected: _selectedStatus == HomeworkStatus.submitted,
+            onSelected: (selected) {
+              setState(() =>
+                  _selectedStatus = selected ? HomeworkStatus.submitted : null);
+            },
+          ),
+          SizedBox(width: 8.w),
+          _buildFilterChip(
+            label: 'graded'.tr(),
+            selected: _selectedStatus == HomeworkStatus.graded,
+            onSelected: (selected) {
+              setState(() =>
+                  _selectedStatus = selected ? HomeworkStatus.graded : null);
+            },
+          ),
+          SizedBox(width: 8.w),
+          _buildFilterChip(
+            label: 'overdue'.tr(),
+            selected: _selectedStatus == HomeworkStatus.overdue,
+            onSelected: (selected) {
+              setState(() =>
+                  _selectedStatus = selected ? HomeworkStatus.overdue : null);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip({
+    required String label,
+    required bool selected,
+    required Function(bool) onSelected,
+  }) {
+    return FilterChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: onSelected,
+      backgroundColor: Colors.grey.withOpacity(0.1),
+      selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+      labelStyle: TextStyle(
+        color: selected ? Theme.of(context).primaryColor : Colors.black87,
+      ),
+    );
+  }
+
+  Widget _buildHomeworkList(BuildContext context, HomeworkState state) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final homeworkCubit = context.read<HomeworkCubit>();
+    var homeworks = homeworkCubit.getFilteredHomeworks(_selectedStatus);
+
+    if (homeworks.isEmpty) {
+      if (state.selectedDate != null) {
+        return Center(child: Text('no_homework_for_selected_date'.tr()));
+      }
+      return Center(child: Text('no_homework'.tr()));
+    }
+
+    return ListView.builder(
+      padding: EdgeInsets.all(16.w),
+      itemCount: homeworks.length,
+      itemBuilder: (context, index) => _buildHomeworkCard(homeworks[index]),
+    );
+  }
+
+  Widget _buildCalendar(BuildContext context, HomeworkState state) {
+    final homeworkCubit = context.read<HomeworkCubit>();
     return TableCalendar(
       firstDay: DateTime.utc(2024, 1, 1),
       lastDay: DateTime.utc(2024, 12, 31),
       focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      selectedDayPredicate: (day) => isSameDay(state.selectedDate, day),
       calendarFormat: _calendarFormat,
-      eventLoader: _getEventsForDay,
+      eventLoader: (day) => homeworkCubit.getEventsForDay(day),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
-          _selectedDay = selectedDay;
           _focusedDay = focusedDay;
         });
+        // 任何日期都可以選擇
+        homeworkCubit.filterHomeworksByDate(selectedDay);
       },
       onFormatChanged: (format) {
         setState(() {
@@ -149,17 +242,18 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
     );
   }
 
-  List<Homework> _getEventsForDay(DateTime day) {
-    return mockHomeworks
-        .where((homework) => isSameDay(homework.dueDate, day))
-        .toList();
-  }
+  Widget _buildPendingHomeworkList(BuildContext context, HomeworkState state) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-  Widget _buildPendingHomeworkList() {
     final pendingHomeworks =
-        mockHomeworks.where((h) => h.status == HomeworkStatus.pending).toList();
+        context.read<HomeworkCubit>().getPendingHomeworks();
 
     if (pendingHomeworks.isEmpty) {
+      if (state.selectedDate != null) {
+        return Center(child: Text('no_homework_for_selected_date'.tr()));
+      }
       return Center(child: Text('no_pending_homework'.tr()));
     }
 
@@ -171,11 +265,19 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
     );
   }
 
-  Widget _buildCompletedHomeworkList() {
+  Widget _buildCompletedHomeworkList(
+      BuildContext context, HomeworkState state) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     final completedHomeworks =
-        mockHomeworks.where((h) => h.status != HomeworkStatus.pending).toList();
+        context.read<HomeworkCubit>().getCompletedHomeworks();
 
     if (completedHomeworks.isEmpty) {
+      if (state.selectedDate != null) {
+        return Center(child: Text('no_homework_for_selected_date'.tr()));
+      }
       return Center(child: Text('no_completed_homework'.tr()));
     }
 
@@ -276,7 +378,7 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen>
     context.pushNamed(
       'student-homework-detail',
       pathParameters: {'id': homework.id},
-      extra: homework, // 直接傳遞 homework 對象
+      extra: homework,
     );
   }
 }

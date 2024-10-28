@@ -23,6 +23,20 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
       emit(AnnouncementsError('Failed to load announcements'));
     }
   }
+  // load announcements by id
+
+  Future<void> getAnnouncementById(int id) async {
+    emit(AnnouncementsLoading());
+
+    try {
+      final announcement = await _repository.getAnnouncementById(id);
+      emit(AnnouncementsLoaded([announcement]));
+    } on ApiException catch (e) {
+      emit(AnnouncementsError(e.message));
+    } catch (e) {
+      emit(AnnouncementsError('Failed to load announcements'));
+    }
+  }
 
   Future<void> refreshAnnouncements() => loadAnnouncements();
 

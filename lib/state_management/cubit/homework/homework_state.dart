@@ -12,5 +12,6 @@ class HomeworkState with _$HomeworkState {
     Homework? currentHomework, // 添加當前查看的作業
     String? error,
     DateTime? selectedDate,
+    HomeworkStatus? selectedStatus,
   }) = _HomeworkState;
 }

@@ -19,6 +19,16 @@ class AnnouncementRepository {
     }
   }
 
+  //get by id
+  Future<Announcement> getAnnouncementById(int id) async {
+    try {
+      final response = await _api.getAnnouncementById(id);
+      return response;
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
   Future<List<Announcement>> searchAnnouncements(String keyword) async {
     try {
       final response = await _api.searchAnnouncements(keyword);

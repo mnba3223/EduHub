@@ -36,7 +36,6 @@ enum HomeworkStatus {
 
 // lib/data/models/homework_list_response.dart
 @freezed
-@freezed
 class HomeworkListResponse with _$HomeworkListResponse {
   const factory HomeworkListResponse({
     required List<Homework> data, // 改為單一的 data 列表

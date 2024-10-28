@@ -9,7 +9,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 abstract class HomeworkRepository {
   Future<List<Homework>> getHomeworks();
-  Future<List<Homework>> getHomeworksByDate(DateTime date);
+  Future<List<Homework>> getHomeworksByDate(DateTime? date);
+  Future<List<Homework>> getPendingHomeworksByDate(DateTime? date);
+  Future<List<Homework>> getCompletedHomeworksByDate(DateTime? date);
   Future<Homework> getHomeworkDetail(String id);
   Future<void> submitHomework({
     required String homeworkId,
@@ -74,13 +76,11 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   // 添加一個判斷是否使用模擬數據的標記
   final bool useMock = true; // 你可以根據需要切換
   @override
-  @override
   Future<List<Homework>> getHomeworks() async {
     if (useMock) {
-      await Future.delayed(const Duration(seconds: 1)); // 模擬網路延遲
+      await Future.delayed(const Duration(seconds: 1));
       return mockHomeworks;
     }
-
     try {
       final response = await api.getHomeworks(1, 50);
       return response.data;
@@ -90,21 +90,34 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   }
 
   @override
-  Future<List<Homework>> getHomeworksByDate(DateTime date) async {
+  Future<List<Homework>> getHomeworksByDate(DateTime? date) async {
     if (useMock) {
       await Future.delayed(const Duration(seconds: 1));
+      if (date == null) return mockHomeworks;
       return mockHomeworks
           .where((homework) => isSameDay(homework.dueDate, date))
           .toList();
     }
-
     try {
+      if (date == null) return getHomeworks();
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final response = await api.getHomeworksByDate(formattedDate);
       return response.data;
     } on DioException catch (e) {
       throw e.toApiException();
     }
+  }
+
+  @override
+  Future<List<Homework>> getPendingHomeworksByDate(DateTime? date) async {
+    final homeworks = await getHomeworksByDate(date);
+    return homeworks.where((h) => h.status == HomeworkStatus.pending).toList();
+  }
+
+  @override
+  Future<List<Homework>> getCompletedHomeworksByDate(DateTime? date) async {
+    final homeworks = await getHomeworksByDate(date);
+    return homeworks.where((h) => h.status != HomeworkStatus.pending).toList();
   }
 
   @override

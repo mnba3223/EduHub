@@ -133,7 +133,7 @@ class StudentAnnouncementsView extends StatelessWidget {
             if (announcement.uploadFile != null) ...[
               SizedBox(height: 10.h),
               Image.network(
-                '${ApiConfig.baseUrl}/${announcement.uploadFile}',
+                '${announcement.uploadFile}',
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(Icons.error);
                 },

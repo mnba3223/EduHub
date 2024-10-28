@@ -119,3 +119,27 @@ booking_history,Booking History,預約記錄,预约记录,予約履歴
 pending_review,Pending Review,待審核,待审核,審査待ち
 approved,Approved,已通過,已通过,承認済み
 rejected,Rejected,已拒絕,已拒绝,却下
+
+
+# Homework Related
+homework_detail,Homework Detail,作業詳情,作业详情,宿題の詳細
+all,All,全部,全部,すべて
+pending,Pending,待完成,待完成,未完了
+submitted,Submitted,已提交,已提交,提出済み
+graded,Graded,已評分,已评分,採点済み
+overdue,Overdue,已逾期,已逾期,期限切れ
+no_homework,No Homework,沒有作業,没有作业,宿題なし
+no_homework_for_selected_date,No homework for selected date,所選日期沒有作業,所选日期没有作业,選択日の宿題なし
+error_loading_homework,Error loading homework,載入作業時發生錯誤,加载作业时发生错误,宿題の読み込みエラー
+retry,Retry,重試,重试,再試行
+due_date,Due Date: {0},截止日期：{0},截止日期：{0},提出期限：{0}
+description,Description,作業說明,作业说明,説明
+submit_homework,Submit Homework,提交作業,提交作业,宿題を提出
+submitted_content,Submitted Content,已提交內容,已提交内容,提出内容
+attachments,Attachments,附件,附件,添付ファイル
+score,Score: {0},分數：{0},分数：{0},得点：{0}
+teacher_comment,Teacher's Comment,教師評語,教师评语,教師のコメント
+
+# Homework Status
+no_pending_homework,No pending homework,沒有待完成的作業,没有待完成的作业,未完了の宿題なし
+no_completed_homework,No completed homework,沒有已完成的作業,没有已完成的作业,完了した宿題なし
