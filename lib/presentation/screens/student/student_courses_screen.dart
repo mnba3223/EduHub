@@ -1,4 +1,4 @@
-import 'package:edutec_hub/presentation/ui_widget/custom_widget/card.dart';
+import 'package:edutec_hub/presentation/ui_widget/card/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';

@@ -11,6 +11,7 @@ import 'package:edutec_hub/data/network/core/exceptions.dart';
 import 'package:edutec_hub/data/network/core/token_manager.dart';
 import 'package:edutec_hub/utils/api_service.dart';
 import 'package:edutec_hub/utils/hiveBoxKeys.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -106,11 +107,16 @@ class AuthRepository {
   }) async {
     try {
       log('Starting login attempt for user: $userId');
+      // 獲取 FCM Token
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      log('FCM Token: $fcmToken');
+
       final dio = DioClient().dio;
       final api = StudentApi(dio);
       final response = await api.login(LoginRequest(
         name: userId,
         password: password,
+        fcmToken: fcmToken,
       ));
       await Future.wait([
         TokenManager.saveToken(response.token),

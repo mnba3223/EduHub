@@ -30,8 +30,10 @@ abstract class StudentApi {
   );
 
   @POST('/api/student/homeworks/{id}/submit')
+  @MultiPart()
   Future<void> submitHomework(
     @Path('id') String id,
-    @Body() Map<String, dynamic> request,
+    @Part(name: 'content') String content,
+    @Part(name: 'files') List<MultipartFile> files,
   );
 }

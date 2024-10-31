@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
+import 'package:edutec_hub/data/network/core/exceptions.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -95,21 +98,30 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   Future<void> submitHomework({
     required String homeworkId,
     required String content,
-    required List<String> attachmentUrls,
+    required List<PlatformFile> files,
   }) async {
     try {
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(
+        isLoading: true,
+        error: null, // 清除之前的錯誤
+      ));
+
       await homeworkRepository.submitHomework(
-        attachmentUrls: attachmentUrls,
         homeworkId: homeworkId,
         content: content,
+        files: files,
       );
+
+      // 重新載入作業列表以更新狀態
       await loadHomeworks();
+
+      emit(state.copyWith(isLoading: false));
     } catch (e) {
       emit(state.copyWith(
-        error: e.toString(),
         isLoading: false,
+        error: e is ApiException ? e.message : 'error_submitting_homework'.tr(),
       ));
+      rethrow; // 讓 UI 層也能處理錯誤
     }
   }
 

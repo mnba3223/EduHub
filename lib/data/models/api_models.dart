@@ -73,8 +73,13 @@ class LoginResponseData {
 class LoginRequest {
   final String name;
   final String password;
+  final String? fcmToken;
 
-  LoginRequest({required this.name, required this.password});
+  LoginRequest({
+    required this.name,
+    required this.password,
+    this.fcmToken,
+  });
 
   Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
 }

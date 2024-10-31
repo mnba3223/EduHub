@@ -5,6 +5,7 @@ import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/network/apis/student_api.dart';
 import 'package:edutec_hub/data/network/core/dio_client.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 abstract class HomeworkRepository {
@@ -16,7 +17,7 @@ abstract class HomeworkRepository {
   Future<void> submitHomework({
     required String homeworkId,
     required String content,
-    required List<String> attachmentUrls,
+    required List<PlatformFile> files,
   });
 }
 
@@ -142,18 +143,51 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   Future<void> submitHomework({
     required String homeworkId,
     required String content,
-    required List<String> attachmentUrls,
+    required List<PlatformFile> files,
   }) async {
     try {
+      if (useMock) {
+        // 模擬上傳延遲
+        await Future.delayed(const Duration(seconds: 2));
+
+        // 更新本地 mock 數據
+        final index = mockHomeworks.indexWhere((h) => h.id == homeworkId);
+        if (index == -1) {
+          throw ApiException('Homework not found');
+        }
+
+        mockHomeworks[index] = mockHomeworks[index].copyWith(
+          status: HomeworkStatus.submitted,
+          submitContent: content,
+          submitDate: DateTime.now(),
+          attachmentUrls: files.map((f) => f.name).toList(),
+        );
+
+        return; // 成功情況直接返回
+      }
+
+      // 實際 API 調用的部分
+      final multipartFiles = await Future.wait(
+        files.map((file) async {
+          if (file.bytes == null) {
+            throw ApiException('File data is null');
+          }
+          return MultipartFile.fromBytes(
+            file.bytes!,
+            filename: file.name,
+          );
+        }),
+      );
+
       await api.submitHomework(
         homeworkId,
-        {
-          'content': content,
-          'attachmentUrls': attachmentUrls,
-        },
+        content,
+        multipartFiles,
       );
     } on DioException catch (e) {
       throw e.toApiException();
+    } catch (e) {
+      throw ApiException(e.toString());
     }
   }
 }

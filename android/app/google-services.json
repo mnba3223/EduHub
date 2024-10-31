@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "581836068725",
+    "project_id": "progami-eschool",
+    "storage_bucket": "progami-eschool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581836068725:android:465af5676e72faf6ce653c",
+        "android_client_info": {
+          "package_name": "com.progami.eschool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvXCFtnAhtOlSs6F8YbdSjypWn6v-WSIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

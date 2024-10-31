@@ -1,8 +1,9 @@
+import 'package:edutec_hub/state_management/blocs/app/app_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'state_management/blocs/app_bloc.dart';
+import 'state_management/blocs/app/app_bloc.dart';
 import 'config/app_router.dart';
 
 class MyApp extends StatelessWidget {

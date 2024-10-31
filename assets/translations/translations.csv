@@ -139,7 +139,18 @@ submitted_content,Submitted Content,已提交內容,已提交内容,提出内容
 attachments,Attachments,附件,附件,添付ファイル
 score,Score: {0},分數：{0},分数：{0},得点：{0}
 teacher_comment,Teacher's Comment,教師評語,教师评语,教師のコメント
-
+homework_content,Homework Content,作業內容,作业内容,宿題内容
+enter_homework_content,Enter your homework content...,請輸入作業內容...,请输入作业内容...,宿題の内容を入力してください...
+add_attachment,Add Attachment,添加附件,添加附件,添付ファイルを追加
+no_attachments,No attachments,沒有附件,没有附件,添付ファイルなし
+submit,Submit,提交,提交,提出
+error_picking_files,Error picking files,選擇檔案時發生錯誤,选择文件时发生错误,ファイル選択エラー
+error_submitting_homework,Error submitting homework,提交作業時發生錯誤,提交作业时发生错误,宿題提出エラー
+please_enter_content,Please enter content,請輸入內容,请输入内容,内容を入力してください
+key,en_US,zh_TW,zh_CN,ja_JP
+uploading_files,Uploading files...,正在上傳檔案...,正在上传文件...,ファイルをアップロード中...
+homework_submitted_success,Homework submitted successfully,作業提交成功,作业提交成功,宿題を提出しました
+cancel_upload,Cancel Upload,取消上傳,取消上传,アップロードをキャンセル
 # Homework Status
 no_pending_homework,No pending homework,沒有待完成的作業,没有待完成的作业,未完了の宿題なし
 no_completed_homework,No completed homework,沒有已完成的作業,没有已完成的作业,完了した宿題なし

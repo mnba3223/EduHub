@@ -51,5 +51,14 @@
 	<string>We need access to your camera to take photos of payment proof.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone for video recording if needed.</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>播放通知音效需要此權限</string>
+	<key>UIBackgroundModes</key>
+	<array>
+	<string>fetch</string>
+	<string>remote-notification</string>
+</array>
 </dict>
 </plist>

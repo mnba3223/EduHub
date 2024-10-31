@@ -1,4 +1,4 @@
-package com.example.edutec_hub
+package com.progami.eschool
 
 import io.flutter.embedding.android.FlutterActivity
 

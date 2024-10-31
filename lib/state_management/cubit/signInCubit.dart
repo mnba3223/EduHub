@@ -1,12 +1,12 @@
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
+import 'package:edutec_hub/data/models/user_role.dart';
 // import 'package:edutec_hub/data/models/teacher/teacher.dart'; // 假设您有一个 Teacher 模型
 import 'package:edutec_hub/data/repositories/authRepository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // enum LoginType { normal, student, parent, teacher }
-enum UserRole { student, teacher, parent, unknown }
 
 abstract class SignInState extends Equatable {}
 

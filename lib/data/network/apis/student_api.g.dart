@@ -163,17 +163,23 @@ class _StudentApi implements StudentApi {
   @override
   Future<void> submitHomework(
     String id,
-    Map<String, dynamic> request,
+    String content,
+    List<MultipartFile> files,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request);
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'content',
+      content,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry('files', i)));
     final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,

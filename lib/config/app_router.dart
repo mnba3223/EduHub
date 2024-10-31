@@ -1,9 +1,13 @@
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
-import 'package:edutec_hub/presentation/screens/student/student_booking_history_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_homework_detail_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_homework_screen.dart';
+import 'package:edutec_hub/presentation/screens/message_board/message_board_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/booking/student_booking_history_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
+
 import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/authRepository.dart';
@@ -11,8 +15,8 @@ import 'package:edutec_hub/data/repositories/payment_repository.dart';
 import 'package:edutec_hub/presentation/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/auth/studentLoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_announcement_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_booking_Info_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_booking_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/booking/student_booking_Info_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/booking/student_booking_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_courses_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_home_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_more_screen.dart';
@@ -119,11 +123,19 @@ class AppRouter {
               BlocProvider<BookingBloc>(
                 create: (context) => BookingBloc(),
               ),
-              BlocProvider<PaymentCubit>(
-                create: (context) => PaymentCubit(PaymentRepository()),
-              ),
+              // BlocProvider<PaymentCubit>(
+              //   create: (context) => PaymentCubit(PaymentRepository()),
+              // ),
               RepositoryProvider<HomeworkRepository>(
                 create: (context) => HomeworkRepositoryImpl(),
+              ),
+              BlocProvider<HomeworkCubit>(
+                create: (context) => HomeworkCubit(
+                  homeworkRepository: context.read<HomeworkRepository>(),
+                ),
+              ),
+              BlocProvider<MessageBoardCubit>(
+                create: (context) => MessageBoardCubit(),
               ),
             ],
             child: ScaffoldWithNavBarV2(child: child, role: 'student'),
@@ -189,6 +201,10 @@ class AppRouter {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: '/message-board',
+            builder: (context, state) => const MessageBoardScreen(),
           ),
         ],
       ),

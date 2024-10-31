@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
+import 'package:edutec_hub/presentation/screens/student/homework/student_homwork_submit_screen.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +25,7 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
         homeworkRepository: context.read<HomeworkRepository>(),
       )..loadHomeworkDetail(homeworkId),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('homework_detail'.tr()),
-        ),
+        appBar: null,
         body: Column(
           children: [
             _buildTopBar(context),
@@ -126,15 +126,34 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
   }
 
   Widget _buildTopBar(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+    return FixedHeightSmoothTopBarV2(
+      height: 130.h,
+      child: SafeArea(
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+                onPressed: () => Navigator.pop(context),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    'homework_detail'.tr(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 40.w), // 為了平衡左邊的返回按鈕
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 
@@ -142,8 +161,32 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          // TODO: 實現提交作業
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeworkSubmitScreen(
+                homeworkId: homework.id,
+                onSubmit: (content, attachments) async {
+                  try {
+                    await context.read<HomeworkCubit>().submitHomework(
+                          homeworkId: homework.id,
+                          content: content,
+                          files: attachments,
+                        );
+                  } catch (e) {
+                    print('Submit Error in Detail: $e'); // 添加日誌
+                    rethrow; // 確保錯誤能傳遞到 HomeworkSubmitScreen
+                  }
+                },
+              ),
+            ),
+          );
+
+          if (result == true) {
+            // 重新加載作業詳情
+            context.read<HomeworkCubit>().loadHomeworkDetail(homework.id);
+          }
         },
         child: Text('submit_homework'.tr()),
       ),
