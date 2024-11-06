@@ -1,10 +1,12 @@
-// lib/data/repositories/homework_repository.dart
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/network/apis/student_api.dart';
 import 'package:edutec_hub/data/network/core/dio_client.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
+import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -13,100 +15,201 @@ abstract class HomeworkRepository {
   Future<List<Homework>> getHomeworksByDate(DateTime? date);
   Future<List<Homework>> getPendingHomeworksByDate(DateTime? date);
   Future<List<Homework>> getCompletedHomeworksByDate(DateTime? date);
-  Future<Homework> getHomeworkDetail(String id);
+  Future<Homework> getHomeworkDetail(int id);
   Future<void> submitHomework({
-    required String homeworkId,
+    required int submissionId,
     required String content,
     required List<PlatformFile> files,
   });
 }
 
 class HomeworkRepositoryImpl implements HomeworkRepository {
+  final SignInCubit signInCubit;
   final dio = DioClient().dio;
   final api = StudentApi(DioClient().dio);
+  final bool useMock;
+  // 緩存作業列表
+  List<Homework>? _cachedHomeworks;
+  HomeworkRepositoryImpl({
+    required this.signInCubit,
+    this.useMock = false,
+  });
 
-  // 添加模擬數據
+  int get _studentId {
+    final state = signInCubit.state;
+    if (state is SignInSuccess) {
+      return state.userId;
+    }
+    throw ApiException('User not logged in');
+  }
+
+  // 模擬數據
   final List<Homework> mockHomeworks = [
     Homework(
-      id: '1',
-      title: '數學作業 - 微積分練習',
+      id: 1,
       description: '請完成課本第三章習題 1-10',
       dueDate: DateTime.now().add(const Duration(days: 3)),
-      createdAt: DateTime.now(),
-      courseId: 'MATH101',
+      startTime: DateTime.now(),
       courseName: '微積分',
+      courseDescription: 'MATH101 微積分課程',
       status: HomeworkStatus.pending,
+      studentId: 4,
+      submissionId: 1,
     ),
     Homework(
-      id: '2',
-      title: '英文作業 - Essay',
+      id: 2,
       description: 'Write a 500-word essay about your summer vacation',
       dueDate: DateTime.now().add(const Duration(days: 5)),
-      createdAt: DateTime.now(),
-      courseId: 'ENG101',
+      startTime: DateTime.now(),
       courseName: '英文寫作',
+      courseDescription: 'ENG101 英文寫作課程',
       status: HomeworkStatus.pending,
+      studentId: 4,
+      submissionId: 2,
     ),
     Homework(
-      id: '3',
-      title: '物理作業 - 運動學',
+      id: 3,
       description: '完成實驗報告',
       dueDate: DateTime.now().subtract(const Duration(days: 2)),
-      createdAt: DateTime.now().subtract(const Duration(days: 7)),
-      courseId: 'PHY101',
+      startTime: DateTime.now().subtract(const Duration(days: 7)),
       courseName: '普通物理',
+      courseDescription: 'PHY101 普通物理課程',
       status: HomeworkStatus.submitted,
-      submitContent: '已完成實驗報告書',
       submitDate: DateTime.now().subtract(const Duration(days: 2)),
+      attachmentUrl: 'http://example.com/report.pdf',
+      studentId: 4,
+      submissionId: 3,
     ),
     Homework(
-      id: '4',
-      title: '化學作業 - 元素週期表',
+      id: 4,
       description: '完成元素特性分析',
       dueDate: DateTime.now().subtract(const Duration(days: 5)),
-      createdAt: DateTime.now().subtract(const Duration(days: 10)),
-      courseId: 'CHE101',
+      startTime: DateTime.now().subtract(const Duration(days: 10)),
       courseName: '普通化學',
+      courseDescription: 'CHE101 普通化學課程',
       status: HomeworkStatus.graded,
-      submitContent: '元素特性分析報告',
       submitDate: DateTime.now().subtract(const Duration(days: 5)),
       score: 95,
       teacherComment: '報告內容詳實，分析透徹',
+      attachmentUrl: 'http://example.com/analysis.pdf',
+      studentId: 4,
+      submissionId: 4,
     ),
   ];
-  // 添加一個判斷是否使用模擬數據的標記
-  final bool useMock = true; // 你可以根據需要切換
+
   @override
   Future<List<Homework>> getHomeworks() async {
     if (useMock) {
       await Future.delayed(const Duration(seconds: 1));
-      return mockHomeworks;
+      _cachedHomeworks =
+          mockHomeworks.where((h) => h.studentId == _studentId).toList();
+      return _cachedHomeworks!;
     }
+
     try {
-      final response = await api.getHomeworks(1, 50);
-      return response.data;
+      final homeworks = await api.getHomeworks(_studentId.toString());
+      _cachedHomeworks = homeworks;
+      return homeworks;
     } on DioException catch (e) {
       throw e.toApiException();
     }
   }
 
   @override
+  @override
   Future<List<Homework>> getHomeworksByDate(DateTime? date) async {
-    if (useMock) {
-      await Future.delayed(const Duration(seconds: 1));
-      if (date == null) return mockHomeworks;
-      return mockHomeworks
-          .where((homework) => isSameDay(homework.dueDate, date))
-          .toList();
-    }
+    final homeworks = _cachedHomeworks ?? await getHomeworks();
+
+    if (date == null) return homeworks;
+
+    return homeworks
+        .where((homework) => isSameDay(homework.dueDate, date))
+        .toList();
+  }
+
+  // @override
+  // Future<Homework> getHomeworkDetail(int id) async {
+  //   if (useMock) {
+  //     await Future.delayed(const Duration(seconds: 1));
+  //     return mockHomeworks.firstWhere(
+  //       (homework) => homework.id == id && homework.studentId == _studentId,
+  //       orElse: () => throw ApiException('Homework not found'),
+  //     );
+  //   }
+
+  //   try {
+  //     final homeworks = await api.getHomeworkDetail(id.toString());
+  //     if (homeworks.isEmpty) {
+  //       throw ApiException('Homework not found');
+  //     }
+  //     return homeworks.first;
+  //   } on DioException catch (e) {
+  //     throw e.toApiException();
+  //   }
+  // }
+  @override
+  Future<Homework> getHomeworkDetail(int id) async {
+    final homeworks = _cachedHomeworks ?? await getHomeworks();
+
+    final homework = homeworks.firstWhere(
+      (h) => h.id == id && h.studentId == _studentId,
+      orElse: () => throw ApiException('Homework not found'),
+    );
+
+    return homework;
+  }
+
+  @override
+  Future<void> submitHomework({
+    required int submissionId,
+    required String content,
+    required List<PlatformFile> files,
+  }) async {
     try {
-      if (date == null) return getHomeworks();
-      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
-      final response = await api.getHomeworksByDate(formattedDate);
-      return response.data;
+      // Get current student ID from SignInCubit
+      final studentId = _getStudentId();
+      log('Submitting homework with files: ${files.toString()}');
+
+      // 修改文件處理邏輯：使用 file.path 而不是 file.bytes
+      final multipartFiles = await Future.wait(
+        files.map((file) async {
+          if (file.path == null) {
+            throw ApiException('File path is null');
+          }
+
+          log('Processing file: ${file.name} from path: ${file.path}');
+
+          // 使用 fromFile 而不是 fromBytes
+          return await MultipartFile.fromFile(
+            file.path!,
+            filename: file.name,
+          );
+        }),
+      );
+      log('Created MultipartFiles, proceeding with submission');
+
+      // Submit homework with required fields matching backend API
+      await api.submitHomework(
+        submissionId,
+        _studentId,
+        content, // Using content as comment
+        HomeworkStatus.submitted.value, // 使用 enum 的值
+        multipartFiles,
+      );
+      log('Homework submission completed successfully');
     } on DioException catch (e) {
       throw e.toApiException();
+    } catch (e) {
+      throw ApiException(e.toString());
     }
+  }
+
+  int _getStudentId() {
+    final state = signInCubit.state;
+    if (state is SignInSuccess) {
+      return state.userId;
+    }
+    throw ApiException('User not logged in');
   }
 
   @override
@@ -119,75 +222,5 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   Future<List<Homework>> getCompletedHomeworksByDate(DateTime? date) async {
     final homeworks = await getHomeworksByDate(date);
     return homeworks.where((h) => h.status != HomeworkStatus.pending).toList();
-  }
-
-  @override
-  Future<Homework> getHomeworkDetail(String id) async {
-    if (useMock) {
-      await Future.delayed(const Duration(seconds: 1));
-      return mockHomeworks.firstWhere(
-        (homework) => homework.id == id,
-        orElse: () => throw ApiException('Homework not found'),
-      );
-    }
-
-    try {
-      final response = await api.getHomeworkDetail(id);
-      return response.data;
-    } on DioException catch (e) {
-      throw e.toApiException();
-    }
-  }
-
-  @override
-  Future<void> submitHomework({
-    required String homeworkId,
-    required String content,
-    required List<PlatformFile> files,
-  }) async {
-    try {
-      if (useMock) {
-        // 模擬上傳延遲
-        await Future.delayed(const Duration(seconds: 2));
-
-        // 更新本地 mock 數據
-        final index = mockHomeworks.indexWhere((h) => h.id == homeworkId);
-        if (index == -1) {
-          throw ApiException('Homework not found');
-        }
-
-        mockHomeworks[index] = mockHomeworks[index].copyWith(
-          status: HomeworkStatus.submitted,
-          submitContent: content,
-          submitDate: DateTime.now(),
-          attachmentUrls: files.map((f) => f.name).toList(),
-        );
-
-        return; // 成功情況直接返回
-      }
-
-      // 實際 API 調用的部分
-      final multipartFiles = await Future.wait(
-        files.map((file) async {
-          if (file.bytes == null) {
-            throw ApiException('File data is null');
-          }
-          return MultipartFile.fromBytes(
-            file.bytes!,
-            filename: file.name,
-          );
-        }),
-      );
-
-      await api.submitHomework(
-        homeworkId,
-        content,
-        multipartFiles,
-      );
-    } on DioException catch (e) {
-      throw e.toApiException();
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
   }
 }

@@ -188,7 +188,7 @@ final List<CourseListData> allCourses = <CourseListData>[
   ),
 ];
 final Map<String, List<CourseListData>> coursesByCategory = {
-  '钢琴 Piano': [
+  '鋼琴 Piano': [
     CourseListData(
       imagePath: 'assets/fitness_app/breakfast.png',
       titleTxt: 'Basic Piano',

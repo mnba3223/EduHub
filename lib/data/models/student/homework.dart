@@ -7,20 +7,21 @@ part 'homework.g.dart';
 @freezed
 class Homework with _$Homework {
   const factory Homework({
-    required String id,
-    required String title,
-    required String description,
-    required DateTime dueDate,
-    required String courseId,
-    required String courseName,
+    @JsonKey(name: 'submission_id')
+    required int submissionId, // 改名為更明確的 submissionId
+    @JsonKey(name: 'homework_id') required int id, // 添加 homework_id
+    @JsonKey(name: 'student_id') required int studentId,
+    @JsonKey(name: 'homework_desciption') required String description,
+    @JsonKey(name: 'homework_start_time') required DateTime startTime,
+    @JsonKey(name: 'homework_end_time') required DateTime dueDate,
+    @JsonKey(name: 'lesson_title') required String courseName,
+    @JsonKey(name: 'lesson_description') String? courseDescription,
+    @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
     required HomeworkStatus status,
-    // add  create at
-    DateTime? createdAt,
-    String? submitContent,
-    List<String>? attachmentUrls,
-    DateTime? submitDate,
-    int? score,
-    String? teacherComment,
+    @JsonKey(name: 'submission_time') DateTime? submitDate,
+    @JsonKey(name: 'upload_file') String? attachmentUrl,
+    @JsonKey(name: 'comment') String? teacherComment,
+    @JsonKey(name: 'rating') int? score,
   }) = _Homework;
 
   factory Homework.fromJson(Map<String, dynamic> json) =>
@@ -28,29 +29,92 @@ class Homework with _$Homework {
 }
 
 enum HomeworkStatus {
-  pending, // 待完成
-  submitted, // 已提交
-  graded, // 已評分
-  overdue // 已逾期
+  @JsonValue('pending')
+  pending,
+  @JsonValue('submitted')
+  submitted,
+  @JsonValue('graded')
+  graded,
+  @JsonValue('overdue')
+  overdue
+}
+
+extension HomeworkStatusExtension on HomeworkStatus {
+  String get value {
+    switch (this) {
+      case HomeworkStatus.pending:
+        return 'pending';
+      case HomeworkStatus.submitted:
+        return 'submitted';
+      case HomeworkStatus.graded:
+        return 'graded';
+      case HomeworkStatus.overdue:
+        return 'overdue';
+    }
+  }
+}
+
+HomeworkStatus fromString(String value) {
+  return HomeworkStatus.values.firstWhere(
+    (status) => status.toString().split('.').last == value.toLowerCase(),
+    orElse: () => HomeworkStatus.pending,
+  );
 }
 
 // lib/data/models/homework_list_response.dart
 @freezed
 class HomeworkListResponse with _$HomeworkListResponse {
   const factory HomeworkListResponse({
-    required List<Homework> data, // 改為單一的 data 列表
+    required List<Homework> submissions,
   }) = _HomeworkListResponse;
 
-  factory HomeworkListResponse.fromJson(Map<String, dynamic> json) =>
-      _$HomeworkListResponseFromJson(json);
+  factory HomeworkListResponse.fromJson(dynamic json) {
+    if (json is List) {
+      // 處理直接返回列表的情況
+      return HomeworkListResponse(
+        submissions: json
+            .map((item) => Homework.fromJson(item as Map<String, dynamic>))
+            .toList(),
+      );
+    }
+    // 如果是包裝在物件中的情況
+    if (json is Map<String, dynamic>) {
+      if (json.containsKey('submissions')) {
+        return HomeworkListResponse(
+          submissions: (json['submissions'] as List)
+              .map((item) => Homework.fromJson(item as Map<String, dynamic>))
+              .toList(),
+        );
+      }
+    }
+    // 如果都不是，返回空列表
+    return const HomeworkListResponse(submissions: []);
+  }
 }
 
 @freezed
 class HomeworkDetailResponse with _$HomeworkDetailResponse {
   const factory HomeworkDetailResponse({
-    required Homework data,
+    required List<Homework> submissions,
   }) = _HomeworkDetailResponse;
 
-  factory HomeworkDetailResponse.fromJson(Map<String, dynamic> json) =>
-      _$HomeworkDetailResponseFromJson(json);
+  factory HomeworkDetailResponse.fromJson(dynamic json) {
+    if (json is List) {
+      return HomeworkDetailResponse(
+        submissions: json
+            .map((item) => Homework.fromJson(item as Map<String, dynamic>))
+            .toList(),
+      );
+    }
+    if (json is Map<String, dynamic>) {
+      if (json.containsKey('submissions')) {
+        return HomeworkDetailResponse(
+          submissions: (json['submissions'] as List)
+              .map((item) => Homework.fromJson(item as Map<String, dynamic>))
+              .toList(),
+        );
+      }
+    }
+    return const HomeworkDetailResponse(submissions: []);
+  }
 }

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:edutec_hub/data/models/api_models.dart';
+import 'package:edutec_hub/data/models/api_model/api_models.dart';
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
 import 'package:edutec_hub/data/network/apis/student_api.dart';

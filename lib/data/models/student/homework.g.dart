@@ -8,42 +8,39 @@ part of 'homework.dart';
 
 _$HomeworkImpl _$$HomeworkImplFromJson(Map<String, dynamic> json) =>
     _$HomeworkImpl(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      dueDate: DateTime.parse(json['dueDate'] as String),
-      courseId: json['courseId'] as String,
-      courseName: json['courseName'] as String,
-      status: $enumDecode(_$HomeworkStatusEnumMap, json['status']),
-      createdAt: json['createdAt'] == null
+      submissionId: (json['submission_id'] as num).toInt(),
+      id: (json['homework_id'] as num).toInt(),
+      studentId: (json['student_id'] as num).toInt(),
+      description: json['homework_desciption'] as String,
+      startTime: DateTime.parse(json['homework_start_time'] as String),
+      dueDate: DateTime.parse(json['homework_end_time'] as String),
+      courseName: json['lesson_title'] as String,
+      courseDescription: json['lesson_description'] as String?,
+      status: $enumDecode(_$HomeworkStatusEnumMap, json['status'],
+          unknownValue: HomeworkStatus.pending),
+      submitDate: json['submission_time'] == null
           ? null
-          : DateTime.parse(json['createdAt'] as String),
-      submitContent: json['submitContent'] as String?,
-      attachmentUrls: (json['attachmentUrls'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      submitDate: json['submitDate'] == null
-          ? null
-          : DateTime.parse(json['submitDate'] as String),
-      score: (json['score'] as num?)?.toInt(),
-      teacherComment: json['teacherComment'] as String?,
+          : DateTime.parse(json['submission_time'] as String),
+      attachmentUrl: json['upload_file'] as String?,
+      teacherComment: json['comment'] as String?,
+      score: (json['rating'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$HomeworkImplToJson(_$HomeworkImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'description': instance.description,
-      'dueDate': instance.dueDate.toIso8601String(),
-      'courseId': instance.courseId,
-      'courseName': instance.courseName,
+      'submission_id': instance.submissionId,
+      'homework_id': instance.id,
+      'student_id': instance.studentId,
+      'homework_desciption': instance.description,
+      'homework_start_time': instance.startTime.toIso8601String(),
+      'homework_end_time': instance.dueDate.toIso8601String(),
+      'lesson_title': instance.courseName,
+      'lesson_description': instance.courseDescription,
       'status': _$HomeworkStatusEnumMap[instance.status]!,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'submitContent': instance.submitContent,
-      'attachmentUrls': instance.attachmentUrls,
-      'submitDate': instance.submitDate?.toIso8601String(),
-      'score': instance.score,
-      'teacherComment': instance.teacherComment,
+      'submission_time': instance.submitDate?.toIso8601String(),
+      'upload_file': instance.attachmentUrl,
+      'comment': instance.teacherComment,
+      'rating': instance.score,
     };
 
 const _$HomeworkStatusEnumMap = {
@@ -52,29 +49,3 @@ const _$HomeworkStatusEnumMap = {
   HomeworkStatus.graded: 'graded',
   HomeworkStatus.overdue: 'overdue',
 };
-
-_$HomeworkListResponseImpl _$$HomeworkListResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$HomeworkListResponseImpl(
-      data: (json['data'] as List<dynamic>)
-          .map((e) => Homework.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$HomeworkListResponseImplToJson(
-        _$HomeworkListResponseImpl instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-    };
-
-_$HomeworkDetailResponseImpl _$$HomeworkDetailResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$HomeworkDetailResponseImpl(
-      data: Homework.fromJson(json['data'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$$HomeworkDetailResponseImplToJson(
-        _$HomeworkDetailResponseImpl instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-    };

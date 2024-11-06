@@ -204,13 +204,13 @@ class BookingInfoScreen extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           // 使用現有的 BookingInfo 來初始化支付
-          context.read<PaymentCubit>().initiatePayment(
-                selectedDay: bookingInfo.selectedDay!,
-                selectedTime: bookingInfo.selectedTime!,
-                classroom: bookingInfo.classroom!,
-                amount: 100.0,
-                courseId: 'COURSE_001',
-              );
+          // context.read<PaymentCubit>().initiatePayment(
+          //       selectedDay: bookingInfo.selectedDay!,
+          //       selectedTime: bookingInfo.selectedTime!,
+          //       classroom: bookingInfo.classroom!,
+          //       amount: 100.0,
+          //       courseId: 'COURSE_001',
+          //     );
           context.push('/payment-upload');
         },
         style: ElevatedButton.styleFrom(

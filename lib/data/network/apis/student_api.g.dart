@@ -56,25 +56,57 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<HomeworkListResponse> getHomeworks(
-    int page,
-    int limit,
+  Future<List<Homework>> getHomeworks(String studentId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<Homework>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/HomeWork/submissions/student/${studentId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Homework> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => Homework.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<Homework>> getHomeworksByDate(
+    String studentId,
+    String date,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'limit': limit,
-    };
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HomeworkListResponse>(Options(
+    final _options = _setStreamType<List<Homework>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/student/homeworks',
+          '/api/HomeWork/submissions/student/date/${date}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -83,10 +115,12 @@ class _StudentApi implements StudentApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late HomeworkListResponse _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Homework> _value;
     try {
-      _value = HomeworkListResponse.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => Homework.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -95,19 +129,19 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<HomeworkListResponse> getHomeworksByDate(String date) async {
+  Future<List<Homework>> getHomeworkDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HomeworkListResponse>(Options(
+    final _options = _setStreamType<List<Homework>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/student/homeworks/date/${date}',
+          '/api/HomeWork/submissions/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -116,43 +150,12 @@ class _StudentApi implements StudentApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late HomeworkListResponse _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Homework> _value;
     try {
-      _value = HomeworkListResponse.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<HomeworkDetailResponse> getHomeworkDetail(String id) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HomeworkDetailResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/api/student/homeworks/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late HomeworkDetailResponse _value;
-    try {
-      _value = HomeworkDetailResponse.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => Homework.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -162,8 +165,10 @@ class _StudentApi implements StudentApi {
 
   @override
   Future<void> submitHomework(
-    String id,
-    String content,
+    int submissionId,
+    int studentId,
+    String comment,
+    String status,
     List<MultipartFile> files,
   ) async {
     final _extra = <String, dynamic>{};
@@ -171,19 +176,27 @@ class _StudentApi implements StudentApi {
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
-      'content',
-      content,
+      'student_id',
+      studentId.toString(),
     ));
-    _data.files.addAll(files.map((i) => MapEntry('files', i)));
+    _data.fields.add(MapEntry(
+      'comment',
+      comment,
+    ));
+    _data.fields.add(MapEntry(
+      'status',
+      status,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry('UploadedFile', i)));
     final _options = _setStreamType<void>(Options(
-      method: 'POST',
+      method: 'PUT',
       headers: _headers,
       extra: _extra,
       contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
-          '/api/student/homeworks/${id}/submit',
+          '/api/HomeWork/submissions/${submissionId}',
           queryParameters: queryParameters,
           data: _data,
         )

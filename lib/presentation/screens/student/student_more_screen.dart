@@ -49,6 +49,9 @@ class StudentMoreScreen extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       children: [
         _buildListItem(context, Icons.book, 'booking'.tr(), '/booking'),
+        _buildListItem(
+            context, Icons.event, 'attendance'.tr(), '/student-attendance',
+            activate: true),
         _buildListItem(context, Icons.settings, 'setting'.tr(), '/settings'),
         _buildListItem(context, Icons.assignment, 'homework'.tr(), '/homework'),
         _buildListItem(context, Icons.school, 'learning'.tr(), '/learning'),
@@ -63,7 +66,8 @@ class StudentMoreScreen extends StatelessWidget {
   }
 
   Widget _buildListItem(
-      BuildContext context, IconData icon, String title, String route) {
+      BuildContext context, IconData icon, String title, String route,
+      {bool activate = false}) {
     return Card(
       margin: EdgeInsets.only(bottom: 15.h),
       shape: RoundedRectangleBorder(
@@ -81,6 +85,9 @@ class StudentMoreScreen extends StatelessWidget {
         ),
         trailing: Icon(Icons.chevron_right),
         onTap: () {
+          if (activate) {
+            context.push(route);
+          }
           // context.push(route);
         },
       ),

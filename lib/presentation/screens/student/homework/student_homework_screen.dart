@@ -314,7 +314,7 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen> {
               ),
               SizedBox(height: 8.h),
               Text(
-                homework.title,
+                homework.description,
                 style: TextStyle(fontSize: 18.sp),
               ),
               SizedBox(height: 8.h),
@@ -377,7 +377,7 @@ class _StudentHomeworkListScreenState extends State<StudentHomeworkListScreen> {
   void _navigateToHomeworkDetail(Homework homework) {
     context.pushNamed(
       'student-homework-detail',
-      pathParameters: {'id': homework.id},
+      pathParameters: {'id': homework.id.toString()},
       extra: homework,
     );
   }

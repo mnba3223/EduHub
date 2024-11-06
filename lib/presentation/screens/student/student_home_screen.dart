@@ -19,6 +19,12 @@ class StudentHomeScreen extends StatefulWidget {
 
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
   @override
+  void initState() {
+    context.read<HomeworkCubit>().loadHomeworks();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -119,7 +125,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'my_courses'.tr(),
+                'all_courses'.tr(),
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
               GestureDetector(
@@ -152,7 +158,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                   style:
                       TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               GestureDetector(
-                onTap: () => context.push('/message-board'),
+                // onTap: () => context.push('/message-board'),
+                onTap: () => context.push('/student-contact-books'),
                 child: Text(
                   'more'.tr(),
                   style: TextStyle(color: Colors.blue),
@@ -227,12 +234,16 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               }
 
               // 獲取未來7天內的待完成作業
-              final pendingHomeworks = state.homeworks
-                  .where((homework) =>
-                      homework.status == HomeworkStatus.pending &&
-                      homework.dueDate.difference(DateTime.now()).inDays <= 7)
-                  .toList();
+              // final pendingHomeworks = state.homeworks
+              //     .where((homework) =>
+              //         homework.status == HomeworkStatus.pending &&
+              //         homework.dueDate.difference(DateTime.now()).inDays <= 7)
+              //     .toList();
 
+              // 獲取所有待完成作業，並按截止日期排序
+              final pendingHomeworks =
+                  context.read<HomeworkCubit>().getHomePageHomeworks();
+              print('Pending homeworks: ${pendingHomeworks.length}'); // 添加日誌
               if (pendingHomeworks.isEmpty) {
                 return Container(
                   padding: EdgeInsets.all(15.w),
@@ -275,7 +286,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                       onTap: () {
                         context.pushNamed(
                           'student-homework-detail',
-                          pathParameters: {'id': homework.id},
+                          pathParameters: {'id': homework.id.toString()},
                         );
                       },
                       child: Row(
@@ -307,7 +318,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  homework.title,
+                                  homework.description,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,

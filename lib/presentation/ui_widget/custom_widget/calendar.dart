@@ -7,15 +7,17 @@ import 'package:easy_localization/easy_localization.dart';
 class ReusableCalendar extends StatefulWidget {
   final DateTime? selectedDay;
   final Function(DateTime, DateTime) onDaySelected;
+  final MarkerBuilder? markerBuilder; // 修正類
 
   const ReusableCalendar({
     Key? key,
     this.selectedDay,
     required this.onDaySelected,
+    this.markerBuilder,
   }) : super(key: key);
 
   @override
-  _ReusableCalendarState createState() => _ReusableCalendarState();
+  State<ReusableCalendar> createState() => _ReusableCalendarState();
 }
 
 class _ReusableCalendarState extends State<ReusableCalendar> {
@@ -39,10 +41,7 @@ class _ReusableCalendarState extends State<ReusableCalendar> {
           focusedDay: _focusedDay,
           calendarFormat: _calendarFormat,
           selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
-          onDaySelected: (
-            selectedDay,
-            focusedDay,
-          ) {
+          onDaySelected: (selectedDay, focusedDay) {
             widget.onDaySelected(selectedDay, focusedDay);
             setState(() {
               _focusedDay = focusedDay;
@@ -54,21 +53,24 @@ class _ReusableCalendarState extends State<ReusableCalendar> {
             });
           },
           calendarStyle: CalendarStyle(
-            defaultTextStyle: TextStyle(color: Colors.black),
-            weekendTextStyle: TextStyle(color: Colors.red),
+            defaultTextStyle: const TextStyle(color: Colors.black),
+            weekendTextStyle: const TextStyle(color: Colors.red),
             selectedDecoration: BoxDecoration(
-              color: Colors.blue,
+              color: const Color(0xFFE4B355),
               shape: BoxShape.circle,
             ),
-            selectedTextStyle: TextStyle(color: Colors.white),
+            selectedTextStyle: const TextStyle(color: Colors.white),
             todayDecoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.5),
+              color: const Color(0xFFE4B355).withOpacity(0.5),
               shape: BoxShape.circle,
             ),
           ),
-          headerStyle: HeaderStyle(
+          headerStyle: const HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true,
+          ),
+          calendarBuilders: CalendarBuilders(
+            markerBuilder: widget.markerBuilder,
           ),
         ),
       ],
@@ -77,43 +79,34 @@ class _ReusableCalendarState extends State<ReusableCalendar> {
 
   Widget _buildCalendarFormatToggle() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CalendarFormatButton(
-            format: CalendarFormat.month,
-            currentFormat: _calendarFormat,
-            text: 'month'.tr(),
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-          ),
-          SizedBox(width: 16.w),
-          CalendarFormatButton(
-            format: CalendarFormat.week,
-            currentFormat: _calendarFormat,
-            text: 'week'.tr(),
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-          ),
-          SizedBox(width: 16.w),
-          CalendarFormatButton(
-            format: CalendarFormat.twoWeeks,
-            currentFormat: _calendarFormat,
-            text: 'two_weeks'.tr(),
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-          ),
+          _buildFormatButton(CalendarFormat.month, 'month'.tr()),
+          const SizedBox(width: 16),
+          _buildFormatButton(CalendarFormat.week, 'week'.tr()),
+          const SizedBox(width: 16),
+          _buildFormatButton(CalendarFormat.twoWeeks, 'two_weeks'.tr()),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFormatButton(CalendarFormat format, String text) {
+    final isSelected = _calendarFormat == format;
+    return TextButton(
+      onPressed: () => setState(() => _calendarFormat = format),
+      style: TextButton.styleFrom(
+        backgroundColor: isSelected ? Colors.blue.shade100 : null,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isSelected ? Colors.blue.shade700 : Colors.grey,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
       ),
     );
   }

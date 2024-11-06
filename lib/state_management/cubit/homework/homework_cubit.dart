@@ -17,7 +17,18 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   Future<void> loadHomeworks() async {
     try {
       emit(state.copyWith(isLoading: true, error: null));
+
+      // 添加日誌
+      print('Loading homeworks...');
+
       final homeworks = await homeworkRepository.getHomeworks();
+
+      // 添加日誌
+      print('Loaded ${homeworks.length} homeworks');
+      homeworks.forEach((homework) {
+        print(
+            'Homework: ${homework.submissionId}, ${homework.description}, ${homework.status}');
+      });
 
       // 默認選中今天日期
       final today = DateTime.now();
@@ -30,12 +41,15 @@ class HomeworkCubit extends Cubit<HomeworkState> {
         homeworks: homeworks,
         filteredHomeworks: todaysHomeworks,
         selectedDate: today,
-        selectedStatus: HomeworkStatus.pending, // 默認顯示待完成
+        selectedStatus: HomeworkStatus.pending,
       ));
     } catch (e) {
+      print('Error loading homeworks: $e'); // 添加錯誤日誌
       emit(state.copyWith(
         isLoading: false,
         error: e.toString(),
+        homeworks: [], // 確保即使出錯也有一個空列表
+        filteredHomeworks: [], // 確保即使出錯也有一個空列表
       ));
     }
   }
@@ -88,6 +102,20 @@ class HomeworkCubit extends Cubit<HomeworkState> {
         .toList();
   }
 
+  // 在學生主頁面使用的方法
+  List<Homework> getPendingHomeworksForHome() {
+    final allHomeworks = state.homeworks;
+    print('Total homeworks: ${allHomeworks.length}'); // 添加日誌
+
+    final pendingHomeworks = allHomeworks
+        .where((homework) => homework.status == HomeworkStatus.pending)
+        .toList()
+      ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
+
+    print('Pending homeworks: ${pendingHomeworks.length}'); // 添加日誌
+    return pendingHomeworks;
+  }
+
   List<Homework> getCompletedHomeworks() {
     // 使用過濾後的列表
     return state.filteredHomeworks
@@ -96,23 +124,21 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   }
 
   Future<void> submitHomework({
-    required String homeworkId,
+    required int submissionId,
     required String content,
     required List<PlatformFile> files,
   }) async {
     try {
-      emit(state.copyWith(
-        isLoading: true,
-        error: null, // 清除之前的錯誤
-      ));
+      emit(state.copyWith(isLoading: true, error: null));
 
+      // Call repository method which handles the API submission
       await homeworkRepository.submitHomework(
-        homeworkId: homeworkId,
+        submissionId: submissionId,
         content: content,
         files: files,
       );
 
-      // 重新載入作業列表以更新狀態
+      // Reload homeworks to reflect changes
       await loadHomeworks();
 
       emit(state.copyWith(isLoading: false));
@@ -121,11 +147,28 @@ class HomeworkCubit extends Cubit<HomeworkState> {
         isLoading: false,
         error: e is ApiException ? e.message : 'error_submitting_homework'.tr(),
       ));
-      rethrow; // 讓 UI 層也能處理錯誤
+      rethrow; // Rethrow to allow UI to handle error
     }
   }
 
-  Future<void> loadHomeworkDetail(String id) async {
+  List<Homework> getHomePageHomeworks() {
+    final homeworks = state.homeworks;
+    if (homeworks.isEmpty) {
+      print('No homeworks available'); // 添加日誌
+      return [];
+    }
+
+    final pendingHomeworks = homeworks
+        .where((homework) => homework.status == HomeworkStatus.pending)
+        .toList()
+      ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
+
+    print('Found ${pendingHomeworks.length} pending homeworks'); // 添加日誌
+    return pendingHomeworks.take(3).toList();
+  }
+
+  Future<void> loadHomeworkDetail(int id) async {
+    // 改為 int
     try {
       emit(state.copyWith(isLoading: true));
       final homework = await homeworkRepository.getHomeworkDetail(id);

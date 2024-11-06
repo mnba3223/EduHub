@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // lib/presentation/screens/student/student_homework_detail_screen.dart
 class StudentHomeworkDetailScreen extends StatelessWidget {
-  final String homeworkId;
+  final int homeworkId;
 
   const StudentHomeworkDetailScreen({
     required this.homeworkId,
@@ -73,7 +73,7 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
                       SizedBox(height: 8.h),
                       // 作業標題
                       Text(
-                        homework.title,
+                        homework.courseName,
                         style: TextStyle(
                           fontSize: 18.sp,
                           color: Colors.grey[800],
@@ -166,11 +166,12 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => HomeworkSubmitScreen(
-                homeworkId: homework.id,
+                homeworkId: homework.id.toString(),
                 onSubmit: (content, attachments) async {
                   try {
                     await context.read<HomeworkCubit>().submitHomework(
-                          homeworkId: homework.id,
+                          submissionId:
+                              homework.submissionId, // 使用 submissionId
                           content: content,
                           files: attachments,
                         );
@@ -205,8 +206,8 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        Text(homework.submitContent ?? ''),
-        if (homework.attachmentUrls?.isNotEmpty ?? false) ...[
+        Text(homework.description),
+        if (homework.attachmentUrl != null) ...[
           SizedBox(height: 16.h),
           Text(
             'attachments'.tr(),
@@ -216,13 +217,13 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          ...homework.attachmentUrls!.map((url) => ListTile(
-                leading: Icon(Icons.attach_file),
-                title: Text(url.split('/').last),
-                onTap: () {
-                  // TODO: 處理附件下載
-                },
-              )),
+          ListTile(
+            leading: Icon(Icons.attach_file),
+            title: Text(homework.attachmentUrl!.split('/').last),
+            onTap: () {
+              // TODO: 處理附件下載
+            },
+          ),
         ],
       ],
     );

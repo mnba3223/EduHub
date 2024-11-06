@@ -20,20 +20,33 @@ Homework _$HomeworkFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Homework {
-  String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'submission_id')
+  int get submissionId =>
+      throw _privateConstructorUsedError; // 改名為更明確的 submissionId
+  @JsonKey(name: 'homework_id')
+  int get id => throw _privateConstructorUsedError; // 添加 homework_id
+  @JsonKey(name: 'student_id')
+  int get studentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'homework_desciption')
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'homework_start_time')
+  DateTime get startTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'homework_end_time')
   DateTime get dueDate => throw _privateConstructorUsedError;
-  String get courseId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lesson_title')
   String get courseName => throw _privateConstructorUsedError;
-  HomeworkStatus get status =>
-      throw _privateConstructorUsedError; // add  create at
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  String? get submitContent => throw _privateConstructorUsedError;
-  List<String>? get attachmentUrls => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lesson_description')
+  String? get courseDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
+  HomeworkStatus get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'submission_time')
   DateTime? get submitDate => throw _privateConstructorUsedError;
-  int? get score => throw _privateConstructorUsedError;
+  @JsonKey(name: 'upload_file')
+  String? get attachmentUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'comment')
   String? get teacherComment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rating')
+  int? get score => throw _privateConstructorUsedError;
 
   /// Serializes this Homework to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,19 +64,20 @@ abstract class $HomeworkCopyWith<$Res> {
       _$HomeworkCopyWithImpl<$Res, Homework>;
   @useResult
   $Res call(
-      {String id,
-      String title,
-      String description,
-      DateTime dueDate,
-      String courseId,
-      String courseName,
+      {@JsonKey(name: 'submission_id') int submissionId,
+      @JsonKey(name: 'homework_id') int id,
+      @JsonKey(name: 'student_id') int studentId,
+      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_start_time') DateTime startTime,
+      @JsonKey(name: 'homework_end_time') DateTime dueDate,
+      @JsonKey(name: 'lesson_title') String courseName,
+      @JsonKey(name: 'lesson_description') String? courseDescription,
+      @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
       HomeworkStatus status,
-      DateTime? createdAt,
-      String? submitContent,
-      List<String>? attachmentUrls,
-      DateTime? submitDate,
-      int? score,
-      String? teacherComment});
+      @JsonKey(name: 'submission_time') DateTime? submitDate,
+      @JsonKey(name: 'upload_file') String? attachmentUrl,
+      @JsonKey(name: 'comment') String? teacherComment,
+      @JsonKey(name: 'rating') int? score});
 }
 
 /// @nodoc
@@ -81,73 +95,73 @@ class _$HomeworkCopyWithImpl<$Res, $Val extends Homework>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? submissionId = null,
     Object? id = null,
-    Object? title = null,
+    Object? studentId = null,
     Object? description = null,
+    Object? startTime = null,
     Object? dueDate = null,
-    Object? courseId = null,
     Object? courseName = null,
+    Object? courseDescription = freezed,
     Object? status = null,
-    Object? createdAt = freezed,
-    Object? submitContent = freezed,
-    Object? attachmentUrls = freezed,
     Object? submitDate = freezed,
-    Object? score = freezed,
+    Object? attachmentUrl = freezed,
     Object? teacherComment = freezed,
+    Object? score = freezed,
   }) {
     return _then(_value.copyWith(
+      submissionId: null == submissionId
+          ? _value.submissionId
+          : submissionId // ignore: cast_nullable_to_non_nullable
+              as int,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       dueDate: null == dueDate
           ? _value.dueDate
           : dueDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      courseId: null == courseId
-          ? _value.courseId
-          : courseId // ignore: cast_nullable_to_non_nullable
-              as String,
       courseName: null == courseName
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
+      courseDescription: freezed == courseDescription
+          ? _value.courseDescription
+          : courseDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      submitContent: freezed == submitContent
-          ? _value.submitContent
-          : submitContent // ignore: cast_nullable_to_non_nullable
-              as String?,
-      attachmentUrls: freezed == attachmentUrls
-          ? _value.attachmentUrls
-          : attachmentUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
       submitDate: freezed == submitDate
           ? _value.submitDate
           : submitDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      score: freezed == score
-          ? _value.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+      attachmentUrl: freezed == attachmentUrl
+          ? _value.attachmentUrl
+          : attachmentUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       teacherComment: freezed == teacherComment
           ? _value.teacherComment
           : teacherComment // ignore: cast_nullable_to_non_nullable
               as String?,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -161,19 +175,20 @@ abstract class _$$HomeworkImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String title,
-      String description,
-      DateTime dueDate,
-      String courseId,
-      String courseName,
+      {@JsonKey(name: 'submission_id') int submissionId,
+      @JsonKey(name: 'homework_id') int id,
+      @JsonKey(name: 'student_id') int studentId,
+      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_start_time') DateTime startTime,
+      @JsonKey(name: 'homework_end_time') DateTime dueDate,
+      @JsonKey(name: 'lesson_title') String courseName,
+      @JsonKey(name: 'lesson_description') String? courseDescription,
+      @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
       HomeworkStatus status,
-      DateTime? createdAt,
-      String? submitContent,
-      List<String>? attachmentUrls,
-      DateTime? submitDate,
-      int? score,
-      String? teacherComment});
+      @JsonKey(name: 'submission_time') DateTime? submitDate,
+      @JsonKey(name: 'upload_file') String? attachmentUrl,
+      @JsonKey(name: 'comment') String? teacherComment,
+      @JsonKey(name: 'rating') int? score});
 }
 
 /// @nodoc
@@ -189,73 +204,73 @@ class __$$HomeworkImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? submissionId = null,
     Object? id = null,
-    Object? title = null,
+    Object? studentId = null,
     Object? description = null,
+    Object? startTime = null,
     Object? dueDate = null,
-    Object? courseId = null,
     Object? courseName = null,
+    Object? courseDescription = freezed,
     Object? status = null,
-    Object? createdAt = freezed,
-    Object? submitContent = freezed,
-    Object? attachmentUrls = freezed,
     Object? submitDate = freezed,
-    Object? score = freezed,
+    Object? attachmentUrl = freezed,
     Object? teacherComment = freezed,
+    Object? score = freezed,
   }) {
     return _then(_$HomeworkImpl(
+      submissionId: null == submissionId
+          ? _value.submissionId
+          : submissionId // ignore: cast_nullable_to_non_nullable
+              as int,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       dueDate: null == dueDate
           ? _value.dueDate
           : dueDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      courseId: null == courseId
-          ? _value.courseId
-          : courseId // ignore: cast_nullable_to_non_nullable
-              as String,
       courseName: null == courseName
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
+      courseDescription: freezed == courseDescription
+          ? _value.courseDescription
+          : courseDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      submitContent: freezed == submitContent
-          ? _value.submitContent
-          : submitContent // ignore: cast_nullable_to_non_nullable
-              as String?,
-      attachmentUrls: freezed == attachmentUrls
-          ? _value._attachmentUrls
-          : attachmentUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
       submitDate: freezed == submitDate
           ? _value.submitDate
           : submitDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      score: freezed == score
-          ? _value.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+      attachmentUrl: freezed == attachmentUrl
+          ? _value.attachmentUrl
+          : attachmentUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       teacherComment: freezed == teacherComment
           ? _value.teacherComment
           : teacherComment // ignore: cast_nullable_to_non_nullable
               as String?,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -264,63 +279,69 @@ class __$$HomeworkImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HomeworkImpl implements _Homework {
   const _$HomeworkImpl(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.dueDate,
-      required this.courseId,
-      required this.courseName,
+      {@JsonKey(name: 'submission_id') required this.submissionId,
+      @JsonKey(name: 'homework_id') required this.id,
+      @JsonKey(name: 'student_id') required this.studentId,
+      @JsonKey(name: 'homework_desciption') required this.description,
+      @JsonKey(name: 'homework_start_time') required this.startTime,
+      @JsonKey(name: 'homework_end_time') required this.dueDate,
+      @JsonKey(name: 'lesson_title') required this.courseName,
+      @JsonKey(name: 'lesson_description') this.courseDescription,
+      @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
       required this.status,
-      this.createdAt,
-      this.submitContent,
-      final List<String>? attachmentUrls,
-      this.submitDate,
-      this.score,
-      this.teacherComment})
-      : _attachmentUrls = attachmentUrls;
+      @JsonKey(name: 'submission_time') this.submitDate,
+      @JsonKey(name: 'upload_file') this.attachmentUrl,
+      @JsonKey(name: 'comment') this.teacherComment,
+      @JsonKey(name: 'rating') this.score});
 
   factory _$HomeworkImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomeworkImplFromJson(json);
 
   @override
-  final String id;
+  @JsonKey(name: 'submission_id')
+  final int submissionId;
+// 改名為更明確的 submissionId
   @override
-  final String title;
+  @JsonKey(name: 'homework_id')
+  final int id;
+// 添加 homework_id
   @override
+  @JsonKey(name: 'student_id')
+  final int studentId;
+  @override
+  @JsonKey(name: 'homework_desciption')
   final String description;
   @override
+  @JsonKey(name: 'homework_start_time')
+  final DateTime startTime;
+  @override
+  @JsonKey(name: 'homework_end_time')
   final DateTime dueDate;
   @override
-  final String courseId;
-  @override
+  @JsonKey(name: 'lesson_title')
   final String courseName;
   @override
+  @JsonKey(name: 'lesson_description')
+  final String? courseDescription;
+  @override
+  @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
   final HomeworkStatus status;
-// add  create at
   @override
-  final DateTime? createdAt;
-  @override
-  final String? submitContent;
-  final List<String>? _attachmentUrls;
-  @override
-  List<String>? get attachmentUrls {
-    final value = _attachmentUrls;
-    if (value == null) return null;
-    if (_attachmentUrls is EqualUnmodifiableListView) return _attachmentUrls;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
+  @JsonKey(name: 'submission_time')
   final DateTime? submitDate;
   @override
-  final int? score;
+  @JsonKey(name: 'upload_file')
+  final String? attachmentUrl;
   @override
+  @JsonKey(name: 'comment')
   final String? teacherComment;
+  @override
+  @JsonKey(name: 'rating')
+  final int? score;
 
   @override
   String toString() {
-    return 'Homework(id: $id, title: $title, description: $description, dueDate: $dueDate, courseId: $courseId, courseName: $courseName, status: $status, createdAt: $createdAt, submitContent: $submitContent, attachmentUrls: $attachmentUrls, submitDate: $submitDate, score: $score, teacherComment: $teacherComment)';
+    return 'Homework(submissionId: $submissionId, id: $id, studentId: $studentId, description: $description, startTime: $startTime, dueDate: $dueDate, courseName: $courseName, courseDescription: $courseDescription, status: $status, submitDate: $submitDate, attachmentUrl: $attachmentUrl, teacherComment: $teacherComment, score: $score)';
   }
 
   @override
@@ -328,46 +349,47 @@ class _$HomeworkImpl implements _Homework {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeworkImpl &&
+            (identical(other.submissionId, submissionId) ||
+                other.submissionId == submissionId) &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.studentId, studentId) ||
+                other.studentId == studentId) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
             (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
-            (identical(other.courseId, courseId) ||
-                other.courseId == courseId) &&
             (identical(other.courseName, courseName) ||
                 other.courseName == courseName) &&
+            (identical(other.courseDescription, courseDescription) ||
+                other.courseDescription == courseDescription) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.submitContent, submitContent) ||
-                other.submitContent == submitContent) &&
-            const DeepCollectionEquality()
-                .equals(other._attachmentUrls, _attachmentUrls) &&
             (identical(other.submitDate, submitDate) ||
                 other.submitDate == submitDate) &&
-            (identical(other.score, score) || other.score == score) &&
+            (identical(other.attachmentUrl, attachmentUrl) ||
+                other.attachmentUrl == attachmentUrl) &&
             (identical(other.teacherComment, teacherComment) ||
-                other.teacherComment == teacherComment));
+                other.teacherComment == teacherComment) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      submissionId,
       id,
-      title,
+      studentId,
       description,
+      startTime,
       dueDate,
-      courseId,
       courseName,
+      courseDescription,
       status,
-      createdAt,
-      submitContent,
-      const DeepCollectionEquality().hash(_attachmentUrls),
       submitDate,
-      score,
-      teacherComment);
+      attachmentUrl,
+      teacherComment,
+      score);
 
   /// Create a copy of Homework
   /// with the given fields replaced by the non-null parameter values.
@@ -387,49 +409,63 @@ class _$HomeworkImpl implements _Homework {
 
 abstract class _Homework implements Homework {
   const factory _Homework(
-      {required final String id,
-      required final String title,
-      required final String description,
-      required final DateTime dueDate,
-      required final String courseId,
-      required final String courseName,
+      {@JsonKey(name: 'submission_id') required final int submissionId,
+      @JsonKey(name: 'homework_id') required final int id,
+      @JsonKey(name: 'student_id') required final int studentId,
+      @JsonKey(name: 'homework_desciption') required final String description,
+      @JsonKey(name: 'homework_start_time') required final DateTime startTime,
+      @JsonKey(name: 'homework_end_time') required final DateTime dueDate,
+      @JsonKey(name: 'lesson_title') required final String courseName,
+      @JsonKey(name: 'lesson_description') final String? courseDescription,
+      @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
       required final HomeworkStatus status,
-      final DateTime? createdAt,
-      final String? submitContent,
-      final List<String>? attachmentUrls,
-      final DateTime? submitDate,
-      final int? score,
-      final String? teacherComment}) = _$HomeworkImpl;
+      @JsonKey(name: 'submission_time') final DateTime? submitDate,
+      @JsonKey(name: 'upload_file') final String? attachmentUrl,
+      @JsonKey(name: 'comment') final String? teacherComment,
+      @JsonKey(name: 'rating') final int? score}) = _$HomeworkImpl;
 
   factory _Homework.fromJson(Map<String, dynamic> json) =
       _$HomeworkImpl.fromJson;
 
   @override
-  String get id;
+  @JsonKey(name: 'submission_id')
+  int get submissionId; // 改名為更明確的 submissionId
   @override
-  String get title;
+  @JsonKey(name: 'homework_id')
+  int get id; // 添加 homework_id
   @override
+  @JsonKey(name: 'student_id')
+  int get studentId;
+  @override
+  @JsonKey(name: 'homework_desciption')
   String get description;
   @override
+  @JsonKey(name: 'homework_start_time')
+  DateTime get startTime;
+  @override
+  @JsonKey(name: 'homework_end_time')
   DateTime get dueDate;
   @override
-  String get courseId;
-  @override
+  @JsonKey(name: 'lesson_title')
   String get courseName;
   @override
-  HomeworkStatus get status; // add  create at
+  @JsonKey(name: 'lesson_description')
+  String? get courseDescription;
   @override
-  DateTime? get createdAt;
+  @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
+  HomeworkStatus get status;
   @override
-  String? get submitContent;
-  @override
-  List<String>? get attachmentUrls;
-  @override
+  @JsonKey(name: 'submission_time')
   DateTime? get submitDate;
   @override
-  int? get score;
+  @JsonKey(name: 'upload_file')
+  String? get attachmentUrl;
   @override
+  @JsonKey(name: 'comment')
   String? get teacherComment;
+  @override
+  @JsonKey(name: 'rating')
+  int? get score;
 
   /// Create a copy of Homework
   /// with the given fields replaced by the non-null parameter values.
@@ -439,16 +475,9 @@ abstract class _Homework implements Homework {
       throw _privateConstructorUsedError;
 }
 
-HomeworkListResponse _$HomeworkListResponseFromJson(Map<String, dynamic> json) {
-  return _HomeworkListResponse.fromJson(json);
-}
-
 /// @nodoc
 mixin _$HomeworkListResponse {
-  List<Homework> get data => throw _privateConstructorUsedError;
-
-  /// Serializes this HomeworkListResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<Homework> get submissions => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeworkListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -463,7 +492,7 @@ abstract class $HomeworkListResponseCopyWith<$Res> {
           $Res Function(HomeworkListResponse) then) =
       _$HomeworkListResponseCopyWithImpl<$Res, HomeworkListResponse>;
   @useResult
-  $Res call({List<Homework> data});
+  $Res call({List<Homework> submissions});
 }
 
 /// @nodoc
@@ -482,12 +511,12 @@ class _$HomeworkListResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? submissions = null,
   }) {
     return _then(_value.copyWith(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
+      submissions: null == submissions
+          ? _value.submissions
+          : submissions // ignore: cast_nullable_to_non_nullable
               as List<Homework>,
     ) as $Val);
   }
@@ -501,7 +530,7 @@ abstract class _$$HomeworkListResponseImplCopyWith<$Res>
       __$$HomeworkListResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Homework> data});
+  $Res call({List<Homework> submissions});
 }
 
 /// @nodoc
@@ -517,37 +546,34 @@ class __$$HomeworkListResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? submissions = null,
   }) {
     return _then(_$HomeworkListResponseImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
+      submissions: null == submissions
+          ? _value._submissions
+          : submissions // ignore: cast_nullable_to_non_nullable
               as List<Homework>,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$HomeworkListResponseImpl implements _HomeworkListResponse {
-  const _$HomeworkListResponseImpl({required final List<Homework> data})
-      : _data = data;
+  const _$HomeworkListResponseImpl({required final List<Homework> submissions})
+      : _submissions = submissions;
 
-  factory _$HomeworkListResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HomeworkListResponseImplFromJson(json);
-
-  final List<Homework> _data;
+  final List<Homework> _submissions;
   @override
-  List<Homework> get data {
-    if (_data is EqualUnmodifiableListView) return _data;
+  List<Homework> get submissions {
+    if (_submissions is EqualUnmodifiableListView) return _submissions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
+    return EqualUnmodifiableListView(_submissions);
   }
 
   @override
   String toString() {
-    return 'HomeworkListResponse(data: $data)';
+    return 'HomeworkListResponse(submissions: $submissions)';
   }
 
   @override
@@ -555,13 +581,13 @@ class _$HomeworkListResponseImpl implements _HomeworkListResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeworkListResponseImpl &&
-            const DeepCollectionEquality().equals(other._data, _data));
+            const DeepCollectionEquality()
+                .equals(other._submissions, _submissions));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_submissions));
 
   /// Create a copy of HomeworkListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -572,24 +598,14 @@ class _$HomeworkListResponseImpl implements _HomeworkListResponse {
       get copyWith =>
           __$$HomeworkListResponseImplCopyWithImpl<_$HomeworkListResponseImpl>(
               this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$HomeworkListResponseImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _HomeworkListResponse implements HomeworkListResponse {
-  const factory _HomeworkListResponse({required final List<Homework> data}) =
-      _$HomeworkListResponseImpl;
-
-  factory _HomeworkListResponse.fromJson(Map<String, dynamic> json) =
-      _$HomeworkListResponseImpl.fromJson;
+  const factory _HomeworkListResponse(
+      {required final List<Homework> submissions}) = _$HomeworkListResponseImpl;
 
   @override
-  List<Homework> get data;
+  List<Homework> get submissions;
 
   /// Create a copy of HomeworkListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -599,17 +615,9 @@ abstract class _HomeworkListResponse implements HomeworkListResponse {
       get copyWith => throw _privateConstructorUsedError;
 }
 
-HomeworkDetailResponse _$HomeworkDetailResponseFromJson(
-    Map<String, dynamic> json) {
-  return _HomeworkDetailResponse.fromJson(json);
-}
-
 /// @nodoc
 mixin _$HomeworkDetailResponse {
-  Homework get data => throw _privateConstructorUsedError;
-
-  /// Serializes this HomeworkDetailResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<Homework> get submissions => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeworkDetailResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -624,9 +632,7 @@ abstract class $HomeworkDetailResponseCopyWith<$Res> {
           $Res Function(HomeworkDetailResponse) then) =
       _$HomeworkDetailResponseCopyWithImpl<$Res, HomeworkDetailResponse>;
   @useResult
-  $Res call({Homework data});
-
-  $HomeworkCopyWith<$Res> get data;
+  $Res call({List<Homework> submissions});
 }
 
 /// @nodoc
@@ -645,24 +651,14 @@ class _$HomeworkDetailResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? submissions = null,
   }) {
     return _then(_value.copyWith(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Homework,
+      submissions: null == submissions
+          ? _value.submissions
+          : submissions // ignore: cast_nullable_to_non_nullable
+              as List<Homework>,
     ) as $Val);
-  }
-
-  /// Create a copy of HomeworkDetailResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $HomeworkCopyWith<$Res> get data {
-    return $HomeworkCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -675,10 +671,7 @@ abstract class _$$HomeworkDetailResponseImplCopyWith<$Res>
       __$$HomeworkDetailResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Homework data});
-
-  @override
-  $HomeworkCopyWith<$Res> get data;
+  $Res call({List<Homework> submissions});
 }
 
 /// @nodoc
@@ -696,31 +689,35 @@ class __$$HomeworkDetailResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? submissions = null,
   }) {
     return _then(_$HomeworkDetailResponseImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Homework,
+      submissions: null == submissions
+          ? _value._submissions
+          : submissions // ignore: cast_nullable_to_non_nullable
+              as List<Homework>,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$HomeworkDetailResponseImpl implements _HomeworkDetailResponse {
-  const _$HomeworkDetailResponseImpl({required this.data});
+  const _$HomeworkDetailResponseImpl(
+      {required final List<Homework> submissions})
+      : _submissions = submissions;
 
-  factory _$HomeworkDetailResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HomeworkDetailResponseImplFromJson(json);
-
+  final List<Homework> _submissions;
   @override
-  final Homework data;
+  List<Homework> get submissions {
+    if (_submissions is EqualUnmodifiableListView) return _submissions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_submissions);
+  }
 
   @override
   String toString() {
-    return 'HomeworkDetailResponse(data: $data)';
+    return 'HomeworkDetailResponse(submissions: $submissions)';
   }
 
   @override
@@ -728,12 +725,13 @@ class _$HomeworkDetailResponseImpl implements _HomeworkDetailResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeworkDetailResponseImpl &&
-            (identical(other.data, data) || other.data == data));
+            const DeepCollectionEquality()
+                .equals(other._submissions, _submissions));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_submissions));
 
   /// Create a copy of HomeworkDetailResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -743,24 +741,15 @@ class _$HomeworkDetailResponseImpl implements _HomeworkDetailResponse {
   _$$HomeworkDetailResponseImplCopyWith<_$HomeworkDetailResponseImpl>
       get copyWith => __$$HomeworkDetailResponseImplCopyWithImpl<
           _$HomeworkDetailResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$HomeworkDetailResponseImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _HomeworkDetailResponse implements HomeworkDetailResponse {
-  const factory _HomeworkDetailResponse({required final Homework data}) =
+  const factory _HomeworkDetailResponse(
+          {required final List<Homework> submissions}) =
       _$HomeworkDetailResponseImpl;
 
-  factory _HomeworkDetailResponse.fromJson(Map<String, dynamic> json) =
-      _$HomeworkDetailResponseImpl.fromJson;
-
   @override
-  Homework get data;
+  List<Homework> get submissions;
 
   /// Create a copy of HomeworkDetailResponse
   /// with the given fields replaced by the non-null parameter values.

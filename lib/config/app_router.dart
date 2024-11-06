@@ -1,10 +1,16 @@
+import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
 import 'package:edutec_hub/presentation/screens/message_board/message_board_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/booking/student_booking_history_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_detail_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_list_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/student_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 
@@ -112,102 +118,133 @@ class AppRouter {
       //   ],
       // ),
       ShellRoute(
-        navigatorKey: _shellNavigatorKeyStudent,
-        builder: (context, state, child) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                // 使用相同的實例
-                value: _signInCubit,
-              ),
-              BlocProvider<BookingBloc>(
-                create: (context) => BookingBloc(),
-              ),
-              // BlocProvider<PaymentCubit>(
-              //   create: (context) => PaymentCubit(PaymentRepository()),
-              // ),
-              RepositoryProvider<HomeworkRepository>(
-                create: (context) => HomeworkRepositoryImpl(),
-              ),
-              BlocProvider<HomeworkCubit>(
-                create: (context) => HomeworkCubit(
-                  homeworkRepository: context.read<HomeworkRepository>(),
+          navigatorKey: _shellNavigatorKeyStudent,
+          builder: (context, state, child) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  // 使用相同的實例
+                  value: _signInCubit,
                 ),
-              ),
-              BlocProvider<MessageBoardCubit>(
-                create: (context) => MessageBoardCubit(),
-              ),
-            ],
-            child: ScaffoldWithNavBarV2(child: child, role: 'student'),
-          );
-        },
-        routes: [
-          // 學生基本頁面
-          GoRoute(
-            path: '/student-home',
-            builder: (context, state) => StudentHomeScreen(),
-          ),
-          GoRoute(
-            path: '/student-booking',
-            builder: (context, state) => StudentBookingScreen(),
-          ),
-          GoRoute(
-            path: '/student-announcements',
-            builder: (context, state) => StudentAnnouncementsScreen(),
-          ),
-          GoRoute(
-            path: '/student-more',
-            builder: (context, state) => StudentMoreScreen(),
-          ),
-          GoRoute(
-            path: '/student-courses',
-            builder: (context, state) => const StudentCoursesScreen(),
-          ),
+                BlocProvider<BookingBloc>(
+                  create: (context) => BookingBloc(),
+                ),
+                // BlocProvider<PaymentCubit>(
+                //   create: (context) => PaymentCubit(PaymentRepository()),
+                // ),
+                RepositoryProvider<HomeworkRepository>(
+                  create: (context) => HomeworkRepositoryImpl(
+                    signInCubit: context.read<SignInCubit>(),
+                    useMock: false, // 或 true，取決於你的需求
+                  ),
+                ),
+                BlocProvider<HomeworkCubit>(
+                  create: (context) => HomeworkCubit(
+                    homeworkRepository: context.read<HomeworkRepository>(),
+                  )..loadHomeworks(),
+                ),
+                BlocProvider<MessageBoardCubit>(
+                  create: (context) => MessageBoardCubit(),
+                ),
+                BlocProvider<ContactBookBloc>(
+                  create: (context) => ContactBookBloc(
+                    repository: ContactBookRepository(
+                      signInCubit: context.read<SignInCubit>(),
+                      useMock: true, // 或 true，取決於你的需求
+                    ),
+                  ),
+                ),
+              ],
+              child: ScaffoldWithNavBarV2(child: child, role: 'student'),
+            );
+          },
+          routes: [
+            // 學生基本頁面
+            GoRoute(
+              path: '/student-home',
+              builder: (context, state) => StudentHomeScreen(),
+            ),
+            GoRoute(
+              path: '/student-booking',
+              builder: (context, state) => StudentBookingScreen(),
+            ),
+            GoRoute(
+              path: '/student-announcements',
+              builder: (context, state) => StudentAnnouncementsScreen(),
+            ),
+            GoRoute(
+              path: '/student-more',
+              builder: (context, state) => StudentMoreScreen(),
+            ),
+            GoRoute(
+              path: '/student-courses',
+              builder: (context, state) => const StudentCoursesScreen(),
+            ),
 
-          GoRoute(
-            path: '/booking-history',
-            builder: (context, state) => BookingHistoryScreen(),
-          ),
+            GoRoute(
+              path: '/booking-history',
+              builder: (context, state) => BookingHistoryScreen(),
+            ),
 
-          // 預約相關頁面
-          GoRoute(
-            path: '/booking-info',
-            builder: (context, state) => BookingInfoScreen(),
-          ),
-          GoRoute(
-            path: '/payment-upload',
-            builder: (context, state) => PaymentUploadScreen(),
-          ),
-          GoRoute(
-            path: '/payment-method',
-            builder: (context, state) => PaymentMethodScreen(),
-          ),
-          GoRoute(
-            path: '/payment-complete',
-            builder: (context, state) => PaymentCompleteScreen(),
-          ),
+            // 預約相關頁面
+            GoRoute(
+              path: '/booking-info',
+              builder: (context, state) => BookingInfoScreen(),
+            ),
+            GoRoute(
+              path: '/payment-upload',
+              builder: (context, state) => PaymentUploadScreen(),
+            ),
+            GoRoute(
+              path: '/payment-method',
+              builder: (context, state) => PaymentMethodScreen(),
+            ),
+            GoRoute(
+              path: '/payment-complete',
+              builder: (context, state) => PaymentCompleteScreen(),
+            ),
 
-          //作業成績相關
-          GoRoute(
-            path: '/student-homework',
-            builder: (context, state) => StudentHomeworkListScreen(),
-            routes: [
-              GoRoute(
-                path: ':id',
-                name: 'student-homework-detail',
-                builder: (context, state) {
-                  final homeworkId = state.pathParameters['id'] ?? '';
-                  return StudentHomeworkDetailScreen(homeworkId: homeworkId);
-                },
-              ),
-            ],
-          ),
-          GoRoute(
-            path: '/message-board',
-            builder: (context, state) => const MessageBoardScreen(),
-          ),
-        ],
-      ),
+            //作業成績相關
+            GoRoute(
+              path: '/student-homework',
+              builder: (context, state) => StudentHomeworkListScreen(),
+              routes: [
+                GoRoute(
+                  path: ':id',
+                  name: 'student-homework-detail',
+                  builder: (context, state) {
+                    final homeworkId =
+                        int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+                    return StudentHomeworkDetailScreen(homeworkId: homeworkId);
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: '/message-board',
+              builder: (context, state) => const MessageBoardScreen(),
+            ),
+            //學生出席
+            GoRoute(
+              path: '/student-attendance',
+              builder: (context, state) => const StudentAttendanceScreen(),
+            ),
+            // 聯絡簿相關路由
+            GoRoute(
+              path: '/student-contact-books',
+              builder: (context, state) => const ContactBookListScreen(),
+              routes: [
+                GoRoute(
+                  path: 'daily',
+                  builder: (context, state) {
+                    final date =
+                        DateTime.parse(state.uri.queryParameters['date']!);
+                    return ContactBookDetailScreen(date: date);
+                  },
+                ),
+              ],
+            ),
+          ]),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(

@@ -119,16 +119,33 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
       final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
         type: FileType.any,
+        withReadStream: true,
       );
 
       if (result != null) {
+        // 驗證文件大小
+        for (var file in result.files) {
+          if (file.size > 10 * 1024 * 1024) {
+            // 10MB 限制
+            throw Exception('File ${file.name} is too large');
+          }
+        }
+
+        // 驗證文件路徑
+        if (result.files.any((file) => file.path == null)) {
+          throw Exception('Some files are invalid');
+        }
+
         setState(() {
           _selectedFiles.addAll(result.files);
         });
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('error_picking_files'.tr())),
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          duration: Duration(seconds: 3),
+        ),
       );
     }
   }
