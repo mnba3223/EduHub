@@ -1,25 +1,22 @@
 key,en_US,zh_TW,zh_CN,ja_JP
-# App General
+
+# App Core
 app_title,EduTec Hub,教育科技中心,教育科技中心,教育テックハブ
 button_close,Close,關閉,关闭,閉じる
 more,More,更多,更多,その他
 
-# Navigation & Screens
+# Navigation
 home_screen_title,Home,首頁,主页,ホーム
 course_list_screen_title,Courses,課程列表,课程列表,コース一覧
 course_detail_screen_title,Course Details,課程詳情,课程详情,コース詳細
 announcements_screen_title,Announcements,學校公告,学校公告,お知らせ
-
-# Bottom Navigation
 bottom_bar_home,Home,首頁,主页,ホーム
 bottom_bar_courses,Courses,課程,课程,コース
 bottom_bar_profile,Profile,個人資料,个人资料,プロフィール
 
-# Welcome & Language
+# Authentication & Login
 welcome,Welcome to EduTec Hub,歡迎使用教育科技中心,欢迎使用教育科技中心,EduTecハブへようこそ
 select_language,Please select your language:,請選擇您的語言:,请选择您的语言:,言語を選択してください：
-
-# Authentication
 loginAs,Login as,登入身份,登录身份,ログイン者
 student,Student,學生,学生,学生
 parent,Parent,家長,家长,保護者
@@ -32,13 +29,13 @@ password,Password,密碼,密码,パスワード
 signIn,Sign In,登入,登录,サインイン
 
 # Legal
-termAndConditionAgreement,By signing in, you agree to our,登入即表示您同意我們的,登录即表示您同意我们的,サインインすることで、以下に同意したことになります
+termAndConditionAgreement,By signing in you agree to our,登入即表示您同意我們的,登录即表示您同意我们的,サインインすることで、以下に同意したことになります
 termsAndCondition,Terms and Conditions,條款和條件,条款和条件,利用規約
 privacyPolicy,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
 PP,Privacy Policy,隱私政策,隐私政策,プライバシーポリシー
 T&C,Terms & Conditions,條款及細則,条款及细则,利用規約
 
-# Course Management
+# Course & Classroom
 course_management,Course Management,課程管理,课程管理,コース管理
 classroom_1,Classroom 1,教室 1,教室 1,教室 1
 classroom_2,Classroom 2,教室 2,教室 2,教室 2
@@ -47,48 +44,32 @@ all_courses,All Courses,全部課程,全部課程,All Courses
 course,Course,課程,课程,コース
 todays_course,Today's Courses,今天課程,今天课程,今日の授業
 my_courses,My Courses,預約教室,預約教室,マイコース
+classroom,Classroom,教室,教室,教室
 
-# Booking Status
+# Booking System
+booking,Booking,預約,预约,予約
+booking_info,Booking Information,預約資訊,预约信息,予約情報
+booking_history,Booking History,預約記錄,预约记录,予約履歴
 booked,Booked,已預約,已预约,予約済み
 available,Available,可預約,可预约,予約可能
 select_multiple,Select (Multiple),選擇預約(可多選),选择预约(可多选),選択（複数可）
 unavailable,Unavailable,不可預約,不可预约,予約不可
-booking,Booking,預約,预约,予約
-
-# Communication & Learning
-contact_book,Contact Book,聯絡簿,联络簿,連絡帳
-homework,Homework,作業,作业,宿題
-learning,Learning,學習,学习,学習
-bulletin_board,Bulletin Board,佈告欄,布告栏,掲示板
-contact_us,Contact Us,聯絡我們,联系我们,お問い合わせ
-
-# Date & Time
-date,Date,日期,日期,日付
-
-# Settings
-setting,Settings,設置,设置,設定
-
-# Booking Info Screen
-booking_info,Booking Information,預約資訊,预约信息,予約情報
 selected_date,Selected Date,選擇日期,选择日期,選択日
 selected_time,Selected Time,選擇時間,选择时间,選択時間
-classroom,Classroom,教室,教室,教室
 price,Price,價格,价格,価格
-proceed_to_payment,Proceed to Payment,前往付款,前往付款,支払いに進む
-no_booking_selected,No Booking Selected,尚未選擇預約,尚未选择预约,予約が選択されていません
-return_to_booking,Return to Booking,返回預約,返回预约,予約に戻る
 
-# Payment Method Screen
+# Payment
 payment_method,Payment Method,付款方式,付款方式,支払方法
 select_payment_method,Select Payment Method,選擇付款方式,选择付款方式,支払方法を選択
 credit_card,Credit Card,信用卡,信用卡,クレジットカード
-credit_card_description,Visa, Mastercard, American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express
+credit_card_description,Visa Mastercard American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express,Visa、Mastercard、American Express
 paypal,PayPal,PayPal,PayPal,PayPal
 paypal_description,Fast and secure payment,快速安全支付,快速安全支付,迅速で安全な支払い
 bank_transfer,Bank Transfer,銀行轉帳,银行转账,銀行振込
 bank_transfer_description,Direct bank transfer,直接銀行轉帳,直接银行转账,直接銀行振込
+proceed_to_payment,Proceed to Payment,前往付款,前往付款,支払いに進む
 
-# Payment Complete Screen
+# Payment Status & Upload
 payment_complete,Payment Complete,付款完成,付款完成,支払完了
 payment_successful,Payment Successful!,付款成功！,付款成功！,支払い完了！
 booking_confirmation_message,Your booking has been confirmed. Thank you for your payment.,您的預約已確認。感謝您的付款。,您的预约已确认。感谢您的付款。,予約が確認されました。ご支払いありがとうございます。
@@ -97,31 +78,25 @@ booking_id,Booking ID,預約編號,预约编号,予約番号
 amount_paid,Amount Paid,支付金額,支付金额,支払金額
 order_date,Order Date,訂單日期,订单日期,注文日
 order_time,Order Time,訂單時間,订单时间,注文時間
-
-# Payment Complete Screen (修改)
-upload_successful,Upload Successful!,上傳成功！,上传成功！,アップロード完了！
-payment_review_message,Your payment proof has been uploaded and is under review. We will process it within 1-2 business days.,您的付款憑證已上傳並正在審核中。我們將在1-2個工作日內處理。,您的付款凭证已上传并正在审核中。我们将在1-2个工作日内处理。,支払証明書がアップロードされ、現在確認中です。1-2営業日以内に処理いたします。
-booking_status,Booking Status,預約狀態,预约状态,予約状態
-under_review,Under Review,審核中,审核中,確認中
-return_to_home,Return to Home,返回首頁,返回首页,ホームに戻る
-
-
-# Payment Upload Screen
 upload_payment_proof,Upload Payment Proof,上傳付款憑證,上传付款凭证,支払証明書をアップロード
 payment_upload_instruction,Please upload your payment proof image below,請上傳您的付款憑證圖片,请上传您的付款凭证图片,支払証明書の画像をアップロードしてください
 click_to_upload,Click to upload payment proof,點擊上傳付款憑證,点击上传付款凭证,支払証明書をアップロードするにはクリック
 proof_uploaded,Payment proof uploaded,付款憑證已上傳,付款凭证已上传,支払証明書がアップロードされました
 tap_to_change,Tap to change image,點擊更換圖片,点击更换图片,タップして画像を変更
 confirm_payment,Confirm Payment,確認付款,确认付款,支払いを確認
+uploading_files,Uploading files...,正在上傳檔案...,正在上传文件...,ファイルをアップロード中...
+upload_successful,Upload Successful!,上傳成功！,上传成功！,アップロード完了！
+payment_review_message,Your payment proof has been uploaded and is under review. We will process it within 1-2 business days.,您的付款憑證已上傳並正在審核中。我們將在1-2個工作日內處理。,您的付款凭证已上传并正在审核中。我们将在1-2个工作日内处理。,支払証明書がアップロードされ、現在確認中です。1-2営業日以内に処理いたします。
+cancel_upload,Cancel Upload,取消上傳,取消上传,アップロードをキャンセル
 
-
-booking_history,Booking History,預約記錄,预约记录,予約履歴
+# Status
 pending_review,Pending Review,待審核,待审核,審査待ち
 approved,Approved,已通過,已通过,承認済み
 rejected,Rejected,已拒絕,已拒绝,却下
+under_review,Under Review,審核中,审核中,確認中
 
-
-# Homework Related
+# Homework
+homework,Homework,作業,作业,宿題
 homework_detail,Homework Detail,作業詳情,作业详情,宿題の詳細
 all,All,全部,全部,すべて
 pending,Pending,待完成,待完成,未完了
@@ -130,27 +105,77 @@ graded,Graded,已評分,已评分,採点済み
 overdue,Overdue,已逾期,已逾期,期限切れ
 no_homework,No Homework,沒有作業,没有作业,宿題なし
 no_homework_for_selected_date,No homework for selected date,所選日期沒有作業,所选日期没有作业,選択日の宿題なし
+no_pending_homework,No pending homework,沒有待完成的作業,没有待完成的作业,未完了の宿題なし
+no_completed_homework,No completed homework,沒有已完成的作業,没有已完成的作业,完了した宿題なし
 error_loading_homework,Error loading homework,載入作業時發生錯誤,加载作业时发生错误,宿題の読み込みエラー
-retry,Retry,重試,重试,再試行
 due_date,Due Date: {0},截止日期：{0},截止日期：{0},提出期限：{0}
 description,Description,作業說明,作业说明,説明
+homework_content,Homework Content,作業內容,作业内容,宿題内容
+enter_homework_content,Enter your homework content...,請輸入作業內容...,请输入作业内容...,宿題の内容を入力してください...
 submit_homework,Submit Homework,提交作業,提交作业,宿題を提出
 submitted_content,Submitted Content,已提交內容,已提交内容,提出内容
 attachments,Attachments,附件,附件,添付ファイル
-score,Score: {0},分數：{0},分数：{0},得点：{0}
-teacher_comment,Teacher's Comment,教師評語,教师评语,教師のコメント
-homework_content,Homework Content,作業內容,作业内容,宿題内容
-enter_homework_content,Enter your homework content...,請輸入作業內容...,请输入作业内容...,宿題の内容を入力してください...
 add_attachment,Add Attachment,添加附件,添加附件,添付ファイルを追加
 no_attachments,No attachments,沒有附件,没有附件,添付ファイルなし
+score,Score: {0},分數：{0},分数：{0},得点：{0}
+teacher_comment,Teacher's Comment,教師評語,教师评语,教師のコメント
 submit,Submit,提交,提交,提出
 error_picking_files,Error picking files,選擇檔案時發生錯誤,选择文件时发生错误,ファイル選択エラー
 error_submitting_homework,Error submitting homework,提交作業時發生錯誤,提交作业时发生错误,宿題提出エラー
 please_enter_content,Please enter content,請輸入內容,请输入内容,内容を入力してください
-key,en_US,zh_TW,zh_CN,ja_JP
-uploading_files,Uploading files...,正在上傳檔案...,正在上传文件...,ファイルをアップロード中...
 homework_submitted_success,Homework submitted successfully,作業提交成功,作业提交成功,宿題を提出しました
-cancel_upload,Cancel Upload,取消上傳,取消上传,アップロードをキャンセル
-# Homework Status
-no_pending_homework,No pending homework,沒有待完成的作業,没有待完成的作业,未完了の宿題なし
-no_completed_homework,No completed homework,沒有已完成的作業,没有已完成的作业,完了した宿題なし
+
+# Contact Book
+contact_book,Contact Book,聯絡簿,联络簿,連絡帳
+contact_book_detail,Contact Book Detail,聯絡簿詳情,联络簿详情,連絡帳詳細
+contact_book_title,Daily Contact Book,每日聯絡簿,每日联络簿,毎日の連絡帳
+signature_reminder,Please sign the contact book,請記得簽名確認,请记得签名确认,連絡帳に署名してください
+signature_reminder_title,Signature Required,需要簽名,需要签名,署名が必要です
+signature_reminder_desc,Please sign today's contact book to confirm you have read it.,請簽名確認今日聯絡簿內容。,请签名确认今日联络簿内容。,今日の連絡帳の内容を確認するため署名してください。
+reply,Reply,回覆,回复,返信
+sign,Sign,簽名,签名,署名
+reply_history,Reply History,回覆記錄,回复记录,返信履歴
+reply_placeholder,Enter your reply here...,在此輸入回覆內容...,在此输入回复内容...,返信内容を入力してください...
+signature_confirmation,Signature Confirmation,簽名確認,签名确认,署名確認
+comment_optional,Comment (Optional),備註（選填）,备注（选填）,コメント（任意）
+posting_time,Posted at,發布時間,发布时间,投稿時間
+teacher,Teacher,教師,教师,教師
+view_image,View Image,查看圖片,查看图片,画像を表示
+image_load_error,Failed to load image,圖片載入失敗,图片加载失败,画像の読み込みに失敗しました
+sign_section_title,Sign Contact Book,簽名確認,签名确认,連絡帳の署名
+sign_comment_hint,Add comment (optional),備註（選填）,备注（选填）,コメント（任意）
+sign_confirm,Sign & Confirm,確認簽名,确认签名,署名確認
+send_reply,Send Reply,發送回覆,发送回复,返信を送信
+yyyy_MM_format,yyyy MM,yyyy年MM月,yyyy年MM月,yyyy年MM月
+contact_book_date_format,MM/dd (E),MM/dd (E),MM/dd (E),MM/dd (E)
+unsigned,Unsigned,未簽名,未签名,未署名
+no_contact_book_data,No contact book data,無聯絡簿資料,无联络簿资料,連絡帳データなし
+retry,Retry,重試,重试,再試行
+
+# General UI
+date,Date,日期,
+cancel,Cancel,取消
+submit,Submit,提交
+
+#attachments
+attendance_statistics,Attendance Statistics,出勤統計
+attendance_records,Attendance Records,出席紀錄
+total_classes,Total Classes,總課程數
+present,Present,出席
+absent,Absent,缺席
+leave,Leave,請假
+late,Late,遲到
+attendance_rate,Attendance Rate,出席率
+no_course_records,No Course Records,沒有課程記錄
+classroom,Classroom,教室
+leave_status,Leave Status,請假狀態
+under_review,Under Review,審核中
+approved,Approved,已通過
+rejected,Rejected,未通過
+click_to_apply_leave,Click to Apply Leave,點擊申請請假
+leave_application,Leave Application,請假申請
+leave_reason,Leave Reason,請假原因
+please_enter_leave_reason,Please enter leave reason,請輸入請假原因
+leave_request_submitted,Leave request submitted,請假申請已提交
+leave_request_failed,Leave request failed: {0},請假申請失敗: {0}
+not_attended,Not Attended,未出席

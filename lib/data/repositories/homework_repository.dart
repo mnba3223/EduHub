@@ -97,6 +97,23 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
     ),
   ];
 
+  // @override
+  // Future<List<Homework>> getHomeworks() async {
+  //   if (useMock) {
+  //     await Future.delayed(const Duration(seconds: 1));
+  //     _cachedHomeworks =
+  //         mockHomeworks.where((h) => h.studentId == _studentId).toList();
+  //     return _cachedHomeworks!;
+  //   }
+
+  //   try {
+  //     final homeworks = await api.getHomeworks(_studentId.toString());
+  //     _cachedHomeworks = homeworks;
+  //     return homeworks;
+  //   } on DioException catch (e) {
+  //     throw e.toApiException();
+  //   }
+  // }
   @override
   Future<List<Homework>> getHomeworks() async {
     if (useMock) {
@@ -107,15 +124,22 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
     }
 
     try {
-      final homeworks = await api.getHomeworks(_studentId.toString());
-      _cachedHomeworks = homeworks;
-      return homeworks;
+      final response = await api.getHomeworks(_studentId.toString());
+
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+
+      _cachedHomeworks = response.data;
+      return response.data ?? [];
     } on DioException catch (e) {
       throw e.toApiException();
     }
   }
 
-  @override
   @override
   Future<List<Homework>> getHomeworksByDate(DateTime? date) async {
     final homeworks = _cachedHomeworks ?? await getHomeworks();
@@ -149,14 +173,32 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   // }
   @override
   Future<Homework> getHomeworkDetail(int id) async {
-    final homeworks = _cachedHomeworks ?? await getHomeworks();
+    if (useMock) {
+      await Future.delayed(const Duration(seconds: 1));
+      return mockHomeworks.firstWhere(
+        (homework) => homework.id == id && homework.studentId == _studentId,
+        orElse: () => throw ApiException('找不到作業內容'),
+      );
+    }
 
-    final homework = homeworks.firstWhere(
-      (h) => h.id == id && h.studentId == _studentId,
-      orElse: () => throw ApiException('Homework not found'),
-    );
+    try {
+      final response = await api.getHomeworkDetail(id.toString());
 
-    return homework;
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+
+      if (response.data == null || response.data!.isEmpty) {
+        throw ApiException('找不到作業內容');
+      }
+
+      return response.data!.first;
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
   }
 
   @override
@@ -166,37 +208,40 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
     required List<PlatformFile> files,
   }) async {
     try {
-      // Get current student ID from SignInCubit
-      final studentId = _getStudentId();
-      log('Submitting homework with files: ${files.toString()}');
+      log('開始提交作業: ${files.toString()}');
 
-      // 修改文件處理邏輯：使用 file.path 而不是 file.bytes
       final multipartFiles = await Future.wait(
         files.map((file) async {
           if (file.path == null) {
-            throw ApiException('File path is null');
+            throw ApiException('檔案路徑無效');
           }
 
-          log('Processing file: ${file.name} from path: ${file.path}');
+          log('處理檔案: ${file.name}, 路徑: ${file.path}');
 
-          // 使用 fromFile 而不是 fromBytes
           return await MultipartFile.fromFile(
             file.path!,
             filename: file.name,
           );
         }),
       );
-      log('Created MultipartFiles, proceeding with submission');
+      log('檔案處理完成，準備提交');
 
-      // Submit homework with required fields matching backend API
-      await api.submitHomework(
+      final response = await api.submitHomework(
         submissionId,
         _studentId,
-        content, // Using content as comment
-        HomeworkStatus.submitted.value, // 使用 enum 的值
+        content,
+        HomeworkStatus.submitted.value,
         multipartFiles,
       );
-      log('Homework submission completed successfully');
+
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+
+      log('作業提交成功');
     } on DioException catch (e) {
       throw e.toApiException();
     } catch (e) {

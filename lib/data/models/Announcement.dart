@@ -1,4 +1,5 @@
 class Announcement {
+  final String? title;
   final int schoolId;
   final int teacherId;
   final String content;
@@ -7,6 +8,7 @@ class Announcement {
   final DateTime? updatedAt;
 
   Announcement({
+    this.title,
     required this.schoolId,
     required this.teacherId,
     required this.content,
@@ -16,6 +18,7 @@ class Announcement {
   });
   factory Announcement.fromJson(Map<String, dynamic> json) {
     return Announcement(
+      title: json['title'] as String?,
       schoolId: json['school_id'] as int,
       teacherId: json['teacher_id'] as int,
       content: json['content'] as String,

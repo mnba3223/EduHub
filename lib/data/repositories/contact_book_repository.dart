@@ -27,11 +27,11 @@ class ContactBookRepository {
     throw ApiException('User not logged in');
   }
 
-  Future<ApiResponse<List<ContactBook>>> getContactBooks({
+  Future<List<ContactBook>> getContactBooks({
     required DateTime date,
   }) async {
     if (useMock) {
-      return _getMockContactBooks(date);
+      return _getMockContactBooks(date).data ?? [];
     }
 
     try {
@@ -39,17 +39,29 @@ class ContactBookRepository {
         _studentId.toString(),
         date.toIso8601String(),
       );
-      return response;
+
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+
+      return response.data ?? [];
     } on DioException catch (e) {
       throw e.toApiException();
     }
   }
 
-  Future<ApiResponse<ContactBookDetail>> getDailyContactBook({
+  Future<ContactBookDetail> getDailyContactBook({
     required DateTime date,
   }) async {
     if (useMock) {
-      return _getMockDailyContactBook(date);
+      final mockResponse = _getMockDailyContactBook(date);
+      if (!mockResponse.success) {
+        throw ApiException(mockResponse.message);
+      }
+      return mockResponse.data!;
     }
 
     try {
@@ -57,7 +69,19 @@ class ContactBookRepository {
         _studentId.toString(),
         date.toIso8601String(),
       );
-      return response;
+
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+
+      if (response.data == null) {
+        throw ApiException('找不到聯絡簿資料');
+      }
+
+      return response.data!;
     } on DioException catch (e) {
       throw e.toApiException();
     }
@@ -114,8 +138,9 @@ class ContactBookRepository {
     });
 
     return ApiResponse(
-      status: 'success',
-      message: 'Success',
+      code: 0,
+      success: true,
+      message: '成功獲取聯絡簿列表',
       data: contactBooks,
     );
   }
@@ -140,12 +165,18 @@ class ContactBookRepository {
     final isPast = date.isBefore(today);
 
     if (!isPast && !isToday) {
-      throw ApiException('Future dates are not available');
+      return ApiResponse(
+        code: 400,
+        success: false,
+        message: '無法查看未來日期的聯絡簿',
+        data: null,
+      );
     }
 
     return ApiResponse(
-      status: 'success',
-      message: 'Success',
+      code: 0,
+      success: true,
+      message: '成功獲取聯絡簿詳情',
       data: ContactBookDetail(
         basicInfo: BasicInfo(
           date: date,
@@ -222,10 +253,10 @@ class ContactBookRepository {
     ];
   }
 
-  List<Announcement> _getMockAnnouncements(DateTime date) {
+  List<ContactBookAnnouncement> _getMockAnnouncements(DateTime date) {
     if (date.day % 3 == 0) {
       return [
-        Announcement(
+        ContactBookAnnouncement(
           type: 'notice',
           title: '${date.month}月份教學活動通知',
           content: '親愛的家長您好：\n本月將舉辦戶外教學活動...',
@@ -250,6 +281,34 @@ class ContactBookRepository {
       return;
     }
 
+    // try {
+    //   final response = await api.signContactBook(
+    //     _studentId.toString(),
+    //     date.toIso8601String(),
+    //     comment,
+    //   );
+
+    //   if (!response.success) {
+    //     throw ApiException(
+    //       response.message,
+    //       errorCode: response.code.toString(),
+    //     );
+    //   }
+    // } on DioException catch (e) {
+    //   throw e.toApiException();
+    // }
+  }
+
+  Future<void> replyContactBook({
+    required DateTime date,
+    required String message,
+  }) async {
+    if (useMock) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      return;
+    }
+
     // 實際 API 實作
+    // await api.replyContactBook(_studentId.toString(), date.toIso8601String(), message);
   }
 }

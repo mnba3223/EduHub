@@ -1,8 +1,9 @@
-import 'package:edutec_hub/data/models/parent/parent.dart';
-import 'package:edutec_hub/data/models/student/student.dart';
+import 'package:edutec_hub/config/user_session.dart';
+
 import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/network/core/exceptions.dart';
 // import 'package:edutec_hub/data/models/teacher/teacher.dart'; // 假设您有一个 Teacher 模型
-import 'package:edutec_hub/data/repositories/authRepository.dart';
+import 'package:edutec_hub/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,17 +57,40 @@ class SignInCubit extends Cubit<SignInState> {
     emit(SignInInProgress());
 
     try {
-      final result = await _authRepository.signInNormal(
+      final authData = await _authRepository.signInNormal(
         userId: userId,
         password: password,
       );
 
-      final role = _parseRole(result.role);
+      if (authData.data == null) {
+        throw ApiException('登入失敗：未收到用戶資料');
+      }
+
+      // 從回傳資料中取得角色
+      final roles = authData.data!.roles;
+      if (roles.isEmpty) {
+        throw ApiException('登入失敗：未設定用戶角色');
+      }
+
+      // 使用第一個角色作為主要角色
+      final userRole = _parseRole(roles.first);
+
+      // 更新全局會話狀態
+      UserSession.instance.setSession(
+        userId: authData.data!.userId ?? 0,
+        token: authData.data!.accessToken,
+        role: userRole,
+      );
 
       emit(SignInSuccess(
-          jwtToken: result.token, role: role, userId: result.data?.id ?? 0));
+        jwtToken: authData.data!.accessToken,
+        role: userRole,
+        userId: authData.data!.userId ?? 0,
+      ));
+    } on ApiException catch (e) {
+      emit(SignInFailure(e.message));
     } catch (e) {
-      emit(SignInFailure(e.toString()));
+      emit(SignInFailure('登入失敗：${e.toString()}'));
     }
   }
 
@@ -81,5 +105,11 @@ class SignInCubit extends Cubit<SignInState> {
       default:
         return UserRole.unknown;
     }
+  }
+
+  @override
+  Future<void> close() {
+    UserSession.instance.clearSession();
+    return super.close();
   }
 }

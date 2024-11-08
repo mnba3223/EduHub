@@ -1,6 +1,6 @@
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
-import 'package:edutec_hub/data/repositories/authRepository.dart';
+import 'package:edutec_hub/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

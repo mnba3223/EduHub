@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:edutec_hub/data/models/contact_book/contact_book.dart';
 import 'package:edutec_hub/data/models/contact_book/contact_book_detail.dart';
+import 'package:edutec_hub/data/network/core/exceptions.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,6 +16,7 @@ class ContactBookBloc extends Bloc<ContactBookEvent, ContactBookState> {
     on<LoadDailyContactBook>(_onLoadDailyContactBook);
     on<UpdateSelectedDate>(_onUpdateSelectedDate);
     on<SignContactBook>(_onSignContactBook);
+    on<ReplyContactBook>(_onReplyContactBook);
   }
 
   Future<void> _onLoadContactBooks(
@@ -23,16 +25,13 @@ class ContactBookBloc extends Bloc<ContactBookEvent, ContactBookState> {
   ) async {
     emit(ContactBookLoading());
     try {
-      final response = await repository.getContactBooks(date: event.date);
-
-      if (response.status == 'success' && response.data != null) {
-        emit(ContactBookListLoaded(
-          contactBooks: response.data!,
-          selectedDate: event.date,
-        ));
-      } else {
-        emit(ContactBookError(response.message));
-      }
+      final contactBooks = await repository.getContactBooks(date: event.date);
+      emit(ContactBookListLoaded(
+        contactBooks: contactBooks,
+        selectedDate: event.date,
+      ));
+    } on ApiException catch (e) {
+      emit(ContactBookError(e.message));
     } catch (e) {
       emit(ContactBookError(e.toString()));
     }
@@ -44,16 +43,13 @@ class ContactBookBloc extends Bloc<ContactBookEvent, ContactBookState> {
   ) async {
     emit(ContactBookLoading());
     try {
-      final response = await repository.getDailyContactBook(date: event.date);
-
-      if (response.status == 'success' && response.data != null) {
-        emit(ContactBookDetailLoaded(
-          detail: response.data!,
-          selectedDate: event.date,
-        ));
-      } else {
-        emit(ContactBookError(response.message));
-      }
+      final detail = await repository.getDailyContactBook(date: event.date);
+      emit(ContactBookDetailLoaded(
+        detail: detail,
+        selectedDate: event.date,
+      ));
+    } on ApiException catch (e) {
+      emit(ContactBookError(e.message));
     } catch (e) {
       emit(ContactBookError(e.toString()));
     }
@@ -65,6 +61,8 @@ class ContactBookBloc extends Bloc<ContactBookEvent, ContactBookState> {
   ) async {
     if (state is ContactBookListLoaded) {
       add(LoadContactBooks(date: event.date));
+    } else if (state is ContactBookDetailLoaded) {
+      add(LoadDailyContactBook(date: event.date));
     }
   }
 
@@ -80,6 +78,27 @@ class ContactBookBloc extends Bloc<ContactBookEvent, ContactBookState> {
 
       // 重新載入日聯絡簿資料
       add(LoadDailyContactBook(date: event.date));
+    } on ApiException catch (e) {
+      emit(ContactBookError(e.message));
+    } catch (e) {
+      emit(ContactBookError(e.toString()));
+    }
+  }
+
+  Future<void> _onReplyContactBook(
+    ReplyContactBook event,
+    Emitter<ContactBookState> emit,
+  ) async {
+    try {
+      await repository.replyContactBook(
+        date: event.date,
+        message: event.message,
+      );
+
+      // 重新載入聯絡簿詳細資料
+      add(LoadDailyContactBook(date: event.date));
+    } on ApiException catch (e) {
+      emit(ContactBookError(e.message));
     } catch (e) {
       emit(ContactBookError(e.toString()));
     }

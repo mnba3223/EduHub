@@ -11,12 +11,10 @@ _$ApiResponseImpl<T> _$$ApiResponseImplFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     _$ApiResponseImpl<T>(
-      status: json['status'] as String,
+      code: (json['code'] as num).toInt(),
+      success: json['success'] as bool,
       message: json['message'] as String,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
-      error: json['error'] == null
-          ? null
-          : ApiError.fromJson(json['error'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ApiResponseImplToJson<T>(
@@ -24,10 +22,10 @@ Map<String, dynamic> _$$ApiResponseImplToJson<T>(
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
-      'status': instance.status,
+      'code': instance.code,
+      'success': instance.success,
       'message': instance.message,
       'data': _$nullableGenericToJson(instance.data, toJsonT),
-      'error': instance.error,
     };
 
 T? _$nullableGenericFromJson<T>(

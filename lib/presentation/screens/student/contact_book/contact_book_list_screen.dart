@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:edutec_hub/data/models/contact_book/contact_book.dart';
 
@@ -29,22 +31,94 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
     return BlocBuilder<ContactBookBloc, ContactBookState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          appBar: _buildTopBar(context, state),
+          // body: NestedScrollView(
+          //   headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          //     _buildSliverTopBar(context, state),
+          //   ],
+          body: _buildBody(context, state),
+          // ),
+        );
+      },
+    );
+  }
+
+  PreferredSizeWidget _buildTopBar(
+      BuildContext context, ContactBookState state) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(130.h),
+      child: FixedHeightSmoothTopBarV2(
+        height: 130.h,
+        child: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('聯絡簿'),
-                if (state is ContactBookListLoaded)
+                Text(
+                  'contact_book'.tr(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (state is ContactBookListLoaded) ...[
+                  SizedBox(height: 4.h),
                   Text(
                     state.contactBooks.first.studentInfo.name,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
                   ),
+                ],
               ],
             ),
           ),
-          body: _buildBody(context, state),
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSliverTopBar(BuildContext context, ContactBookState state) {
+    return SliverAppBar(
+      expandedHeight: 130.h,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FixedHeightSmoothTopBarV2(
+        height: 130.h,
+        child: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'contact_book'.tr(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (state is ContactBookListLoaded) ...[
+                  SizedBox(height: 4.h),
+                  Text(
+                    state.contactBooks.first.studentInfo.name,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -66,7 +140,7 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
                       LoadContactBooks(date: DateTime.now()),
                     );
               },
-              child: const Text('重試'),
+              child: Text('retry'.tr()),
             ),
           ],
         ),
@@ -172,13 +246,11 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
 
   Widget _buildSelectedDateContent(
       BuildContext context, ContactBookListLoaded state) {
-    // 找到選中日期的聯絡簿
     final selectedBook = state.contactBooks.firstWhere(
       (book) => isSameDay(book.calendar.currentDate, state.selectedDate),
       orElse: () => state.contactBooks.first,
     );
 
-    // 檢查是否有可用的預覽數據
     final hasPreview = selectedBook.calendar.dates.isNotEmpty &&
         selectedBook.calendar.dates.first.preview != null;
     final preview =
@@ -194,7 +266,6 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
             '/student-contact-books/daily?date=${state.selectedDate.toIso8601String()}',
           )
               .then((_) {
-            // 返回時重新載入數據
             context.read<ContactBookBloc>().add(
                   LoadContactBooks(date: state.selectedDate),
                 );
@@ -214,7 +285,6 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            // 日期顯示
             Container(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               decoration: BoxDecoration(
@@ -222,7 +292,8 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                DateFormat('MM/dd (E)', 'zh_TW').format(state.selectedDate),
+                DateFormat('contact_book_date_format'.tr(), 'zh_TW')
+                    .format(state.selectedDate),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -279,7 +350,7 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '未簽名',
+                        'unsigned'.tr(),
                         style: TextStyle(
                           color: Colors.red.shade700,
                           fontSize: 12,
@@ -289,10 +360,10 @@ class _ContactBookListScreenState extends State<ContactBookListScreen> {
                   ),
                 ),
             ] else
-              const Expanded(
+              Expanded(
                 child: Text(
-                  '無聯絡簿資料',
-                  style: TextStyle(color: Colors.grey),
+                  'no_contact_book_data'.tr(),
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ),
           ],

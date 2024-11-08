@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'dart:developer' as developer;
@@ -216,16 +217,19 @@ class ScaffoldWithNavBarV2 extends StatelessWidget {
       return const SizedBox.shrink(); // 返回一個空的小部件而不是導航欄
     }
 
-    return CurvedNavigationBar(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      color: Colors.white,
-      buttonBackgroundColor: const Color.fromARGB(12, 0, 0, 0),
-      height: 60,
-      items: items
-          .map((item) => Icon(item.icon, size: 30, color: Colors.black54))
-          .toList(),
-      index: index,
-      onTap: (index) => _onItemTapped(index, context),
+    return Container(
+      margin: EdgeInsets.only(top: 10.sp),
+      child: CurvedNavigationBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        color: Colors.white,
+        buttonBackgroundColor: const Color.fromARGB(12, 0, 0, 0),
+        height: 60,
+        items: items
+            .map((item) => Icon(item.icon, size: 30, color: Colors.black54))
+            .toList(),
+        index: index,
+        onTap: (index) => _onItemTapped(index, context),
+      ),
     );
   }
 

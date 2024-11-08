@@ -8,7 +8,7 @@ class ContactBookDetail with _$ContactBookDetail {
   const factory ContactBookDetail({
     required BasicInfo basicInfo,
     required List<ContentItem> contents,
-    required List<Announcement> announcements,
+    required List<ContactBookAnnouncement> announcements,
     required SignatureStatus signatureStatus,
   }) = _ContactBookDetail;
 
@@ -69,16 +69,16 @@ class ImageItem with _$ImageItem {
 }
 
 @freezed
-class Announcement with _$Announcement {
-  const factory Announcement({
+class ContactBookAnnouncement with _$ContactBookAnnouncement {
+  const factory ContactBookAnnouncement({
     required String type,
     required String title,
     required String content,
     String? link,
-  }) = _Announcement;
+  }) = _ContactBookAnnouncement;
 
-  factory Announcement.fromJson(Map<String, dynamic> json) =>
-      _$AnnouncementFromJson(json);
+  factory ContactBookAnnouncement.fromJson(Map<String, dynamic> json) =>
+      _$ContactBookAnnouncementFromJson(json);
 }
 
 @freezed

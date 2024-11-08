@@ -1,3 +1,4 @@
+import 'package:edutec_hub/data/repositories/attendance_repository.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
 import 'package:edutec_hub/presentation/screens/message_board/message_board_screen.dart';
@@ -7,16 +8,17 @@ import 'package:edutec_hub/presentation/screens/student/contact_book/contact_boo
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_attendance_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/attendance/student_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/attendance/attendance_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 
 import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
-import 'package:edutec_hub/data/repositories/authRepository.dart';
+import 'package:edutec_hub/data/repositories/auth_repository.dart';
 import 'package:edutec_hub/data/repositories/payment_repository.dart';
 import 'package:edutec_hub/presentation/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/auth/studentLoginScreen.dart';
@@ -41,7 +43,8 @@ class AppRouter {
   static final _shellNavigatorKeyParent = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyTeacher = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyStudent = GlobalKey<NavigatorState>();
-  static final _signInCubit = SignInCubit(AuthRepository()); // 創建單一實例
+  static final _signInCubit =
+      SignInCubit(AuthRepository(useMock: true)); // 創建單一實例
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     routes: [
@@ -146,6 +149,7 @@ class AppRouter {
                 BlocProvider<MessageBoardCubit>(
                   create: (context) => MessageBoardCubit(),
                 ),
+
                 BlocProvider<ContactBookBloc>(
                   create: (context) => ContactBookBloc(
                     repository: ContactBookRepository(
@@ -153,6 +157,9 @@ class AppRouter {
                       useMock: true, // 或 true，取決於你的需求
                     ),
                   ),
+                ),
+                BlocProvider<MessageBoardCubit>(
+                  create: (context) => MessageBoardCubit(),
                 ),
               ],
               child: ScaffoldWithNavBarV2(child: child, role: 'student'),
@@ -225,6 +232,19 @@ class AppRouter {
               builder: (context, state) => const MessageBoardScreen(),
             ),
             //學生出席
+            // GoRoute(
+            //   path: '/student-attendance',
+            //   builder: (context, state) => const StudentAttendanceScreen(),
+            // ),
+            // GoRoute(
+            //   path: '/student-attendance',
+            //   builder: (context, state) => BlocProvider(
+            //     create: (context) => AttendanceCubit(
+            //       repository: AttendanceRepository(useMock: true),
+            //     )..loadAttendanceData(),
+            //     child: const StudentAttendanceScreen(),
+            //   ),
+            // ),
             GoRoute(
               path: '/student-attendance',
               builder: (context, state) => const StudentAttendanceScreen(),

@@ -14,7 +14,8 @@ _$ContactBookDetailImpl _$$ContactBookDetailImplFromJson(
           .map((e) => ContentItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       announcements: (json['announcements'] as List<dynamic>)
-          .map((e) => Announcement.fromJson(e as Map<String, dynamic>))
+          .map((e) =>
+              ContactBookAnnouncement.fromJson(e as Map<String, dynamic>))
           .toList(),
       signatureStatus: SignatureStatus.fromJson(
           json['signatureStatus'] as Map<String, dynamic>),
@@ -99,15 +100,17 @@ Map<String, dynamic> _$$ImageItemImplToJson(_$ImageItemImpl instance) =>
       'thumbnail': instance.thumbnail,
     };
 
-_$AnnouncementImpl _$$AnnouncementImplFromJson(Map<String, dynamic> json) =>
-    _$AnnouncementImpl(
+_$ContactBookAnnouncementImpl _$$ContactBookAnnouncementImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ContactBookAnnouncementImpl(
       type: json['type'] as String,
       title: json['title'] as String,
       content: json['content'] as String,
       link: json['link'] as String?,
     );
 
-Map<String, dynamic> _$$AnnouncementImplToJson(_$AnnouncementImpl instance) =>
+Map<String, dynamic> _$$ContactBookAnnouncementImplToJson(
+        _$ContactBookAnnouncementImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
       'title': instance.title,

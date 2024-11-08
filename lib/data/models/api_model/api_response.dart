@@ -7,10 +7,10 @@ part 'api_response.g.dart';
 @Freezed(genericArgumentFactories: true)
 class ApiResponse<T> with _$ApiResponse<T> {
   const factory ApiResponse({
-    required String status,
+    required int code,
+    required bool success,
     required String message,
     T? data,
-    ApiError? error,
   }) = _ApiResponse;
 
   factory ApiResponse.fromJson(

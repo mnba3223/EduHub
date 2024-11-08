@@ -52,3 +52,16 @@ class SignContactBook extends ContactBookEvent {
   @override
   List<Object> get props => [date, comment ?? ''];
 }
+
+class ReplyContactBook extends ContactBookEvent {
+  final DateTime date;
+  final String message;
+
+  ReplyContactBook({
+    required this.date,
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [date, message];
+}

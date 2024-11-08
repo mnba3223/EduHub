@@ -22,7 +22,8 @@ ContactBookDetail _$ContactBookDetailFromJson(Map<String, dynamic> json) {
 mixin _$ContactBookDetail {
   BasicInfo get basicInfo => throw _privateConstructorUsedError;
   List<ContentItem> get contents => throw _privateConstructorUsedError;
-  List<Announcement> get announcements => throw _privateConstructorUsedError;
+  List<ContactBookAnnouncement> get announcements =>
+      throw _privateConstructorUsedError;
   SignatureStatus get signatureStatus => throw _privateConstructorUsedError;
 
   /// Serializes this ContactBookDetail to a JSON map.
@@ -44,7 +45,7 @@ abstract class $ContactBookDetailCopyWith<$Res> {
   $Res call(
       {BasicInfo basicInfo,
       List<ContentItem> contents,
-      List<Announcement> announcements,
+      List<ContactBookAnnouncement> announcements,
       SignatureStatus signatureStatus});
 
   $BasicInfoCopyWith<$Res> get basicInfo;
@@ -83,7 +84,7 @@ class _$ContactBookDetailCopyWithImpl<$Res, $Val extends ContactBookDetail>
       announcements: null == announcements
           ? _value.announcements
           : announcements // ignore: cast_nullable_to_non_nullable
-              as List<Announcement>,
+              as List<ContactBookAnnouncement>,
       signatureStatus: null == signatureStatus
           ? _value.signatureStatus
           : signatureStatus // ignore: cast_nullable_to_non_nullable
@@ -123,7 +124,7 @@ abstract class _$$ContactBookDetailImplCopyWith<$Res>
   $Res call(
       {BasicInfo basicInfo,
       List<ContentItem> contents,
-      List<Announcement> announcements,
+      List<ContactBookAnnouncement> announcements,
       SignatureStatus signatureStatus});
 
   @override
@@ -162,7 +163,7 @@ class __$$ContactBookDetailImplCopyWithImpl<$Res>
       announcements: null == announcements
           ? _value._announcements
           : announcements // ignore: cast_nullable_to_non_nullable
-              as List<Announcement>,
+              as List<ContactBookAnnouncement>,
       signatureStatus: null == signatureStatus
           ? _value.signatureStatus
           : signatureStatus // ignore: cast_nullable_to_non_nullable
@@ -177,7 +178,7 @@ class _$ContactBookDetailImpl implements _ContactBookDetail {
   const _$ContactBookDetailImpl(
       {required this.basicInfo,
       required final List<ContentItem> contents,
-      required final List<Announcement> announcements,
+      required final List<ContactBookAnnouncement> announcements,
       required this.signatureStatus})
       : _contents = contents,
         _announcements = announcements;
@@ -195,9 +196,9 @@ class _$ContactBookDetailImpl implements _ContactBookDetail {
     return EqualUnmodifiableListView(_contents);
   }
 
-  final List<Announcement> _announcements;
+  final List<ContactBookAnnouncement> _announcements;
   @override
-  List<Announcement> get announcements {
+  List<ContactBookAnnouncement> get announcements {
     if (_announcements is EqualUnmodifiableListView) return _announcements;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_announcements);
@@ -255,7 +256,7 @@ abstract class _ContactBookDetail implements ContactBookDetail {
   const factory _ContactBookDetail(
           {required final BasicInfo basicInfo,
           required final List<ContentItem> contents,
-          required final List<Announcement> announcements,
+          required final List<ContactBookAnnouncement> announcements,
           required final SignatureStatus signatureStatus}) =
       _$ContactBookDetailImpl;
 
@@ -267,7 +268,7 @@ abstract class _ContactBookDetail implements ContactBookDetail {
   @override
   List<ContentItem> get contents;
   @override
-  List<Announcement> get announcements;
+  List<ContactBookAnnouncement> get announcements;
   @override
   SignatureStatus get signatureStatus;
 
@@ -1139,47 +1140,49 @@ abstract class _ImageItem implements ImageItem {
       throw _privateConstructorUsedError;
 }
 
-Announcement _$AnnouncementFromJson(Map<String, dynamic> json) {
-  return _Announcement.fromJson(json);
+ContactBookAnnouncement _$ContactBookAnnouncementFromJson(
+    Map<String, dynamic> json) {
+  return _ContactBookAnnouncement.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Announcement {
+mixin _$ContactBookAnnouncement {
   String get type => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
 
-  /// Serializes this Announcement to a JSON map.
+  /// Serializes this ContactBookAnnouncement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Announcement
+  /// Create a copy of ContactBookAnnouncement
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AnnouncementCopyWith<Announcement> get copyWith =>
+  $ContactBookAnnouncementCopyWith<ContactBookAnnouncement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AnnouncementCopyWith<$Res> {
-  factory $AnnouncementCopyWith(
-          Announcement value, $Res Function(Announcement) then) =
-      _$AnnouncementCopyWithImpl<$Res, Announcement>;
+abstract class $ContactBookAnnouncementCopyWith<$Res> {
+  factory $ContactBookAnnouncementCopyWith(ContactBookAnnouncement value,
+          $Res Function(ContactBookAnnouncement) then) =
+      _$ContactBookAnnouncementCopyWithImpl<$Res, ContactBookAnnouncement>;
   @useResult
   $Res call({String type, String title, String content, String? link});
 }
 
 /// @nodoc
-class _$AnnouncementCopyWithImpl<$Res, $Val extends Announcement>
-    implements $AnnouncementCopyWith<$Res> {
-  _$AnnouncementCopyWithImpl(this._value, this._then);
+class _$ContactBookAnnouncementCopyWithImpl<$Res,
+        $Val extends ContactBookAnnouncement>
+    implements $ContactBookAnnouncementCopyWith<$Res> {
+  _$ContactBookAnnouncementCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Announcement
+  /// Create a copy of ContactBookAnnouncement
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -1211,25 +1214,28 @@ class _$AnnouncementCopyWithImpl<$Res, $Val extends Announcement>
 }
 
 /// @nodoc
-abstract class _$$AnnouncementImplCopyWith<$Res>
-    implements $AnnouncementCopyWith<$Res> {
-  factory _$$AnnouncementImplCopyWith(
-          _$AnnouncementImpl value, $Res Function(_$AnnouncementImpl) then) =
-      __$$AnnouncementImplCopyWithImpl<$Res>;
+abstract class _$$ContactBookAnnouncementImplCopyWith<$Res>
+    implements $ContactBookAnnouncementCopyWith<$Res> {
+  factory _$$ContactBookAnnouncementImplCopyWith(
+          _$ContactBookAnnouncementImpl value,
+          $Res Function(_$ContactBookAnnouncementImpl) then) =
+      __$$ContactBookAnnouncementImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String type, String title, String content, String? link});
 }
 
 /// @nodoc
-class __$$AnnouncementImplCopyWithImpl<$Res>
-    extends _$AnnouncementCopyWithImpl<$Res, _$AnnouncementImpl>
-    implements _$$AnnouncementImplCopyWith<$Res> {
-  __$$AnnouncementImplCopyWithImpl(
-      _$AnnouncementImpl _value, $Res Function(_$AnnouncementImpl) _then)
+class __$$ContactBookAnnouncementImplCopyWithImpl<$Res>
+    extends _$ContactBookAnnouncementCopyWithImpl<$Res,
+        _$ContactBookAnnouncementImpl>
+    implements _$$ContactBookAnnouncementImplCopyWith<$Res> {
+  __$$ContactBookAnnouncementImplCopyWithImpl(
+      _$ContactBookAnnouncementImpl _value,
+      $Res Function(_$ContactBookAnnouncementImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Announcement
+  /// Create a copy of ContactBookAnnouncement
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -1239,7 +1245,7 @@ class __$$AnnouncementImplCopyWithImpl<$Res>
     Object? content = null,
     Object? link = freezed,
   }) {
-    return _then(_$AnnouncementImpl(
+    return _then(_$ContactBookAnnouncementImpl(
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -1262,15 +1268,15 @@ class __$$AnnouncementImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AnnouncementImpl implements _Announcement {
-  const _$AnnouncementImpl(
+class _$ContactBookAnnouncementImpl implements _ContactBookAnnouncement {
+  const _$ContactBookAnnouncementImpl(
       {required this.type,
       required this.title,
       required this.content,
       this.link});
 
-  factory _$AnnouncementImpl.fromJson(Map<String, dynamic> json) =>
-      _$$AnnouncementImplFromJson(json);
+  factory _$ContactBookAnnouncementImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactBookAnnouncementImplFromJson(json);
 
   @override
   final String type;
@@ -1283,14 +1289,14 @@ class _$AnnouncementImpl implements _Announcement {
 
   @override
   String toString() {
-    return 'Announcement(type: $type, title: $title, content: $content, link: $link)';
+    return 'ContactBookAnnouncement(type: $type, title: $title, content: $content, link: $link)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AnnouncementImpl &&
+            other is _$ContactBookAnnouncementImpl &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
@@ -1301,31 +1307,32 @@ class _$AnnouncementImpl implements _Announcement {
   @override
   int get hashCode => Object.hash(runtimeType, type, title, content, link);
 
-  /// Create a copy of Announcement
+  /// Create a copy of ContactBookAnnouncement
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$AnnouncementImplCopyWith<_$AnnouncementImpl> get copyWith =>
-      __$$AnnouncementImplCopyWithImpl<_$AnnouncementImpl>(this, _$identity);
+  _$$ContactBookAnnouncementImplCopyWith<_$ContactBookAnnouncementImpl>
+      get copyWith => __$$ContactBookAnnouncementImplCopyWithImpl<
+          _$ContactBookAnnouncementImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AnnouncementImplToJson(
+    return _$$ContactBookAnnouncementImplToJson(
       this,
     );
   }
 }
 
-abstract class _Announcement implements Announcement {
-  const factory _Announcement(
+abstract class _ContactBookAnnouncement implements ContactBookAnnouncement {
+  const factory _ContactBookAnnouncement(
       {required final String type,
       required final String title,
       required final String content,
-      final String? link}) = _$AnnouncementImpl;
+      final String? link}) = _$ContactBookAnnouncementImpl;
 
-  factory _Announcement.fromJson(Map<String, dynamic> json) =
-      _$AnnouncementImpl.fromJson;
+  factory _ContactBookAnnouncement.fromJson(Map<String, dynamic> json) =
+      _$ContactBookAnnouncementImpl.fromJson;
 
   @override
   String get type;
@@ -1336,12 +1343,12 @@ abstract class _Announcement implements Announcement {
   @override
   String? get link;
 
-  /// Create a copy of Announcement
+  /// Create a copy of ContactBookAnnouncement
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AnnouncementImplCopyWith<_$AnnouncementImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ContactBookAnnouncementImplCopyWith<_$ContactBookAnnouncementImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 SignatureStatus _$SignatureStatusFromJson(Map<String, dynamic> json) {
