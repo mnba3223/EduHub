@@ -1,25 +1,26 @@
-import 'package:edutec_hub/data/repositories/attendance_repository.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
+import 'package:edutec_hub/data/repositories/exam_repository.dart';
 import 'package:edutec_hub/data/repositories/homework_repository.dart';
 import 'package:edutec_hub/presentation/screens/message_board/message_board_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/booking/student_booking_history_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_list_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_screen.dart';
+
+import 'package:edutec_hub/presentation/screens/student/exam/exam_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/attendance/student_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
-import 'package:edutec_hub/state_management/cubit/attendance/attendance_cubit.dart';
+
+import 'package:edutec_hub/state_management/cubit/exam/exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 
-import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/data/repositories/auth_repository.dart';
-import 'package:edutec_hub/data/repositories/payment_repository.dart';
+
 import 'package:edutec_hub/presentation/screens/auth/parentLoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/auth/studentLoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_announcement_screen.dart';
@@ -263,6 +264,15 @@ class AppRouter {
                   },
                 ),
               ],
+            ),
+            GoRoute(
+              path: '/student-exam',
+              builder: (context, state) => BlocProvider(
+                create: (context) => ExamCubit(
+                  ExamRepository(useMock: true),
+                )..loadExams(),
+                child: const ExamScreen(),
+              ),
             ),
           ]),
     ],

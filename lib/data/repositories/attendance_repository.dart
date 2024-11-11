@@ -309,21 +309,6 @@ class AttendanceRepository {
     ];
   }
 
-  AttendanceStatus _getRandomStatus() {
-    final values = AttendanceStatus.values;
-    return values[DateTime.now().millisecond % values.length];
-  }
-
-  LeaveRequestRecord _getMockLeaveRequest() {
-    return LeaveRequestRecord(
-      id: 'leave_${DateTime.now().millisecond}',
-      attendanceRecordId: 'record_1',
-      reason: '身體不適需要看醫生',
-      requestTime: DateTime.now().subtract(const Duration(days: 1)),
-      status: LeaveStatus.pending,
-    );
-  }
-
   List<LeaveRequestRecord> _getMockLeaveRequests() {
     return List.generate(
       3,

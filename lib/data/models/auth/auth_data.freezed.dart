@@ -22,15 +22,15 @@ AuthData _$AuthDataFromJson(Map<String, dynamic> json) {
 mixin _$AuthData {
   String? get avatar => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String get nickname => throw _privateConstructorUsedError;
-  int get userid => throw _privateConstructorUsedError;
-  List<String> get roles => throw _privateConstructorUsedError;
+  String? get nickname => throw _privateConstructorUsedError;
+  @JsonKey(name: 'id')
+  int get userId => throw _privateConstructorUsedError;
+  String get roles => throw _privateConstructorUsedError;
   List<String> get permissions => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
   DateTime get expires => throw _privateConstructorUsedError;
   DateTime get refreshTokenExpires => throw _privateConstructorUsedError;
-  int? get userId => throw _privateConstructorUsedError;
 
   /// Serializes this AuthData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,15 +50,14 @@ abstract class $AuthDataCopyWith<$Res> {
   $Res call(
       {String? avatar,
       String username,
-      String nickname,
-      int userid,
-      List<String> roles,
+      String? nickname,
+      @JsonKey(name: 'id') int userId,
+      String roles,
       List<String> permissions,
       String accessToken,
       String refreshToken,
       DateTime expires,
-      DateTime refreshTokenExpires,
-      int? userId});
+      DateTime refreshTokenExpires});
 }
 
 /// @nodoc
@@ -78,15 +77,14 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
   $Res call({
     Object? avatar = freezed,
     Object? username = null,
-    Object? nickname = null,
-    Object? userid = null,
+    Object? nickname = freezed,
+    Object? userId = null,
     Object? roles = null,
     Object? permissions = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
     Object? refreshTokenExpires = null,
-    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       avatar: freezed == avatar
@@ -97,18 +95,18 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: null == nickname
+      nickname: freezed == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      userid: null == userid
-          ? _value.userid
-          : userid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int,
       roles: null == roles
           ? _value.roles
           : roles // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String,
       permissions: null == permissions
           ? _value.permissions
           : permissions // ignore: cast_nullable_to_non_nullable
@@ -129,10 +127,6 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
           ? _value.refreshTokenExpires
           : refreshTokenExpires // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
@@ -148,15 +142,14 @@ abstract class _$$AuthDataImplCopyWith<$Res>
   $Res call(
       {String? avatar,
       String username,
-      String nickname,
-      int userid,
-      List<String> roles,
+      String? nickname,
+      @JsonKey(name: 'id') int userId,
+      String roles,
       List<String> permissions,
       String accessToken,
       String refreshToken,
       DateTime expires,
-      DateTime refreshTokenExpires,
-      int? userId});
+      DateTime refreshTokenExpires});
 }
 
 /// @nodoc
@@ -174,15 +167,14 @@ class __$$AuthDataImplCopyWithImpl<$Res>
   $Res call({
     Object? avatar = freezed,
     Object? username = null,
-    Object? nickname = null,
-    Object? userid = null,
+    Object? nickname = freezed,
+    Object? userId = null,
     Object? roles = null,
     Object? permissions = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
     Object? refreshTokenExpires = null,
-    Object? userId = freezed,
   }) {
     return _then(_$AuthDataImpl(
       avatar: freezed == avatar
@@ -193,18 +185,18 @@ class __$$AuthDataImplCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: null == nickname
+      nickname: freezed == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      userid: null == userid
-          ? _value.userid
-          : userid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int,
       roles: null == roles
-          ? _value._roles
+          ? _value.roles
           : roles // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String,
       permissions: null == permissions
           ? _value._permissions
           : permissions // ignore: cast_nullable_to_non_nullable
@@ -225,10 +217,6 @@ class __$$AuthDataImplCopyWithImpl<$Res>
           ? _value.refreshTokenExpires
           : refreshTokenExpires // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
@@ -239,17 +227,15 @@ class _$AuthDataImpl implements _AuthData {
   const _$AuthDataImpl(
       {this.avatar,
       required this.username,
-      required this.nickname,
-      required this.userid,
-      required final List<String> roles,
+      this.nickname,
+      @JsonKey(name: 'id') required this.userId,
+      required this.roles,
       required final List<String> permissions,
       required this.accessToken,
       required this.refreshToken,
       required this.expires,
-      required this.refreshTokenExpires,
-      this.userId})
-      : _roles = roles,
-        _permissions = permissions;
+      required this.refreshTokenExpires})
+      : _permissions = permissions;
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthDataImplFromJson(json);
@@ -259,17 +245,12 @@ class _$AuthDataImpl implements _AuthData {
   @override
   final String username;
   @override
-  final String nickname;
+  final String? nickname;
   @override
-  final int userid;
-  final List<String> _roles;
+  @JsonKey(name: 'id')
+  final int userId;
   @override
-  List<String> get roles {
-    if (_roles is EqualUnmodifiableListView) return _roles;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_roles);
-  }
-
+  final String roles;
   final List<String> _permissions;
   @override
   List<String> get permissions {
@@ -286,12 +267,10 @@ class _$AuthDataImpl implements _AuthData {
   final DateTime expires;
   @override
   final DateTime refreshTokenExpires;
-  @override
-  final int? userId;
 
   @override
   String toString() {
-    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userid: $userid, roles: $roles, permissions: $permissions, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires, userId: $userId)';
+    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userId: $userId, roles: $roles, permissions: $permissions, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires)';
   }
 
   @override
@@ -304,8 +283,8 @@ class _$AuthDataImpl implements _AuthData {
                 other.username == username) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
-            (identical(other.userid, userid) || other.userid == userid) &&
-            const DeepCollectionEquality().equals(other._roles, _roles) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.roles, roles) || other.roles == roles) &&
             const DeepCollectionEquality()
                 .equals(other._permissions, _permissions) &&
             (identical(other.accessToken, accessToken) ||
@@ -314,8 +293,7 @@ class _$AuthDataImpl implements _AuthData {
                 other.refreshToken == refreshToken) &&
             (identical(other.expires, expires) || other.expires == expires) &&
             (identical(other.refreshTokenExpires, refreshTokenExpires) ||
-                other.refreshTokenExpires == refreshTokenExpires) &&
-            (identical(other.userId, userId) || other.userId == userId));
+                other.refreshTokenExpires == refreshTokenExpires));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -325,14 +303,13 @@ class _$AuthDataImpl implements _AuthData {
       avatar,
       username,
       nickname,
-      userid,
-      const DeepCollectionEquality().hash(_roles),
+      userId,
+      roles,
       const DeepCollectionEquality().hash(_permissions),
       accessToken,
       refreshToken,
       expires,
-      refreshTokenExpires,
-      userId);
+      refreshTokenExpires);
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
@@ -354,15 +331,14 @@ abstract class _AuthData implements AuthData {
   const factory _AuthData(
       {final String? avatar,
       required final String username,
-      required final String nickname,
-      required final int userid,
-      required final List<String> roles,
+      final String? nickname,
+      @JsonKey(name: 'id') required final int userId,
+      required final String roles,
       required final List<String> permissions,
       required final String accessToken,
       required final String refreshToken,
       required final DateTime expires,
-      required final DateTime refreshTokenExpires,
-      final int? userId}) = _$AuthDataImpl;
+      required final DateTime refreshTokenExpires}) = _$AuthDataImpl;
 
   factory _AuthData.fromJson(Map<String, dynamic> json) =
       _$AuthDataImpl.fromJson;
@@ -372,11 +348,12 @@ abstract class _AuthData implements AuthData {
   @override
   String get username;
   @override
-  String get nickname;
+  String? get nickname;
   @override
-  int get userid;
+  @JsonKey(name: 'id')
+  int get userId;
   @override
-  List<String> get roles;
+  String get roles;
   @override
   List<String> get permissions;
   @override
@@ -387,8 +364,6 @@ abstract class _AuthData implements AuthData {
   DateTime get expires;
   @override
   DateTime get refreshTokenExpires;
-  @override
-  int? get userId;
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.

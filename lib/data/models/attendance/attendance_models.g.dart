@@ -39,6 +39,7 @@ Map<String, dynamic> _$$AttendanceCourseRecordImplToJson(
 
 const _$AttendanceStatusEnumMap = {
   AttendanceStatus.present: 'present',
+  AttendanceStatus.notAttended: 'notAttended',
   AttendanceStatus.absent: 'absent',
   AttendanceStatus.late: 'late',
   AttendanceStatus.leave: 'leave',

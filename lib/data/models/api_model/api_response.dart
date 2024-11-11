@@ -24,6 +24,8 @@ class ApiResponse<T> with _$ApiResponse<T> {
 class ApiError with _$ApiError {
   const factory ApiError({
     required String code,
+    required bool success,
+    required String message,
     required ErrorDetails details,
   }) = _ApiError;
 

@@ -179,3 +179,25 @@ please_enter_leave_reason,Please enter leave reason,請輸入請假原因
 leave_request_submitted,Leave request submitted,請假申請已提交
 leave_request_failed,Leave request failed: {0},請假申請失敗: {0}
 not_attended,Not Attended,未出席
+
+
+# Exam System
+exam_records,Exam Records,考試紀錄,考试记录,試験記録
+exam_details,Exam Details,考試詳情,考试详情,試験詳細
+exam_subject,Exam Subject,考試科目,考试科目,試験科目
+exam_time,Exam Time,考試時間,考试时间,試験時間
+exam_location,Exam Location,考試地點,考试地点,試験会場
+exam_description,Exam Description,考試說明,考试说明,試験説明
+required_items,Required Items,攜帶物品,携带物品,持ち物
+exam_notes,Important Notes,注意事項,注意事项,注意事項
+no_exam_records,No Exam Records,沒有考試紀錄,没有考试记录,試験記録なし
+upcoming,Upcoming,即將到來,即将到来,近日
+completed,Completed,已完成,已完成,完了
+confirm_completion,Confirm Completion,確認完成,确认完成,完了確認
+exam_complete_confirm,Confirm exam completion,確認完成考試,确认完成考试,試験完了確認
+please_arrive_early,Please arrive 10 minutes early,請提前10分鐘到達考場,请提前10分钟到达考场,10分前に到着してください
+no_phones_allowed,No phones allowed,請勿攜帶手機,请勿携带手机,携帯電話持込禁止
+bring_student_id,Please bring student ID,請攜帶學生證,请携带学生证,学生証を持参してください
+stationery,Stationery,文具,文具,文房具
+calculator,Calculator,計算機,计算器,計算機
+student_id,Student ID,學生證,学生证,学生証

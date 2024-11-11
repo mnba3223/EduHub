@@ -230,6 +230,8 @@ ApiError _$ApiErrorFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApiError {
   String get code => throw _privateConstructorUsedError;
+  bool get success => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   ErrorDetails get details => throw _privateConstructorUsedError;
 
   /// Serializes this ApiError to a JSON map.
@@ -247,7 +249,7 @@ abstract class $ApiErrorCopyWith<$Res> {
   factory $ApiErrorCopyWith(ApiError value, $Res Function(ApiError) then) =
       _$ApiErrorCopyWithImpl<$Res, ApiError>;
   @useResult
-  $Res call({String code, ErrorDetails details});
+  $Res call({String code, bool success, String message, ErrorDetails details});
 
   $ErrorDetailsCopyWith<$Res> get details;
 }
@@ -268,12 +270,22 @@ class _$ApiErrorCopyWithImpl<$Res, $Val extends ApiError>
   @override
   $Res call({
     Object? code = null,
+    Object? success = null,
+    Object? message = null,
     Object? details = null,
   }) {
     return _then(_value.copyWith(
       code: null == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
+              as String,
+      success: null == success
+          ? _value.success
+          : success // ignore: cast_nullable_to_non_nullable
+              as bool,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String,
       details: null == details
           ? _value.details
@@ -301,7 +313,7 @@ abstract class _$$ApiErrorImplCopyWith<$Res>
       __$$ApiErrorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String code, ErrorDetails details});
+  $Res call({String code, bool success, String message, ErrorDetails details});
 
   @override
   $ErrorDetailsCopyWith<$Res> get details;
@@ -321,12 +333,22 @@ class __$$ApiErrorImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? code = null,
+    Object? success = null,
+    Object? message = null,
     Object? details = null,
   }) {
     return _then(_$ApiErrorImpl(
       code: null == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
+              as String,
+      success: null == success
+          ? _value.success
+          : success // ignore: cast_nullable_to_non_nullable
+              as bool,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String,
       details: null == details
           ? _value.details
@@ -339,7 +361,11 @@ class __$$ApiErrorImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ApiErrorImpl implements _ApiError {
-  const _$ApiErrorImpl({required this.code, required this.details});
+  const _$ApiErrorImpl(
+      {required this.code,
+      required this.success,
+      required this.message,
+      required this.details});
 
   factory _$ApiErrorImpl.fromJson(Map<String, dynamic> json) =>
       _$$ApiErrorImplFromJson(json);
@@ -347,11 +373,15 @@ class _$ApiErrorImpl implements _ApiError {
   @override
   final String code;
   @override
+  final bool success;
+  @override
+  final String message;
+  @override
   final ErrorDetails details;
 
   @override
   String toString() {
-    return 'ApiError(code: $code, details: $details)';
+    return 'ApiError(code: $code, success: $success, message: $message, details: $details)';
   }
 
   @override
@@ -360,12 +390,14 @@ class _$ApiErrorImpl implements _ApiError {
         (other.runtimeType == runtimeType &&
             other is _$ApiErrorImpl &&
             (identical(other.code, code) || other.code == code) &&
+            (identical(other.success, success) || other.success == success) &&
+            (identical(other.message, message) || other.message == message) &&
             (identical(other.details, details) || other.details == details));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, code, details);
+  int get hashCode => Object.hash(runtimeType, code, success, message, details);
 
   /// Create a copy of ApiError
   /// with the given fields replaced by the non-null parameter values.
@@ -386,6 +418,8 @@ class _$ApiErrorImpl implements _ApiError {
 abstract class _ApiError implements ApiError {
   const factory _ApiError(
       {required final String code,
+      required final bool success,
+      required final String message,
       required final ErrorDetails details}) = _$ApiErrorImpl;
 
   factory _ApiError.fromJson(Map<String, dynamic> json) =
@@ -393,6 +427,10 @@ abstract class _ApiError implements ApiError {
 
   @override
   String get code;
+  @override
+  bool get success;
+  @override
+  String get message;
   @override
   ErrorDetails get details;
 

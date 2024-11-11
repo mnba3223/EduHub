@@ -73,7 +73,7 @@ class SignInCubit extends Cubit<SignInState> {
       }
 
       // 使用第一個角色作為主要角色
-      final userRole = _parseRole(roles.first);
+      final userRole = _parseRole(roles);
 
       // 更新全局會話狀態
       UserSession.instance.setSession(

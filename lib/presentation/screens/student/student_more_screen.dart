@@ -54,7 +54,8 @@ class StudentMoreScreen extends StatelessWidget {
             activate: true),
         _buildListItem(context, Icons.settings, 'setting'.tr(), '/settings'),
         _buildListItem(context, Icons.assignment, 'homework'.tr(), '/homework'),
-        _buildListItem(context, Icons.school, 'learning'.tr(), '/learning'),
+        _buildListItem(context, Icons.school, 'exam'.tr(), '/student-exam',
+            activate: true),
         _buildListItem(context, Icons.picture_as_pdf, 'PP'.tr(), '/pp'),
         _buildListItem(context, Icons.description, 'T&C'.tr(), '/terms'),
         _buildListItem(

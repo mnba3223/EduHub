@@ -43,12 +43,16 @@ Object? _$nullableGenericToJson<T>(
 _$ApiErrorImpl _$$ApiErrorImplFromJson(Map<String, dynamic> json) =>
     _$ApiErrorImpl(
       code: json['code'] as String,
+      success: json['success'] as bool,
+      message: json['message'] as String,
       details: ErrorDetails.fromJson(json['details'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ApiErrorImplToJson(_$ApiErrorImpl instance) =>
     <String, dynamic>{
       'code': instance.code,
+      'success': instance.success,
+      'message': instance.message,
       'details': instance.details,
     };
 

@@ -3,6 +3,7 @@ import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_exception.freezed.dart';
+part 'app_exception.g.dart';
 
 @freezed
 class AppException with _$AppException {

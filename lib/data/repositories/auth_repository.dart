@@ -79,7 +79,7 @@ class AuthRepository {
         avatar: "https://avatars.githubusercontent.com/u/44761321",
         username: userId,
         nickname: "測試用戶",
-        roles: ["student"],
+        roles: "student",
         permissions: ["*:*:*"],
         accessToken:
             "mock_access_token_${DateTime.now().millisecondsSinceEpoch}",
@@ -88,7 +88,7 @@ class AuthRepository {
         expires: DateTime.now().add(const Duration(hours: 1)),
         refreshTokenExpires: DateTime.now().add(const Duration(hours: 2)),
         userId: 1001,
-        userid: 1,
+        // userid: 1,
       ),
     );
   }
