@@ -1,7 +1,7 @@
 import 'package:edutec_hub/data/network/config/api_config.dart';
 import 'package:edutec_hub/state_management/blocs/announcements_state.dart';
 import 'package:edutec_hub/state_management/cubit/announcement_cubit.dart';
-import 'package:edutec_hub/data/models/Announcement.dart';
+import 'package:edutec_hub/data/models/announcement/announcement.dart';
 import 'package:edutec_hub/utils/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,7 +119,7 @@ class StudentAnnouncementsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Teacher ID: ${announcement.teacherId}',
+              '${announcement.title}',
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,

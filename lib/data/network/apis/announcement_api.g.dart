@@ -22,54 +22,19 @@ class _AnnouncementApi implements AnnouncementApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<Announcement>> getAnnouncements() async {
+  Future<ApiResponse<List<Announcement>>> getAnnouncements() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Announcement>>(Options(
+    final _options = _setStreamType<ApiResponse<List<Announcement>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/School',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Announcement> _value;
-    try {
-      _value = _result.data!
-          .map((dynamic i) => Announcement.fromJson(i as Map<String, dynamic>))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<Announcement> getAnnouncementById(int id) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Announcement>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/api/School/${id}',
+          '/api/Announcement',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -79,9 +44,17 @@ class _AnnouncementApi implements AnnouncementApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Announcement _value;
+    late ApiResponse<List<Announcement>> _value;
     try {
-      _value = Announcement.fromJson(_result.data!);
+      _value = ApiResponse<List<Announcement>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<Announcement>(
+                    (i) => Announcement.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -90,19 +63,19 @@ class _AnnouncementApi implements AnnouncementApi {
   }
 
   @override
-  Future<List<Announcement>> searchAnnouncements(String keyword) async {
+  Future<ApiResponse<Announcement>> getAnnouncementById(int id) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'keyword': keyword};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Announcement>>(Options(
+    final _options = _setStreamType<ApiResponse<Announcement>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/School',
+          '/api/Announcement/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -111,12 +84,55 @@ class _AnnouncementApi implements AnnouncementApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Announcement> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<Announcement> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Announcement.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = ApiResponse<Announcement>.fromJson(
+        _result.data!,
+        (json) => Announcement.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<Announcement>>> searchAnnouncements(
+      String keyword) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'keyword': keyword};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<Announcement>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/Announcement',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<Announcement>> _value;
+    try {
+      _value = ApiResponse<List<Announcement>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<Announcement>(
+                    (i) => Announcement.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

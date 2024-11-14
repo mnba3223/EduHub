@@ -10,6 +10,7 @@ import 'package:edutec_hub/presentation/screens/student/exam/exam_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/attendance/student_attendance_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/homework/student_homwork_submit_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
@@ -44,8 +45,7 @@ class AppRouter {
   static final _shellNavigatorKeyParent = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyTeacher = GlobalKey<NavigatorState>();
   static final _shellNavigatorKeyStudent = GlobalKey<NavigatorState>();
-  static final _signInCubit =
-      SignInCubit(AuthRepository(useMock: true)); // 創建單一實例
+  static final _signInCubit = SignInCubit(AuthRepository()); // 創建單一實例
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     routes: [
@@ -144,7 +144,7 @@ class AppRouter {
                 ),
                 BlocProvider<HomeworkCubit>(
                   create: (context) => HomeworkCubit(
-                    homeworkRepository: context.read<HomeworkRepository>(),
+                    repository: context.read<HomeworkRepository>(),
                   )..loadHomeworks(),
                 ),
                 BlocProvider<MessageBoardCubit>(
@@ -227,6 +227,21 @@ class AppRouter {
                   },
                 ),
               ],
+            ),
+            GoRoute(
+              name: 'student-homework-submit',
+              path: '/homework/:homework_id/submit',
+              builder: (context, state) {
+                final homeworkId =
+                    int.parse(state.pathParameters['homework_id']!);
+                final extra = state.extra as Map<String, dynamic>;
+
+                return HomeworkSubmitScreen(
+                  homeworkId: homeworkId,
+                  submissionId: extra['submissionId'] as int,
+                  studentId: extra['studentId'] as int,
+                );
+              },
             ),
             GoRoute(
               path: '/message-board',

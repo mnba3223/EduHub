@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:edutec_hub/data/models/Announcement.dart';
+import 'package:edutec_hub/data/models/announcement/announcement.dart';
 import 'package:edutec_hub/data/models/contact_book/contact_book_detail.dart';
 import 'package:flutter/material.dart';
 

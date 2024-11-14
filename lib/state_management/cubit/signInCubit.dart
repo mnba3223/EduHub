@@ -67,7 +67,7 @@ class SignInCubit extends Cubit<SignInState> {
       }
 
       // 從回傳資料中取得角色
-      final roles = authData.data!.roles;
+      final roles = authData.data!.usertype;
       if (roles.isEmpty) {
         throw ApiException('登入失敗：未設定用戶角色');
       }
@@ -75,17 +75,20 @@ class SignInCubit extends Cubit<SignInState> {
       // 使用第一個角色作為主要角色
       final userRole = _parseRole(roles);
 
-      // 更新全局會話狀態
       UserSession.instance.setSession(
-        userId: authData.data!.userId ?? 0,
-        token: authData.data!.accessToken,
+        authData: authData.data!,
         role: userRole,
       );
-
+      // 获取角色特定 ID
+      final roleData = await _authRepository.getRoleData(
+        userId: int.parse(authData.data!.userId),
+        role: userRole,
+      );
+      UserSession.instance.setRoleId(roleData.roleId);
       emit(SignInSuccess(
         jwtToken: authData.data!.accessToken,
         role: userRole,
-        userId: authData.data!.userId ?? 0,
+        userId: int.tryParse(authData.data!.userId) ?? 0,
       ));
     } on ApiException catch (e) {
       emit(SignInFailure(e.message));

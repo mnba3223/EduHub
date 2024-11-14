@@ -1,27 +1,42 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:edutec_hub/data/models/card_list.dart';
-import 'package:edutec_hub/data/models/student/homework.dart';
+import 'package:edutec_hub/data/repositories/silder_repository.dart';
+
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/card/card.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/slider.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
+import 'package:edutec_hub/state_management/cubit/silder/silder_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/silder/slider_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
-class StudentHomeScreen extends StatefulWidget {
+class StudentHomeScreen extends StatelessWidget {
   @override
-  State<StudentHomeScreen> createState() => _StudentHomeScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SliderCubit(
+        repository: ImageSliderRepository(useMock: false),
+      )..loadSliders(),
+      child: StudentHomeContent(),
+    );
+  }
 }
 
-class _StudentHomeScreenState extends State<StudentHomeScreen> {
+class StudentHomeContent extends StatefulWidget {
+  @override
+  State<StudentHomeContent> createState() => _StudentHomeContentState();
+}
+
+class _StudentHomeContentState extends State<StudentHomeContent> {
   @override
   void initState() {
-    context.read<HomeworkCubit>().loadHomeworks();
     super.initState();
+    context.read<HomeworkCubit>().loadHomeworks();
+    // context.read<SliderCubit>().loadSliders();
   }
 
   @override
@@ -33,7 +48,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           Expanded(
             child: ListView(
               children: [
-                CustomCarouselWithIndicator(),
+                _buildImageSlider(),
                 _buildTodaysCourse(),
                 _buildMyCourse(),
                 _buildContactBook(),
@@ -43,6 +58,48 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildImageSlider() {
+    return BlocBuilder<SliderCubit, SliderState>(
+      buildWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.sliders != current.sliders ||
+          previous.error != current.error,
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (state.error != null) {
+          return SizedBox(
+            height: 200,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(state.error!),
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<SliderCubit>().refreshSliders(),
+                    child: const Text('重试'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return state.sliders.isEmpty
+            ? const SizedBox()
+            : SlidersContainer(
+                sliders: state.sliders,
+              );
+      },
     );
   }
 
@@ -268,7 +325,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               return Column(
                 children: displayHomeworks.map((homework) {
                   final daysLeft =
-                      homework.dueDate.difference(DateTime.now()).inDays;
+                      homework.endTime.difference(DateTime.now()).inDays;
 
                   return Container(
                     margin: EdgeInsets.only(bottom: 8.h),
@@ -286,7 +343,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                       onTap: () {
                         context.pushNamed(
                           'student-homework-detail',
-                          pathParameters: {'id': homework.id.toString()},
+                          pathParameters: {
+                            'id': homework.homeworkId.toString()
+                          },
                         );
                       },
                       child: Row(
@@ -311,7 +370,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  homework.courseName,
+                                  homework.lessonTitle,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: Colors.grey[600],

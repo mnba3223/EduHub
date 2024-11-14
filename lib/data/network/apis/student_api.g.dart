@@ -59,19 +59,19 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<ApiResponse<List<Homework>>> getHomeworks(String studentId) async {
+  Future<ApiResponse<List<Student>>> getStudentByUserId(int userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<Homework>>>(Options(
+    final _options = _setStreamType<ApiResponse<List<Student>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/HomeWork/submissions/student/${studentId}',
+          '/api/Student/user/${userId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -81,14 +81,14 @@ class _StudentApi implements StudentApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<Homework>> _value;
+    late ApiResponse<List<Student>> _value;
     try {
-      _value = ApiResponse<List<Homework>>.fromJson(
+      _value = ApiResponse<List<Student>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                .map<Homework>(
-                    (i) => Homework.fromJson(i as Map<String, dynamic>))
+                .map<Student>(
+                    (i) => Student.fromJson(i as Map<String, dynamic>))
                 .toList()
             : List.empty(),
       );
@@ -100,39 +100,44 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<ApiResponse<List<Homework>>> getHomeworksByDate(
-    String studentId,
-    String date,
+  Future<ApiResponse<List<HomeworkListItem>>> getHomeworks(
+    int studentId,
+    String startTime,
+    String endTime,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startTime': startTime,
+      r'endTime': endTime,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<Homework>>>(Options(
+    final _options =
+        _setStreamType<ApiResponse<List<HomeworkListItem>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/api/HomeWork/submissions/student/date/${date}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/api/Homework/student/${studentId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<Homework>> _value;
+    late ApiResponse<List<HomeworkListItem>> _value;
     try {
-      _value = ApiResponse<List<Homework>>.fromJson(
+      _value = ApiResponse<List<HomeworkListItem>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                .map<Homework>(
-                    (i) => Homework.fromJson(i as Map<String, dynamic>))
+                .map<HomeworkListItem>(
+                    (i) => HomeworkListItem.fromJson(i as Map<String, dynamic>))
                 .toList()
             : List.empty(),
       );
@@ -144,36 +149,40 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<ApiResponse<List<Homework>>> getHomeworkDetail(String id) async {
+  Future<ApiResponse<List<HomeworkSubmission>>> getHomeworkDetail(
+    int homeworkId, {
+    required int studentId,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'student_id': studentId};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<Homework>>>(Options(
+    final _options =
+        _setStreamType<ApiResponse<List<HomeworkSubmission>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/api/HomeWork/submissions/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/api/Homework/submissions/${homeworkId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<Homework>> _value;
+    late ApiResponse<List<HomeworkSubmission>> _value;
     try {
-      _value = ApiResponse<List<Homework>>.fromJson(
+      _value = ApiResponse<List<HomeworkSubmission>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                .map<Homework>(
-                    (i) => Homework.fromJson(i as Map<String, dynamic>))
+                .map<HomeworkSubmission>((i) =>
+                    HomeworkSubmission.fromJson(i as Map<String, dynamic>))
                 .toList()
             : List.empty(),
       );
@@ -186,12 +195,12 @@ class _StudentApi implements StudentApi {
 
   @override
   Future<ApiResponse<dynamic>> submitHomework(
-    int submissionId,
-    int studentId,
-    String comment,
-    String status,
-    List<MultipartFile> files,
-  ) async {
+    int submissionId, {
+    required int studentId,
+    required String comment,
+    required String status,
+    required List<MultipartFile> files,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -208,7 +217,7 @@ class _StudentApi implements StudentApi {
       'status',
       status,
     ));
-    _data.files.addAll(files.map((i) => MapEntry('UploadedFile', i)));
+    _data.files.addAll(files.map((i) => MapEntry('files', i)));
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'PUT',
       headers: _headers,
@@ -217,7 +226,7 @@ class _StudentApi implements StudentApi {
     )
         .compose(
           _dio.options,
-          '/api/HomeWork/submissions/${submissionId}',
+          '/api/Homework/submissions/${submissionId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -484,6 +493,88 @@ class _StudentApi implements StudentApi {
       _value = ApiResponse<AttendanceCourseRecord>.fromJson(
         _result.data!,
         (json) => AttendanceCourseRecord.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<ImageSlider>>> getSliders() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<ImageSlider>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/ImageSlider/list',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<ImageSlider>> _value;
+    try {
+      _value = ApiResponse<List<ImageSlider>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<ImageSlider>(
+                    (i) => ImageSlider.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<ImageSlider>>> getSlidersByRole(String role) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<ImageSlider>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/ImageSlider/${role}/list',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<ImageSlider>> _value;
+    try {
+      _value = ApiResponse<List<ImageSlider>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<ImageSlider>(
+                    (i) => ImageSlider.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

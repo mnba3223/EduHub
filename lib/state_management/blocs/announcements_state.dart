@@ -1,4 +1,4 @@
-import 'package:edutec_hub/data/models/Announcement.dart';
+import 'package:edutec_hub/data/models/announcement/announcement.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AnnouncementsState extends Equatable {

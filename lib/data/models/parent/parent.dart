@@ -1,4 +1,4 @@
-import 'package:edutec_hub/data/models/dynamicField.dart';
+import 'package:edutec_hub/data/models/parent/dynamicField.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
 
 class Parent {

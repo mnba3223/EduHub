@@ -23,10 +23,12 @@ mixin _$AuthData {
   String? get avatar => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String? get nickname => throw _privateConstructorUsedError;
-  @JsonKey(name: 'id')
-  int get userId => throw _privateConstructorUsedError;
-  String get roles => throw _privateConstructorUsedError;
-  List<String> get permissions => throw _privateConstructorUsedError;
+  @JsonKey(name: 'userId')
+  String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: "userSpecificId")
+  int get userSpecificId => throw _privateConstructorUsedError;
+  String get usertype =>
+      throw _privateConstructorUsedError; // required List<String> permissions,
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
   DateTime get expires => throw _privateConstructorUsedError;
@@ -51,9 +53,9 @@ abstract class $AuthDataCopyWith<$Res> {
       {String? avatar,
       String username,
       String? nickname,
-      @JsonKey(name: 'id') int userId,
-      String roles,
-      List<String> permissions,
+      @JsonKey(name: 'userId') String userId,
+      @JsonKey(name: "userSpecificId") int userSpecificId,
+      String usertype,
       String accessToken,
       String refreshToken,
       DateTime expires,
@@ -79,8 +81,8 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
     Object? username = null,
     Object? nickname = freezed,
     Object? userId = null,
-    Object? roles = null,
-    Object? permissions = null,
+    Object? userSpecificId = null,
+    Object? usertype = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
@@ -102,15 +104,15 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      roles: null == roles
-          ? _value.roles
-          : roles // ignore: cast_nullable_to_non_nullable
               as String,
-      permissions: null == permissions
-          ? _value.permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      userSpecificId: null == userSpecificId
+          ? _value.userSpecificId
+          : userSpecificId // ignore: cast_nullable_to_non_nullable
+              as int,
+      usertype: null == usertype
+          ? _value.usertype
+          : usertype // ignore: cast_nullable_to_non_nullable
+              as String,
       accessToken: null == accessToken
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
@@ -143,9 +145,9 @@ abstract class _$$AuthDataImplCopyWith<$Res>
       {String? avatar,
       String username,
       String? nickname,
-      @JsonKey(name: 'id') int userId,
-      String roles,
-      List<String> permissions,
+      @JsonKey(name: 'userId') String userId,
+      @JsonKey(name: "userSpecificId") int userSpecificId,
+      String usertype,
       String accessToken,
       String refreshToken,
       DateTime expires,
@@ -169,8 +171,8 @@ class __$$AuthDataImplCopyWithImpl<$Res>
     Object? username = null,
     Object? nickname = freezed,
     Object? userId = null,
-    Object? roles = null,
-    Object? permissions = null,
+    Object? userSpecificId = null,
+    Object? usertype = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
@@ -192,15 +194,15 @@ class __$$AuthDataImplCopyWithImpl<$Res>
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      roles: null == roles
-          ? _value.roles
-          : roles // ignore: cast_nullable_to_non_nullable
               as String,
-      permissions: null == permissions
-          ? _value._permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      userSpecificId: null == userSpecificId
+          ? _value.userSpecificId
+          : userSpecificId // ignore: cast_nullable_to_non_nullable
+              as int,
+      usertype: null == usertype
+          ? _value.usertype
+          : usertype // ignore: cast_nullable_to_non_nullable
+              as String,
       accessToken: null == accessToken
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
@@ -228,14 +230,13 @@ class _$AuthDataImpl implements _AuthData {
       {this.avatar,
       required this.username,
       this.nickname,
-      @JsonKey(name: 'id') required this.userId,
-      required this.roles,
-      required final List<String> permissions,
+      @JsonKey(name: 'userId') required this.userId,
+      @JsonKey(name: "userSpecificId") required this.userSpecificId,
+      required this.usertype,
       required this.accessToken,
       required this.refreshToken,
       required this.expires,
-      required this.refreshTokenExpires})
-      : _permissions = permissions;
+      required this.refreshTokenExpires});
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthDataImplFromJson(json);
@@ -247,18 +248,14 @@ class _$AuthDataImpl implements _AuthData {
   @override
   final String? nickname;
   @override
-  @JsonKey(name: 'id')
-  final int userId;
+  @JsonKey(name: 'userId')
+  final String userId;
   @override
-  final String roles;
-  final List<String> _permissions;
+  @JsonKey(name: "userSpecificId")
+  final int userSpecificId;
   @override
-  List<String> get permissions {
-    if (_permissions is EqualUnmodifiableListView) return _permissions;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_permissions);
-  }
-
+  final String usertype;
+// required List<String> permissions,
   @override
   final String accessToken;
   @override
@@ -270,7 +267,7 @@ class _$AuthDataImpl implements _AuthData {
 
   @override
   String toString() {
-    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userId: $userId, roles: $roles, permissions: $permissions, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires)';
+    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userId: $userId, userSpecificId: $userSpecificId, usertype: $usertype, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires)';
   }
 
   @override
@@ -284,9 +281,10 @@ class _$AuthDataImpl implements _AuthData {
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.roles, roles) || other.roles == roles) &&
-            const DeepCollectionEquality()
-                .equals(other._permissions, _permissions) &&
+            (identical(other.userSpecificId, userSpecificId) ||
+                other.userSpecificId == userSpecificId) &&
+            (identical(other.usertype, usertype) ||
+                other.usertype == usertype) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
@@ -304,8 +302,8 @@ class _$AuthDataImpl implements _AuthData {
       username,
       nickname,
       userId,
-      roles,
-      const DeepCollectionEquality().hash(_permissions),
+      userSpecificId,
+      usertype,
       accessToken,
       refreshToken,
       expires,
@@ -332,9 +330,9 @@ abstract class _AuthData implements AuthData {
       {final String? avatar,
       required final String username,
       final String? nickname,
-      @JsonKey(name: 'id') required final int userId,
-      required final String roles,
-      required final List<String> permissions,
+      @JsonKey(name: 'userId') required final String userId,
+      @JsonKey(name: "userSpecificId") required final int userSpecificId,
+      required final String usertype,
       required final String accessToken,
       required final String refreshToken,
       required final DateTime expires,
@@ -350,12 +348,13 @@ abstract class _AuthData implements AuthData {
   @override
   String? get nickname;
   @override
-  @JsonKey(name: 'id')
-  int get userId;
+  @JsonKey(name: 'userId')
+  String get userId;
   @override
-  String get roles;
+  @JsonKey(name: "userSpecificId")
+  int get userSpecificId;
   @override
-  List<String> get permissions;
+  String get usertype; // required List<String> permissions,
   @override
   String get accessToken;
   @override

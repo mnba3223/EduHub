@@ -17,18 +17,45 @@ class DioClient {
       receiveTimeout: ApiConfig.receiveTimeout,
       contentType: Headers.jsonContentType,
       responseType: ResponseType.json,
-      headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json',
-      },
+      // headers: {
+      //   'Accept': '*/*',
+      //   'Content-Type': 'application/json',
+      // },
     ));
     _initializeInterceptors();
   }
 
+  // void _initializeInterceptors() {
+  //   _dio.interceptors.addAll([
+  //     AuthInterceptor(_dio),
+  //     ErrorInterceptor(),
+  //     if (kDebugMode)
+  //       LogInterceptor(
+  //         request: true,
+  //         requestHeader: true,
+  //         requestBody: true,
+  //         responseHeader: true,
+  //         responseBody: true,
+  //         error: true,
+  //       ),
+  //   ]);
+  // }
   void _initializeInterceptors() {
     _dio.interceptors.addAll([
-      AuthInterceptor(_dio),
-      ErrorInterceptor(),
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // 確保基本請求頭存在
+          options.headers.addAll({
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+          });
+
+          debugPrint('Request Headers: ${options.headers}');
+          debugPrint('Request Path: ${options.path}');
+
+          return handler.next(options);
+        },
+      ),
       if (kDebugMode)
         LogInterceptor(
           request: true,
@@ -37,6 +64,9 @@ class DioClient {
           responseHeader: true,
           responseBody: true,
           error: true,
+          logPrint: (object) {
+            debugPrint('DIO LOG: $object');
+          },
         ),
     ]);
   }

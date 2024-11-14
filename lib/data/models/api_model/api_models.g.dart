@@ -75,15 +75,11 @@ Map<String, dynamic> _$LoginResponseDataToJson(LoginResponseData instance) =>
     };
 
 LoginRequest _$LoginRequestFromJson(Map<String, dynamic> json) => LoginRequest(
-      name: json['name'] as String,
-      password: json['password'] as String,
       fcmToken: json['fcmToken'] as String?,
     );
 
 Map<String, dynamic> _$LoginRequestToJson(LoginRequest instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'password': instance.password,
       'fcmToken': instance.fcmToken,
     };
 

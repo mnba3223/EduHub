@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -6,7 +7,11 @@ import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/auth/auth_data.dart';
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
+import 'package:edutec_hub/data/models/user_role.dart';
 import 'package:edutec_hub/data/network/apis/auth_api.dart';
+import 'package:edutec_hub/data/network/apis/parent_api.dart';
+import 'package:edutec_hub/data/network/apis/student_api.dart';
+import 'package:edutec_hub/data/network/apis/teacher_api.dart';
 
 import 'package:edutec_hub/data/network/core/dio_client.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
@@ -22,6 +27,9 @@ class AuthRepository {
   // final AuthApi api;
   final api = AuthApi(DioClient().dio);
   final bool useMock; // 添加模擬開關
+  final studentApi = StudentApi(DioClient().dio);
+  final teacherApi = TeacherApi(DioClient().dio);
+  final parentApi = ParentApi(DioClient().dio);
 
   AuthRepository({this.useMock = false});
   //LocalDataSource
@@ -70,72 +78,47 @@ class AuthRepository {
   }
 
   Future<void> signOutUser() async {}
-  ApiResponse<AuthData> _getMockAuthResponse(String userId) {
-    return ApiResponse(
-      code: 0,
-      success: true,
-      message: "Login successful",
-      data: AuthData(
-        avatar: "https://avatars.githubusercontent.com/u/44761321",
-        username: userId,
-        nickname: "測試用戶",
-        roles: "student",
-        permissions: ["*:*:*"],
-        accessToken:
-            "mock_access_token_${DateTime.now().millisecondsSinceEpoch}",
-        refreshToken:
-            "mock_refresh_token_${DateTime.now().millisecondsSinceEpoch}",
-        expires: DateTime.now().add(const Duration(hours: 1)),
-        refreshTokenExpires: DateTime.now().add(const Duration(hours: 2)),
-        userId: 1001,
-        // userid: 1,
-      ),
-    );
-  }
+  // ApiResponse<AuthData> _getMockAuthResponse(String userId) {
+  //   return ApiResponse(
+  //     code: 0,
+  //     success: true,
+  //     message: "Login successful",
+  //     data: AuthData(
+  //       avatar: "https://avatars.githubusercontent.com/u/44761321",
+  //       username: userId,
+  //       nickname: "測試用戶",
+  //       roles: "student",
+  //       permissions: ["*:*:*"],
+  //       accessToken:
+  //           "mock_access_token_${DateTime.now().millisecondsSinceEpoch}",
+  //       refreshToken:
+  //           "mock_refresh_token_${DateTime.now().millisecondsSinceEpoch}",
+  //       expires: DateTime.now().add(const Duration(hours: 1)),
+  //       refreshTokenExpires: DateTime.now().add(const Duration(hours: 2)),
+  //       userId: 1001,
+  //       // userid: 1,
+  //     ),
+  //   );
+  // }
 
   // 更新登入方法
   Future<ApiResponse<AuthData>> signInNormal({
     required String userId,
     required String password,
   }) async {
-    if (useMock) {
-      await Future.delayed(const Duration(milliseconds: 500)); // 模擬網絡延遲
-      final mockResponse = _getMockAuthResponse(userId);
-
-      // 模擬密碼檢查
-      if (password.isEmpty) {
-        throw ApiException(
-          "密碼不能為空",
-          errorCode: "400",
-        );
-      }
-
-      // 保存令牌
-      if (mockResponse.data != null) {
-        await Future.wait([
-          TokenManager.saveToken(mockResponse.data!.accessToken),
-          TokenManager.saveRefreshToken(mockResponse.data!.refreshToken),
-        ]);
-      }
-
-      return mockResponse;
-    }
-
     try {
       log('Starting login attempt for user: $userId');
+
+      // 獲取 FCM Token
       final fcmToken = await FirebaseMessaging.instance.getToken();
       log('FCM Token: $fcmToken');
 
       final response = await api.login(
-        _basicAuthToken, // 注意這裡的改變
-        LoginRequest(
-          name: userId,
-          password: password,
-          fcmToken: fcmToken,
-        ),
+        'Basic ${base64Encode(utf8.encode('$userId:$password'))}',
+        LoginRequest(fcmToken: fcmToken),
       );
 
-      // 檢查是否成功
+      // 檢查響應
       if (!response.success) {
         throw ApiException(
           response.message,
@@ -148,15 +131,18 @@ class AuthRepository {
         await Future.wait([
           TokenManager.saveToken(response.data!.accessToken),
           TokenManager.saveRefreshToken(response.data!.refreshToken),
-          // setIsLogIn(true),
-          // setJwtToken(response.data!.accessToken),
         ]);
       }
 
       return response;
     } on DioException catch (e) {
+      log('DioException: ${e.message}');
+      if (e.response?.statusCode == 401) {
+        throw ApiException('認證失敗：用戶名或密碼錯誤', errorCode: '401');
+      }
       throw e.toApiException();
     } catch (e) {
+      log('General Exception: $e');
       throw ApiException(e.toString());
     }
   }
@@ -228,4 +214,41 @@ class AuthRepository {
   }) async {}
 
   Future<void> forgotPassword({required String email}) async {}
+
+  Future<RoleData> getRoleData({
+    required int userId,
+    required UserRole role,
+  }) async {
+    try {
+      switch (role) {
+        case UserRole.student:
+          final response = await studentApi.getStudentByUserId(userId);
+          if (!response.success ||
+              response.data == null ||
+              response.data!.first.studentId == null) {
+            throw ApiException('未找到學生資料');
+          }
+          return RoleData(roleId: response.data!.first.studentId);
+
+        case UserRole.teacher:
+          final response = await teacherApi.getTeacherByUserId(userId);
+          if (!response.success || response.data == null) {
+            throw ApiException('未找到教師資料');
+          }
+          return RoleData(roleId: response.data!.teacherId);
+
+        case UserRole.parent:
+          final response = await parentApi.getParentByUserId(userId);
+          if (!response.success || response.data == null) {
+            throw ApiException('未找到家長資料');
+          }
+          return RoleData(roleId: response.data!.id);
+
+        default:
+          throw ApiException('不支持的用戶角色');
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
 }

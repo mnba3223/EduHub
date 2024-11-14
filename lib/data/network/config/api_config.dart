@@ -1,7 +1,7 @@
 import 'package:edutec_hub/config/environment.dart';
 
 class ApiConfig {
-  static const Duration connectTimeout = Duration(seconds: 10);
+  static const Duration connectTimeout = Duration(seconds: 5);
   static const Duration receiveTimeout = Duration(seconds: 10);
 
   static const String baseUrl = LunchEnvironment.baseUrl;

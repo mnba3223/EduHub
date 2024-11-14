@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/customRoundedButton.dart';
 import 'package:edutec_hub/utils/labelKeys.dart';
 import 'package:edutec_hub/utils/uiUtils.dart';
@@ -163,31 +164,30 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                               widthPercentage: 0.8,
                               backgroundColor:
                                   UiUtils.getColorScheme(context).primary,
-                              buttonTitle:
-                                  "${UiUtils.getTranslatedLabel(context, loginAsKey)} ${UiUtils.getTranslatedLabel(context, studentKey)}",
+                              buttonTitle: ("signIn").tr(),
                               showBorder: false,
                             ),
                             SizedBox(
                               height: boxConstraints.maxHeight * (0.04),
                             ),
-                            CustomRoundedButton(
-                              onTap: () {
-                                /// to parent login
-                                // Navigator.of(context)
-                                //     .pushNamed(Routes.parentLogin);
-                                context.go('/parent-login');
-                              },
-                              widthPercentage: 0.8,
-                              backgroundColor:
-                                  Theme.of(context).scaffoldBackgroundColor,
-                              buttonTitle:
-                                  "${UiUtils.getTranslatedLabel(context, loginAsKey)} ${UiUtils.getTranslatedLabel(context, parentKey)}",
-                              titleColor:
-                                  UiUtils.getColorScheme(context).primary,
-                              showBorder: true,
-                              borderColor:
-                                  UiUtils.getColorScheme(context).primary,
-                            ),
+                            // CustomRoundedButton(
+                            //   onTap: () {
+                            //     /// to parent login
+                            //     // Navigator.of(context)
+                            //     //     .pushNamed(Routes.parentLogin);
+                            //     context.go('/parent-login');
+                            //   },
+                            //   widthPercentage: 0.8,
+                            //   backgroundColor:
+                            //       Theme.of(context).scaffoldBackgroundColor,
+                            //   buttonTitle:
+                            //       "${UiUtils.getTranslatedLabel(context, loginAsKey)} ${UiUtils.getTranslatedLabel(context, parentKey)}",
+                            //   titleColor:
+                            //       UiUtils.getColorScheme(context).primary,
+                            //   showBorder: true,
+                            //   borderColor:
+                            //       UiUtils.getColorScheme(context).primary,
+                            // ),
                           ],
                         );
                       },

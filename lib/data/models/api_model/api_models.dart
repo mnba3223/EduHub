@@ -71,13 +71,13 @@ class LoginResponseData {
 
 @JsonSerializable()
 class LoginRequest {
-  final String name;
-  final String password;
+  // final String name;
+  // final String password;
   final String? fcmToken;
 
   LoginRequest({
-    required this.name,
-    required this.password,
+    // required this.name,
+    // required this.password,
     this.fcmToken,
   });
 

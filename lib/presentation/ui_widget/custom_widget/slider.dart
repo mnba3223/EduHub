@@ -1,31 +1,64 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:edutec_hub/data/models/sliderDetails.dart';
+import 'package:edutec_hub/data/models/image_slider.dart';
 import 'package:flutter/material.dart';
 
-class SlidersContainer extends StatelessWidget {
-  final List<SliderDetails> sliders;
+class SlidersContainer extends StatefulWidget {
+  final List<ImageSlider> sliders;
 
   const SlidersContainer({Key? key, required this.sliders}) : super(key: key);
+
+  @override
+  State<SlidersContainer> createState() => _SlidersContainerState();
+}
+
+class _SlidersContainerState extends State<SlidersContainer> {
+  // 緩存已解碼的圖片
+  final Map<String, Image> _decodedImages = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // 預先解碼圖片
+    _precacheImages();
+  }
+
+  Future<void> _precacheImages() async {
+    for (var slider in widget.sliders) {
+      if (!_decodedImages.containsKey(slider.id.toString())) {
+        try {
+          final bytes = base64Decode(slider.imageData);
+          _decodedImages[slider.id.toString()] = Image.memory(
+            bytes,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.error),
+          );
+        } catch (e) {
+          print('Error decoding image: $e');
+        }
+      }
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CarouselSlider(
-          items: sliders.map((slider) {
+          items: widget.sliders.map((slider) {
+            final imageKey = slider.id.toString();
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: CachedNetworkImage(
-                  imageUrl: slider.imageUrl,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
+                child: _decodedImages[imageKey] ??
+                    const Center(child: CircularProgressIndicator()),
               ),
             );
           }).toList(),
@@ -42,6 +75,12 @@ class SlidersContainer extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _decodedImages.clear();
+    super.dispose();
   }
 }
 

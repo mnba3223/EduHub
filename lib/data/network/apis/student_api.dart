@@ -1,6 +1,9 @@
 import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/attendance/attendance_models.dart';
+import 'package:edutec_hub/data/models/image_slider.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
+import 'package:edutec_hub/data/models/student/student.dart';
+
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import '../../models/api_model/api_models.dart';
@@ -14,32 +17,34 @@ abstract class StudentApi {
   @POST('/api/Login')
   Future<ApiResponse<LoginResponse>> login(@Body() LoginRequest request);
 
-  // 作業相關的API
-  @GET('/api/HomeWork/submissions/student/{studentId}')
-  Future<ApiResponse<List<Homework>>> getHomeworks(
-    @Path('studentId') String studentId,
+  @GET('/api/Student/user/{userId}')
+  Future<ApiResponse<List<Student>>> getStudentByUserId(
+    @Path('userId') int userId,
   );
 
-  @GET('/api/HomeWork/submissions/student/date/{date}')
-  Future<ApiResponse<List<Homework>>> getHomeworksByDate(
-    @Path('studentId') String studentId,
-    @Path('date') String date,
+  // 獲取作業列表
+  @GET('/api/Homework/student/{studentId}') // 移除開頭的 /
+  Future<ApiResponse<List<HomeworkListItem>>> getHomeworks(
+    @Path('studentId') int studentId,
+    @Query('startTime') String startTime,
+    @Query('endTime') String endTime,
   );
-
-  @GET('/api/HomeWork/submissions/{id}')
-  Future<ApiResponse<List<Homework>>> getHomeworkDetail(
-    @Path('id') String id,
-  );
-
-  @PUT('/api/HomeWork/submissions/{submissionId}')
+  // 獲取作業詳情
+  @GET('/api/Homework/submissions/{homework_id}')
+  Future<ApiResponse<List<HomeworkSubmission>>> getHomeworkDetail(
+    @Path('homework_id') int homeworkId, {
+    @Query('student_id') required int studentId,
+  });
+  // 提交作業
+  @PUT('/api/Homework/submissions/{submission_id}')
   @MultiPart()
   Future<ApiResponse> submitHomework(
-    @Path('submissionId') int submissionId,
-    @Part(name: 'student_id') int studentId,
-    @Part(name: 'comment') String comment,
-    @Part(name: 'status') String status,
-    @Part(name: 'UploadedFile') List<MultipartFile> files,
-  );
+    @Path('submission_id') int submissionId, {
+    @Part(name: 'student_id') required int studentId,
+    @Part(name: 'comment') required String comment,
+    @Part(name: 'status') required String status,
+    @Part(name: 'files') required List<MultipartFile> files,
+  });
 
   // 出勤相關 API
   @GET('/api/Attendance/student/{studentId}/records')
@@ -76,6 +81,15 @@ abstract class StudentApi {
   @GET('/api/Attendance/records/{recordId}')
   Future<ApiResponse<AttendanceCourseRecord>> getAttendanceDetail(
     @Path('recordId') String recordId,
+  );
+
+  @GET('/api/ImageSlider/list')
+  Future<ApiResponse<List<ImageSlider>>> getSliders();
+
+  // 如果需要按角色獲取
+  @GET('/api/ImageSlider/{role}/list')
+  Future<ApiResponse<List<ImageSlider>>> getSlidersByRole(
+    @Path('role') String role,
   );
 }
 

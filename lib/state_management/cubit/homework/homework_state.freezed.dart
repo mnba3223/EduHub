@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeworkState {
-  List<Homework> get homeworks => throw _privateConstructorUsedError;
-  List<Homework> get filteredHomeworks => throw _privateConstructorUsedError;
+  List<HomeworkListItem> get homeworks => throw _privateConstructorUsedError;
+  List<HomeworkListItem> get filteredHomeworks =>
+      throw _privateConstructorUsedError;
+  HomeworkSubmission? get currentHomework => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  Homework? get currentHomework =>
-      throw _privateConstructorUsedError; // 添加當前查看的作業
   String? get error => throw _privateConstructorUsedError;
   DateTime? get selectedDate => throw _privateConstructorUsedError;
   HomeworkStatus? get selectedStatus => throw _privateConstructorUsedError;
@@ -39,15 +39,15 @@ abstract class $HomeworkStateCopyWith<$Res> {
       _$HomeworkStateCopyWithImpl<$Res, HomeworkState>;
   @useResult
   $Res call(
-      {List<Homework> homeworks,
-      List<Homework> filteredHomeworks,
+      {List<HomeworkListItem> homeworks,
+      List<HomeworkListItem> filteredHomeworks,
+      HomeworkSubmission? currentHomework,
       bool isLoading,
-      Homework? currentHomework,
       String? error,
       DateTime? selectedDate,
       HomeworkStatus? selectedStatus});
 
-  $HomeworkCopyWith<$Res>? get currentHomework;
+  $HomeworkSubmissionCopyWith<$Res>? get currentHomework;
 }
 
 /// @nodoc
@@ -67,8 +67,8 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
   $Res call({
     Object? homeworks = null,
     Object? filteredHomeworks = null,
-    Object? isLoading = null,
     Object? currentHomework = freezed,
+    Object? isLoading = null,
     Object? error = freezed,
     Object? selectedDate = freezed,
     Object? selectedStatus = freezed,
@@ -77,19 +77,19 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
       homeworks: null == homeworks
           ? _value.homeworks
           : homeworks // ignore: cast_nullable_to_non_nullable
-              as List<Homework>,
+              as List<HomeworkListItem>,
       filteredHomeworks: null == filteredHomeworks
           ? _value.filteredHomeworks
           : filteredHomeworks // ignore: cast_nullable_to_non_nullable
-              as List<Homework>,
+              as List<HomeworkListItem>,
+      currentHomework: freezed == currentHomework
+          ? _value.currentHomework
+          : currentHomework // ignore: cast_nullable_to_non_nullable
+              as HomeworkSubmission?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentHomework: freezed == currentHomework
-          ? _value.currentHomework
-          : currentHomework // ignore: cast_nullable_to_non_nullable
-              as Homework?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -109,12 +109,12 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $HomeworkCopyWith<$Res>? get currentHomework {
+  $HomeworkSubmissionCopyWith<$Res>? get currentHomework {
     if (_value.currentHomework == null) {
       return null;
     }
 
-    return $HomeworkCopyWith<$Res>(_value.currentHomework!, (value) {
+    return $HomeworkSubmissionCopyWith<$Res>(_value.currentHomework!, (value) {
       return _then(_value.copyWith(currentHomework: value) as $Val);
     });
   }
@@ -129,16 +129,16 @@ abstract class _$$HomeworkStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<Homework> homeworks,
-      List<Homework> filteredHomeworks,
+      {List<HomeworkListItem> homeworks,
+      List<HomeworkListItem> filteredHomeworks,
+      HomeworkSubmission? currentHomework,
       bool isLoading,
-      Homework? currentHomework,
       String? error,
       DateTime? selectedDate,
       HomeworkStatus? selectedStatus});
 
   @override
-  $HomeworkCopyWith<$Res>? get currentHomework;
+  $HomeworkSubmissionCopyWith<$Res>? get currentHomework;
 }
 
 /// @nodoc
@@ -156,8 +156,8 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
   $Res call({
     Object? homeworks = null,
     Object? filteredHomeworks = null,
-    Object? isLoading = null,
     Object? currentHomework = freezed,
+    Object? isLoading = null,
     Object? error = freezed,
     Object? selectedDate = freezed,
     Object? selectedStatus = freezed,
@@ -166,19 +166,19 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
       homeworks: null == homeworks
           ? _value._homeworks
           : homeworks // ignore: cast_nullable_to_non_nullable
-              as List<Homework>,
+              as List<HomeworkListItem>,
       filteredHomeworks: null == filteredHomeworks
           ? _value._filteredHomeworks
           : filteredHomeworks // ignore: cast_nullable_to_non_nullable
-              as List<Homework>,
+              as List<HomeworkListItem>,
+      currentHomework: freezed == currentHomework
+          ? _value.currentHomework
+          : currentHomework // ignore: cast_nullable_to_non_nullable
+              as HomeworkSubmission?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentHomework: freezed == currentHomework
-          ? _value.currentHomework
-          : currentHomework // ignore: cast_nullable_to_non_nullable
-              as Homework?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -199,29 +199,29 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
 
 class _$HomeworkStateImpl implements _HomeworkState {
   const _$HomeworkStateImpl(
-      {final List<Homework> homeworks = const [],
-      final List<Homework> filteredHomeworks = const [],
-      this.isLoading = false,
+      {final List<HomeworkListItem> homeworks = const [],
+      final List<HomeworkListItem> filteredHomeworks = const [],
       this.currentHomework,
+      this.isLoading = false,
       this.error,
       this.selectedDate,
       this.selectedStatus})
       : _homeworks = homeworks,
         _filteredHomeworks = filteredHomeworks;
 
-  final List<Homework> _homeworks;
+  final List<HomeworkListItem> _homeworks;
   @override
   @JsonKey()
-  List<Homework> get homeworks {
+  List<HomeworkListItem> get homeworks {
     if (_homeworks is EqualUnmodifiableListView) return _homeworks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_homeworks);
   }
 
-  final List<Homework> _filteredHomeworks;
+  final List<HomeworkListItem> _filteredHomeworks;
   @override
   @JsonKey()
-  List<Homework> get filteredHomeworks {
+  List<HomeworkListItem> get filteredHomeworks {
     if (_filteredHomeworks is EqualUnmodifiableListView)
       return _filteredHomeworks;
     // ignore: implicit_dynamic_type
@@ -229,11 +229,10 @@ class _$HomeworkStateImpl implements _HomeworkState {
   }
 
   @override
+  final HomeworkSubmission? currentHomework;
+  @override
   @JsonKey()
   final bool isLoading;
-  @override
-  final Homework? currentHomework;
-// 添加當前查看的作業
   @override
   final String? error;
   @override
@@ -243,7 +242,7 @@ class _$HomeworkStateImpl implements _HomeworkState {
 
   @override
   String toString() {
-    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, isLoading: $isLoading, currentHomework: $currentHomework, error: $error, selectedDate: $selectedDate, selectedStatus: $selectedStatus)';
+    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, currentHomework: $currentHomework, isLoading: $isLoading, error: $error, selectedDate: $selectedDate, selectedStatus: $selectedStatus)';
   }
 
   @override
@@ -255,10 +254,10 @@ class _$HomeworkStateImpl implements _HomeworkState {
                 .equals(other._homeworks, _homeworks) &&
             const DeepCollectionEquality()
                 .equals(other._filteredHomeworks, _filteredHomeworks) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
             (identical(other.currentHomework, currentHomework) ||
                 other.currentHomework == currentHomework) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
@@ -271,8 +270,8 @@ class _$HomeworkStateImpl implements _HomeworkState {
       runtimeType,
       const DeepCollectionEquality().hash(_homeworks),
       const DeepCollectionEquality().hash(_filteredHomeworks),
-      isLoading,
       currentHomework,
+      isLoading,
       error,
       selectedDate,
       selectedStatus);
@@ -288,22 +287,22 @@ class _$HomeworkStateImpl implements _HomeworkState {
 
 abstract class _HomeworkState implements HomeworkState {
   const factory _HomeworkState(
-      {final List<Homework> homeworks,
-      final List<Homework> filteredHomeworks,
+      {final List<HomeworkListItem> homeworks,
+      final List<HomeworkListItem> filteredHomeworks,
+      final HomeworkSubmission? currentHomework,
       final bool isLoading,
-      final Homework? currentHomework,
       final String? error,
       final DateTime? selectedDate,
       final HomeworkStatus? selectedStatus}) = _$HomeworkStateImpl;
 
   @override
-  List<Homework> get homeworks;
+  List<HomeworkListItem> get homeworks;
   @override
-  List<Homework> get filteredHomeworks;
+  List<HomeworkListItem> get filteredHomeworks;
+  @override
+  HomeworkSubmission? get currentHomework;
   @override
   bool get isLoading;
-  @override
-  Homework? get currentHomework; // 添加當前查看的作業
   @override
   String? get error;
   @override

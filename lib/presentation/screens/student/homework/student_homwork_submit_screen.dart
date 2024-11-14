@@ -2,17 +2,23 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
+import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
 
 class HomeworkSubmitScreen extends StatefulWidget {
-  final String homeworkId;
-  // 更新回調函數的類型定義
-  final Function(String content, List<PlatformFile> files) onSubmit;
+  final int homeworkId;
+  final int submissionId;
+  final int studentId;
 
   const HomeworkSubmitScreen({
-    Key? key,
     required this.homeworkId,
-    required this.onSubmit,
+    required this.submissionId,
+    required this.studentId,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -26,61 +32,55 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('submit_homework'.tr()),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocListener<HomeworkCubit, HomeworkState>(
+      listener: (context, state) {
+        if (!state.isLoading && state.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (!state.isLoading && state.error == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('homework_submitted_success'.tr())),
+          );
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: null,
+        body: Column(
           children: [
-            Text(
-              'homework_content'.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            TextField(
-              controller: _contentController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: 'enter_homework_content'.tr(),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'attachments'.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            _buildAttachmentsList(),
-            SizedBox(height: 16.h),
-            ElevatedButton(
-              onPressed: _isSubmitting ? null : _pickFiles,
-              child: Text('add_attachment'.tr()),
-            ),
-            SizedBox(height: 24.h),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isSubmitting ? null : _handleSubmit,
-                child: _isSubmitting
-                    ? SizedBox(
-                        height: 20.h,
-                        width: 20.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text('submit'.tr()),
+            _buildTopBar(context),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'homework_content'.tr(),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextField(
+                      controller: _contentController,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: 'enter_homework_content'.tr(),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    _buildAttachmentsSection(),
+                    SizedBox(height: 24.h),
+                    _buildSubmitButton(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -89,9 +89,78 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     );
   }
 
+  Widget _buildTopBar(BuildContext context) {
+    return FixedHeightSmoothTopBarV2(
+      height: 130.h,
+      child: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Colors.white70, size: 24.sp),
+                onPressed: () => context.pop(),
+              ),
+              Text(
+                'submit_homework'.tr(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(width: 48.w),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAttachmentsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'attachments'.tr(),
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton.icon(
+              onPressed: _isSubmitting ? null : _pickFiles,
+              icon: Icon(Icons.add),
+              label: Text('add_attachment'.tr()),
+            ),
+          ],
+        ),
+        SizedBox(height: 8.h),
+        _buildAttachmentsList(),
+      ],
+    );
+  }
+
   Widget _buildAttachmentsList() {
     if (_selectedFiles.isEmpty) {
-      return Text('no_attachments'.tr());
+      return Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Center(
+          child: Text(
+            'no_attachments'.tr(),
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        ),
+      );
     }
 
     return Column(
@@ -99,18 +168,50 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
         return Card(
           margin: EdgeInsets.only(bottom: 8.h),
           child: ListTile(
-            leading: Icon(Icons.attach_file),
-            title: Text(file.name),
-            subtitle: Text('${(file.size / 1024).toStringAsFixed(2)} KB'),
+            leading: Icon(Icons.attach_file, color: Colors.blue),
+            title: Text(
+              file.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              '${(file.size / 1024).toStringAsFixed(2)} KB',
+              style: TextStyle(fontSize: 12.sp),
+            ),
             trailing: _isSubmitting
                 ? null
                 : IconButton(
-                    icon: Icon(Icons.close),
+                    icon: Icon(Icons.close, color: Colors.red),
                     onPressed: () => _removeFile(file),
                   ),
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _isSubmitting ? null : _handleSubmit,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: 12.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+        ),
+        child: _isSubmitting
+            ? SizedBox(
+                height: 20.h,
+                width: 20.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text('submit'.tr()),
+      ),
     );
   }
 
@@ -123,17 +224,18 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
       );
 
       if (result != null) {
-        // 驗證文件大小
-        for (var file in result.files) {
-          if (file.size > 10 * 1024 * 1024) {
-            // 10MB 限制
-            throw Exception('File ${file.name} is too large');
-          }
+        // 驗證文件大小 (10MB 限制)
+        final invalidFiles =
+            result.files.where((file) => file.size > 10 * 1024 * 1024);
+        if (invalidFiles.isNotEmpty) {
+          throw Exception(
+              'file_size_too_large'.tr(args: [invalidFiles.first.name]));
         }
 
         // 驗證文件路徑
-        if (result.files.any((file) => file.path == null)) {
-          throw Exception('Some files are invalid');
+        final invalidPaths = result.files.where((file) => file.path == null);
+        if (invalidPaths.isNotEmpty) {
+          throw Exception('invalid_file_path'.tr());
         }
 
         setState(() {
@@ -143,8 +245,8 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          duration: Duration(seconds: 3),
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
         ),
       );
     }
@@ -157,7 +259,8 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
   }
 
   Future<void> _handleSubmit() async {
-    if (_contentController.text.trim().isEmpty) {
+    final content = _contentController.text.trim();
+    if (content.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('please_enter_content'.tr())),
       );
@@ -167,29 +270,12 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     setState(() => _isSubmitting = true);
 
     try {
-      // 直接傳遞 PlatformFile 列表
-      await widget.onSubmit(_contentController.text, _selectedFiles);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('homework_submitted_success'.tr())),
-      );
-
-      Navigator.of(context).pop(true);
-    } catch (e) {
-      // 顯示具體錯誤信息
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${e.toString()}'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(
-            label: 'close'.tr(),
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ),
-      );
-      print('Submit Error: $e'); // 添加日誌
+      await context.read<HomeworkCubit>().submitHomework(
+            submissionId: widget.submissionId,
+            // studentId: widget.studentId,
+            content: content,
+            files: _selectedFiles,
+          );
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);

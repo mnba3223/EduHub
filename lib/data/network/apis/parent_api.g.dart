@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_api.dart';
+part of 'parent_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'auth_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
-class _AuthApi implements AuthApi {
-  _AuthApi(
+class _ParentApi implements ParentApi {
+  _ParentApi(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,67 +22,19 @@ class _AuthApi implements AuthApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<AuthData>> login(
-    String basicAuth,
-    LoginRequest request,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'Accept': '*/*',
-      r'Content-Type': 'application/json',
-      r'Authorization': basicAuth,
-    };
-    _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
-    final _options = _setStreamType<ApiResponse<AuthData>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'application/json',
-    )
-        .compose(
-          _dio.options,
-          '/api/Auth/login',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AuthData> _value;
-    try {
-      _value = ApiResponse<AuthData>.fromJson(
-        _result.data!,
-        (json) => AuthData.fromJson(json as Map<String, dynamic>),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<AuthData>> refreshToken(
-      Map<String, String> refreshTokenData) async {
+  Future<ApiResponse<Parent>> getParentByUserId(int userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(refreshTokenData);
-    final _options = _setStreamType<ApiResponse<AuthData>>(Options(
-      method: 'POST',
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<Parent>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/Auth/refresh-token',
+          '/api/Parent/user/${userId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -92,11 +44,11 @@ class _AuthApi implements AuthApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AuthData> _value;
+    late ApiResponse<Parent> _value;
     try {
-      _value = ApiResponse<AuthData>.fromJson(
+      _value = ApiResponse<Parent>.fromJson(
         _result.data!,
-        (json) => AuthData.fromJson(json as Map<String, dynamic>),
+        (json) => Parent.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
