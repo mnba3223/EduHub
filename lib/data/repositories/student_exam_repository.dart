@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/data/models/api_model/api_response.dart';
-import 'package:edutec_hub/data/models/exam/exam.dart';
+import 'package:edutec_hub/data/models/exam/student_exam.dart';
 
-class ExamRepository {
+class StudentExamRepository {
   final bool useMock;
-  static List<Exam> _mockExams = [];
+  static List<StudentExam> _mockExams = [];
 
-  ExamRepository({
+  StudentExamRepository({
     this.useMock = false,
   }) {
     if (_mockExams.isEmpty) {
@@ -14,7 +14,7 @@ class ExamRepository {
     }
   }
 
-  Future<ApiResponse<List<Exam>>> getExams() async {
+  Future<ApiResponse<List<StudentExam>>> getExams() async {
     if (useMock) {
       await Future.delayed(const Duration(milliseconds: 500));
       return ApiResponse(
@@ -74,18 +74,18 @@ class ExamRepository {
     }
   }
 
-  List<Exam> _initMockExams() {
+  List<StudentExam> _initMockExams() {
     final now = DateTime.now();
 
     return [
-      Exam(
+      StudentExam(
         id: '1',
         subject: '數學',
         examDate: now.add(const Duration(days: 2)),
         location: '第一教室',
         description: '期中考試',
       ),
-      Exam(
+      StudentExam(
         id: '2',
         subject: '英語',
         examDate: now.add(const Duration(days: 5)),

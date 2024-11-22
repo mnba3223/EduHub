@@ -456,6 +456,8 @@ mixin _$HomeworkSubmission {
   DateTime? get submitDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'upload_file')
   String? get uploadFile => throw _privateConstructorUsedError;
+  @JsonKey(name: 'upload_file_urls')
+  List<String>? get uploadFileUrls => throw _privateConstructorUsedError;
   @JsonKey(name: 'comment')
   String? get comment => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating')
@@ -490,6 +492,7 @@ abstract class $HomeworkSubmissionCopyWith<$Res> {
       HomeworkStatus status,
       @JsonKey(name: 'submission_time') DateTime? submitDate,
       @JsonKey(name: 'upload_file') String? uploadFile,
+      @JsonKey(name: 'upload_file_urls') List<String>? uploadFileUrls,
       @JsonKey(name: 'comment') String? comment,
       @JsonKey(name: 'rating') int? score});
 }
@@ -520,6 +523,7 @@ class _$HomeworkSubmissionCopyWithImpl<$Res, $Val extends HomeworkSubmission>
     Object? status = null,
     Object? submitDate = freezed,
     Object? uploadFile = freezed,
+    Object? uploadFileUrls = freezed,
     Object? comment = freezed,
     Object? score = freezed,
   }) {
@@ -568,6 +572,10 @@ class _$HomeworkSubmissionCopyWithImpl<$Res, $Val extends HomeworkSubmission>
           ? _value.uploadFile
           : uploadFile // ignore: cast_nullable_to_non_nullable
               as String?,
+      uploadFileUrls: freezed == uploadFileUrls
+          ? _value.uploadFileUrls
+          : uploadFileUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
@@ -601,6 +609,7 @@ abstract class _$$HomeworkSubmissionImplCopyWith<$Res>
       HomeworkStatus status,
       @JsonKey(name: 'submission_time') DateTime? submitDate,
       @JsonKey(name: 'upload_file') String? uploadFile,
+      @JsonKey(name: 'upload_file_urls') List<String>? uploadFileUrls,
       @JsonKey(name: 'comment') String? comment,
       @JsonKey(name: 'rating') int? score});
 }
@@ -629,6 +638,7 @@ class __$$HomeworkSubmissionImplCopyWithImpl<$Res>
     Object? status = null,
     Object? submitDate = freezed,
     Object? uploadFile = freezed,
+    Object? uploadFileUrls = freezed,
     Object? comment = freezed,
     Object? score = freezed,
   }) {
@@ -677,6 +687,10 @@ class __$$HomeworkSubmissionImplCopyWithImpl<$Res>
           ? _value.uploadFile
           : uploadFile // ignore: cast_nullable_to_non_nullable
               as String?,
+      uploadFileUrls: freezed == uploadFileUrls
+          ? _value._uploadFileUrls
+          : uploadFileUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
@@ -705,8 +719,10 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
       required this.status,
       @JsonKey(name: 'submission_time') this.submitDate,
       @JsonKey(name: 'upload_file') this.uploadFile,
+      @JsonKey(name: 'upload_file_urls') final List<String>? uploadFileUrls,
       @JsonKey(name: 'comment') this.comment,
-      @JsonKey(name: 'rating') this.score});
+      @JsonKey(name: 'rating') this.score})
+      : _uploadFileUrls = uploadFileUrls;
 
   factory _$HomeworkSubmissionImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomeworkSubmissionImplFromJson(json);
@@ -746,6 +762,17 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
   @override
   @JsonKey(name: 'upload_file')
   final String? uploadFile;
+  final List<String>? _uploadFileUrls;
+  @override
+  @JsonKey(name: 'upload_file_urls')
+  List<String>? get uploadFileUrls {
+    final value = _uploadFileUrls;
+    if (value == null) return null;
+    if (_uploadFileUrls is EqualUnmodifiableListView) return _uploadFileUrls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey(name: 'comment')
   final String? comment;
@@ -755,7 +782,7 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
 
   @override
   String toString() {
-    return 'HomeworkSubmission(submissionId: $submissionId, homework_id: $homework_id, studentId: $studentId, description: $description, startTime: $startTime, endTime: $endTime, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, status: $status, submitDate: $submitDate, uploadFile: $uploadFile, comment: $comment, score: $score)';
+    return 'HomeworkSubmission(submissionId: $submissionId, homework_id: $homework_id, studentId: $studentId, description: $description, startTime: $startTime, endTime: $endTime, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, status: $status, submitDate: $submitDate, uploadFile: $uploadFile, uploadFileUrls: $uploadFileUrls, comment: $comment, score: $score)';
   }
 
   @override
@@ -783,6 +810,8 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
                 other.submitDate == submitDate) &&
             (identical(other.uploadFile, uploadFile) ||
                 other.uploadFile == uploadFile) &&
+            const DeepCollectionEquality()
+                .equals(other._uploadFileUrls, _uploadFileUrls) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.score, score) || other.score == score));
   }
@@ -802,6 +831,7 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
       status,
       submitDate,
       uploadFile,
+      const DeepCollectionEquality().hash(_uploadFileUrls),
       comment,
       score);
 
@@ -836,6 +866,7 @@ abstract class _HomeworkSubmission implements HomeworkSubmission {
       required final HomeworkStatus status,
       @JsonKey(name: 'submission_time') final DateTime? submitDate,
       @JsonKey(name: 'upload_file') final String? uploadFile,
+      @JsonKey(name: 'upload_file_urls') final List<String>? uploadFileUrls,
       @JsonKey(name: 'comment') final String? comment,
       @JsonKey(name: 'rating') final int? score}) = _$HomeworkSubmissionImpl;
 
@@ -875,6 +906,9 @@ abstract class _HomeworkSubmission implements HomeworkSubmission {
   @override
   @JsonKey(name: 'upload_file')
   String? get uploadFile;
+  @override
+  @JsonKey(name: 'upload_file_urls')
+  List<String>? get uploadFileUrls;
   @override
   @JsonKey(name: 'comment')
   String? get comment;

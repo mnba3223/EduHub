@@ -59,17 +59,14 @@ class ImageSliderRepository {
     return [
       ImageSlider(
         id: 1,
-        imageData: "base64...", // 模擬的base64圖片數據
+        imagePath: "http://localhost:5176/uploads/mock-image-1.png",
         displayOrder: 1,
-        createdAt: DateTime.now(),
       ),
       ImageSlider(
         id: 2,
-        imageData: "base64...", // 模擬的base64圖片數據
+        imagePath: "http://localhost:5176/uploads/mock-image-2.png",
         displayOrder: 2,
-        createdAt: DateTime.now(),
       ),
-      // 可以添加更多模擬數據
     ];
   }
 }

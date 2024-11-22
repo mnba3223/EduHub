@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/config/user_session.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
@@ -16,8 +17,14 @@ abstract class HomeworkRepository {
   Future<HomeworkSubmission> getHomeworkDetail(int homeworkId, int studentId);
   Future<void> submitHomework({
     required int submissionId,
-    required int studentId,
-    required String content,
+    // required int studentId,
+    // required String content,
+    required List<PlatformFile> files,
+  });
+  Future<void> submitHomeworkMultiple({
+    required int submissionId,
+    // required int studentId,
+    // required String content,
     required List<PlatformFile> files,
   });
   Future<List<HomeworkListItem>> getHomeworksByDate(int userId, DateTime? date);
@@ -114,39 +121,42 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
     }
   }
 
+  ///不能用 retrofit 不支援單個 multipartFile
   @override
   Future<void> submitHomework({
     required int submissionId,
-    required int studentId,
-    required String content,
+    // required int studentId,
+    // required String content,
     required List<PlatformFile> files,
   }) async {
     try {
       log('開始提交作業: ${files.length} 個文件');
 
-      final multipartFiles = await Future.wait(
-        files.map((file) async {
-          if (file.path == null) {
-            throw ApiException('檔案路徑無效');
-          }
+      if (files.isEmpty) {
+        throw ApiException('未選擇任何文件');
+      }
 
-          log('處理檔案: ${file.name}, 路徑: ${file.path}');
+      // 只處理第一個文件
+      final file = files.first;
+      if (file.path == null) {
+        throw ApiException('檔案路徑無效');
+      }
 
-          return await MultipartFile.fromFile(
-            file.path!,
-            filename: file.name,
-          );
-        }),
+      log('處理檔案: ${file.name}, 路徑: ${file.path}');
+
+      // 創建 MultipartFile 並放入列表中
+      final multipartFile = await MultipartFile.fromFile(
+        file.path!,
+        filename: file.name,
       );
+      //轉換成 File
 
       log('檔案處理完成，準備提交');
 
+      // 使用列表包裝單個文件
       final response = await _api.submitHomework(
         submissionId,
-        studentId: studentId,
-        comment: content,
-        status: HomeworkStatus.submitted.value,
-        files: multipartFiles,
+        UploadedFiles: [multipartFile], // 包裝在列表中
       );
 
       if (!response.success) {
@@ -154,6 +164,54 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
       }
 
       log('作業提交成功');
+
+      if (files.length > 1) {
+        log('警告: 只上傳了第一個文件，其餘 ${files.length - 1} 個文件被忽略');
+      }
+    } on DioException catch (e) {
+      log('DIO錯誤: ${e.message}');
+      throw e.toApiException();
+    } catch (e) {
+      log('上傳錯誤: ${e.toString()}');
+      throw ApiException(e.toString());
+    }
+  }
+
+// 多文件上傳的方法
+  Future<void> submitHomeworkMultiple({
+    required int submissionId,
+    // required int studentId,
+    // required String content,
+    required List<PlatformFile> files,
+  }) async {
+    try {
+      log('開始提交多檔案作業: ${files.length} 個文件');
+
+      // 將所有文件轉換為 MultipartFile 列表
+      final multipartFiles = await Future.wait(
+        files.map((file) async {
+          if (file.path == null) {
+            throw ApiException('檔案路徑無效');
+          }
+          log('處理檔案: ${file.name}, 路徑: ${file.path}'); // 加入日誌
+          return await MultipartFile.fromFile(
+            file.path!,
+            filename: file.name,
+          );
+        }),
+      );
+
+      // 一次性上傳所有文件
+      final response = await _api.submitHomeworkMutiple(
+        submissionId,
+        UploadedFiles: multipartFiles,
+      );
+
+      if (!response.success) {
+        throw ApiException(response.message);
+      }
+
+      log('所有文件上傳成功');
     } on DioException catch (e) {
       throw e.toApiException();
     } catch (e) {
@@ -225,7 +283,7 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
         endTime: DateTime.now().subtract(const Duration(days: 2)),
         lessonTitle: '普通物理',
         lessonDescription: 'PHY101 普通物理課程',
-        status: HomeworkStatus.submitted,
+        status: HomeworkStatus.submit,
         teacherId: 3,
         teacherName: '張老師',
         lessonId: 2

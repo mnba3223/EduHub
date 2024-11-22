@@ -1,17 +1,17 @@
-import 'package:edutec_hub/data/models/exam/eaxm_state.dart';
-import 'package:edutec_hub/data/repositories/exam_repository.dart';
+import 'package:edutec_hub/data/models/exam/student_eaxm_state.dart';
+import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam.card.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam_top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
-import 'package:edutec_hub/state_management/cubit/exam/exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class ExamScreen extends StatelessWidget {
-  const ExamScreen({Key? key}) : super(key: key);
+class StudentExamScreen extends StatelessWidget {
+  const StudentExamScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +30,19 @@ class _ExamView extends StatelessWidget {
         children: [
           const ExamTopBar(),
           Expanded(
-            child: BlocConsumer<ExamCubit, ExamState>(
+            child: BlocConsumer<StudentExamCubit, StudentExamState>(
               listener: (context, state) {
-                if (state is ExamStateError) {
+                if (state is StudentExamStateError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message)),
                   );
                 }
               },
               builder: (context, state) {
-                if (state is ExamStateLoading) {
+                if (state is StudentExamStateLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (state is ExamStateLoaded) {
+                if (state is StudentExamStateLoaded) {
                   return SingleChildScrollView(
                     child: _buildContent(context, state),
                   );
@@ -56,7 +56,7 @@ class _ExamView extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, ExamStateLoaded state) {
+  Widget _buildContent(BuildContext context, StudentExamStateLoaded state) {
     return Column(
       children: [
         _buildCalendar(context, state),
@@ -65,7 +65,7 @@ class _ExamView extends StatelessWidget {
     );
   }
 
-  Widget _buildCalendar(BuildContext context, ExamStateLoaded state) {
+  Widget _buildCalendar(BuildContext context, StudentExamStateLoaded state) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
@@ -82,7 +82,7 @@ class _ExamView extends StatelessWidget {
       child: ReusableCalendar(
         selectedDay: state.selectedDate,
         onDaySelected: (selectedDay, focusedDay) {
-          context.read<ExamCubit>().selectDate(selectedDay);
+          context.read<StudentExamCubit>().selectDate(selectedDay);
         },
         markerBuilder: (context, date, events) {
           final hasExam = state.exams
@@ -106,7 +106,7 @@ class _ExamView extends StatelessWidget {
     );
   }
 
-  Widget _buildExamList(ExamStateLoaded state) {
+  Widget _buildExamList(StudentExamStateLoaded state) {
     final exams = state.exams
         .where((exam) => isSameDay(exam.examDate, state.selectedDate))
         .toList();

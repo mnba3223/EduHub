@@ -1,39 +1,39 @@
-import 'package:edutec_hub/data/models/exam/eaxm_state.dart';
-import 'package:edutec_hub/data/repositories/exam_repository.dart';
+import 'package:edutec_hub/data/models/exam/student_eaxm_state.dart';
+import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExamCubit extends Cubit<ExamState> {
-  final ExamRepository _repository;
+class StudentExamCubit extends Cubit<StudentExamState> {
+  final StudentExamRepository _repository;
 
-  ExamCubit(this._repository) : super(const ExamState.initial());
+  StudentExamCubit(this._repository) : super(const StudentExamState.initial());
 
   Future<void> loadExams() async {
-    emit(const ExamState.loading());
+    emit(const StudentExamState.loading());
     try {
       final response = await _repository.getExams();
       if (response.success && response.data != null) {
-        emit(ExamState.loaded(
+        emit(StudentExamState.loaded(
           exams: response.data!,
           selectedDate: DateTime.now(),
         ));
       } else {
-        emit(ExamState.error(message: response.message));
+        emit(StudentExamState.error(message: response.message));
       }
     } catch (e) {
-      emit(ExamState.error(message: e.toString()));
+      emit(StudentExamState.error(message: e.toString()));
     }
   }
 
   void selectDate(DateTime date) {
     final currentState = state;
-    if (currentState is ExamStateLoaded) {
+    if (currentState is StudentExamStateLoaded) {
       emit(currentState.copyWith(selectedDate: date));
     }
   }
 
   Future<void> updateExamStatus(String examId, bool isCompleted) async {
     final currentState = state;
-    if (currentState is ExamStateLoaded) {
+    if (currentState is StudentExamStateLoaded) {
       try {
         final response =
             await _repository.updateExamStatus(examId, isCompleted);
@@ -41,7 +41,7 @@ class ExamCubit extends Cubit<ExamState> {
           await loadExams();
         }
       } catch (e) {
-        emit(ExamState.error(message: e.toString()));
+        emit(StudentExamState.error(message: e.toString()));
       }
     }
   }

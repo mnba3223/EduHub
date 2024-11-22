@@ -201,3 +201,70 @@ bring_student_id,Please bring student ID,請攜帶學生證,请携带学生证,�
 stationery,Stationery,文具,文具,文房具
 calculator,Calculator,計算機,计算器,計算機
 student_id,Student ID,學生證,学生证,学生証
+
+
+
+# Teacher Home
+teacher_home_title,Teacher Home,教師首頁,教师首页,教師ホーム
+teacher_announcements,Announcements,教師公告,教师公告,教師からのお知らせ
+teacher_today_courses,Today's Courses,今日課程,今日课程,本日の授業
+teacher_weekly_exams,Weekly Exams,本週考試,本周考试,今週の試験
+teacher_weekly_homework,Weekly Homework,本週作業,本周作业,今週の宿題
+teacher_view_more,View More,查看更多,查看更多,もっと見る
+
+# Teacher Announcements
+teacher_meeting_notice,Teacher Meeting Notice,教師會議通知,教师会议通知,教師会議のお知らせ
+teacher_announcement_date,Date,日期,日期,日付
+teacher_announcement_title,Title,標題,标题,タイトル
+teacher_announcement_content,Content,內容,内容,内容
+
+# Teacher Courses
+teacher_course_time,Time,時間,时间,時間
+teacher_course_subject,Subject,科目,科目,科目
+teacher_course_class,Class,班級,班级,クラス
+teacher_total_students,Total Students,學生總數,学生总数,総学生数
+
+# Teacher Exams
+teacher_exam_date,Exam Date,考試日期,考试日期,試験日
+teacher_exam_subject,Subject,考試科目,考试科目,試験科目
+teacher_exam_class,Class,考試班級,考试班级,試験クラス
+teacher_exam_room,Room,考試教室,考试教室,試験教室
+teacher_exam_status,Status,考試狀態,考试状态,試験状態
+
+# Teacher Homework
+teacher_home_title,Teacher Homework,作業管理,作業管理,作業管理
+teacher_homework_due_date,Due Date,截止日期,截止日期,提出期限
+teacher_homework_subject,Subject,作業科目,作业科目,課題科目
+teacher_homework_class,Class,作業班級,作业班级,課題クラス
+teacher_homework_status,Submission Status,繳交狀態,提交状态,提出状況
+teacher_pending_submissions,Pending: {count},待繳交: {count}人,待提交: {count}人,未提出: {count}人
+
+# Teacher Homework Details
+total_students,Total Students,學生總數,学生总数,学生総数
+submission_overview,Submission Overview,繳交概況,提交概况,提出状況
+student_name,Student Name,學生姓名,学生姓名,学生氏名
+submission_status,Status,繳交狀態,提交状态,提出状態
+submission_time,Submission Time,繳交時間,提交时间,提出時間
+view_attachment,View Attachment,查看附件,查看附件,添付ファイルを表示
+grade_submission,Grade,評分,评分,採点
+no_submission,No Submission,未繳交,未提交,未提出
+submitted_on,Submitted on,繳交於,提交于,提出日時
+not_graded,Not Graded,未評分,未评分,未採点
+download_attachment,Download Attachment,下載附件,下载附件,添付ファイルをダウンロード
+homework_summary,Homework Summary,作業摘要,作业摘要,課題概要
+due_date_time,Due Date & Time,截止日期時間,截止日期时间,提出期限
+assignment_details,Assignment Details,作業詳情,作业详情,課題詳細
+student_submissions,Student Submissions,學生繳交狀況,学生提交情况,学生提出状況
+student_score,Student score,分數,分數,分數
+# Teacher Filter Options
+select_classroom,Select Classroom,選擇教室,选择教室,教室を選択
+all_classrooms,All Classrooms,所有教室,所有教室,すべての教室
+select_lesson,Select Lesson,選擇課程,选择课程,授業を選択
+all_lessons,All Lessons,所有課程,所有课程,すべての授業
+
+# Teacher Homework Card Stats
+submitted_count,{count}/{total} Submitted,已繳交 {count}/{total},已提交 {count}/{total},提出済み {count}/{total}
+graded_count,{count}/{total} Graded,已評分 {count}/{total},已评分 {count}/{total},採点済み {count}/{total}
+
+# Create Homework
+create_homework,Create Homework,建立作業,创建作业,課題を作成

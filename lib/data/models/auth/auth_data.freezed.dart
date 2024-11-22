@@ -27,7 +27,8 @@ mixin _$AuthData {
   String get userId => throw _privateConstructorUsedError;
   @JsonKey(name: "userSpecificId")
   int get userSpecificId => throw _privateConstructorUsedError;
-  String get usertype =>
+  @JsonKey(name: "roles")
+  String get roles =>
       throw _privateConstructorUsedError; // required List<String> permissions,
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
@@ -55,7 +56,7 @@ abstract class $AuthDataCopyWith<$Res> {
       String? nickname,
       @JsonKey(name: 'userId') String userId,
       @JsonKey(name: "userSpecificId") int userSpecificId,
-      String usertype,
+      @JsonKey(name: "roles") String roles,
       String accessToken,
       String refreshToken,
       DateTime expires,
@@ -82,7 +83,7 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
     Object? nickname = freezed,
     Object? userId = null,
     Object? userSpecificId = null,
-    Object? usertype = null,
+    Object? roles = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
@@ -109,9 +110,9 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
           ? _value.userSpecificId
           : userSpecificId // ignore: cast_nullable_to_non_nullable
               as int,
-      usertype: null == usertype
-          ? _value.usertype
-          : usertype // ignore: cast_nullable_to_non_nullable
+      roles: null == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
               as String,
       accessToken: null == accessToken
           ? _value.accessToken
@@ -147,7 +148,7 @@ abstract class _$$AuthDataImplCopyWith<$Res>
       String? nickname,
       @JsonKey(name: 'userId') String userId,
       @JsonKey(name: "userSpecificId") int userSpecificId,
-      String usertype,
+      @JsonKey(name: "roles") String roles,
       String accessToken,
       String refreshToken,
       DateTime expires,
@@ -172,7 +173,7 @@ class __$$AuthDataImplCopyWithImpl<$Res>
     Object? nickname = freezed,
     Object? userId = null,
     Object? userSpecificId = null,
-    Object? usertype = null,
+    Object? roles = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expires = null,
@@ -199,9 +200,9 @@ class __$$AuthDataImplCopyWithImpl<$Res>
           ? _value.userSpecificId
           : userSpecificId // ignore: cast_nullable_to_non_nullable
               as int,
-      usertype: null == usertype
-          ? _value.usertype
-          : usertype // ignore: cast_nullable_to_non_nullable
+      roles: null == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
               as String,
       accessToken: null == accessToken
           ? _value.accessToken
@@ -232,7 +233,7 @@ class _$AuthDataImpl implements _AuthData {
       this.nickname,
       @JsonKey(name: 'userId') required this.userId,
       @JsonKey(name: "userSpecificId") required this.userSpecificId,
-      required this.usertype,
+      @JsonKey(name: "roles") required this.roles,
       required this.accessToken,
       required this.refreshToken,
       required this.expires,
@@ -254,7 +255,8 @@ class _$AuthDataImpl implements _AuthData {
   @JsonKey(name: "userSpecificId")
   final int userSpecificId;
   @override
-  final String usertype;
+  @JsonKey(name: "roles")
+  final String roles;
 // required List<String> permissions,
   @override
   final String accessToken;
@@ -267,7 +269,7 @@ class _$AuthDataImpl implements _AuthData {
 
   @override
   String toString() {
-    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userId: $userId, userSpecificId: $userSpecificId, usertype: $usertype, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires)';
+    return 'AuthData(avatar: $avatar, username: $username, nickname: $nickname, userId: $userId, userSpecificId: $userSpecificId, roles: $roles, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, refreshTokenExpires: $refreshTokenExpires)';
   }
 
   @override
@@ -283,8 +285,7 @@ class _$AuthDataImpl implements _AuthData {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userSpecificId, userSpecificId) ||
                 other.userSpecificId == userSpecificId) &&
-            (identical(other.usertype, usertype) ||
-                other.usertype == usertype) &&
+            (identical(other.roles, roles) || other.roles == roles) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
@@ -303,7 +304,7 @@ class _$AuthDataImpl implements _AuthData {
       nickname,
       userId,
       userSpecificId,
-      usertype,
+      roles,
       accessToken,
       refreshToken,
       expires,
@@ -332,7 +333,7 @@ abstract class _AuthData implements AuthData {
       final String? nickname,
       @JsonKey(name: 'userId') required final String userId,
       @JsonKey(name: "userSpecificId") required final int userSpecificId,
-      required final String usertype,
+      @JsonKey(name: "roles") required final String roles,
       required final String accessToken,
       required final String refreshToken,
       required final DateTime expires,
@@ -354,7 +355,8 @@ abstract class _AuthData implements AuthData {
   @JsonKey(name: "userSpecificId")
   int get userSpecificId;
   @override
-  String get usertype; // required List<String> permissions,
+  @JsonKey(name: "roles")
+  String get roles; // required List<String> permissions,
   @override
   String get accessToken;
   @override

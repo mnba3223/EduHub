@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
 
-import 'package:edutec_hub/data/repositories/homework_repository.dart';
+import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
 
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class StudentHomeworkDetailScreen extends StatelessWidget {
+class StudentHomeworkDetailScreen extends StatefulWidget {
   final int homeworkId;
 
   const StudentHomeworkDetailScreen({
@@ -21,12 +22,19 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StudentHomeworkDetailScreen> createState() =>
+      _StudentHomeworkDetailScreenState();
+}
+
+class _StudentHomeworkDetailScreenState
+    extends State<StudentHomeworkDetailScreen> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeworkCubit(
         repository: context.read<HomeworkRepository>(),
         // studentId: userId,
-      )..loadHomeworkDetail(homeworkId),
+      )..loadHomeworkDetail(widget.homeworkId),
       child: Scaffold(
         appBar: null,
         body: Column(
@@ -50,7 +58,7 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
                             onPressed: () {
                               context
                                   .read<HomeworkCubit>()
-                                  .loadHomeworkDetail(homeworkId);
+                                  .loadHomeworkDetail(widget.homeworkId);
                             },
                             child: Text('retry'.tr()),
                           ),
@@ -226,7 +234,7 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
     switch (homework.status) {
       case HomeworkStatus.pending:
         return _buildPendingSection(context, homework);
-      case HomeworkStatus.submitted:
+      case HomeworkStatus.submit:
         return _buildSubmittedSection(homework);
       case HomeworkStatus.graded:
         return _buildGradedSection(homework);
@@ -289,8 +297,8 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        Text(homework.comment ?? ''),
-        if (homework.uploadFile != null) ...[
+        if (homework.comment?.isNotEmpty == true) Text(homework.comment!),
+        if (homework.uploadFileUrls?.isNotEmpty == true) ...[
           SizedBox(height: 16.h),
           Text(
             'attachments'.tr(),
@@ -300,23 +308,53 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300]!),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: ListTile(
-              leading: Icon(Icons.attach_file),
-              title: Text(homework.uploadFile!.split('/').last),
-              trailing: Icon(Icons.download),
-              onTap: () {
-                // TODO: 處理附件下載
-              },
-            ),
-          ),
+          _buildFilesList(homework.uploadFileUrls!),
         ],
       ],
     );
+  }
+
+  Widget _buildFilesList(List<String> fileUrls) {
+    return Column(
+      children: fileUrls.map((fileUrl) {
+        // 從 URL 中提取檔案名稱
+        final fileName = fileUrl.split('/').last;
+        final fileType = _getFileType(fileName);
+
+        return Card(
+          margin: EdgeInsets.only(bottom: 8.h),
+          child: ListTile(
+            leading: _getFileIcon(fileType),
+            title: Text(fileName),
+            trailing: IconButton(
+              icon: Icon(Icons.download, color: Colors.blue),
+              onPressed: () => _downloadFile(fileUrl, context),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Icon _getFileIcon(String fileType) {
+    switch (fileType) {
+      case 'pdf':
+        return Icon(Icons.picture_as_pdf, color: Colors.red);
+      case 'image':
+        return Icon(Icons.image, color: Colors.blue);
+      case 'video':
+        return Icon(Icons.video_library, color: Colors.purple);
+      default:
+        return Icon(Icons.insert_drive_file, color: Colors.grey);
+    }
+  }
+
+  String _getFileType(String fileName) {
+    final extension = fileName.split('.').last.toLowerCase();
+    if (['pdf'].contains(extension)) return 'pdf';
+    if (['jpg', 'jpeg', 'png', 'gif'].contains(extension)) return 'image';
+    if (['mp4', 'mov', 'avi'].contains(extension)) return 'video';
+    return 'other';
   }
 
   Widget _buildGradedSection(HomeworkSubmission homework) {
@@ -364,6 +402,55 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
     );
   }
 
+  // Future<void> _showDownloadConfirmation(
+  //     BuildContext context, String fileUrl, String fileName) async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('download_confirmation'.tr()),
+  //         content: Text('download_file_confirmation'.tr(args: [fileName])),
+  //         actions: [
+  //           TextButton(
+  //             child: Text('cancel'.tr()),
+  //             onPressed: () => Navigator.of(context).pop(),
+  //           ),
+  //           TextButton(
+  //             child: Text('download'.tr()),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               _downloadFile(fileUrl, context);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future<void> _downloadFile(String urlString, BuildContext context) async {
+    try {
+      final Uri url = Uri.parse(urlString);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+          mode: LaunchMode.externalApplication, // 使用外部應用程式開啟
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error downloading file: $e');
+      // 也許可以顯示一個錯誤提示給用戶
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('error_downloading_file'.tr()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Widget _buildOverdueSection(HomeworkSubmission homework) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -400,8 +487,8 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
   }
 
   Widget _buildStatusChip(HomeworkStatus status) {
-    final config = _getStatusConfig(status);
-
+    // final config = _getStatusConfig(status);
+    final config = context.read<HomeworkCubit>().getStatusConfig(status);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
@@ -419,19 +506,6 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
     );
   }
 
-  StatusConfig _getStatusConfig(HomeworkStatus status) {
-    switch (status) {
-      case HomeworkStatus.pending:
-        return StatusConfig(Colors.orange, 'pending'.tr());
-      case HomeworkStatus.submitted:
-        return StatusConfig(Colors.blue, 'submitted'.tr());
-      case HomeworkStatus.graded:
-        return StatusConfig(Colors.green, 'graded'.tr());
-      case HomeworkStatus.overdue:
-        return StatusConfig(Colors.red, 'overdue'.tr());
-    }
-  }
-
   void _navigateToSubmit(BuildContext context, HomeworkSubmission homework) {
     context.pushNamed(
       'student-homework-submit',
@@ -444,11 +518,4 @@ class StudentHomeworkDetailScreen extends StatelessWidget {
       },
     );
   }
-}
-
-class StatusConfig {
-  final Color color;
-  final String text;
-
-  const StatusConfig(this.color, this.text);
 }

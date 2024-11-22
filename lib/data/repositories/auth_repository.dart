@@ -101,7 +101,6 @@ class AuthRepository {
   //   );
   // }
 
-  // 更新登入方法
   Future<ApiResponse<AuthData>> signInNormal({
     required String userId,
     required String password,
@@ -109,7 +108,6 @@ class AuthRepository {
     try {
       log('Starting login attempt for user: $userId');
 
-      // 獲取 FCM Token
       final fcmToken = await FirebaseMessaging.instance.getToken();
       log('FCM Token: $fcmToken');
 
@@ -118,7 +116,6 @@ class AuthRepository {
         LoginRequest(fcmToken: fcmToken),
       );
 
-      // 檢查響應
       if (!response.success) {
         throw ApiException(
           response.message,
@@ -126,12 +123,20 @@ class AuthRepository {
         );
       }
 
-      // 保存令牌
       if (response.data != null) {
+        log('Saving tokens...');
+        // 使用相同的 key 來保存 token
         await Future.wait([
           TokenManager.saveToken(response.data!.accessToken),
           TokenManager.saveRefreshToken(response.data!.refreshToken),
+          // 如果需要，也可以保存到 Hive
+          // setJwtToken(response.data!.accessToken),
         ]);
+        log('Tokens saved successfully');
+
+        // 打印保存的 token 用於調試
+        final savedToken = await TokenManager.getToken();
+        log('Saved token verified: $savedToken');
       }
 
       return response;

@@ -16,11 +16,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-class StudentLoginScreen extends StatefulWidget {
-  const StudentLoginScreen({super.key});
+class UserLoginScreen extends StatefulWidget {
+  const UserLoginScreen({super.key});
 
   @override
-  State<StudentLoginScreen> createState() => _StudentLoginScreenState();
+  State<UserLoginScreen> createState() => _UserLoginScreenState();
 
   // static Route route(RouteSettings routeSettings) {
   //   return CupertinoPageRoute(
@@ -30,13 +30,13 @@ class StudentLoginScreen extends StatefulWidget {
   //           create: (_) => SignInCubit(AuthRepository()),
   //         ),
   //       ],
-  //       child: const StudentLoginScreen(),
+  //       child: const UserLoginScreen(),
   //     ),
   //   );
   // }
 }
 
-class _StudentLoginScreenState extends State<StudentLoginScreen>
+class _UserLoginScreenState extends State<UserLoginScreen>
     with TickerProviderStateMixin {
   late final AnimationController _animationController = AnimationController(
     vsync: this,
@@ -76,7 +76,8 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
   @override
   void initState() {
     // remove when official
-    _grNumberTextEditingController.text = "teststudent1";
+    // _grNumberTextEditingController.text = "teststudent1";
+    _grNumberTextEditingController.text = "testteacher";
     _passwordTextEditingController.text = "1234";
     super.initState();
     _animationController.forward();
@@ -90,7 +91,36 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
     super.dispose();
   }
 
-  void _signInStudent() {
+  // void _signInStudent() {
+  //   if (_grNumberTextEditingController.text.trim().isEmpty) {
+  //     UiUtils.showCustomSnackBar(
+  //       context: context,
+  //       errorMessage:
+  //           UiUtils.getTranslatedLabel(context, pleaseEnterGRNumberKey),
+  //       backgroundColor: Theme.of(context).colorScheme.error,
+  //     );
+  //     return;
+  //   }
+
+  //   if (_passwordTextEditingController.text.trim().isEmpty) {
+  //     UiUtils.showCustomSnackBar(
+  //       context: context,
+  //       errorMessage:
+  //           UiUtils.getTranslatedLabel(context, pleaseEnterPasswordKey),
+  //       backgroundColor: Theme.of(context).colorScheme.error,
+  //     );
+  //     return;
+  //   }
+
+  //   context.read<SignInCubit>().signInUser(
+  //         userId: _grNumberTextEditingController.text.trim(),
+  //         password: _passwordTextEditingController.text.trim(),
+
+  //         // isStudentLogin: true,
+  //       );
+  // }
+
+  void _signIn() {
     if (_grNumberTextEditingController.text.trim().isEmpty) {
       UiUtils.showCustomSnackBar(
         context: context,
@@ -114,8 +144,6 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
     context.read<SignInCubit>().signInUser(
           userId: _grNumberTextEditingController.text.trim(),
           password: _passwordTextEditingController.text.trim(),
-
-          // isStudentLogin: true,
         );
   }
 
@@ -279,17 +307,24 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
                       child: BlocConsumer<SignInCubit, SignInState>(
                         listener: (context, state) {
                           if (state is SignInSuccess) {
-                            if (state.role == UserRole.student) {
-                              // Navigate to student home
-                              context.go('/student-home');
-                            } else {
-                              // Handle unexpected role
-                              UiUtils.showCustomSnackBar(
-                                context: context,
-                                errorMessage: "Unexpected user role",
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.error,
-                              );
+                            // 根據角色導航到對應頁面
+                            switch (state.role) {
+                              case UserRole.student:
+                                context.go('/student-home');
+                                break;
+                              case UserRole.teacher:
+                                context.go('/teacher-home');
+                                break;
+                              case UserRole.parent:
+                                context.go('/parent-home');
+                                break;
+                              default:
+                                UiUtils.showCustomSnackBar(
+                                  context: context,
+                                  errorMessage: "無效的用戶角色",
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                );
                             }
                           } else if (state is SignInFailure) {
                             UiUtils.showCustomSnackBar(
@@ -299,61 +334,14 @@ class _StudentLoginScreenState extends State<StudentLoginScreen>
                                   Theme.of(context).colorScheme.error,
                             );
                           }
-
-                          // if (state is SignInSuccess) {
-                          //   // context.read<AuthCubit>().authenticateUser(
-                          //   //       jwtToken: state.jwtToken,
-                          //   //       isStudent: state.isStudentLogIn,
-                          //   //       parent: state.parent,
-                          //   //       student: state.student,
-                          //   //     );
-                          //   //if user logs out, the login will set count to 0
-                          //   // SettingsRepository().setNotificationCount(0);
-                          //   // if (
-                          //   //   context
-                          //   //         .read<AuthCubit>()
-                          //   //         .getStudentDetails()
-                          //   //         .isFeePaymentDue &&
-                          //   //     context
-                          //   //         .read<AppConfigurationCubit>()
-                          //   //         .isCompulsoryFeePaymentMode()) {
-                          //   //   Navigator.of(context).pushNamedAndRemoveUntil(
-                          //   //     Routes.studentFeePaymentDueScreen,
-                          //   //     (Route<dynamic> route) => false,
-                          //   //   );
-                          //   // } else {
-                          //   //   Navigator.of(context).pushNamedAndRemoveUntil(
-                          //   //     Routes.home,
-                          //   //     (Route<dynamic> route) => false,
-                          //   //   );
-                          //   // }
-                          // } else if (state is SignInFailure) {
-                          //   UiUtils.showCustomSnackBar(
-                          //     context: context,
-                          //     errorMessage:
-                          //         UiUtils.getErrorMessageFromErrorCode(
-                          //       context,
-                          //       state.errorMessage,
-                          //     ),
-                          //     backgroundColor:
-                          //         Theme.of(context).colorScheme.error,
-                          //   );
-                          //   // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //   //   Routes.studentFeePaymentDueScreen,
-                          //   //   (Route<dynamic> route) => false,
-                          //   // );
-                          // }
                         },
                         builder: (context, state) {
                           return CustomRoundedButton(
                             onTap: () {
                               // context.go('/student-home');
-                              if (state is SignInInProgress) {
-                                return;
-                              }
+                              if (state is SignInInProgress) return;
                               FocusScope.of(context).unfocus();
-
-                              _signInStudent();
+                              _signIn();
                             },
                             widthPercentage: 0.8,
                             backgroundColor:

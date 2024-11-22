@@ -1,13 +1,10 @@
+import 'dart:developer';
 import 'package:edutec_hub/config/user_session.dart';
-
 import 'package:edutec_hub/data/models/user_role.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
-// import 'package:edutec_hub/data/models/teacher/teacher.dart'; // 假设您有一个 Teacher 模型
 import 'package:edutec_hub/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// enum LoginType { normal, student, parent, teacher }
 
 abstract class SignInState extends Equatable {}
 
@@ -24,16 +21,16 @@ class SignInInProgress extends SignInState {
 class SignInSuccess extends SignInState {
   final String jwtToken;
   final UserRole role;
-  final int userId; // 新增
+  final int userId;
 
   SignInSuccess({
     required this.jwtToken,
     required this.role,
-    required this.userId, // 新增
+    required this.userId,
   });
 
   @override
-  List<Object?> get props => [jwtToken, role];
+  List<Object?> get props => [jwtToken, role, userId];
 }
 
 class SignInFailure extends SignInState {
@@ -66,25 +63,22 @@ class SignInCubit extends Cubit<SignInState> {
         throw ApiException('登入失敗：未收到用戶資料');
       }
 
-      // 從回傳資料中取得角色
-      final roles = authData.data!.usertype;
+      final roles = authData.data!.roles;
       if (roles.isEmpty) {
         throw ApiException('登入失敗：未設定用戶角色');
       }
 
-      // 使用第一個角色作為主要角色
       final userRole = _parseRole(roles);
 
+      // 保存用戶session
       UserSession.instance.setSession(
         authData: authData.data!,
         role: userRole,
       );
-      // 获取角色特定 ID
-      final roleData = await _authRepository.getRoleData(
-        userId: int.parse(authData.data!.userId),
-        role: userRole,
-      );
-      UserSession.instance.setRoleId(roleData.roleId);
+
+      final roleId = authData.data!.userSpecificId;
+      UserSession.instance.setRoleId(roleId);
+
       emit(SignInSuccess(
         jwtToken: authData.data!.accessToken,
         role: userRole,
@@ -98,6 +92,7 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   UserRole _parseRole(String roleString) {
+    log('Parsing role: ${roleString.toLowerCase()}');
     switch (roleString.toLowerCase()) {
       case 'student':
         return UserRole.student;

@@ -146,8 +146,8 @@ class AuthInterceptor extends QueuedInterceptor {
     ErrorInterceptorHandler handler,
     DioException originalError,
   ) async {
-    await TokenManager.clearToken();
-    await TokenManager.clearRefreshToken();
+    await TokenManager.clearTokens();
+
     _accessToken = null;
 
     for (final request in _queue) {

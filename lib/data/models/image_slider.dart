@@ -7,9 +7,8 @@ part 'image_slider.g.dart';
 class ImageSlider with _$ImageSlider {
   const factory ImageSlider({
     required int id,
-    @JsonKey(name: 'image_data') required String imageData,
-    @JsonKey(name: 'display_order') int? displayOrder,
-    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'image_path') required String imagePath,
+    @JsonKey(name: 'display_order') required int displayOrder,
   }) = _ImageSlider;
 
   factory ImageSlider.fromJson(Map<String, dynamic> json) =>

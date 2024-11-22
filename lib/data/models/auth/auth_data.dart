@@ -10,7 +10,7 @@ class AuthData with _$AuthData {
     String? nickname,
     @JsonKey(name: 'userId') required String userId,
     @JsonKey(name: "userSpecificId") required int userSpecificId,
-    required String usertype,
+    @JsonKey(name: "roles") required String roles,
     // required List<String> permissions,
     required String accessToken,
     required String refreshToken,

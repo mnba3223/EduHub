@@ -1,4 +1,5 @@
 // lib/data/models/homework.dart
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'homework.freezed.dart';
@@ -52,8 +53,8 @@ class HomeworkListItem with _$HomeworkListItem {
 enum HomeworkStatus {
   @JsonValue('pending')
   pending,
-  @JsonValue('submitted')
-  submitted,
+  @JsonValue('submit')
+  submit,
   @JsonValue('graded')
   graded,
   @JsonValue('overdue')
@@ -77,6 +78,7 @@ class HomeworkSubmission with _$HomeworkSubmission {
     required HomeworkStatus status,
     @JsonKey(name: 'submission_time') DateTime? submitDate,
     @JsonKey(name: 'upload_file') String? uploadFile,
+    @JsonKey(name: 'upload_file_urls') List<String>? uploadFileUrls,
     @JsonKey(name: 'comment') String? comment,
     @JsonKey(name: 'rating') int? score,
   }) = _HomeworkSubmission;
@@ -90,14 +92,21 @@ extension HomeworkStatusExtension on HomeworkStatus {
     switch (this) {
       case HomeworkStatus.pending:
         return 'pending';
-      case HomeworkStatus.submitted:
-        return 'submitted';
+      case HomeworkStatus.submit:
+        return 'submit';
       case HomeworkStatus.graded:
         return 'graded';
       case HomeworkStatus.overdue:
         return 'overdue';
     }
   }
+}
+
+class HomeworkStatusConfig {
+  final Color color;
+  final String text;
+
+  const HomeworkStatusConfig(this.color, this.text);
 }
 
 HomeworkStatus fromString(String value) {

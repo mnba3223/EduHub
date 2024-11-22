@@ -5,7 +5,7 @@ import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
 
 import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import '../../models/api_model/api_models.dart';
 
 part 'student_api.g.dart';
@@ -23,7 +23,7 @@ abstract class StudentApi {
   );
 
   // 獲取作業列表
-  @GET('/api/Homework/student/{studentId}') // 移除開頭的 /
+  @GET('/api/Homework/student/{studentId}')
   Future<ApiResponse<List<HomeworkListItem>>> getHomeworks(
     @Path('studentId') int studentId,
     @Query('startTime') String startTime,
@@ -36,14 +36,28 @@ abstract class StudentApi {
     @Query('student_id') required int studentId,
   });
   // 提交作業
-  @PUT('/api/Homework/submissions/{submission_id}')
+  @PUT('/api/Homework/submissions/student/{submission_id}')
+  @MultiPart()
+  Future<ApiResponse> submitHomeworkMutiple(
+    @Headers({
+      'Content-Type': 'multipart/form-data',
+      'Accept': '*/*',
+    })
+    @Path('submission_id')
+    int submissionId, {
+    @Part() required List<MultipartFile> UploadedFiles,
+  });
+
+  @PUT('/api/Homework/submissions/student/{submission_id}')
   @MultiPart()
   Future<ApiResponse> submitHomework(
-    @Path('submission_id') int submissionId, {
-    @Part(name: 'student_id') required int studentId,
-    @Part(name: 'comment') required String comment,
-    @Part(name: 'status') required String status,
-    @Part(name: 'files') required List<MultipartFile> files,
+    @Headers({
+      'Content-Type': 'multipart/form-data',
+      'Accept': '*/*',
+    })
+    @Path('submission_id')
+    int submissionId, {
+    @Part() required List<MultipartFile> UploadedFiles,
   });
 
   // 出勤相關 API
@@ -83,7 +97,7 @@ abstract class StudentApi {
     @Path('recordId') String recordId,
   );
 
-  @GET('/api/ImageSlider/list')
+  @GET('/api/ImageSlider')
   Future<ApiResponse<List<ImageSlider>>> getSliders();
 
   // 如果需要按角色獲取

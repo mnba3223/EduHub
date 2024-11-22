@@ -159,7 +159,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                                 // Navigator.of(context).pushNamed(
                                 //   Routes.studentLogin,
                                 // );
-                                context.go('/student-login');
+                                context.go('/login');
                               },
                               widthPercentage: 0.8,
                               backgroundColor:

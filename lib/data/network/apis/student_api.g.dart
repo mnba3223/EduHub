@@ -194,30 +194,15 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<ApiResponse<dynamic>> submitHomework(
+  Future<ApiResponse<dynamic>> submitHomeworkMutiple(
     int submissionId, {
-    required int studentId,
-    required String comment,
-    required String status,
-    required List<MultipartFile> files,
+    required List<MultipartFile> UploadedFiles,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'student_id',
-      studentId.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'comment',
-      comment,
-    ));
-    _data.fields.add(MapEntry(
-      'status',
-      status,
-    ));
-    _data.files.addAll(files.map((i) => MapEntry('files', i)));
+    _data.files.addAll(UploadedFiles.map((i) => MapEntry('UploadedFiles', i)));
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'PUT',
       headers: _headers,
@@ -226,7 +211,48 @@ class _StudentApi implements StudentApi {
     )
         .compose(
           _dio.options,
-          '/api/Homework/submissions/${submissionId}',
+          '/api/Homework/submissions/student/${submissionId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> submitHomework(
+    int submissionId, {
+    required List<MultipartFile> UploadedFiles,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.files.addAll(UploadedFiles.map((i) => MapEntry('UploadedFiles', i)));
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+        .compose(
+          _dio.options,
+          '/api/Homework/submissions/student/${submissionId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -514,7 +540,7 @@ class _StudentApi implements StudentApi {
     )
         .compose(
           _dio.options,
-          '/api/ImageSlider/list',
+          '/api/ImageSlider',
           queryParameters: queryParameters,
           data: _data,
         )

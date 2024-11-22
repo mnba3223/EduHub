@@ -59,22 +59,22 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'homework_content'.tr(),
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    TextField(
-                      controller: _contentController,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        hintText: 'enter_homework_content'.tr(),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    // Text(
+                    //   'homework_content'.tr(),
+                    //   style: TextStyle(
+                    //     fontSize: 16.sp,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // SizedBox(height: 8.h),
+                    // TextField(
+                    //   controller: _contentController,
+                    //   maxLines: 5,
+                    //   decoration: InputDecoration(
+                    //     hintText: 'enter_homework_content'.tr(),
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    // ),
                     SizedBox(height: 16.h),
                     _buildAttachmentsSection(),
                     SizedBox(height: 24.h),
@@ -146,6 +146,119 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     );
   }
 
+  // Future<void> _pickFiles() async {
+  //   try {
+  //     final result = await FilePicker.platform.pickFiles(
+  //       // 由於目前 API 只支持單檔案，所以改為 false
+  //       allowMultiple: false,
+  //       type: FileType.any,
+  //       withReadStream: true,
+  //     );
+
+  //     if (result != null) {
+  //       // 驗證文件大小 (10MB 限制)
+  //       final file = result.files.first;
+  //       if (file.size > 10 * 1024 * 1024) {
+  //         throw Exception('file_size_too_large'.tr(args: [file.name]));
+  //       }
+
+  //       // 驗證文件路徑
+  //       if (file.path == null) {
+  //         throw Exception('invalid_file_path'.tr());
+  //       }
+
+  //       setState(() {
+  //         // 由於現在是單檔案，所以替換而不是添加
+  //         _selectedFiles = [file];
+  //       });
+  //     }
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(e.toString()),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
+  // 修改 _pickFiles() 方法
+  Future<void> _pickFiles() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true, // 改為允許多檔案
+        type: FileType.any,
+        withReadStream: true,
+      );
+
+      if (result != null) {
+        // 驗證所有文件大小
+        for (var file in result.files) {
+          if (file.size > 10 * 1024 * 1024) {
+            throw Exception('file_size_too_large'.tr(args: [file.name]));
+          }
+          if (file.path == null) {
+            throw Exception('invalid_file_path'.tr());
+          }
+        }
+
+        setState(() {
+          // 添加新選擇的文件到現有列表
+          _selectedFiles.addAll(result.files);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleSubmit() async {
+    // 由於暫時沒有 comment 需求，移除 content 檢查
+    // final content = _contentController.text.trim();
+    // if (content.isEmpty) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('please_enter_content'.tr())),
+    //   );
+    //   return;
+    // }
+
+    // 檢查是否有選擇文件
+    if (_selectedFiles.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('please_select_file'.tr())),
+      );
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+
+    try {
+      await context.read<HomeworkCubit>().submitHomework(
+            submissionId: widget.submissionId,
+            // studentId: widget.studentId,
+            // content: '', // 暫時傳空字串
+            files: _selectedFiles,
+          );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
   Widget _buildAttachmentsList() {
     if (_selectedFiles.isEmpty) {
       return Container(
@@ -215,42 +328,42 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     );
   }
 
-  Future<void> _pickFiles() async {
-    try {
-      final result = await FilePicker.platform.pickFiles(
-        allowMultiple: true,
-        type: FileType.any,
-        withReadStream: true,
-      );
+  // Future<void> _pickFiles() async {
+  //   try {
+  //     final result = await FilePicker.platform.pickFiles(
+  //       allowMultiple: true,
+  //       type: FileType.any,
+  //       withReadStream: true,
+  //     );
 
-      if (result != null) {
-        // 驗證文件大小 (10MB 限制)
-        final invalidFiles =
-            result.files.where((file) => file.size > 10 * 1024 * 1024);
-        if (invalidFiles.isNotEmpty) {
-          throw Exception(
-              'file_size_too_large'.tr(args: [invalidFiles.first.name]));
-        }
+  //     if (result != null) {
+  //       // 驗證文件大小 (10MB 限制)
+  //       final invalidFiles =
+  //           result.files.where((file) => file.size > 10 * 1024 * 1024);
+  //       if (invalidFiles.isNotEmpty) {
+  //         throw Exception(
+  //             'file_size_too_large'.tr(args: [invalidFiles.first.name]));
+  //       }
 
-        // 驗證文件路徑
-        final invalidPaths = result.files.where((file) => file.path == null);
-        if (invalidPaths.isNotEmpty) {
-          throw Exception('invalid_file_path'.tr());
-        }
+  //       // 驗證文件路徑
+  //       final invalidPaths = result.files.where((file) => file.path == null);
+  //       if (invalidPaths.isNotEmpty) {
+  //         throw Exception('invalid_file_path'.tr());
+  //       }
 
-        setState(() {
-          _selectedFiles.addAll(result.files);
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+  //       setState(() {
+  //         _selectedFiles.addAll(result.files);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(e.toString()),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _removeFile(PlatformFile file) {
     setState(() {
@@ -258,30 +371,30 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
     });
   }
 
-  Future<void> _handleSubmit() async {
-    final content = _contentController.text.trim();
-    if (content.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('please_enter_content'.tr())),
-      );
-      return;
-    }
+  // Future<void> _handleSubmit() async {
+  //   final content = _contentController.text.trim();
+  //   if (content.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('please_enter_content'.tr())),
+  //     );
+  //     return;
+  //   }
 
-    setState(() => _isSubmitting = true);
+  //   setState(() => _isSubmitting = true);
 
-    try {
-      await context.read<HomeworkCubit>().submitHomework(
-            submissionId: widget.submissionId,
-            // studentId: widget.studentId,
-            content: content,
-            files: _selectedFiles,
-          );
-    } finally {
-      if (mounted) {
-        setState(() => _isSubmitting = false);
-      }
-    }
-  }
+  //   try {
+  //     await context.read<HomeworkCubit>().submitHomework(
+  //           submissionId: widget.submissionId,
+  //           // studentId: widget.studentId,
+  //           content: content,
+  //           files: _selectedFiles,
+  //         );
+  //   } finally {
+  //     if (mounted) {
+  //       setState(() => _isSubmitting = false);
+  //     }
+  //   }
+  // }
 
   @override
   void dispose() {

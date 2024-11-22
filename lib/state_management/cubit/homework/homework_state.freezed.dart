@@ -22,8 +22,10 @@ mixin _$HomeworkState {
   HomeworkSubmission? get currentHomework => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  DateTime? get focusedDay => throw _privateConstructorUsedError;
   DateTime? get selectedDate => throw _privateConstructorUsedError;
   HomeworkStatus? get selectedStatus => throw _privateConstructorUsedError;
+  CalendarFormat get calendarFormat => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -44,8 +46,10 @@ abstract class $HomeworkStateCopyWith<$Res> {
       HomeworkSubmission? currentHomework,
       bool isLoading,
       String? error,
+      DateTime? focusedDay,
       DateTime? selectedDate,
-      HomeworkStatus? selectedStatus});
+      HomeworkStatus? selectedStatus,
+      CalendarFormat calendarFormat});
 
   $HomeworkSubmissionCopyWith<$Res>? get currentHomework;
 }
@@ -70,8 +74,10 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
     Object? currentHomework = freezed,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? focusedDay = freezed,
     Object? selectedDate = freezed,
     Object? selectedStatus = freezed,
+    Object? calendarFormat = null,
   }) {
     return _then(_value.copyWith(
       homeworks: null == homeworks
@@ -94,6 +100,10 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      focusedDay: freezed == focusedDay
+          ? _value.focusedDay
+          : focusedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       selectedDate: freezed == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -102,6 +112,10 @@ class _$HomeworkStateCopyWithImpl<$Res, $Val extends HomeworkState>
           ? _value.selectedStatus
           : selectedStatus // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus?,
+      calendarFormat: null == calendarFormat
+          ? _value.calendarFormat
+          : calendarFormat // ignore: cast_nullable_to_non_nullable
+              as CalendarFormat,
     ) as $Val);
   }
 
@@ -134,8 +148,10 @@ abstract class _$$HomeworkStateImplCopyWith<$Res>
       HomeworkSubmission? currentHomework,
       bool isLoading,
       String? error,
+      DateTime? focusedDay,
       DateTime? selectedDate,
-      HomeworkStatus? selectedStatus});
+      HomeworkStatus? selectedStatus,
+      CalendarFormat calendarFormat});
 
   @override
   $HomeworkSubmissionCopyWith<$Res>? get currentHomework;
@@ -159,8 +175,10 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
     Object? currentHomework = freezed,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? focusedDay = freezed,
     Object? selectedDate = freezed,
     Object? selectedStatus = freezed,
+    Object? calendarFormat = null,
   }) {
     return _then(_$HomeworkStateImpl(
       homeworks: null == homeworks
@@ -183,6 +201,10 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      focusedDay: freezed == focusedDay
+          ? _value.focusedDay
+          : focusedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       selectedDate: freezed == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -191,6 +213,10 @@ class __$$HomeworkStateImplCopyWithImpl<$Res>
           ? _value.selectedStatus
           : selectedStatus // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus?,
+      calendarFormat: null == calendarFormat
+          ? _value.calendarFormat
+          : calendarFormat // ignore: cast_nullable_to_non_nullable
+              as CalendarFormat,
     ));
   }
 }
@@ -204,8 +230,10 @@ class _$HomeworkStateImpl implements _HomeworkState {
       this.currentHomework,
       this.isLoading = false,
       this.error,
+      this.focusedDay,
       this.selectedDate,
-      this.selectedStatus})
+      this.selectedStatus,
+      this.calendarFormat = CalendarFormat.month})
       : _homeworks = homeworks,
         _filteredHomeworks = filteredHomeworks;
 
@@ -236,13 +264,18 @@ class _$HomeworkStateImpl implements _HomeworkState {
   @override
   final String? error;
   @override
+  final DateTime? focusedDay;
+  @override
   final DateTime? selectedDate;
   @override
   final HomeworkStatus? selectedStatus;
+  @override
+  @JsonKey()
+  final CalendarFormat calendarFormat;
 
   @override
   String toString() {
-    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, currentHomework: $currentHomework, isLoading: $isLoading, error: $error, selectedDate: $selectedDate, selectedStatus: $selectedStatus)';
+    return 'HomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, currentHomework: $currentHomework, isLoading: $isLoading, error: $error, focusedDay: $focusedDay, selectedDate: $selectedDate, selectedStatus: $selectedStatus, calendarFormat: $calendarFormat)';
   }
 
   @override
@@ -259,10 +292,14 @@ class _$HomeworkStateImpl implements _HomeworkState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
+            (identical(other.focusedDay, focusedDay) ||
+                other.focusedDay == focusedDay) &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
             (identical(other.selectedStatus, selectedStatus) ||
-                other.selectedStatus == selectedStatus));
+                other.selectedStatus == selectedStatus) &&
+            (identical(other.calendarFormat, calendarFormat) ||
+                other.calendarFormat == calendarFormat));
   }
 
   @override
@@ -273,8 +310,10 @@ class _$HomeworkStateImpl implements _HomeworkState {
       currentHomework,
       isLoading,
       error,
+      focusedDay,
       selectedDate,
-      selectedStatus);
+      selectedStatus,
+      calendarFormat);
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -292,8 +331,10 @@ abstract class _HomeworkState implements HomeworkState {
       final HomeworkSubmission? currentHomework,
       final bool isLoading,
       final String? error,
+      final DateTime? focusedDay,
       final DateTime? selectedDate,
-      final HomeworkStatus? selectedStatus}) = _$HomeworkStateImpl;
+      final HomeworkStatus? selectedStatus,
+      final CalendarFormat calendarFormat}) = _$HomeworkStateImpl;
 
   @override
   List<HomeworkListItem> get homeworks;
@@ -306,9 +347,13 @@ abstract class _HomeworkState implements HomeworkState {
   @override
   String? get error;
   @override
+  DateTime? get focusedDay;
+  @override
   DateTime? get selectedDate;
   @override
   HomeworkStatus? get selectedStatus;
+  @override
+  CalendarFormat get calendarFormat;
 
   /// Create a copy of HomeworkState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:edutec_hub/data/models/exam/exam.dart';
+import 'package:edutec_hub/data/models/exam/student_exam.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam_details_bottom_sheet.dart';
-import 'package:edutec_hub/state_management/cubit/exam/exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExamCard extends StatelessWidget {
-  final Exam exam;
+  final StudentExam exam;
 
   const ExamCard({
     Key? key,
@@ -103,7 +103,7 @@ class ExamCard extends StatelessWidget {
       margin: EdgeInsets.only(top: 12.h),
       child: ElevatedButton(
         onPressed: () {
-          context.read<ExamCubit>().updateExamStatus(exam.id, true);
+          context.read<StudentExamCubit>().updateExamStatus(exam.id, true);
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

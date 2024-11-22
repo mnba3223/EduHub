@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'exam.dart';
+part of 'student_exam.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ExamImpl _$$ExamImplFromJson(Map<String, dynamic> json) => _$ExamImpl(
+_$StudentExamImpl _$$StudentExamImplFromJson(Map<String, dynamic> json) =>
+    _$StudentExamImpl(
       id: json['id'] as String,
       subject: json['subject'] as String,
       examDate: DateTime.parse(json['examDate'] as String),
@@ -16,7 +17,7 @@ _$ExamImpl _$$ExamImplFromJson(Map<String, dynamic> json) => _$ExamImpl(
       completedAt: json['completedAt'] as String?,
     );
 
-Map<String, dynamic> _$$ExamImplToJson(_$ExamImpl instance) =>
+Map<String, dynamic> _$$StudentExamImplToJson(_$StudentExamImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'subject': instance.subject,

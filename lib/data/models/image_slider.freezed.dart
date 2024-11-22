@@ -21,12 +21,10 @@ ImageSlider _$ImageSliderFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ImageSlider {
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'image_data')
-  String get imageData => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_path')
+  String get imagePath => throw _privateConstructorUsedError;
   @JsonKey(name: 'display_order')
-  int? get displayOrder => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  int get displayOrder => throw _privateConstructorUsedError;
 
   /// Serializes this ImageSlider to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,9 +44,8 @@ abstract class $ImageSliderCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'image_data') String imageData,
-      @JsonKey(name: 'display_order') int? displayOrder,
-      @JsonKey(name: 'created_at') DateTime? createdAt});
+      @JsonKey(name: 'image_path') String imagePath,
+      @JsonKey(name: 'display_order') int displayOrder});
 }
 
 /// @nodoc
@@ -67,27 +64,22 @@ class _$ImageSliderCopyWithImpl<$Res, $Val extends ImageSlider>
   @override
   $Res call({
     Object? id = null,
-    Object? imageData = null,
-    Object? displayOrder = freezed,
-    Object? createdAt = freezed,
+    Object? imagePath = null,
+    Object? displayOrder = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      imageData: null == imageData
-          ? _value.imageData
-          : imageData // ignore: cast_nullable_to_non_nullable
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
-      displayOrder: freezed == displayOrder
+      displayOrder: null == displayOrder
           ? _value.displayOrder
           : displayOrder // ignore: cast_nullable_to_non_nullable
-              as int?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int,
     ) as $Val);
   }
 }
@@ -102,9 +94,8 @@ abstract class _$$ImageSliderImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'image_data') String imageData,
-      @JsonKey(name: 'display_order') int? displayOrder,
-      @JsonKey(name: 'created_at') DateTime? createdAt});
+      @JsonKey(name: 'image_path') String imagePath,
+      @JsonKey(name: 'display_order') int displayOrder});
 }
 
 /// @nodoc
@@ -121,27 +112,22 @@ class __$$ImageSliderImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? imageData = null,
-    Object? displayOrder = freezed,
-    Object? createdAt = freezed,
+    Object? imagePath = null,
+    Object? displayOrder = null,
   }) {
     return _then(_$ImageSliderImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      imageData: null == imageData
-          ? _value.imageData
-          : imageData // ignore: cast_nullable_to_non_nullable
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
-      displayOrder: freezed == displayOrder
+      displayOrder: null == displayOrder
           ? _value.displayOrder
           : displayOrder // ignore: cast_nullable_to_non_nullable
-              as int?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int,
     ));
   }
 }
@@ -151,9 +137,8 @@ class __$$ImageSliderImplCopyWithImpl<$Res>
 class _$ImageSliderImpl implements _ImageSlider {
   const _$ImageSliderImpl(
       {required this.id,
-      @JsonKey(name: 'image_data') required this.imageData,
-      @JsonKey(name: 'display_order') this.displayOrder,
-      @JsonKey(name: 'created_at') this.createdAt});
+      @JsonKey(name: 'image_path') required this.imagePath,
+      @JsonKey(name: 'display_order') required this.displayOrder});
 
   factory _$ImageSliderImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageSliderImplFromJson(json);
@@ -161,18 +146,15 @@ class _$ImageSliderImpl implements _ImageSlider {
   @override
   final int id;
   @override
-  @JsonKey(name: 'image_data')
-  final String imageData;
+  @JsonKey(name: 'image_path')
+  final String imagePath;
   @override
   @JsonKey(name: 'display_order')
-  final int? displayOrder;
-  @override
-  @JsonKey(name: 'created_at')
-  final DateTime? createdAt;
+  final int displayOrder;
 
   @override
   String toString() {
-    return 'ImageSlider(id: $id, imageData: $imageData, displayOrder: $displayOrder, createdAt: $createdAt)';
+    return 'ImageSlider(id: $id, imagePath: $imagePath, displayOrder: $displayOrder)';
   }
 
   @override
@@ -181,18 +163,15 @@ class _$ImageSliderImpl implements _ImageSlider {
         (other.runtimeType == runtimeType &&
             other is _$ImageSliderImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.imageData, imageData) ||
-                other.imageData == imageData) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath) &&
             (identical(other.displayOrder, displayOrder) ||
-                other.displayOrder == displayOrder) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.displayOrder == displayOrder));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, imageData, displayOrder, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, imagePath, displayOrder);
 
   /// Create a copy of ImageSlider
   /// with the given fields replaced by the non-null parameter values.
@@ -213,9 +192,8 @@ class _$ImageSliderImpl implements _ImageSlider {
 abstract class _ImageSlider implements ImageSlider {
   const factory _ImageSlider(
           {required final int id,
-          @JsonKey(name: 'image_data') required final String imageData,
-          @JsonKey(name: 'display_order') final int? displayOrder,
-          @JsonKey(name: 'created_at') final DateTime? createdAt}) =
+          @JsonKey(name: 'image_path') required final String imagePath,
+          @JsonKey(name: 'display_order') required final int displayOrder}) =
       _$ImageSliderImpl;
 
   factory _ImageSlider.fromJson(Map<String, dynamic> json) =
@@ -224,14 +202,11 @@ abstract class _ImageSlider implements ImageSlider {
   @override
   int get id;
   @override
-  @JsonKey(name: 'image_data')
-  String get imageData;
+  @JsonKey(name: 'image_path')
+  String get imagePath;
   @override
   @JsonKey(name: 'display_order')
-  int? get displayOrder;
-  @override
-  @JsonKey(name: 'created_at')
-  DateTime? get createdAt;
+  int get displayOrder;
 
   /// Create a copy of ImageSlider
   /// with the given fields replaced by the non-null parameter values.

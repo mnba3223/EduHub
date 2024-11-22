@@ -41,7 +41,7 @@ Map<String, dynamic> _$$HomeworkListItemImplToJson(
 
 const _$HomeworkStatusEnumMap = {
   HomeworkStatus.pending: 'pending',
-  HomeworkStatus.submitted: 'submitted',
+  HomeworkStatus.submit: 'submit',
   HomeworkStatus.graded: 'graded',
   HomeworkStatus.overdue: 'overdue',
 };
@@ -63,6 +63,9 @@ _$HomeworkSubmissionImpl _$$HomeworkSubmissionImplFromJson(
           ? null
           : DateTime.parse(json['submission_time'] as String),
       uploadFile: json['upload_file'] as String?,
+      uploadFileUrls: (json['upload_file_urls'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       comment: json['comment'] as String?,
       score: (json['rating'] as num?)?.toInt(),
     );
@@ -81,6 +84,7 @@ Map<String, dynamic> _$$HomeworkSubmissionImplToJson(
       'status': _$HomeworkStatusEnumMap[instance.status]!,
       'submission_time': instance.submitDate?.toIso8601String(),
       'upload_file': instance.uploadFile,
+      'upload_file_urls': instance.uploadFileUrls,
       'comment': instance.comment,
       'rating': instance.score,
     };

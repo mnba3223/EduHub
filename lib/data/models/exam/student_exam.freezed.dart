@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'exam.dart';
+part of 'student_exam.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Exam _$ExamFromJson(Map<String, dynamic> json) {
-  return _Exam.fromJson(json);
+StudentExam _$StudentExamFromJson(Map<String, dynamic> json) {
+  return _StudentExam.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Exam {
+mixin _$StudentExam {
   String get id => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
   DateTime get examDate => throw _privateConstructorUsedError;
@@ -28,19 +28,21 @@ mixin _$Exam {
   bool get isCompleted => throw _privateConstructorUsedError;
   String? get completedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Exam to a JSON map.
+  /// Serializes this StudentExam to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Exam
+  /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ExamCopyWith<Exam> get copyWith => throw _privateConstructorUsedError;
+  $StudentExamCopyWith<StudentExam> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ExamCopyWith<$Res> {
-  factory $ExamCopyWith(Exam value, $Res Function(Exam) then) =
-      _$ExamCopyWithImpl<$Res, Exam>;
+abstract class $StudentExamCopyWith<$Res> {
+  factory $StudentExamCopyWith(
+          StudentExam value, $Res Function(StudentExam) then) =
+      _$StudentExamCopyWithImpl<$Res, StudentExam>;
   @useResult
   $Res call(
       {String id,
@@ -53,16 +55,16 @@ abstract class $ExamCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ExamCopyWithImpl<$Res, $Val extends Exam>
-    implements $ExamCopyWith<$Res> {
-  _$ExamCopyWithImpl(this._value, this._then);
+class _$StudentExamCopyWithImpl<$Res, $Val extends StudentExam>
+    implements $StudentExamCopyWith<$Res> {
+  _$StudentExamCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Exam
+  /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -109,10 +111,11 @@ class _$ExamCopyWithImpl<$Res, $Val extends Exam>
 }
 
 /// @nodoc
-abstract class _$$ExamImplCopyWith<$Res> implements $ExamCopyWith<$Res> {
-  factory _$$ExamImplCopyWith(
-          _$ExamImpl value, $Res Function(_$ExamImpl) then) =
-      __$$ExamImplCopyWithImpl<$Res>;
+abstract class _$$StudentExamImplCopyWith<$Res>
+    implements $StudentExamCopyWith<$Res> {
+  factory _$$StudentExamImplCopyWith(
+          _$StudentExamImpl value, $Res Function(_$StudentExamImpl) then) =
+      __$$StudentExamImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -126,13 +129,14 @@ abstract class _$$ExamImplCopyWith<$Res> implements $ExamCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ExamImplCopyWithImpl<$Res>
-    extends _$ExamCopyWithImpl<$Res, _$ExamImpl>
-    implements _$$ExamImplCopyWith<$Res> {
-  __$$ExamImplCopyWithImpl(_$ExamImpl _value, $Res Function(_$ExamImpl) _then)
+class __$$StudentExamImplCopyWithImpl<$Res>
+    extends _$StudentExamCopyWithImpl<$Res, _$StudentExamImpl>
+    implements _$$StudentExamImplCopyWith<$Res> {
+  __$$StudentExamImplCopyWithImpl(
+      _$StudentExamImpl _value, $Res Function(_$StudentExamImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Exam
+  /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -145,7 +149,7 @@ class __$$ExamImplCopyWithImpl<$Res>
     Object? isCompleted = null,
     Object? completedAt = freezed,
   }) {
-    return _then(_$ExamImpl(
+    return _then(_$StudentExamImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -180,8 +184,8 @@ class __$$ExamImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ExamImpl implements _Exam {
-  const _$ExamImpl(
+class _$StudentExamImpl implements _StudentExam {
+  const _$StudentExamImpl(
       {required this.id,
       required this.subject,
       required this.examDate,
@@ -190,8 +194,8 @@ class _$ExamImpl implements _Exam {
       this.isCompleted = false,
       this.completedAt});
 
-  factory _$ExamImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ExamImplFromJson(json);
+  factory _$StudentExamImpl.fromJson(Map<String, dynamic> json) =>
+      _$$StudentExamImplFromJson(json);
 
   @override
   final String id;
@@ -211,14 +215,14 @@ class _$ExamImpl implements _Exam {
 
   @override
   String toString() {
-    return 'Exam(id: $id, subject: $subject, examDate: $examDate, location: $location, description: $description, isCompleted: $isCompleted, completedAt: $completedAt)';
+    return 'StudentExam(id: $id, subject: $subject, examDate: $examDate, location: $location, description: $description, isCompleted: $isCompleted, completedAt: $completedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExamImpl &&
+            other is _$StudentExamImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.subject, subject) || other.subject == subject) &&
             (identical(other.examDate, examDate) ||
@@ -238,33 +242,34 @@ class _$ExamImpl implements _Exam {
   int get hashCode => Object.hash(runtimeType, id, subject, examDate, location,
       description, isCompleted, completedAt);
 
-  /// Create a copy of Exam
+  /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ExamImplCopyWith<_$ExamImpl> get copyWith =>
-      __$$ExamImplCopyWithImpl<_$ExamImpl>(this, _$identity);
+  _$$StudentExamImplCopyWith<_$StudentExamImpl> get copyWith =>
+      __$$StudentExamImplCopyWithImpl<_$StudentExamImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ExamImplToJson(
+    return _$$StudentExamImplToJson(
       this,
     );
   }
 }
 
-abstract class _Exam implements Exam {
-  const factory _Exam(
+abstract class _StudentExam implements StudentExam {
+  const factory _StudentExam(
       {required final String id,
       required final String subject,
       required final DateTime examDate,
       required final String location,
       required final String description,
       final bool isCompleted,
-      final String? completedAt}) = _$ExamImpl;
+      final String? completedAt}) = _$StudentExamImpl;
 
-  factory _Exam.fromJson(Map<String, dynamic> json) = _$ExamImpl.fromJson;
+  factory _StudentExam.fromJson(Map<String, dynamic> json) =
+      _$StudentExamImpl.fromJson;
 
   @override
   String get id;
@@ -281,10 +286,10 @@ abstract class _Exam implements Exam {
   @override
   String? get completedAt;
 
-  /// Create a copy of Exam
+  /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExamImplCopyWith<_$ExamImpl> get copyWith =>
+  _$$StudentExamImplCopyWith<_$StudentExamImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'exam.freezed.dart';
-part 'exam.g.dart';
+part 'student_exam.freezed.dart';
+part 'student_exam.g.dart';
 
 @freezed
-class Exam with _$Exam {
-  const factory Exam({
+class StudentExam with _$StudentExam {
+  const factory StudentExam({
     required String id,
     required String subject,
     required DateTime examDate,
@@ -13,7 +13,8 @@ class Exam with _$Exam {
     required String description,
     @Default(false) bool isCompleted,
     String? completedAt,
-  }) = _Exam;
+  }) = _StudentExam;
 
-  factory Exam.fromJson(Map<String, dynamic> json) => _$ExamFromJson(json);
+  factory StudentExam.fromJson(Map<String, dynamic> json) =>
+      _$StudentExamFromJson(json);
 }

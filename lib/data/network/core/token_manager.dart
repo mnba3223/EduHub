@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -7,6 +9,14 @@ class TokenManager {
   static Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
+    log('Saved token: $token');
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(_tokenKey);
+    log('Retrieved token: $token');
+    return token;
   }
 
   static Future<void> saveRefreshToken(String token) async {
@@ -14,23 +24,14 @@ class TokenManager {
     await prefs.setString(_refreshTokenKey, token);
   }
 
-  static Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
-  }
-
   static Future<String?> getRefreshToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_refreshTokenKey);
   }
 
-  static Future<void> clearToken() async {
+  static Future<void> clearTokens() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
-  }
-
-  static Future<void> clearRefreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_refreshTokenKey);
   }
 }

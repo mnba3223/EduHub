@@ -15,50 +15,42 @@ class SlidersContainer extends StatefulWidget {
 }
 
 class _SlidersContainerState extends State<SlidersContainer> {
-  // 緩存已解碼的圖片
-  final Map<String, Image> _decodedImages = {};
-
-  @override
-  void initState() {
-    super.initState();
-    // 預先解碼圖片
-    _precacheImages();
-  }
-
-  Future<void> _precacheImages() async {
-    for (var slider in widget.sliders) {
-      if (!_decodedImages.containsKey(slider.id.toString())) {
-        try {
-          final bytes = base64Decode(slider.imageData);
-          _decodedImages[slider.id.toString()] = Image.memory(
-            bytes,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                const Icon(Icons.error),
-          );
-        } catch (e) {
-          print('Error decoding image: $e');
-        }
-      }
-    }
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CarouselSlider(
           items: widget.sliders.map((slider) {
-            final imageKey = slider.id.toString();
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: _decodedImages[imageKey] ??
-                    const Center(child: CircularProgressIndicator()),
+                child: Image.network(
+                  slider.imagePath,
+                  fit: BoxFit.cover,
+                  // 添加占位符
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  // 错误处理
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 32,
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           }).toList(),
@@ -75,12 +67,6 @@ class _SlidersContainerState extends State<SlidersContainer> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    _decodedImages.clear();
-    super.dispose();
   }
 }
 

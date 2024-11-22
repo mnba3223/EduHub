@@ -12,6 +12,7 @@ class ApiConfig {
     '/api/Login',
     '/login',
     '/api/School',
+    '/api/Auth/login'
   ];
 
   static bool isPublicPath(String path) {
