@@ -19,7 +19,6 @@ part 'teacher_homework_state.freezed.dart';
 //     String? error,
 //   }) = _TeacherHomeworkState;
 // }
-
 @freezed
 class TeacherHomeworkState with _$TeacherHomeworkState {
   const factory TeacherHomeworkState({
@@ -35,5 +34,11 @@ class TeacherHomeworkState with _$TeacherHomeworkState {
     required DateTime focusedDay,
     @Default(false) bool isLoading,
     String? error,
+    String? message, // 添加成功消息
+    // 新增下載相關狀態
+    @Default({}) Map<String, double> downloadProgress,
+    @Default(false) bool isDownloading,
+    // 新增評分相關狀態
+    @Default(false) bool isGrading,
   }) = _TeacherHomeworkState;
 }

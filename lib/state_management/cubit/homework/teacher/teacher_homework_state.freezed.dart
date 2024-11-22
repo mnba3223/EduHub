@@ -32,6 +32,12 @@ mixin _$TeacherHomeworkState {
   DateTime get focusedDay => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  String? get message => throw _privateConstructorUsedError; // 添加成功消息
+// 新增下載相關狀態
+  Map<String, double> get downloadProgress =>
+      throw _privateConstructorUsedError;
+  bool get isDownloading => throw _privateConstructorUsedError; // 新增評分相關狀態
+  bool get isGrading => throw _privateConstructorUsedError;
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -58,7 +64,11 @@ abstract class $TeacherHomeworkStateCopyWith<$Res> {
       DateTime selectedDate,
       DateTime focusedDay,
       bool isLoading,
-      String? error});
+      String? error,
+      String? message,
+      Map<String, double> downloadProgress,
+      bool isDownloading,
+      bool isGrading});
 
   $TeacherHomeworkListItemCopyWith<$Res>? get selectedHomework;
 }
@@ -91,6 +101,10 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
     Object? focusedDay = null,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? message = freezed,
+    Object? downloadProgress = null,
+    Object? isDownloading = null,
+    Object? isGrading = null,
   }) {
     return _then(_value.copyWith(
       homeworks: null == homeworks
@@ -141,6 +155,22 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      downloadProgress: null == downloadProgress
+          ? _value.downloadProgress
+          : downloadProgress // ignore: cast_nullable_to_non_nullable
+              as Map<String, double>,
+      isDownloading: null == isDownloading
+          ? _value.isDownloading
+          : isDownloading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGrading: null == isGrading
+          ? _value.isGrading
+          : isGrading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -180,7 +210,11 @@ abstract class _$$TeacherHomeworkStateImplCopyWith<$Res>
       DateTime selectedDate,
       DateTime focusedDay,
       bool isLoading,
-      String? error});
+      String? error,
+      String? message,
+      Map<String, double> downloadProgress,
+      bool isDownloading,
+      bool isGrading});
 
   @override
   $TeacherHomeworkListItemCopyWith<$Res>? get selectedHomework;
@@ -211,6 +245,10 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
     Object? focusedDay = null,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? message = freezed,
+    Object? downloadProgress = null,
+    Object? isDownloading = null,
+    Object? isGrading = null,
   }) {
     return _then(_$TeacherHomeworkStateImpl(
       homeworks: null == homeworks
@@ -261,6 +299,22 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      downloadProgress: null == downloadProgress
+          ? _value._downloadProgress
+          : downloadProgress // ignore: cast_nullable_to_non_nullable
+              as Map<String, double>,
+      isDownloading: null == isDownloading
+          ? _value.isDownloading
+          : isDownloading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGrading: null == isGrading
+          ? _value.isGrading
+          : isGrading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -280,12 +334,17 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
       required this.selectedDate,
       required this.focusedDay,
       this.isLoading = false,
-      this.error})
+      this.error,
+      this.message,
+      final Map<String, double> downloadProgress = const {},
+      this.isDownloading = false,
+      this.isGrading = false})
       : _homeworks = homeworks,
         _filteredHomeworks = filteredHomeworks,
         _classrooms = classrooms,
         _lessons = lessons,
-        _submissions = submissions;
+        _submissions = submissions,
+        _downloadProgress = downloadProgress;
 
   final List<TeacherHomeworkListItem> _homeworks;
   @override
@@ -348,10 +407,32 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
   final bool isLoading;
   @override
   final String? error;
+  @override
+  final String? message;
+// 添加成功消息
+// 新增下載相關狀態
+  final Map<String, double> _downloadProgress;
+// 添加成功消息
+// 新增下載相關狀態
+  @override
+  @JsonKey()
+  Map<String, double> get downloadProgress {
+    if (_downloadProgress is EqualUnmodifiableMapView) return _downloadProgress;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_downloadProgress);
+  }
+
+  @override
+  @JsonKey()
+  final bool isDownloading;
+// 新增評分相關狀態
+  @override
+  @JsonKey()
+  final bool isGrading;
 
   @override
   String toString() {
-    return 'TeacherHomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, classrooms: $classrooms, lessons: $lessons, selectedHomework: $selectedHomework, submissions: $submissions, selectedClassroom: $selectedClassroom, selectedLesson: $selectedLesson, selectedDate: $selectedDate, focusedDay: $focusedDay, isLoading: $isLoading, error: $error)';
+    return 'TeacherHomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, classrooms: $classrooms, lessons: $lessons, selectedHomework: $selectedHomework, submissions: $submissions, selectedClassroom: $selectedClassroom, selectedLesson: $selectedLesson, selectedDate: $selectedDate, focusedDay: $focusedDay, isLoading: $isLoading, error: $error, message: $message, downloadProgress: $downloadProgress, isDownloading: $isDownloading, isGrading: $isGrading)';
   }
 
   @override
@@ -380,7 +461,14 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
                 other.focusedDay == focusedDay) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.message, message) || other.message == message) &&
+            const DeepCollectionEquality()
+                .equals(other._downloadProgress, _downloadProgress) &&
+            (identical(other.isDownloading, isDownloading) ||
+                other.isDownloading == isDownloading) &&
+            (identical(other.isGrading, isGrading) ||
+                other.isGrading == isGrading));
   }
 
   @override
@@ -397,7 +485,11 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
       selectedDate,
       focusedDay,
       isLoading,
-      error);
+      error,
+      message,
+      const DeepCollectionEquality().hash(_downloadProgress),
+      isDownloading,
+      isGrading);
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -423,7 +515,11 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
       required final DateTime selectedDate,
       required final DateTime focusedDay,
       final bool isLoading,
-      final String? error}) = _$TeacherHomeworkStateImpl;
+      final String? error,
+      final String? message,
+      final Map<String, double> downloadProgress,
+      final bool isDownloading,
+      final bool isGrading}) = _$TeacherHomeworkStateImpl;
 
   @override
   List<TeacherHomeworkListItem> get homeworks;
@@ -449,6 +545,15 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
   bool get isLoading;
   @override
   String? get error;
+  @override
+  String? get message; // 添加成功消息
+// 新增下載相關狀態
+  @override
+  Map<String, double> get downloadProgress;
+  @override
+  bool get isDownloading; // 新增評分相關狀態
+  @override
+  bool get isGrading;
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.

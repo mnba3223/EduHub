@@ -1,17 +1,26 @@
 // cubit/teacher_homework_cubit.dart
+import 'dart:io';
+
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
+import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_filex/open_filex.dart';
+// import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
   final TeacherHomeworkRepository _repository;
+  final DownloadCubit _downloadCubit;
 
   TeacherHomeworkCubit({
     required TeacherHomeworkRepository repository,
+    required DownloadCubit downloadCubit,
   })  : _repository = repository,
+        _downloadCubit = downloadCubit,
         super(TeacherHomeworkState(
           selectedDate: DateTime.now(),
           focusedDay: DateTime.now(),
@@ -83,16 +92,44 @@ class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
     }
   }
 
+  Future<void> updateGrade({
+    required int submissionId,
+    required int rating,
+    String? comment,
+  }) async {
+    try {
+      emit(state.copyWith(isGrading: true));
+
+      await _repository.gradeSubmission(
+        submissionId: submissionId,
+        grade: rating,
+        comment: comment,
+      );
+
+      // 重新加载作业详情以更新评分
+      if (state.selectedHomework != null) {
+        await loadHomeworkDetail(state.selectedHomework!.homeworkId);
+      }
+
+      emit(state.copyWith(isGrading: false));
+    } catch (e) {
+      emit(state.copyWith(
+        error: '評分失敗: ${e.toString()}',
+        isGrading: false,
+      ));
+    }
+  }
+
   void setSelectedHomework(TeacherHomeworkListItem homework) {
     emit(state.copyWith(selectedHomework: homework));
   }
 
-  void clearHomeworkDetail() {
-    emit(state.copyWith(
-      selectedHomework: null,
-      submissions: [],
-    ));
-  }
+  // void clearHomeworkDetail() {
+  //   emit(state.copyWith(
+  //     selectedHomework: null,
+  //     submissions: [],
+  //   ));
+  // }
 
   // 更新日期選擇
   void updateSelectedDate(DateTime? selectedDate, DateTime focusedDay) {
@@ -209,12 +246,25 @@ class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
         );
       };
 
-  // 其他作業相關方法
-  Future<void> gradeSubmission(int studentId, int grade) async {
-    // TODO: 實現評分邏輯
+  String _getFileExtension(String url) {
+    final uri = Uri.parse(url);
+    final path = uri.path;
+    final lastDot = path.lastIndexOf('.');
+    if (lastDot != -1) {
+      return path.substring(lastDot);
+    }
+    return '';
   }
 
-  Future<void> downloadAttachment(int fileId) async {
-    // TODO: 實現下載邏輯
+  @override
+  void clearHomeworkDetail() {
+    emit(state.copyWith(
+      selectedHomework: null,
+      submissions: [],
+      isDownloading: false,
+      isGrading: false,
+      error: null,
+      message: null,
+    ));
   }
 }

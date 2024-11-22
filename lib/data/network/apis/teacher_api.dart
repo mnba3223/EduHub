@@ -52,4 +52,18 @@ abstract class TeacherApi {
   // 刪除考試
   @DELETE('/api/Exam/{examId}')
   Future<ApiResponse> deleteExam(@Path('examId') int examId);
+
+  @MultiPart()
+  @PUT('/api/Homework/submissions/teacher/{submissionId}')
+  Future<ApiResponse> gradeSubmission(
+    @Headers({
+      'Content-Type': 'multipart/form-data',
+      'Accept': '*/*',
+    })
+    @Path('submissionId')
+    int submissionId,
+    @Part() String? comment,
+    @Part() int? rating,
+    @Part() String? status,
+  );
 }

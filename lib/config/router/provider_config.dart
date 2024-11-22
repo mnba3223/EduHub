@@ -7,6 +7,7 @@ import 'package:edutec_hub/data/repositories/homework/teacher_homework_repositor
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
@@ -103,9 +104,13 @@ class ProvidersManager {
   // 老師特定的 providers
   static List<BlocProvider> getTeacherProviders(SignInSuccess state) {
     return [
+      BlocProvider<DownloadCubit>(
+        create: (context) => DownloadCubit(),
+      ),
       BlocProvider<TeacherHomeworkCubit>(
         create: (context) => TeacherHomeworkCubit(
           repository: TeacherHomeworkRepositoryImpl(useMock: false),
+          downloadCubit: context.read<DownloadCubit>(),
         )..loadHomeworks(),
       ),
       // 老師需要的 providers...

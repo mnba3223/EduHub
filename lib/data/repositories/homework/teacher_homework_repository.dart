@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/config/user_session.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
@@ -10,20 +12,34 @@ abstract class TeacherHomeworkRepository {
   Future<List<TeacherHomeworkListItem>> getTeacherHomeworks();
   Future<List<TeacherHomeworkSubmission>> getTeacherHomeworkDetail(
       int homeworkId);
+
+  // downloadFile(String fileUrl, String filePath, {required Null Function(dynamic progress) onProgress}) {}
+  Future<void> downloadFile(
+    String url,
+    String savePath, {
+    void Function(double progress)? onProgress,
+  });
+
+  Future<void> gradeSubmission({
+    required int submissionId,
+    required int grade,
+    String? comment,
+  });
 }
 
 class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
   final TeacherApi _api;
   // final SignInCubit _signInCubit;
   final bool useMock;
-
+  final Dio _dio;
   List<TeacherHomeworkListItem>? _cachedHomeworks;
 
   TeacherHomeworkRepositoryImpl({
     TeacherApi? api,
     // required SignInCubit signInCubit,
     this.useMock = false,
-  }) : _api = api ?? TeacherApi(DioClient().dio);
+  })  : _api = api ?? TeacherApi(DioClient().dio),
+        _dio = Dio();
 
   int get _teacherId {
     final roleId = UserSession.instance.roleId;
@@ -67,6 +83,71 @@ class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
       if (response.success) {
         return response.data!;
       } else {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  @override
+  Future<void> downloadFile(
+    String url,
+    String savePath, {
+    void Function(double progress)? onProgress,
+  }) async {
+    try {
+      await _dio.download(
+        url,
+        savePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            final progress = received / total;
+            onProgress?.call(progress);
+          }
+        },
+      );
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  @override
+  Future<void> gradeSubmission({
+    required int submissionId,
+    required int grade,
+    String? comment,
+  }) async {
+    try {
+      log('Repository: Starting grade submission',
+          name: 'TeacherHomeworkRepository');
+      log('Params - submissionId: $submissionId, grade: $grade, comment: $comment',
+          name: 'TeacherHomeworkRepository');
+      if (submissionId <= 0) {
+        throw ApiException('Invalid submission ID');
+      }
+      if (grade < 0 || grade > 100) {
+        throw ApiException('Invalid grade value');
+      }
+
+      final formData = FormData.fromMap({
+        'rating': grade,
+        'comment': comment ?? '',
+        'status': 'graded', // 或者其他适当的状态
+      });
+
+      final response = await _api.gradeSubmission(
+        submissionId,
+        comment,
+        grade,
+        'graded',
+      );
+      log('Grade submission successful', name: 'TeacherHomeworkRepository');
+      if (!response.success) {
         throw ApiException(
           response.message,
           errorCode: response.code.toString(),

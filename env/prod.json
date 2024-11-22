@@ -1,9 +1,9 @@
 {
-    "baseUrl": "https://lsbookapi.lsworkapp.com/",
+    "baseUrl": "https://eschool.lsworkapp.com",
     "paths": {
-        "api/*": "http://localhost:3000/api/*"
+        "api/*": ""
     }
     ,
-    "localUrl": "https://lsbookdev.lsworkapp.com:5050",
+    "localUrl": "",
     "mode": "production mode"
 }

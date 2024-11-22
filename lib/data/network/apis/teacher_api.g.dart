@@ -306,6 +306,67 @@ class _TeacherApi implements TeacherApi {
     return _value;
   }
 
+  @override
+  Future<ApiResponse<dynamic>> gradeSubmission(
+    int submissionId,
+    String? comment,
+    int? rating,
+    String? status,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (comment != null) {
+      _data.fields.add(MapEntry(
+        'comment',
+        comment,
+      ));
+    }
+    if (rating != null) {
+      _data.fields.add(MapEntry(
+        'rating',
+        rating.toString(),
+      ));
+    }
+    if (status != null) {
+      _data.fields.add(MapEntry(
+        'status',
+        status,
+      ));
+    }
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+        .compose(
+          _dio.options,
+          '/api/Homework/submissions/teacher/${submissionId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

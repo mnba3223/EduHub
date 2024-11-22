@@ -15,7 +15,7 @@
             "request": "launch",
             "type": "dart",
             "args": [
-              
+              "--dart-define-from-file=env/stage.json",
              
             ]
         },
@@ -24,7 +24,7 @@
             "request": "launch",
             "type": "dart",
             "args": [
-            
+            "--dart-define-from-file=env/prod.json",
             ]
         },
         {
