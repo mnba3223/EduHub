@@ -156,6 +156,9 @@ retry,Retry,重試,重试,再試行
 date,Date,日期,
 cancel,Cancel,取消
 submit,Submit,提交
+month,Month,月,月,月
+week,Week,週,周,週
+two_weeks,Two Weeks,兩週,两周,二週間
 
 #attachments
 attendance_statistics,Attendance Statistics,出勤統計
@@ -230,6 +233,20 @@ teacher_exam_subject,Subject,考試科目,考试科目,試験科目
 teacher_exam_class,Class,考試班級,考试班级,試験クラス
 teacher_exam_room,Room,考試教室,考试教室,試験教室
 teacher_exam_status,Status,考試狀態,考试状态,試験状態
+teacher_exam_management,Status,考試管理,考試管理,考試管理
+view_detail,Detail,查看詳情,查看詳情,查看詳情
+exam_detail,Exam detail;,考試詳情,考試詳情,考試詳情
+teacher_exam_student_name,Student Name,學生姓名,学生姓名,学生氏名
+teacher_exam_enter_score,Enter Score,輸入分數,输入分数,点数を入力
+teacher_exam_score_validate,Please enter a score between 0-100,請輸入0-100的分數,请输入0-100的分数,0-100の間の点数を入力してください
+teacher_exam_grade,Grade Exam,考試評分,考试评分,試験採点
+teacher_exam_grade_success,Grading Success,評分成功,评分成功,採点完了
+teacher_exam_grade_failed,Grading Failed: {},評分失敗：{},评分失败：{},採点失敗：{}
+teacher_exam_total_students,Total Students,總學生數,总学生数,総学生数
+teacher_exam_graded_count,Graded Students,已評分學生數,已评分学生数,採点済み学生数
+teacher_exam_not_graded,Not Graded,未評分,未评分,未採点
+teacher_exam_score,Score,分數,分数,点数
+no_registrations,尚無資料,尚無資料,尚無資料
 
 # Teacher Homework
 teacher_home_title,Teacher Homework,作業管理,作業管理,作業管理
@@ -267,4 +284,67 @@ submitted_count,{count}/{total} Submitted,已繳交 {count}/{total},已提交 {c
 graded_count,{count}/{total} Graded,已評分 {count}/{total},已评分 {count}/{total},採点済み {count}/{total}
 
 # Create Homework
-create_homework,Create Homework,建立作業,创建作业,課題を作成
+create_homework,Create Homework,建立作業,创建作业,課題作成
+select_lesson,Select Lesson,選擇課程,选择课程,授業選択
+please_select_lesson,Please select a lesson,請選擇課程,请选择课程,授業を選択してください
+homework_description,Homework Description,作業說明,作业说明,課題説明
+please_enter_description,Please enter description,請輸入說明,请输入说明,説明を入力してください
+start_time,Start Time,開始時間,开始时间,開始時間
+end_time,End Time,結束時間,结束时间,終了時間
+select_date,Select Date,選擇日期,选择日期,日付選択
+upload_file,Upload File,上傳檔案,上传文件,ファイルアップロード
+no_file_selected,No file selected,未選擇檔案,未选择文件,ファイル未選択
+create,Create,建立,创建,作成
+cancel,Cancel,取消,取消,キャンセル
+homework_created_successfully,Homework created successfully,作業建立成功,作业创建成功,課題作成が完了しました
+select_homework_file,Select Homework File,選擇作業檔案,选择作业文件,課題ファイルを選択
+start_time_after_end_time,Start time cannot be after end time,開始時間不能晚於結束時間,开始时间不能晚于结束时间,開始時刻は終了時刻より後にできません
+
+#Grading & Submission
+enter_score,Enter Score,輸入分數,输入分数,点数を入力
+enter_comment,Enter Comment,輸入評語,输入评语,コメントを入力
+comment,Comment,評語,评语,コメント
+confirm,Confirm,確認,确认,確認
+grading_success,Grading Successful,評分成功,评分成功,採点完了
+grading_failed,Grading Failed,評分失敗,评分失败,採点失敗
+retry,Retry,重試,重试,再試行
+download_all,Download All,全部下載,全部下载,すべてをダウンロード
+downloading,Downloading...,下載中...,下载中...,ダウンロード中...
+no_data,No Data,無資料,无数据,データなし
+
+#Status Updates
+submission_status,Status,狀態,状态,状態
+submission_time,Time,時間,时间,時間
+status_pending,Pending,待處理,待处理,保留中
+status_submitted,Submitted,已提交,已提交,提出済み
+status_graded,Graded,已評分,已评分,採点済み
+
+
+#Lesson
+all_subjects,ALL subject, 所有課程,所有課程
+
+#Lesson Schedule
+teacher_lesson_schedule,Lesson Schedule,課表,课表,授業スケジュール
+no_lessons,No Lessons,無課程,无课程,授業なし
+all_subjects,All Subjects,所有科目,所有科目,すべての科目
+select_subject,Select Subject,選擇科目,选择科目,科目を選択
+select_classroom,Select Classroom,選擇教室,选择教室,教室を選択
+all_classrooms,All Classrooms,所有教室,所有教室,すべての教室
+
+#Lesson Card
+lesson_title,Lesson Title,課程標題,课程标题,授業タイトル
+course_name,Course Name,課程名稱,课程名称,コース名
+classroom_location,Location,地點,地点,場所
+lesson_description,Description,課程說明,课程说明,授業説明
+lesson_time,Time,時間,时间,時間
+lesson_date,Date,日期,日期,日付
+
+#Time Format
+time_range,{startTime} - {endTime},{startTime} - {endTime},{startTime} - {endTime},{startTime} - {endTime}
+time_format_hint,HH:mm,HH:mm,HH:mm,HH:mm
+
+#Calendar
+month,Month,月,月,月
+week,Week,週,周,週
+two_weeks,Two Weeks,兩週,两周,二週間
+lesson_calendar,Lesson Calendar,課程日曆,课程日历,授業カレンダー

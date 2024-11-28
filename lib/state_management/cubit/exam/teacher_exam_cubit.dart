@@ -1,7 +1,9 @@
 // cubit/teacher_exam_cubit.dart
 import 'package:edutec_hub/data/repositories/exam/teacher_exam_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 
@@ -92,10 +94,10 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
     }
   }
 
-  Future<void> updateExam(t) async {
+  Future<void> updateExam(int examId, ExamCreateRequest request) async {
     try {
       emit(state.copyWith(isLoading: true, error: null));
-      // await _repository.updateExam(request);
+      await _repository.updateExam(examId, request);
       await loadExams(); // 重新加載考試列表
     } catch (e) {
       emit(state.copyWith(
@@ -116,6 +118,67 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
         isLoading: false,
       ));
     }
+  }
+
+  Future<void> loadExamRegistrations(int examId) async {
+    try {
+      emit(state.copyWith(isLoading: true, error: null));
+      final registrations = await _repository.getExamRegistrations(examId);
+      emit(state.copyWith(
+        registrations: registrations,
+        isLoading: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      ));
+    }
+  }
+
+  Future<void> gradeExam(int registrationId, int score) async {
+    try {
+      emit(state.copyWith(isLoading: true, error: null));
+      await _repository.gradeExam(registrationId, score);
+
+      // 如果目前有載入某個考試的註冊列表，重新載入它
+      if (state.registrations.isNotEmpty) {
+        final examId = state.registrations.first.examId;
+        await loadExamRegistrations(examId);
+      }
+
+      emit(state.copyWith(isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      ));
+    }
+  }
+
+  Widget? markerBuilder(BuildContext context, DateTime date, List events) {
+    final count =
+        state.exams.where((exam) => isSameDay(exam.examDate, date)).length;
+
+    if (count == 0) return null;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        shape: BoxShape.circle,
+      ),
+      width: 16.w,
+      height: 16.w,
+      child: Center(
+        child: Text(
+          count.toString(),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 10.sp,
+          ),
+        ),
+      ),
+    );
   }
 
   void clearState() {

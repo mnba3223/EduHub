@@ -1,6 +1,6 @@
 import 'package:edutec_hub/config/router/provider_config.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
@@ -17,10 +17,12 @@ import 'package:edutec_hub/presentation/screens/student/homework/student_homwork
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/attendance/teacher_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/contact_book/teacher_contact_book_screen.dart';
+import 'package:edutec_hub/presentation/screens/teacher/exam/teacher_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/exam/teacher_exam_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/exam/teaher_create_edit_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/homework/teacher_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/homework/teacher_homework_screen.dart';
+import 'package:edutec_hub/presentation/screens/teacher/lesson/teacher_lesson_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/schedule/teacher_schedule_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/home/teacher_home_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
@@ -623,11 +625,11 @@ class AppRouter {
 
           GoRoute(
             path: '/teacher-contact',
-            builder: (context, state) => const TeacherContactScreen(),
+            builder: (context, state) => const TeacherContactBookScreen(),
           ),
           GoRoute(
             path: '/teacher-schedule',
-            builder: (context, state) => const TeacherScheduleScreen(),
+            builder: (context, state) => const TeacherLessonScreen(),
           ),
           GoRoute(
             path: '/teacher-leave',
@@ -658,6 +660,14 @@ class AppRouter {
           GoRoute(
             path: '/teacher-exams',
             builder: (context, state) => const TeacherExamListScreen(),
+          ),
+          // 考試詳細頁面
+          GoRoute(
+            path: '/teacher-exam/:examId/detail',
+            builder: (context, state) {
+              final examId = int.parse(state.pathParameters['examId']!);
+              return TeacherExamDetailScreen(examId: examId);
+            },
           ),
         ],
       ),

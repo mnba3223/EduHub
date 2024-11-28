@@ -1,31 +1,12 @@
-// 考試管理頁面
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
 import 'package:flutter/material.dart';
-
-// class TeacherExamsScreen extends StatelessWidget {
-//   const TeacherExamsScreen({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('考試管理'),
-//       ),
-//       body: const Center(
-//         child: Text('考試管理頁面'),
-//       ),
-//     );
-//   }
-// }
-
-// screens/teacher/exam/teacher_exam_list_screen.dart
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class TeacherExamListScreen extends StatefulWidget {
   const TeacherExamListScreen({Key? key}) : super(key: key);
@@ -39,16 +20,14 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<TeacherExamCubit>().loadExams();
-      }
+      if (!mounted) return;
+      context.read<TeacherExamCubit>()..loadExams();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
       body: RefreshIndicator(
         onRefresh: () async {
           await context.read<TeacherExamCubit>().loadExams();
@@ -68,7 +47,9 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
                         .read<TeacherExamCubit>()
                         .updateSelectedDate(selectedDay, focusedDay);
                   },
-                  markerBuilder: _buildExamMarker,
+                  markerBuilder: (context, date, events) => context
+                      .read<TeacherExamCubit>()
+                      .markerBuilder(context, date, events),
                 );
               },
             ),
@@ -98,16 +79,22 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
 
   Widget _buildTopBar(BuildContext context) {
     return FixedHeightSmoothTopBarV2(
-      height: 130,
+      height: 130.h,
       child: SafeArea(
-        child: Center(
-          child: Text(
-            '考試管理',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'teacher_exam_management'.tr(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -121,21 +108,32 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
           previous.selectedLesson != current.selectedLesson,
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.w),
           child: DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
-              labelText: '選擇課程',
-              border: OutlineInputBorder(),
+            isExpanded: true,
+            decoration: InputDecoration(
+              labelText: 'select_course'.tr(),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
             ),
             value: state.selectedLesson,
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text('全部課程'),
+                child: Text(
+                  'all_courses'.tr(),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               ...state.lessons.map((lesson) => DropdownMenuItem(
                     value: lesson,
-                    child: Text(lesson),
+                    child: Text(
+                      lesson,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   )),
             ],
             onChanged: (value) {
@@ -149,121 +147,220 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
 
   Widget _buildExamList(TeacherExamState state) {
     if (state.filteredExams.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.assignment_outlined, size: 48, color: Colors.grey),
-            SizedBox(height: 16),
-            Text('暫無考試', style: TextStyle(color: Colors.grey)),
+            Icon(Icons.assignment_outlined,
+                size: 48.sp, color: Colors.grey[400]),
+            SizedBox(height: 16.h),
+            Text(
+              'no_exams'.tr(),
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Colors.grey[600],
+              ),
+            ),
           ],
         ),
       );
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       itemCount: state.filteredExams.length,
       itemBuilder: (context, index) {
         final exam = state.filteredExams[index];
         return Card(
-          child: ListTile(
-            title: Text(exam.examName),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(exam.lessonTitle),
-                Text('考試日期: ${_formatDate(exam.examDate)}'),
-              ],
+          margin: EdgeInsets.only(bottom: 16.h),
+          child: InkWell(
+            onTap: () =>
+                context.push('/teacher-exam/${exam.examId}/detail'), // 添加點擊事件
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          exam.examName,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      _buildPopupMenu(context, exam),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    exam.lessonTitle,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today,
+                          size: 16.sp, color: Colors.grey[600]),
+                      SizedBox(width: 4.w),
+                      Text(
+                        _formatDate(exam.examDate),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (exam.examDescription.isNotEmpty) ...[
+                    SizedBox(height: 8.h),
+                    Text(
+                      exam.examDescription,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey[600],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${"students".tr()}: ${exam.totalStudents}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(width: 16.w),
+                      Text(
+                        '${"graded".tr()}: ${exam.ratingCount}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () =>
-                      context.push('/teacher-exam/${exam.examId}/edit'),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _showDeleteConfirmDialog(context, exam),
-                ),
-              ],
-            ),
-            onTap: () => context.push('/teacher-exam/${exam.examId}'),
           ),
         );
       },
     );
   }
 
-  Widget? _buildExamMarker(BuildContext context, DateTime date, List events) {
-    final count = context
-        .read<TeacherExamCubit>()
-        .state
-        .exams
-        .where((exam) => isSameDay(exam.examDate, date))
-        .length;
-
-    if (count == 0) return null;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        shape: BoxShape.circle,
-      ),
-      width: 16,
-      height: 16,
-      child: Center(
-        child: Text(
-          count.toString(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 10,
+  Widget _buildPopupMenu(BuildContext context, TeacherExam exam) {
+    return PopupMenuButton<String>(
+      icon: Icon(Icons.more_vert, size: 24.sp),
+      onSelected: (value) async {
+        switch (value) {
+          case 'detail':
+            context.push('/teacher-exam/${exam.examId}/detail');
+            break;
+          case 'edit':
+            await _handleEdit(context, exam);
+            break;
+          case 'delete':
+            await _handleDelete(context, exam);
+            break;
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'detail',
+          child: Row(
+            children: [
+              Icon(Icons.visibility, size: 20.sp),
+              SizedBox(width: 8.w),
+              Text('view_detail'.tr()),
+            ],
           ),
         ),
-      ),
+        PopupMenuItem(
+          value: 'edit',
+          child: Row(
+            children: [
+              Icon(Icons.edit, size: 20.sp),
+              SizedBox(width: 8.w),
+              Text('edit'.tr()),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 'delete',
+          child: Row(
+            children: [
+              Icon(Icons.delete, size: 20.sp, color: Colors.red),
+              SizedBox(width: 8.w),
+              Text(
+                'delete'.tr(),
+                style: const TextStyle(color: Colors.red),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.year}/${date.month}/${date.day}';
+  Future<void> _handleEdit(BuildContext context, TeacherExam exam) async {
+    // TODO: 實現編輯功能
+    context.push('/teacher-exam/${exam.examId}/edit', extra: exam);
   }
 
-  Future<void> _showDeleteConfirmDialog(
-    BuildContext context,
-    TeacherExam exam,
-  ) async {
+  Future<void> _handleDelete(BuildContext context, TeacherExam exam) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('確認刪除'),
-        content: Text('確定要刪除考試「${exam.examName}」嗎？'),
+        title: Text('confirm_delete'.tr()),
+        content: Text('confirm_delete_exam'.tr(args: [exam.examName])),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('取消'),
+            child: Text('cancel'.tr()),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('確定'),
+            child: Text(
+              'confirm'.tr(),
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
     );
 
-    if (confirmed == true) {
-      if (!mounted) return;
+    if (confirmed == true && mounted) {
       try {
         await context.read<TeacherExamCubit>().deleteExam(exam.examId);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('刪除成功')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('delete_success'.tr())),
+          );
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('刪除失敗: ${e.toString()}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('delete_failed'.tr(args: [e.toString()]))),
+          );
+        }
       }
     }
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('yyyy/MM/dd').format(date);
   }
 }

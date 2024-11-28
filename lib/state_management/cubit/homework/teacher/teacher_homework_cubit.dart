@@ -1,6 +1,7 @@
 // cubit/teacher_homework_cubit.dart
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
 import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
@@ -88,6 +89,56 @@ class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
       emit(state.copyWith(
         error: e.toString(),
         isLoading: false,
+      ));
+    }
+  }
+
+  Future<void> loadLessons() async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final teacherLessons = await _repository.getTeacherLessons();
+      emit(state.copyWith(
+        teacherLessons: teacherLessons,
+        isLoading: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      ));
+    }
+  }
+
+  // 創建作業
+  Future<void> createHomework({
+    required int lessonId,
+    required String description,
+    required DateTime startTime,
+    required DateTime endTime,
+    File? file,
+  }) async {
+    try {
+      emit(state.copyWith(isSubmitting: true));
+
+      await _repository.createHomework(
+        lessonId: lessonId,
+        description: description,
+        startTime: startTime,
+        endTime: endTime,
+        file: file,
+      );
+
+      // 重新加載作業列表
+      await loadHomeworks();
+
+      emit(state.copyWith(
+        isSubmitting: false,
+        message: 'homework_created_successfully'.tr(),
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        isSubmitting: false,
       ));
     }
   }

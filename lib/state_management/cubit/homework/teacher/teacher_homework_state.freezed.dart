@@ -22,12 +22,16 @@ mixin _$TeacherHomeworkState {
       throw _privateConstructorUsedError;
   List<String> get classrooms => throw _privateConstructorUsedError;
   List<String> get lessons => throw _privateConstructorUsedError;
+  List<Lesson> get teacherLessons =>
+      throw _privateConstructorUsedError; // 新增教師課程列表
   TeacherHomeworkListItem? get selectedHomework =>
       throw _privateConstructorUsedError;
   List<TeacherHomeworkSubmission> get submissions =>
       throw _privateConstructorUsedError;
   String? get selectedClassroom => throw _privateConstructorUsedError;
   String? get selectedLesson => throw _privateConstructorUsedError;
+  Lesson? get selectedTeacherLesson =>
+      throw _privateConstructorUsedError; // 新增選中的課程
   DateTime get selectedDate => throw _privateConstructorUsedError;
   DateTime get focusedDay => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
@@ -38,6 +42,8 @@ mixin _$TeacherHomeworkState {
       throw _privateConstructorUsedError;
   bool get isDownloading => throw _privateConstructorUsedError; // 新增評分相關狀態
   bool get isGrading => throw _privateConstructorUsedError;
+  bool get isSubmitting => throw _privateConstructorUsedError; // 新增作業提交狀態
+  File? get selectedFile => throw _privateConstructorUsedError;
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -57,10 +63,12 @@ abstract class $TeacherHomeworkStateCopyWith<$Res> {
       List<TeacherHomeworkListItem> filteredHomeworks,
       List<String> classrooms,
       List<String> lessons,
+      List<Lesson> teacherLessons,
       TeacherHomeworkListItem? selectedHomework,
       List<TeacherHomeworkSubmission> submissions,
       String? selectedClassroom,
       String? selectedLesson,
+      Lesson? selectedTeacherLesson,
       DateTime selectedDate,
       DateTime focusedDay,
       bool isLoading,
@@ -68,9 +76,12 @@ abstract class $TeacherHomeworkStateCopyWith<$Res> {
       String? message,
       Map<String, double> downloadProgress,
       bool isDownloading,
-      bool isGrading});
+      bool isGrading,
+      bool isSubmitting,
+      File? selectedFile});
 
   $TeacherHomeworkListItemCopyWith<$Res>? get selectedHomework;
+  $LessonCopyWith<$Res>? get selectedTeacherLesson;
 }
 
 /// @nodoc
@@ -93,10 +104,12 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
     Object? filteredHomeworks = null,
     Object? classrooms = null,
     Object? lessons = null,
+    Object? teacherLessons = null,
     Object? selectedHomework = freezed,
     Object? submissions = null,
     Object? selectedClassroom = freezed,
     Object? selectedLesson = freezed,
+    Object? selectedTeacherLesson = freezed,
     Object? selectedDate = null,
     Object? focusedDay = null,
     Object? isLoading = null,
@@ -105,6 +118,8 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
     Object? downloadProgress = null,
     Object? isDownloading = null,
     Object? isGrading = null,
+    Object? isSubmitting = null,
+    Object? selectedFile = freezed,
   }) {
     return _then(_value.copyWith(
       homeworks: null == homeworks
@@ -123,6 +138,10 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
           ? _value.lessons
           : lessons // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      teacherLessons: null == teacherLessons
+          ? _value.teacherLessons
+          : teacherLessons // ignore: cast_nullable_to_non_nullable
+              as List<Lesson>,
       selectedHomework: freezed == selectedHomework
           ? _value.selectedHomework
           : selectedHomework // ignore: cast_nullable_to_non_nullable
@@ -139,6 +158,10 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
           ? _value.selectedLesson
           : selectedLesson // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectedTeacherLesson: freezed == selectedTeacherLesson
+          ? _value.selectedTeacherLesson
+          : selectedTeacherLesson // ignore: cast_nullable_to_non_nullable
+              as Lesson?,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -171,6 +194,14 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
           ? _value.isGrading
           : isGrading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSubmitting: null == isSubmitting
+          ? _value.isSubmitting
+          : isSubmitting // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedFile: freezed == selectedFile
+          ? _value.selectedFile
+          : selectedFile // ignore: cast_nullable_to_non_nullable
+              as File?,
     ) as $Val);
   }
 
@@ -188,6 +219,20 @@ class _$TeacherHomeworkStateCopyWithImpl<$Res,
       return _then(_value.copyWith(selectedHomework: value) as $Val);
     });
   }
+
+  /// Create a copy of TeacherHomeworkState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LessonCopyWith<$Res>? get selectedTeacherLesson {
+    if (_value.selectedTeacherLesson == null) {
+      return null;
+    }
+
+    return $LessonCopyWith<$Res>(_value.selectedTeacherLesson!, (value) {
+      return _then(_value.copyWith(selectedTeacherLesson: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -203,10 +248,12 @@ abstract class _$$TeacherHomeworkStateImplCopyWith<$Res>
       List<TeacherHomeworkListItem> filteredHomeworks,
       List<String> classrooms,
       List<String> lessons,
+      List<Lesson> teacherLessons,
       TeacherHomeworkListItem? selectedHomework,
       List<TeacherHomeworkSubmission> submissions,
       String? selectedClassroom,
       String? selectedLesson,
+      Lesson? selectedTeacherLesson,
       DateTime selectedDate,
       DateTime focusedDay,
       bool isLoading,
@@ -214,10 +261,14 @@ abstract class _$$TeacherHomeworkStateImplCopyWith<$Res>
       String? message,
       Map<String, double> downloadProgress,
       bool isDownloading,
-      bool isGrading});
+      bool isGrading,
+      bool isSubmitting,
+      File? selectedFile});
 
   @override
   $TeacherHomeworkListItemCopyWith<$Res>? get selectedHomework;
+  @override
+  $LessonCopyWith<$Res>? get selectedTeacherLesson;
 }
 
 /// @nodoc
@@ -237,10 +288,12 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
     Object? filteredHomeworks = null,
     Object? classrooms = null,
     Object? lessons = null,
+    Object? teacherLessons = null,
     Object? selectedHomework = freezed,
     Object? submissions = null,
     Object? selectedClassroom = freezed,
     Object? selectedLesson = freezed,
+    Object? selectedTeacherLesson = freezed,
     Object? selectedDate = null,
     Object? focusedDay = null,
     Object? isLoading = null,
@@ -249,6 +302,8 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
     Object? downloadProgress = null,
     Object? isDownloading = null,
     Object? isGrading = null,
+    Object? isSubmitting = null,
+    Object? selectedFile = freezed,
   }) {
     return _then(_$TeacherHomeworkStateImpl(
       homeworks: null == homeworks
@@ -267,6 +322,10 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
           ? _value._lessons
           : lessons // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      teacherLessons: null == teacherLessons
+          ? _value._teacherLessons
+          : teacherLessons // ignore: cast_nullable_to_non_nullable
+              as List<Lesson>,
       selectedHomework: freezed == selectedHomework
           ? _value.selectedHomework
           : selectedHomework // ignore: cast_nullable_to_non_nullable
@@ -283,6 +342,10 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
           ? _value.selectedLesson
           : selectedLesson // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectedTeacherLesson: freezed == selectedTeacherLesson
+          ? _value.selectedTeacherLesson
+          : selectedTeacherLesson // ignore: cast_nullable_to_non_nullable
+              as Lesson?,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -315,6 +378,14 @@ class __$$TeacherHomeworkStateImplCopyWithImpl<$Res>
           ? _value.isGrading
           : isGrading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSubmitting: null == isSubmitting
+          ? _value.isSubmitting
+          : isSubmitting // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedFile: freezed == selectedFile
+          ? _value.selectedFile
+          : selectedFile // ignore: cast_nullable_to_non_nullable
+              as File?,
     ));
   }
 }
@@ -327,10 +398,12 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
       final List<TeacherHomeworkListItem> filteredHomeworks = const [],
       final List<String> classrooms = const [],
       final List<String> lessons = const [],
+      final List<Lesson> teacherLessons = const [],
       this.selectedHomework,
       final List<TeacherHomeworkSubmission> submissions = const [],
       this.selectedClassroom,
       this.selectedLesson,
+      this.selectedTeacherLesson,
       required this.selectedDate,
       required this.focusedDay,
       this.isLoading = false,
@@ -338,11 +411,14 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
       this.message,
       final Map<String, double> downloadProgress = const {},
       this.isDownloading = false,
-      this.isGrading = false})
+      this.isGrading = false,
+      this.isSubmitting = false,
+      this.selectedFile})
       : _homeworks = homeworks,
         _filteredHomeworks = filteredHomeworks,
         _classrooms = classrooms,
         _lessons = lessons,
+        _teacherLessons = teacherLessons,
         _submissions = submissions,
         _downloadProgress = downloadProgress;
 
@@ -383,6 +459,16 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
     return EqualUnmodifiableListView(_lessons);
   }
 
+  final List<Lesson> _teacherLessons;
+  @override
+  @JsonKey()
+  List<Lesson> get teacherLessons {
+    if (_teacherLessons is EqualUnmodifiableListView) return _teacherLessons;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_teacherLessons);
+  }
+
+// 新增教師課程列表
   @override
   final TeacherHomeworkListItem? selectedHomework;
   final List<TeacherHomeworkSubmission> _submissions;
@@ -398,6 +484,9 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
   final String? selectedClassroom;
   @override
   final String? selectedLesson;
+  @override
+  final Lesson? selectedTeacherLesson;
+// 新增選中的課程
   @override
   final DateTime selectedDate;
   @override
@@ -429,10 +518,16 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
   @override
   @JsonKey()
   final bool isGrading;
+  @override
+  @JsonKey()
+  final bool isSubmitting;
+// 新增作業提交狀態
+  @override
+  final File? selectedFile;
 
   @override
   String toString() {
-    return 'TeacherHomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, classrooms: $classrooms, lessons: $lessons, selectedHomework: $selectedHomework, submissions: $submissions, selectedClassroom: $selectedClassroom, selectedLesson: $selectedLesson, selectedDate: $selectedDate, focusedDay: $focusedDay, isLoading: $isLoading, error: $error, message: $message, downloadProgress: $downloadProgress, isDownloading: $isDownloading, isGrading: $isGrading)';
+    return 'TeacherHomeworkState(homeworks: $homeworks, filteredHomeworks: $filteredHomeworks, classrooms: $classrooms, lessons: $lessons, teacherLessons: $teacherLessons, selectedHomework: $selectedHomework, submissions: $submissions, selectedClassroom: $selectedClassroom, selectedLesson: $selectedLesson, selectedTeacherLesson: $selectedTeacherLesson, selectedDate: $selectedDate, focusedDay: $focusedDay, isLoading: $isLoading, error: $error, message: $message, downloadProgress: $downloadProgress, isDownloading: $isDownloading, isGrading: $isGrading, isSubmitting: $isSubmitting, selectedFile: $selectedFile)';
   }
 
   @override
@@ -447,6 +542,8 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
             const DeepCollectionEquality()
                 .equals(other._classrooms, _classrooms) &&
             const DeepCollectionEquality().equals(other._lessons, _lessons) &&
+            const DeepCollectionEquality()
+                .equals(other._teacherLessons, _teacherLessons) &&
             (identical(other.selectedHomework, selectedHomework) ||
                 other.selectedHomework == selectedHomework) &&
             const DeepCollectionEquality()
@@ -455,6 +552,8 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
                 other.selectedClassroom == selectedClassroom) &&
             (identical(other.selectedLesson, selectedLesson) ||
                 other.selectedLesson == selectedLesson) &&
+            (identical(other.selectedTeacherLesson, selectedTeacherLesson) ||
+                other.selectedTeacherLesson == selectedTeacherLesson) &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
             (identical(other.focusedDay, focusedDay) ||
@@ -468,28 +567,37 @@ class _$TeacherHomeworkStateImpl implements _TeacherHomeworkState {
             (identical(other.isDownloading, isDownloading) ||
                 other.isDownloading == isDownloading) &&
             (identical(other.isGrading, isGrading) ||
-                other.isGrading == isGrading));
+                other.isGrading == isGrading) &&
+            (identical(other.isSubmitting, isSubmitting) ||
+                other.isSubmitting == isSubmitting) &&
+            (identical(other.selectedFile, selectedFile) ||
+                other.selectedFile == selectedFile));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_homeworks),
-      const DeepCollectionEquality().hash(_filteredHomeworks),
-      const DeepCollectionEquality().hash(_classrooms),
-      const DeepCollectionEquality().hash(_lessons),
-      selectedHomework,
-      const DeepCollectionEquality().hash(_submissions),
-      selectedClassroom,
-      selectedLesson,
-      selectedDate,
-      focusedDay,
-      isLoading,
-      error,
-      message,
-      const DeepCollectionEquality().hash(_downloadProgress),
-      isDownloading,
-      isGrading);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(_homeworks),
+        const DeepCollectionEquality().hash(_filteredHomeworks),
+        const DeepCollectionEquality().hash(_classrooms),
+        const DeepCollectionEquality().hash(_lessons),
+        const DeepCollectionEquality().hash(_teacherLessons),
+        selectedHomework,
+        const DeepCollectionEquality().hash(_submissions),
+        selectedClassroom,
+        selectedLesson,
+        selectedTeacherLesson,
+        selectedDate,
+        focusedDay,
+        isLoading,
+        error,
+        message,
+        const DeepCollectionEquality().hash(_downloadProgress),
+        isDownloading,
+        isGrading,
+        isSubmitting,
+        selectedFile
+      ]);
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.
@@ -508,10 +616,12 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
       final List<TeacherHomeworkListItem> filteredHomeworks,
       final List<String> classrooms,
       final List<String> lessons,
+      final List<Lesson> teacherLessons,
       final TeacherHomeworkListItem? selectedHomework,
       final List<TeacherHomeworkSubmission> submissions,
       final String? selectedClassroom,
       final String? selectedLesson,
+      final Lesson? selectedTeacherLesson,
       required final DateTime selectedDate,
       required final DateTime focusedDay,
       final bool isLoading,
@@ -519,7 +629,9 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
       final String? message,
       final Map<String, double> downloadProgress,
       final bool isDownloading,
-      final bool isGrading}) = _$TeacherHomeworkStateImpl;
+      final bool isGrading,
+      final bool isSubmitting,
+      final File? selectedFile}) = _$TeacherHomeworkStateImpl;
 
   @override
   List<TeacherHomeworkListItem> get homeworks;
@@ -530,6 +642,8 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
   @override
   List<String> get lessons;
   @override
+  List<Lesson> get teacherLessons; // 新增教師課程列表
+  @override
   TeacherHomeworkListItem? get selectedHomework;
   @override
   List<TeacherHomeworkSubmission> get submissions;
@@ -537,6 +651,8 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
   String? get selectedClassroom;
   @override
   String? get selectedLesson;
+  @override
+  Lesson? get selectedTeacherLesson; // 新增選中的課程
   @override
   DateTime get selectedDate;
   @override
@@ -554,6 +670,10 @@ abstract class _TeacherHomeworkState implements TeacherHomeworkState {
   bool get isDownloading; // 新增評分相關狀態
   @override
   bool get isGrading;
+  @override
+  bool get isSubmitting; // 新增作業提交狀態
+  @override
+  File? get selectedFile;
 
   /// Create a copy of TeacherHomeworkState
   /// with the given fields replaced by the non-null parameter values.

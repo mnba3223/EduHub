@@ -195,7 +195,7 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              homework.homeworkDescription, // 改用 description 作為標題
+              homework.homeworkDescription ?? "", // 改用 description 作為標題
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
@@ -228,7 +228,7 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
             ),
             SizedBox(height: 8.h),
             Text(
-              homework.lessonDescription,
+              homework.lessonDescription ?? "",
               style: TextStyle(
                 fontSize: 15.sp,
                 color: Colors.grey[800],
@@ -430,7 +430,7 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      submission.status.toDisplayString(),
+                      getSubmissionStatusText(submission.status),
                       style: TextStyle(
                         color: _getStatusColor(submission),
                         fontSize: 12.sp,
@@ -467,43 +467,36 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
                         }).toList(),
                         customPath: 'submission_${submission.submissionId}',
                       ),
-                    // if (submission.uploadFileUrls?.isNotEmpty ?? false)
-                    //   BlocBuilder<TeacherHomeworkCubit, TeacherHomeworkState>(
-                    //     builder: (context, state) {
-                    //       final isDownloading = state.isDownloading;
-                    //       final progress = state.downloadProgress[
-                    //           '${submission.studentName}_file'];
 
-                    //       if (isDownloading && progress != null) {
-                    //         return SizedBox(
-                    //           width: 24.w,
-                    //           height: 24.w,
-                    //           child: CircularProgressIndicator(
-                    //             value: progress,
-                    //             strokeWidth: 2,
-                    //           ),
-                    //         );
-                    //       }
-
-                    //       return IconButton(
-                    //         icon: const Icon(Icons.download),
-                    //         onPressed: () {
-                    //           log('Upload URLs: ${submission.uploadFileUrls}');
-                    //           context
-                    //               .read<TeacherHomeworkCubit>()
-                    //               .downloadSubmissionFiles(submission);
-                    //         },
-                    //       );
-                    //     },
+                    // if (submission.status == SubmissionStatus.submitted)
+                    //   IconButton(
+                    //     icon: submission.grade != null
+                    //         ? const Icon(Icons.check_circle,
+                    //             color: Colors.green)
+                    //         : const Icon(Icons.grade, color: Colors.orange),
+                    //     onPressed: () => _showGradeDialog(context, submission),
                     //   ),
-                    // 显示评分按钮/已评分图标
                     if (submission.status == SubmissionStatus.submitted)
                       IconButton(
-                        icon: submission.grade != null
-                            ? const Icon(Icons.check_circle,
-                                color: Colors.green)
-                            : const Icon(Icons.grade, color: Colors.orange),
+                        icon: const Icon(Icons.grade, color: Colors.orange),
                         onPressed: () => _showGradeDialog(context, submission),
+                      ),
+                    if (submission.status == SubmissionStatus.graded)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.check_circle,
+                              color: Colors.green, size: 20.sp),
+                          SizedBox(width: 4.w),
+                          Text(
+                            '${submission.grade}',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
                       ),
                   ],
                 ),
@@ -515,20 +508,30 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
     );
   }
 
+// 修改狀態顏色判斷邏輯
   Color _getStatusColor(TeacherHomeworkSubmission submission) {
-    if (submission.status == SubmissionStatus.submitted) {
-      return submission.grade != null ? Colors.green : Colors.blue;
+    switch (submission.status) {
+      case SubmissionStatus.graded:
+        return Colors.green;
+      case SubmissionStatus.submitted:
+        return Colors.blue;
+      case SubmissionStatus.pending:
+      default:
+        return Colors.grey;
     }
-    return Colors.grey; // pending status
   }
 
+// 修改狀態圖標判斷邏輯
   IconData _getStatusIcon(TeacherHomeworkSubmission submission) {
-    if (submission.status == SubmissionStatus.submitted) {
-      return submission.grade != null
-          ? Icons.check_circle
-          : Icons.assignment_turned_in;
+    switch (submission.status) {
+      case SubmissionStatus.graded:
+        return Icons.check_circle;
+      case SubmissionStatus.submitted:
+        return Icons.assignment_turned_in;
+      case SubmissionStatus.pending:
+      default:
+        return Icons.assignment_late;
     }
-    return Icons.assignment_late; // pending status
   }
 
   void _showGradeDialog(

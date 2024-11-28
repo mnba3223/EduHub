@@ -42,7 +42,8 @@ class _TeacherHomeworkCardState extends State<TeacherHomeworkCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.homework.homeworkDescription, // 改用 description
+                          widget.homework.homeworkDescription ??
+                              "", // 改用 description
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,

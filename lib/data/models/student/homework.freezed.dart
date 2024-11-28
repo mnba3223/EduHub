@@ -24,7 +24,7 @@ mixin _$HomeworkListItem {
   int get homeworkId => throw _privateConstructorUsedError;
   @JsonKey(name: 'lesson_id')
   int get lessonId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   String get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'homework_start_time')
   DateTime get startTime => throw _privateConstructorUsedError;
@@ -62,7 +62,7 @@ abstract class $HomeworkListItemCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'homework_id') int homeworkId,
       @JsonKey(name: 'lesson_id') int lessonId,
-      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_description') String description,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(name: 'upload_file') String? attachmentUrl,
@@ -161,7 +161,7 @@ abstract class _$$HomeworkListItemImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'homework_id') int homeworkId,
       @JsonKey(name: 'lesson_id') int lessonId,
-      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_description') String description,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(name: 'upload_file') String? attachmentUrl,
@@ -253,7 +253,7 @@ class _$HomeworkListItemImpl implements _HomeworkListItem {
   const _$HomeworkListItemImpl(
       {@JsonKey(name: 'homework_id') required this.homeworkId,
       @JsonKey(name: 'lesson_id') required this.lessonId,
-      @JsonKey(name: 'homework_desciption') required this.description,
+      @JsonKey(name: 'homework_description') required this.description,
       @JsonKey(name: 'homework_start_time') required this.startTime,
       @JsonKey(name: 'homework_end_time') required this.endTime,
       @JsonKey(name: 'upload_file') this.attachmentUrl,
@@ -274,7 +274,7 @@ class _$HomeworkListItemImpl implements _HomeworkListItem {
   @JsonKey(name: 'lesson_id')
   final int lessonId;
   @override
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   final String description;
   @override
   @JsonKey(name: 'homework_start_time')
@@ -370,7 +370,7 @@ abstract class _HomeworkListItem implements HomeworkListItem {
   const factory _HomeworkListItem(
       {@JsonKey(name: 'homework_id') required final int homeworkId,
       @JsonKey(name: 'lesson_id') required final int lessonId,
-      @JsonKey(name: 'homework_desciption') required final String description,
+      @JsonKey(name: 'homework_description') required final String description,
       @JsonKey(name: 'homework_start_time') required final DateTime startTime,
       @JsonKey(name: 'homework_end_time') required final DateTime endTime,
       @JsonKey(name: 'upload_file') final String? attachmentUrl,
@@ -392,7 +392,7 @@ abstract class _HomeworkListItem implements HomeworkListItem {
   @JsonKey(name: 'lesson_id')
   int get lessonId;
   @override
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   String get description;
   @override
   @JsonKey(name: 'homework_start_time')
@@ -440,7 +440,7 @@ mixin _$HomeworkSubmission {
   int get homework_id => throw _privateConstructorUsedError; // 添加 homework_id
   @JsonKey(name: 'student_id')
   int get studentId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   String get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'homework_start_time')
   DateTime get startTime => throw _privateConstructorUsedError;
@@ -483,7 +483,7 @@ abstract class $HomeworkSubmissionCopyWith<$Res> {
       {@JsonKey(name: 'submission_id') int submissionId,
       @JsonKey(name: 'homework_id') int homework_id,
       @JsonKey(name: 'student_id') int studentId,
-      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_description') String description,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(name: 'lesson_title') String lessonTitle,
@@ -600,7 +600,7 @@ abstract class _$$HomeworkSubmissionImplCopyWith<$Res>
       {@JsonKey(name: 'submission_id') int submissionId,
       @JsonKey(name: 'homework_id') int homework_id,
       @JsonKey(name: 'student_id') int studentId,
-      @JsonKey(name: 'homework_desciption') String description,
+      @JsonKey(name: 'homework_description') String description,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(name: 'lesson_title') String lessonTitle,
@@ -710,7 +710,7 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
       {@JsonKey(name: 'submission_id') required this.submissionId,
       @JsonKey(name: 'homework_id') required this.homework_id,
       @JsonKey(name: 'student_id') required this.studentId,
-      @JsonKey(name: 'homework_desciption') required this.description,
+      @JsonKey(name: 'homework_description') required this.description,
       @JsonKey(name: 'homework_start_time') required this.startTime,
       @JsonKey(name: 'homework_end_time') required this.endTime,
       @JsonKey(name: 'lesson_title') required this.lessonTitle,
@@ -739,7 +739,7 @@ class _$HomeworkSubmissionImpl implements _HomeworkSubmission {
   @JsonKey(name: 'student_id')
   final int studentId;
   @override
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   final String description;
   @override
   @JsonKey(name: 'homework_start_time')
@@ -857,7 +857,7 @@ abstract class _HomeworkSubmission implements HomeworkSubmission {
       {@JsonKey(name: 'submission_id') required final int submissionId,
       @JsonKey(name: 'homework_id') required final int homework_id,
       @JsonKey(name: 'student_id') required final int studentId,
-      @JsonKey(name: 'homework_desciption') required final String description,
+      @JsonKey(name: 'homework_description') required final String description,
       @JsonKey(name: 'homework_start_time') required final DateTime startTime,
       @JsonKey(name: 'homework_end_time') required final DateTime endTime,
       @JsonKey(name: 'lesson_title') required final String lessonTitle,
@@ -883,7 +883,7 @@ abstract class _HomeworkSubmission implements HomeworkSubmission {
   @JsonKey(name: 'student_id')
   int get studentId;
   @override
-  @JsonKey(name: 'homework_desciption')
+  @JsonKey(name: 'homework_description')
   String get description;
   @override
   @JsonKey(name: 'homework_start_time')

@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:edutec_hub/config/user_session.dart';
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
 import 'package:edutec_hub/data/network/apis/teacher_api.dart';
 import 'package:edutec_hub/data/network/core/dio_client.dart';
@@ -24,6 +26,15 @@ abstract class TeacherHomeworkRepository {
     required int submissionId,
     required int grade,
     String? comment,
+  });
+  // 新增方法
+  Future<List<Lesson>> getTeacherLessons();
+  Future<void> createHomework({
+    required int lessonId,
+    required String description,
+    required DateTime startTime,
+    required DateTime endTime,
+    File? file,
   });
 }
 
@@ -137,7 +148,7 @@ class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
       final formData = FormData.fromMap({
         'rating': grade,
         'comment': comment ?? '',
-        'status': 'graded', // 或者其他适当的状态
+        'status': 'graded', // 評分成績
       });
 
       final response = await _api.gradeSubmission(
@@ -157,6 +168,98 @@ class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
     } on DioException catch (e) {
       throw e.toApiException();
     }
+  }
+
+  @override
+  Future<List<Lesson>> getTeacherLessons() async {
+    if (useMock) {
+      return _getMockLessons();
+    }
+
+    try {
+      final response = await _api.getTeacherLessons(_teacherId);
+      if (response.success) {
+        return response.data!;
+      } else {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  @override
+  Future<void> createHomework({
+    required int lessonId,
+    required String description,
+    required DateTime startTime,
+    required DateTime endTime,
+    File? file,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'lesson_id': lessonId,
+        'homework_description': description,
+        'homework_start_time': startTime.toIso8601String(),
+        'homework_end_time': endTime.toIso8601String(),
+      });
+
+      if (file != null) {
+        formData.files.add(
+          MapEntry(
+            'UploadedFile',
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final response = await _api.createHomework(
+        lessonId: lessonId,
+        homeworkDescription: description,
+        homeworkStartTime: startTime?.toIso8601String(),
+        homeworkEndTime: endTime?.toIso8601String(),
+        uploadedFile: file,
+      );
+
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  Future<List<Lesson>> _getMockLessons() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    return [
+      Lesson(
+        lessonId: 1,
+        lessonTitle: "lesson test",
+        lessonDescription: "desc test",
+        teacherId: _teacherId,
+        classroomId: 1,
+        courseId: 4,
+        lessonDate: DateTime.parse("2024-10-01T00:00:00Z"),
+        startTime: "10:00:00",
+        endTime: "12:00:00",
+        teacherName: "test teacher",
+        courseName: "初階日語",
+        subjectName: "基礎日語發音",
+        classroomName: "room A",
+      ),
+      // 可以添加更多模擬數據
+    ];
   }
 
   Future<List<TeacherHomeworkListItem>> _getMockHomeworks() async {

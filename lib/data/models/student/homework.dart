@@ -12,7 +12,7 @@ part 'homework.g.dart';
 //     required int submissionId, // 改名為更明確的 submissionId
 //     @JsonKey(name: 'homework_id') required int id, // 添加 homework_id
 //     @JsonKey(name: 'student_id') required int studentId,
-//     @JsonKey(name: 'homework_desciption') required String description,
+//     @JsonKey(name: 'homework_description') required String description,
 //     @JsonKey(name: 'homework_start_time') required DateTime startTime,
 //     @JsonKey(name: 'homework_end_time') required DateTime dueDate,
 //     @JsonKey(name: 'lesson_title') required String courseName,
@@ -34,7 +34,7 @@ class HomeworkListItem with _$HomeworkListItem {
   const factory HomeworkListItem({
     @JsonKey(name: 'homework_id') required int homeworkId,
     @JsonKey(name: 'lesson_id') required int lessonId,
-    @JsonKey(name: 'homework_desciption') required String description,
+    @JsonKey(name: 'homework_description') required String description,
     @JsonKey(name: 'homework_start_time') required DateTime startTime,
     @JsonKey(name: 'homework_end_time') required DateTime endTime,
     @JsonKey(name: 'upload_file') String? attachmentUrl,
@@ -69,7 +69,7 @@ class HomeworkSubmission with _$HomeworkSubmission {
     required int submissionId, // 改名為更明確的 submissionId
     @JsonKey(name: 'homework_id') required int homework_id, // 添加 homework_id
     @JsonKey(name: 'student_id') required int studentId,
-    @JsonKey(name: 'homework_desciption') required String description,
+    @JsonKey(name: 'homework_description') required String description,
     @JsonKey(name: 'homework_start_time') required DateTime startTime,
     @JsonKey(name: 'homework_end_time') required DateTime endTime,
     @JsonKey(name: 'lesson_title') required String lessonTitle,

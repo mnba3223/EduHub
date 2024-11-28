@@ -1,5 +1,5 @@
 import 'package:edutec_hub/data/models/message_board/message.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/presentation/ui_widget/card/message_card.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';

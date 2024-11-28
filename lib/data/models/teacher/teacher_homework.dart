@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -27,7 +28,9 @@ enum SubmissionStatus {
   @JsonValue('submit')
   submitted,
   @JsonValue('pending')
-  pending;
+  pending,
+  @JsonValue('graded')
+  graded;
 
   String toDisplayString() {
     switch (this) {
@@ -35,6 +38,8 @@ enum SubmissionStatus {
         return '已繳交';
       case SubmissionStatus.pending:
         return '未繳交';
+      case SubmissionStatus.graded:
+        return '已評分';
     }
   }
 }
@@ -45,6 +50,9 @@ SubmissionStatus _parseSubmissionStatus(String? status) {
     case 'submit':
       return SubmissionStatus.submitted;
     case 'pending':
+      return SubmissionStatus.pending;
+    case 'graded':
+      return SubmissionStatus.graded;
     default:
       return SubmissionStatus.pending;
   }
@@ -77,7 +85,7 @@ class TeacherHomeworkListItem with _$TeacherHomeworkListItem {
   const factory TeacherHomeworkListItem({
     @JsonKey(name: 'homework_id') required int homeworkId,
     @JsonKey(name: 'lesson_id') required int lessonId,
-    @JsonKey(name: 'homework_desciption') required String homeworkDescription,
+    @JsonKey(name: 'homework_description') String? homeworkDescription,
     @JsonKey(name: 'lesson_title') required String lessonTitle,
     String? classroomName,
     @JsonKey(name: 'homework_start_time') required DateTime startTime,
@@ -90,7 +98,7 @@ class TeacherHomeworkListItem with _$TeacherHomeworkListItem {
     @JsonKey(name: 'teacher_id') int? teacherId,
     @JsonKey(name: 'teacher_name') String? teacherName,
     @JsonKey(name: 'upload_file') String? uploadFile,
-    @JsonKey(name: 'lesson_description') required String lessonDescription,
+    @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'total_students') required int totalStudents,
     @JsonKey(name: 'submitted_count') required int submittedCount,
     @JsonKey(name: 'rating_count') required int ratingCount,
@@ -163,6 +171,19 @@ extension HomeworkStatusHelper on HomeworkStatus {
   }
 }
 
+// 更新提交狀態的展示文字
+String getSubmissionStatusText(SubmissionStatus status) {
+  switch (status) {
+    case SubmissionStatus.graded:
+      return 'status_graded'.tr();
+    case SubmissionStatus.submitted:
+      return 'status_submitted'.tr();
+    case SubmissionStatus.pending:
+    default:
+      return 'status_pending'.tr();
+  }
+}
+
 extension SubmissionStatusHelper on SubmissionStatus {
   Color get statusColor {
     switch (this) {
@@ -170,6 +191,8 @@ extension SubmissionStatusHelper on SubmissionStatus {
         return Colors.green;
       case SubmissionStatus.pending:
         return Colors.orange;
+      case SubmissionStatus.graded:
+        return Colors.blue;
     }
   }
 
@@ -179,6 +202,8 @@ extension SubmissionStatusHelper on SubmissionStatus {
         return Icons.assignment_turned_in;
       case SubmissionStatus.pending:
         return Icons.assignment_late;
+      case SubmissionStatus.graded:
+        return Icons.assignment;
     }
   }
 }
@@ -191,10 +216,10 @@ extension TeacherHomeworkDetailX on TeacherHomeworkDetail {
   ) {
     return TeacherHomeworkDetail(
       homeworkId: listItem.homeworkId,
-      homeworkDescription: listItem.homeworkDescription,
+      homeworkDescription: listItem.homeworkDescription ?? "",
       lessonId: listItem.lessonId,
       lessonTitle: listItem.lessonTitle,
-      lessonDescription: listItem.lessonDescription,
+      lessonDescription: listItem.lessonDescription ?? "",
       classroomName: listItem.classroomName,
       startTime: listItem.startTime,
       endTime: listItem.endTime,

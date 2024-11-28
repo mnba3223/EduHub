@@ -324,7 +324,6 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
       );
       return;
     }
-
     try {
       final request = ExamCreateRequest(
         lessonId: _selectedLessonId!,
@@ -332,11 +331,18 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
         examDescription: _descriptionController.text.trim(),
         examDate: _selectedDate!,
         uploadedFile: _selectedFile,
+        // 如果是編輯模式且有原始檔案，則保留原始檔案路徑
+        uploadFile: isEditing ? widget.initialExam?.uploadFile : null,
+        keepExistingFile:
+            _selectedFile == null && widget.initialExam?.uploadFile != null,
       );
 
       if (isEditing) {
-        // await context.read<TeacherExamCubit>()
-        //     .updateExam(widget.examId!, request);
+        await context
+            .read<TeacherExamCubit>()
+            .updateExam(widget.examId!, request);
+        if (!mounted) return;
+        await context.read<TeacherExamCubit>().loadExams();
       } else {
         await context.read<TeacherExamCubit>().createExam(request);
       }

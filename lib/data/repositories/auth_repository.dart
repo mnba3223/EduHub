@@ -7,7 +7,7 @@ import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/auth/auth_data.dart';
 import 'package:edutec_hub/data/models/parent/parent.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/data/network/apis/auth_api.dart';
 import 'package:edutec_hub/data/network/apis/parent_api.dart';
 import 'package:edutec_hub/data/network/apis/student_api.dart';

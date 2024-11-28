@@ -26,10 +26,39 @@ class TeacherExam with _$TeacherExam {
     @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'teacher_id') required int teacherId,
     @JsonKey(name: 'teacher_name') required String teacherName,
+    @JsonKey(name: 'total_students') required int totalStudents,
+    @JsonKey(name: 'rating_count') required int ratingCount,
   }) = _TeacherExam;
 
   factory TeacherExam.fromJson(Map<String, dynamic> json) =>
       _$TeacherExamFromJson(json);
+}
+
+@freezed
+class TeacherExamRegistration with _$TeacherExamRegistration {
+  const factory TeacherExamRegistration({
+    @JsonKey(name: 'registration_id') required int registrationId,
+    @JsonKey(name: 'exam_id') required int examId,
+    @JsonKey(name: 'student_id') required int studentId,
+    @JsonKey(name: 'score') int? score,
+    @JsonKey(name: 'lesson_id') required int lessonId,
+    @JsonKey(name: 'exam_name') required String examName,
+    @JsonKey(name: 'exam_description') required String examDescription,
+    @JsonKey(
+      name: 'exam_date',
+      fromJson: _dateFromJson,
+      toJson: _dateToJson,
+    )
+    required DateTime examDate,
+    @JsonKey(name: 'lesson_title') required String lessonTitle,
+    @JsonKey(name: 'lesson_description') String? lessonDescription,
+    @JsonKey(name: 'total_students') required int totalStudents,
+    @JsonKey(name: 'rating_count') required int ratingCount,
+    @JsonKey(name: 'student_name') required String studentName,
+  }) = _TeacherExamRegistration;
+
+  factory TeacherExamRegistration.fromJson(Map<String, dynamic> json) =>
+      _$TeacherExamRegistrationFromJson(json);
 }
 
 @freezed
@@ -44,7 +73,11 @@ class ExamCreateRequest with _$ExamCreateRequest {
       toJson: _dateToJson,
     )
     required DateTime examDate,
-    @JsonKey(ignore: true) File? uploadedFile,
+    @JsonKey(name: 'upload_file') String? uploadFile,
+    @JsonKey(includeFromJson: false, includeToJson: false) File? uploadedFile,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(false)
+    bool keepExistingFile,
   }) = _ExamCreateRequest;
 
   factory ExamCreateRequest.fromJson(Map<String, dynamic> json) =>
@@ -56,6 +89,7 @@ class TeacherExamState with _$TeacherExamState {
   const factory TeacherExamState({
     @Default([]) List<TeacherExam> exams,
     @Default([]) List<TeacherExam> filteredExams,
+    @Default([]) List<TeacherExamRegistration> registrations,
     required DateTime selectedDate,
     required DateTime focusedDay,
     String? selectedLesson,

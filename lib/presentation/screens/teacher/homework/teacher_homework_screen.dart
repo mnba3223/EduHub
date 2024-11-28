@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
 import 'package:edutec_hub/presentation/screens/teacher/homework/widgets/teacher_homework_card.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/button/custom_button.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/date_time_picker.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_state.dart';
+import 'package:edutec_hub/utils/file/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +44,8 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
     final cubit = context.read<TeacherHomeworkCubit>();
     cubit
       ..resetFilters() // 重置過濾器
-      ..loadHomeworks(); // 重新加載數據
+      ..loadHomeworks() // 重新加載數據
+      ..loadLessons();
   }
 
   @override
@@ -88,11 +94,10 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCreateHomework(context),
+        onPressed: () => _showCreateHomeworkDialog(context),
         child: Icon(Icons.add, size: 24.sp),
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
@@ -140,6 +145,7 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
+                  isExpanded: true, // 讓下拉選單內容可以自動調整大小
                   decoration: InputDecoration(
                     labelText: 'select_classroom'.tr(),
                     contentPadding:
@@ -157,7 +163,10 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
                     ...state.classrooms.map((classroom) {
                       return DropdownMenuItem(
                         value: classroom,
-                        child: Text(classroom),
+                        child: Text(
+                          classroom,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     }),
                   ],
@@ -171,6 +180,7 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
               SizedBox(width: 16.w),
               Expanded(
                 child: DropdownButtonFormField<String>(
+                  isExpanded: true,
                   decoration: InputDecoration(
                     labelText: 'select_lesson'.tr(),
                     contentPadding:
@@ -188,7 +198,10 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
                     ...state.lessons.map((lesson) {
                       return DropdownMenuItem(
                         value: lesson,
-                        child: Text(lesson),
+                        child: Text(
+                          lesson,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     }),
                   ],
@@ -250,7 +263,207 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
     // context.push('/teacher-homework/${homework.homeworkId}');
   }
 
-  void _showCreateHomework(BuildContext context) {
-    context.pushNamed('create-teacher-homework');
+  Future<void> _showCreateHomeworkDialog(BuildContext dialogContext) {
+    final cubit = dialogContext.read<TeacherHomeworkCubit>();
+    final formKey = GlobalKey<FormState>();
+    final descriptionController = TextEditingController();
+    DateTime? startDate;
+    DateTime? endDate;
+    File? selectedFile;
+    Lesson? selectedLesson;
+
+    return showDialog(
+        context: dialogContext,
+        builder: (context) => BlocProvider.value(
+              value: cubit, // 關鍵修改：將外部的 cubit 傳入對話框
+              child: StatefulBuilder(
+                builder: (context, setState) => AlertDialog(
+                  title: Text('create_homework'.tr()),
+                  content: Form(
+                    key: formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Lesson 下拉選擇
+                          BlocBuilder<TeacherHomeworkCubit,
+                              TeacherHomeworkState>(
+                            buildWhen: (previous, current) =>
+                                previous.teacherLessons !=
+                                current.teacherLessons,
+                            builder: (context, state) {
+                              if (state.teacherLessons.isEmpty) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              return DropdownButtonFormField<Lesson>(
+                                decoration: InputDecoration(
+                                  labelText: 'select_lesson'.tr(),
+                                  border: const OutlineInputBorder(),
+                                ),
+                                value: selectedLesson,
+                                items: state.teacherLessons.map((lesson) {
+                                  return DropdownMenuItem<Lesson>(
+                                    value: lesson,
+                                    child: Text(
+                                      '${lesson.lessonTitle} - ${lesson.classroomName}',
+                                      style: TextStyle(fontSize: 14.sp),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedLesson = value;
+                                  });
+                                },
+                                validator: (value) => value == null
+                                    ? 'please_select_lesson'.tr()
+                                    : null,
+                              );
+                            },
+                          ),
+                          SizedBox(height: 16.h),
+
+                          // 作業描述
+                          TextFormField(
+                            controller: descriptionController,
+                            decoration: InputDecoration(
+                              labelText: 'homework_description'.tr(),
+                              border: const OutlineInputBorder(),
+                            ),
+                            maxLines: 3,
+                            validator: (value) => value?.isEmpty == true
+                                ? 'please_enter_description'.tr()
+                                : null,
+                          ),
+
+                          // 開始時間
+                          ListTile(
+                            title: Text('start_time'.tr()),
+                            subtitle: Text(formatDateTime(startDate)),
+                            trailing: const Icon(Icons.calendar_today),
+                            onTap: () async {
+                              final date =
+                                  await showCustomDateTimePicker(context);
+                              if (date != null) {
+                                setState(() {
+                                  startDate = date;
+                                });
+                              }
+                            },
+                          ),
+
+                          // 結束時間
+                          ListTile(
+                            title: Text('end_time'.tr()),
+                            subtitle: Text(formatDateTime(endDate)),
+                            trailing: const Icon(Icons.calendar_today),
+                            onTap: () async {
+                              final date =
+                                  await showCustomDateTimePicker(context);
+                              if (date != null) {
+                                setState(() {
+                                  endDate = date;
+                                });
+                              }
+                            },
+                          ),
+
+                          // 上傳檔案
+                          ListTile(
+                            title: Text('upload_file'.tr()),
+                            subtitle:
+                                Text(FilePickerUtil.getFileName(selectedFile)),
+                            trailing: const Icon(Icons.upload_file),
+                            onTap: () async {
+                              final file = await FilePickerUtil.pickFile(
+                                allowedExtensions: [
+                                  // 文件
+                                  'pdf', 'doc', 'docx', 'ppt', 'pptx',
+                                  // 圖片
+                                  'jpg', 'jpeg', 'png', 'gif', 'webp',
+                                  // 影片
+                                  'mp4', 'mov', 'avi', 'wmv'
+                                ],
+                                dialogTitle: 'select_homework_file'.tr(),
+                              );
+                              if (file != null) {
+                                setState(() {
+                                  selectedFile = file;
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('cancel'.tr()),
+                    ),
+                    BlocConsumer<TeacherHomeworkCubit, TeacherHomeworkState>(
+                      listener: (context, state) {
+                        if (state.message != null) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(dialogContext).showSnackBar(
+                            SnackBar(content: Text(state.message!)),
+                          );
+                        }
+                        if (state.error != null) {
+                          ScaffoldMessenger.of(dialogContext).showSnackBar(
+                            SnackBar(
+                              content: Text(state.error!),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: state.isSubmitting
+                              ? null
+                              : () {
+                                  if (formKey.currentState?.validate() ==
+                                          true &&
+                                      startDate != null &&
+                                      endDate != null) {
+                                    if (startDate!.isAfter(endDate!)) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'start_time_after_end_time'.tr()),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    cubit.createHomework(
+                                      lessonId: selectedLesson!.lessonId,
+                                      description: descriptionController.text,
+                                      startTime: startDate!,
+                                      endTime: endDate!,
+                                      file: selectedFile,
+                                    );
+                                  }
+                                },
+                          child: state.isSubmitting
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : Text('create'.tr()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 }

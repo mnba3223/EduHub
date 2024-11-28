@@ -10,15 +10,15 @@ class CourseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // For now, we'll use a dummy course. In a real app, you'd fetch this from a repository or API.
-    final course = Course(
-      id: courseId,
-      title: 'Course $courseId',
-      description: 'This is the detailed description for Course $courseId.',
-    );
+    // final course = Course(
+    //   id: courseId,
+    //   title: 'Course $courseId',
+    //   description: 'This is the detailed description for Course $courseId.',
+    // );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(course.title),
+        title: Text("course.title"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,12 +26,12 @@ class CourseDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              course.title,
+              "  course.title",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
             Text(
-              course.description,
+              "  course.description",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
@@ -39,7 +39,7 @@ class CourseDetailScreen extends StatelessWidget {
               onPressed: () {
                 // TODO: Implement enrollment functionality
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Enrolled in ${course.title}')),
+                  SnackBar(content: Text('Enrolled in ${"course.title"}')),
                 );
               },
               child: const Text('Enroll'),

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/message_board/message.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

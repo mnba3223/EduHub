@@ -10,6 +10,8 @@ abstract class TeacherExamRepository {
   Future<TeacherExam> createExam(ExamCreateRequest request);
   Future<TeacherExam> updateExam(int examId, ExamCreateRequest request);
   Future<void> deleteExam(int examId);
+  Future<List<TeacherExamRegistration>> getExamRegistrations(int examId);
+  Future<void> gradeExam(int registrationId, int score);
 }
 
 class TeacherExamRepositoryImpl implements TeacherExamRepository {
@@ -38,9 +40,7 @@ class TeacherExamRepositoryImpl implements TeacherExamRepository {
     try {
       final response = await _api.getTeacherExams(_teacherId);
       if (response.success) {
-        return (response.data as List)
-            .map((json) => TeacherExam.fromJson(json as Map<String, dynamic>))
-            .toList();
+        return response.data ?? [];
       } else {
         throw ApiException(
           response.message,
@@ -55,24 +55,14 @@ class TeacherExamRepositoryImpl implements TeacherExamRepository {
 
   @override
   Future<TeacherExam> createExam(ExamCreateRequest request) async {
-    if (useMock) {
-      return _getMockExam();
-    }
-
     try {
-      final formData = FormData.fromMap({
-        'lesson_id': request.lessonId.toString(),
-        'exam_name': request.examName,
-        'exam_description': request.examDescription,
-        'exam_date': request.examDate.toIso8601String(),
-        if (request.uploadedFile != null)
-          'UploadedFile': await MultipartFile.fromFile(
-            request.uploadedFile!.path,
-            filename: request.uploadedFile!.path.split('/').last,
-          ),
-      });
-
-      final response = await _api.createExam(formData);
+      final response = await _api.createExam(
+        lessonId: request.lessonId.toString(),
+        examName: request.examName,
+        examDescription: request.examDescription,
+        examDate: request.examDate.toIso8601String(),
+        uploadedFile: request.uploadedFile,
+      );
 
       if (response.success) {
         return TeacherExam.fromJson(response.data as Map<String, dynamic>);
@@ -90,40 +80,68 @@ class TeacherExamRepositoryImpl implements TeacherExamRepository {
 
   @override
   Future<TeacherExam> updateExam(int examId, ExamCreateRequest request) async {
-    if (useMock) {
-      return _getMockExam();
+    try {
+      final response = await _api.updateExam(
+        examId,
+        examName: request.examName,
+        examDescription: request.examDescription,
+        examDate: request.examDate.toIso8601String(),
+        uploadedFile: request.uploadedFile, // 只在有新檔案時傳送
+      );
+
+      if (response.success) {
+        final data = response.data as Map<String, dynamic>;
+        // 如果要保留原檔案且API回傳null，則使用原檔案路徑
+        if (request.keepExistingFile && data['upload_file'] == null) {
+          data['upload_file'] = request.uploadFile;
+        }
+        return TeacherExam.fromJson(data);
+      } else {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
     }
-    return _getMockExam();
-    // try {
-    //   final formData = FormData.fromMap({
-    //     'lesson_id': request.lessonId.toString(),
-    //     'exam_name': request.examName,
-    //     'exam_description': request.examDescription,
-    //     'exam_date': request.examDate.toIso8601String(),
-    //     if (request.uploadedFile != null)
-    //       'UploadedFile': await MultipartFile.fromFile(
-    //         request.uploadedFile!.path,
-    //         filename: request.uploadedFile!.path.split('/').last,
-    //       ),
-    //   });
+  }
 
-    // final response = await _api.updateExam(
-    //   examId,
-    //   formData: formData,
-    // );
+  @override
+  Future<List<TeacherExamRegistration>> getExamRegistrations(int examId) async {
+    try {
+      final response = await _api.getExamRegistrations(examId);
+      if (response.success) {
+        return response.data ?? [];
+      } else {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
 
-    //   if (response.success) {
-    //     return TeacherExam.fromJson(response.data as Map<String, dynamic>);
-    //   } else {
-    //     throw ApiException(
-    //       response.message,
-    //       errorCode: response.code.toString(),
-    //       errorDetails: response.data,
-    //     );
-    //   }
-    // } on DioException catch (e) {
-    //   throw e.toApiException();
-    // }
+  @override
+  Future<void> gradeExam(int registrationId, int score) async {
+    // int intScore = int.tryParse(score.toString()) ?? 0;
+
+    try {
+      final response = await _api.gradeExam(registrationId, score);
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+          errorDetails: response.data,
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
   }
 
   @override
@@ -166,6 +184,8 @@ class TeacherExamRepositoryImpl implements TeacherExamRepository {
       teacherId: _teacherId,
       teacherName: 'Teacher A',
       uploadFile: null,
+      totalStudents: 30,
+      ratingCount: 0,
     );
   }
 }

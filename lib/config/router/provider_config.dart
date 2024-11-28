@@ -1,17 +1,23 @@
 // providers_manager.dart
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
+import 'package:edutec_hub/data/repositories/contact_book/teacher_contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
+import 'package:edutec_hub/data/repositories/course/course_repository.dart';
 import 'package:edutec_hub/data/repositories/exam/teacher_exam_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
+import 'package:edutec_hub/data/repositories/lesson/lesson_repository.dart';
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/contact_book/teacher_contact_book_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/course/course_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,7 +117,9 @@ class ProvidersManager {
         create: (context) => TeacherHomeworkCubit(
           repository: TeacherHomeworkRepositoryImpl(useMock: false),
           downloadCubit: context.read<DownloadCubit>(),
-        )..loadHomeworks(),
+        )
+          ..loadHomeworks()
+          ..loadLessons(),
       ),
       // 老師需要的 providers...
       //    BlocProvider<TeacherAnnouncementCubit>(
@@ -132,8 +140,15 @@ class ProvidersManager {
       // ),
       BlocProvider<TeacherExamCubit>(
         create: (context) => TeacherExamCubit(
-          TeacherExamRepositoryImpl(useMock: true),
+          TeacherExamRepositoryImpl(useMock: false),
         )..loadExams(),
+      ),
+      // 添加課程相關的 provider
+      BlocProvider<TeacherCourseCubit>(
+        create: (context) => TeacherCourseCubit(
+          courseRepository: CourseRepositoryImpl(useMock: false),
+          homeworkRepository: context.read<TeacherHomeworkRepository>(),
+        )..loadCourses(),
       ),
       // BlocProvider<TeacherHomeworkCubit>(
       //   create: (context) => TeacherHomeworkCubit(
@@ -143,6 +158,19 @@ class ProvidersManager {
       //     ),
       //   )..loadWeeklyHomework(),
       // ),
+      /// 聯絡簿 cubit
+      BlocProvider<TeacherContactBookCubit>(
+        create: (context) => TeacherContactBookCubit(
+          repository: TeacherContactBookRepositoryImpl(
+            useMock: false, // 或 true 用於測試
+          ),
+        )..loadContactBooks(),
+      ),
+      BlocProvider<LessonCubit>(
+        create: (context) => LessonCubit(
+          repository: LessonRepositoryImpl(useMock: false),
+        )..loadLessons(),
+      ),
     ];
   }
 }

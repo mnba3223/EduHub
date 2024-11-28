@@ -1,5 +1,5 @@
 import 'package:edutec_hub/data/models/auth/auth_data.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 
 class UserSession {
   static final UserSession instance = UserSession._internal();

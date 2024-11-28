@@ -27,7 +27,7 @@ _$TeacherHomeworkListItemImpl _$$TeacherHomeworkListItemImplFromJson(
     _$TeacherHomeworkListItemImpl(
       homeworkId: (json['homework_id'] as num).toInt(),
       lessonId: (json['lesson_id'] as num).toInt(),
-      homeworkDescription: json['homework_desciption'] as String,
+      homeworkDescription: json['homework_description'] as String?,
       lessonTitle: json['lesson_title'] as String,
       classroomName: json['classroomName'] as String?,
       startTime: DateTime.parse(json['homework_start_time'] as String),
@@ -38,7 +38,7 @@ _$TeacherHomeworkListItemImpl _$$TeacherHomeworkListItemImplFromJson(
       teacherId: (json['teacher_id'] as num?)?.toInt(),
       teacherName: json['teacher_name'] as String?,
       uploadFile: json['upload_file'] as String?,
-      lessonDescription: json['lesson_description'] as String,
+      lessonDescription: json['lesson_description'] as String?,
       totalStudents: (json['total_students'] as num).toInt(),
       submittedCount: (json['submitted_count'] as num).toInt(),
       ratingCount: (json['rating_count'] as num).toInt(),
@@ -49,7 +49,7 @@ Map<String, dynamic> _$$TeacherHomeworkListItemImplToJson(
     <String, dynamic>{
       'homework_id': instance.homeworkId,
       'lesson_id': instance.lessonId,
-      'homework_desciption': instance.homeworkDescription,
+      'homework_description': instance.homeworkDescription,
       'lesson_title': instance.lessonTitle,
       'classroomName': instance.classroomName,
       'homework_start_time': instance.startTime.toIso8601String(),
@@ -142,4 +142,5 @@ Map<String, dynamic> _$$TeacherHomeworkSubmissionImplToJson(
 const _$SubmissionStatusEnumMap = {
   SubmissionStatus.submitted: 'submit',
   SubmissionStatus.pending: 'pending',
+  SubmissionStatus.graded: 'graded',
 };

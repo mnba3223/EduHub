@@ -1,4 +1,4 @@
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/state_management/cubit/authCubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/presentation/screens/auth/termsAndConditionAndPrivacyPolicyContainer.dart';

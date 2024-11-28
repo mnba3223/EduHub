@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:edutec_hub/config/user_session.dart';
-import 'package:edutec_hub/data/models/user_role.dart';
+import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
 import 'package:edutec_hub/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
