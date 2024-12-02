@@ -1,5 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_home_state.dart';
+import 'package:edutec_hub/state_management/cubit/home/teacher_home_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,46 +13,54 @@ class TeacherHomeworkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
+      builder: (context, state) {
+        final now = DateTime.now();
+        final weekStart = now.subtract(Duration(days: now.weekday - 1));
+        final weekEnd = weekStart.add(const Duration(days: 7));
+
+        final weeklyHomework = state.weeklyHomework.where((homework) {
+          return homework.endTime.isAfter(weekStart) &&
+              homework.endTime.isBefore(weekEnd);
+        }).toList();
+
+        return Container(
+          margin: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
-                child: Text(
-                  'teacher_weekly_homework'.tr(),
-                  style:
-                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'teacher_weekly_homework'.tr(),
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                    onTap: () => context.push('/teacher-homework'),
+                    child: Text(
+                      'teacher_view_more'.tr(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () => context.push('/teacher-homework'),
-                child: Text(
-                  'teacher_view_more'.tr(),
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
+              SizedBox(height: 10.h),
+              if (weeklyHomework.isEmpty)
+                Center(child: Text('no_homework'.tr()))
+              else
+                ...weeklyHomework.map((homework) => _buildHomeworkCard(
+                      dueDate: DateFormat('MM/dd').format(homework.endTime),
+                      subject: homework.lessonTitle ?? '',
+                      className: homework.classroomName ?? '',
+                      pendingCount:
+                          homework.totalStudents - homework.submittedCount,
+                    )),
             ],
           ),
-          SizedBox(height: 10.h),
-          _buildHomeworkCard(
-            dueDate: '03/22',
-            subject: '數學作業',
-            className: '三年級A班',
-            pendingCount: 5,
-          ),
-          _buildHomeworkCard(
-            dueDate: '03/23',
-            subject: '英文作業',
-            className: '二年級B班',
-            pendingCount: 3,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -74,7 +87,7 @@ class TeacherHomeworkWidget extends StatelessWidget {
             ),
             child: Text(
               dueDate,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -91,7 +104,6 @@ class TeacherHomeworkWidget extends StatelessWidget {
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
                 Row(
                   children: [

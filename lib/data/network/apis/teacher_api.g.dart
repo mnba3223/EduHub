@@ -203,8 +203,8 @@ class _TeacherApi implements TeacherApi {
   }
 
   @override
-  Future<ApiResponse<TeacherExam>> createExam({
-    required String lessonId,
+  Future<ApiResponse<dynamic>> createExam({
+    required int lessonId,
     required String examName,
     required String examDescription,
     required String examDate,
@@ -217,7 +217,7 @@ class _TeacherApi implements TeacherApi {
     final _data = FormData();
     _data.fields.add(MapEntry(
       'lesson_id',
-      lessonId,
+      lessonId.toString(),
     ));
     _data.fields.add(MapEntry(
       'exam_name',
@@ -240,7 +240,7 @@ class _TeacherApi implements TeacherApi {
         ),
       ));
     }
-    final _options = _setStreamType<ApiResponse<TeacherExam>>(Options(
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -258,11 +258,11 @@ class _TeacherApi implements TeacherApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<TeacherExam> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<TeacherExam>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-        (json) => TeacherExam.fromJson(json as Map<String, dynamic>),
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -731,14 +731,14 @@ class _TeacherApi implements TeacherApi {
   }
 
   @override
-  Future<ApiResponse<TeacherContactBook>> createContactBook(
+  Future<ApiResponse<dynamic>> createContactBook(
       Map<String, dynamic> data) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
-    final _options = _setStreamType<ApiResponse<TeacherContactBook>>(Options(
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -755,11 +755,11 @@ class _TeacherApi implements TeacherApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<TeacherContactBook> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<TeacherContactBook>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-        (json) => TeacherContactBook.fromJson(json as Map<String, dynamic>),
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -809,7 +809,7 @@ class _TeacherApi implements TeacherApi {
   }
 
   @override
-  Future<ApiResponse<TeacherContactBookMessage>> addContactBookMessage({
+  Future<ApiResponse<dynamic>> addContactBookMessage({
     required int contactBookId,
     required String messageText,
     File? uploadFile,
@@ -836,31 +836,187 @@ class _TeacherApi implements TeacherApi {
         ),
       ));
     }
-    final _options =
-        _setStreamType<ApiResponse<TeacherContactBookMessage>>(Options(
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: 'multipart/form-data',
     )
-            .compose(
-              _dio.options,
-              '/api/ContactBook/message',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/api/ContactBook/message',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<TeacherContactBookMessage> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<TeacherContactBookMessage>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-        (json) =>
-            TeacherContactBookMessage.fromJson(json as Map<String, dynamic>),
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<TeacherLeave>>> getTeacherLeaves(
+    int teacherId, {
+    String? startTime,
+    String? endTime,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'teacherId': teacherId,
+      r'startTime': startTime,
+      r'endTime': endTime,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<TeacherLeave>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/LeaveNotice/leaveTeacher',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<TeacherLeave>> _value;
+    try {
+      _value = ApiResponse<List<TeacherLeave>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<TeacherLeave>(
+                    (i) => TeacherLeave.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<TeacherLeave>> updateTeacherLeave(int lessonId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<TeacherLeave>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/LeaveNotice/teacher/${lessonId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<TeacherLeave> _value;
+    try {
+      _value = ApiResponse<TeacherLeave>.fromJson(
+        _result.data!,
+        (json) => TeacherLeave.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<TeacherLeave>> createTeacherLeave(int lessonId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<TeacherLeave>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/LeaveNotice/teacher/${lessonId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<TeacherLeave> _value;
+    try {
+      _value = ApiResponse<TeacherLeave>.fromJson(
+        _result.data!,
+        (json) => TeacherLeave.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> cancelTeacherLeave(int lessonId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/LeaveNotice/teacherCancel/${lessonId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

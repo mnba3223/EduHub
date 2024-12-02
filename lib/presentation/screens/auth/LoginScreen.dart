@@ -384,22 +384,22 @@ class _UserLoginScreenState extends State<UserLoginScreen>
                                       color: UiUtils.getColorScheme(context)
                                           .primary,
                                     ),
-                                    text: UiUtils.getTranslatedLabel(
-                                      context,
-                                      loginAsKey,
-                                    ),
+                                    // text: UiUtils.getTranslatedLabel(
+                                    //   context,
+                                    //   loginAsKey,
+                                    // ),
                                   ),
-                                  const TextSpan(text: " "),
-                                  TextSpan(
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.0,
-                                      color: UiUtils.getColorScheme(context)
-                                          .secondary,
-                                    ),
-                                    text:
-                                        "${UiUtils.getTranslatedLabel(context, parentKey)}?",
-                                  ),
+                                  // const TextSpan(text: " "),
+                                  // TextSpan(
+                                  //   style: TextStyle(
+                                  //     fontWeight: FontWeight.w500,
+                                  //     fontSize: 16.0,
+                                  //     color: UiUtils.getColorScheme(context)
+                                  //         .secondary,
+                                  //   ),
+                                  //   text:
+                                  //       "${UiUtils.getTranslatedLabel(context, parentKey)}?",
+                                  // ),
                                 ],
                               ),
                             ),

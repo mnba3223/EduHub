@@ -18,8 +18,8 @@ _$TeacherExamImpl _$$TeacherExamImplFromJson(Map<String, dynamic> json) =>
       lessonDescription: json['lesson_description'] as String?,
       teacherId: (json['teacher_id'] as num).toInt(),
       teacherName: json['teacher_name'] as String,
-      totalStudents: (json['total_students'] as num).toInt(),
-      ratingCount: (json['rating_count'] as num).toInt(),
+      totalStudents: (json['total_students'] as num?)?.toInt(),
+      ratingCount: (json['rating_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$TeacherExamImplToJson(_$TeacherExamImpl instance) =>

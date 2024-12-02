@@ -73,7 +73,7 @@ class TeacherContactBookCubit extends Cubit<TeacherContactBookState> {
       );
       await loadContactBooks(); // 重新載入清單
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      throw e;
     }
   }
 

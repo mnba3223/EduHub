@@ -1,5 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:edutec_hub/data/models/common/lesson.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_home_state.dart';
+import 'package:edutec_hub/state_management/cubit/home/teacher_home_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,40 +13,51 @@ class TeacherCoursesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
+      builder: (context, state) {
+        final todayLessons = state.todayCourses.where((lesson) {
+          final lessonDate = lesson.lessonDate;
+          final now = DateTime.now();
+          return lessonDate.year == now.year &&
+              lessonDate.month == now.month &&
+              lessonDate.day == now.day;
+        }).toList();
+
+        return Container(
+          margin: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'teacher_today_courses'.tr(),
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'teacher_today_courses'.tr(),
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                    onTap: () => context.push('/teacher-schedule'),
+                    child: Text(
+                      'teacher_view_more'.tr(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () => context.push('/teacher-schedule'),
-                child: Text(
-                  'teacher_view_more'.tr(),
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
+              SizedBox(height: 10.h),
+              if (todayLessons.isEmpty)
+                Center(child: Text('no_lessons'.tr()))
+              else
+                ...todayLessons.map((lesson) => _buildCourseCard(
+                      time: '${lesson.startTime}-${lesson.endTime}',
+                      subject: lesson.lessonTitle ?? '',
+                      className: lesson.classroomName ?? '',
+                    )),
             ],
           ),
-          SizedBox(height: 10.h),
-          _buildCourseCard(
-            time: '09:00-10:30',
-            subject: '數學',
-            className: '三年級A班',
-          ),
-          _buildCourseCard(
-            time: '10:40-12:10',
-            subject: '英文',
-            className: '二年級B班',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -67,7 +83,7 @@ class TeacherCoursesWidget extends StatelessWidget {
             ),
             child: Text(
               time,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

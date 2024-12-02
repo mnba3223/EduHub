@@ -41,9 +41,9 @@ mixin _$TeacherExam {
   @JsonKey(name: 'teacher_name')
   String get teacherName => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_students')
-  int get totalStudents => throw _privateConstructorUsedError;
+  int? get totalStudents => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_count')
-  int get ratingCount => throw _privateConstructorUsedError;
+  int? get ratingCount => throw _privateConstructorUsedError;
 
   /// Serializes this TeacherExam to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -73,8 +73,8 @@ abstract class $TeacherExamCopyWith<$Res> {
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
-      @JsonKey(name: 'total_students') int totalStudents,
-      @JsonKey(name: 'rating_count') int ratingCount});
+      @JsonKey(name: 'total_students') int? totalStudents,
+      @JsonKey(name: 'rating_count') int? ratingCount});
 }
 
 /// @nodoc
@@ -102,8 +102,8 @@ class _$TeacherExamCopyWithImpl<$Res, $Val extends TeacherExam>
     Object? lessonDescription = freezed,
     Object? teacherId = null,
     Object? teacherName = null,
-    Object? totalStudents = null,
-    Object? ratingCount = null,
+    Object? totalStudents = freezed,
+    Object? ratingCount = freezed,
   }) {
     return _then(_value.copyWith(
       examId: null == examId
@@ -146,14 +146,14 @@ class _$TeacherExamCopyWithImpl<$Res, $Val extends TeacherExam>
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
               as String,
-      totalStudents: null == totalStudents
+      totalStudents: freezed == totalStudents
           ? _value.totalStudents
           : totalStudents // ignore: cast_nullable_to_non_nullable
-              as int,
-      ratingCount: null == ratingCount
+              as int?,
+      ratingCount: freezed == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -178,8 +178,8 @@ abstract class _$$TeacherExamImplCopyWith<$Res>
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
-      @JsonKey(name: 'total_students') int totalStudents,
-      @JsonKey(name: 'rating_count') int ratingCount});
+      @JsonKey(name: 'total_students') int? totalStudents,
+      @JsonKey(name: 'rating_count') int? ratingCount});
 }
 
 /// @nodoc
@@ -205,8 +205,8 @@ class __$$TeacherExamImplCopyWithImpl<$Res>
     Object? lessonDescription = freezed,
     Object? teacherId = null,
     Object? teacherName = null,
-    Object? totalStudents = null,
-    Object? ratingCount = null,
+    Object? totalStudents = freezed,
+    Object? ratingCount = freezed,
   }) {
     return _then(_$TeacherExamImpl(
       examId: null == examId
@@ -249,14 +249,14 @@ class __$$TeacherExamImplCopyWithImpl<$Res>
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
               as String,
-      totalStudents: null == totalStudents
+      totalStudents: freezed == totalStudents
           ? _value.totalStudents
           : totalStudents // ignore: cast_nullable_to_non_nullable
-              as int,
-      ratingCount: null == ratingCount
+              as int?,
+      ratingCount: freezed == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -276,8 +276,8 @@ class _$TeacherExamImpl implements _TeacherExam {
       @JsonKey(name: 'lesson_description') this.lessonDescription,
       @JsonKey(name: 'teacher_id') required this.teacherId,
       @JsonKey(name: 'teacher_name') required this.teacherName,
-      @JsonKey(name: 'total_students') required this.totalStudents,
-      @JsonKey(name: 'rating_count') required this.ratingCount});
+      @JsonKey(name: 'total_students') this.totalStudents,
+      @JsonKey(name: 'rating_count') this.ratingCount});
 
   factory _$TeacherExamImpl.fromJson(Map<String, dynamic> json) =>
       _$$TeacherExamImplFromJson(json);
@@ -314,10 +314,10 @@ class _$TeacherExamImpl implements _TeacherExam {
   final String teacherName;
   @override
   @JsonKey(name: 'total_students')
-  final int totalStudents;
+  final int? totalStudents;
   @override
   @JsonKey(name: 'rating_count')
-  final int ratingCount;
+  final int? ratingCount;
 
   @override
   String toString() {
@@ -400,9 +400,9 @@ abstract class _TeacherExam implements TeacherExam {
       @JsonKey(name: 'lesson_description') final String? lessonDescription,
       @JsonKey(name: 'teacher_id') required final int teacherId,
       @JsonKey(name: 'teacher_name') required final String teacherName,
-      @JsonKey(name: 'total_students') required final int totalStudents,
+      @JsonKey(name: 'total_students') final int? totalStudents,
       @JsonKey(name: 'rating_count')
-      required final int ratingCount}) = _$TeacherExamImpl;
+      final int? ratingCount}) = _$TeacherExamImpl;
 
   factory _TeacherExam.fromJson(Map<String, dynamic> json) =
       _$TeacherExamImpl.fromJson;
@@ -439,10 +439,10 @@ abstract class _TeacherExam implements TeacherExam {
   String get teacherName;
   @override
   @JsonKey(name: 'total_students')
-  int get totalStudents;
+  int? get totalStudents;
   @override
   @JsonKey(name: 'rating_count')
-  int get ratingCount;
+  int? get ratingCount;
 
   /// Create a copy of TeacherExam
   /// with the given fields replaced by the non-null parameter values.

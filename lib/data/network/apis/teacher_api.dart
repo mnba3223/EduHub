@@ -7,6 +7,7 @@ import 'package:edutec_hub/data/models/teacher/teacher.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_contact_book_model.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_homework.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_leave.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'teacher_api.g.dart';
@@ -42,8 +43,8 @@ abstract class TeacherApi {
 
   @MultiPart()
   @POST('/api/Exam')
-  Future<ApiResponse<TeacherExam>> createExam({
-    @Part(name: 'lesson_id') required String lessonId,
+  Future<ApiResponse> createExam({
+    @Part(name: 'lesson_id') required int lessonId,
     @Part(name: 'exam_name') required String examName,
     @Part(name: 'exam_description') required String examDescription,
     @Part(name: 'exam_date') required String examDate,
@@ -120,7 +121,7 @@ abstract class TeacherApi {
 
   // 創建新的聯絡簿
   @POST('/api/ContactBook')
-  Future<ApiResponse<TeacherContactBook>> createContactBook(
+  Future<ApiResponse> createContactBook(
     @Body() Map<String, dynamic> data,
   );
   // 修改現有的聯絡簿方法
@@ -133,9 +134,35 @@ abstract class TeacherApi {
   // 新增聯絡簿訊息的新方法
   @MultiPart()
   @POST('/api/ContactBook/message')
-  Future<ApiResponse<TeacherContactBookMessage>> addContactBookMessage({
+  Future<ApiResponse> addContactBookMessage({
     @Part(name: 'contact_book_id') required int contactBookId,
     @Part(name: 'message_text') required String messageText,
     @Part(name: 'UploadFile') File? uploadFile,
   });
+
+  // 獲取教師請假列表
+  @GET('/api/LeaveNotice/leaveTeacher')
+  Future<ApiResponse<List<TeacherLeave>>> getTeacherLeaves(
+    @Query('teacherId') int teacherId, {
+    @Query('startTime') String? startTime,
+    @Query('endTime') String? endTime,
+  });
+
+  // 更新請假狀態
+  @PUT('/api/LeaveNotice/teacher/{lessonId}')
+  Future<ApiResponse<TeacherLeave>> updateTeacherLeave(
+    @Path('lessonId') int lessonId,
+  );
+
+  // 建立請假申請
+  @PUT('/api/LeaveNotice/teacher/{lessonId}')
+  Future<ApiResponse<TeacherLeave>> createTeacherLeave(
+    @Path('lessonId') int lessonId,
+  );
+
+  // 取消請假申請
+  @PUT('/api/LeaveNotice/teacherCancel/{lessonId}')
+  Future<ApiResponse> cancelTeacherLeave(
+    @Path('lessonId') int lessonId,
+  );
 }

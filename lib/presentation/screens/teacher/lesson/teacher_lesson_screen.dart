@@ -77,7 +77,7 @@ class _TeacherLessonScreenState extends State<TeacherLessonScreen> {
 
   Widget _buildTopBar(BuildContext context) {
     return FixedHeightSmoothTopBarV2(
-      height: 130.h,
+      height: 160.h,
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),

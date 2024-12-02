@@ -16,13 +16,13 @@ abstract class TeacherContactBookRepository {
     int? lessonId,
   });
 
-  Future<TeacherContactBook> createContactBook({
+  Future<void> createContactBook({
     required String title,
     required int studentId,
     required int lessonId,
   });
 
-  Future<TeacherContactBookMessage> addMessage({
+  Future<void> addMessage({
     required int contactBookId,
     required String message,
     File? file,
@@ -129,14 +129,14 @@ class TeacherContactBookRepositoryImpl implements TeacherContactBookRepository {
   }
 
   @override
-  Future<TeacherContactBook> createContactBook({
+  Future<void> createContactBook({
     required String title,
     required int studentId,
     required int lessonId,
   }) async {
-    if (useMock) {
-      return _getMockContactBook();
-    }
+    // if (useMock) {
+    //   return _getMockContactBook();
+    // }
 
     try {
       final response = await _api.createContactBook({
@@ -145,31 +145,29 @@ class TeacherContactBookRepositoryImpl implements TeacherContactBookRepository {
         'teacher_id': _teacherId,
         'lesson_id': lessonId,
       });
-
-      if (response.success) {
-        return response.data!;
-      } else {
-        throw ApiException(
-          response.message,
-          errorCode: response.code.toString(),
-          errorDetails: response.data,
-        );
+      if (!response.success) {
+        throw ApiException(response.message);
       }
+      // if (response.success) {
+      //   return response.data!;
+      // } else {
+      //   throw ApiException(
+      //     response.message,
+      //     errorCode: response.code.toString(),
+      //     errorDetails: response.data,
+      //   );
+      // }
     } on DioException catch (e) {
       throw e.toApiException();
     }
   }
 
   @override
-  Future<TeacherContactBookMessage> addMessage({
+  Future<void> addMessage({
     required int contactBookId,
     required String message,
     File? file,
   }) async {
-    if (useMock) {
-      return _getMockMessage();
-    }
-
     try {
       final response = await _api.addContactBookMessage(
         contactBookId: contactBookId,
@@ -177,9 +175,7 @@ class TeacherContactBookRepositoryImpl implements TeacherContactBookRepository {
         uploadFile: file,
       );
 
-      if (response.success) {
-        return response.data!;
-      } else {
+      if (!response.success) {
         throw ApiException(
           response.message,
           errorCode: response.code.toString(),

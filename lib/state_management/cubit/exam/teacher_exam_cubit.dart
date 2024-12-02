@@ -19,9 +19,13 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
   Future<void> loadExams() async {
     try {
       emit(state.copyWith(isLoading: true, error: null));
+      debugPrint('Loading exams...');
 
       final exams = await _repository.getTeacherExams();
+      debugPrint('Loaded ${exams.length} exams');
+
       final lessons = exams.map((e) => e.lessonTitle).toSet().toList()..sort();
+      debugPrint('Extracted ${lessons.length} unique lessons');
 
       emit(state.copyWith(
         exams: exams,
@@ -83,14 +87,24 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
 
   Future<void> createExam(ExamCreateRequest request) async {
     try {
+      debugPrint('Starting to create exam...');
       emit(state.copyWith(isLoading: true, error: null));
-      await _repository.createExam(request);
+
+      await _repository.createExam(request); // 這是 void return
+      debugPrint('Exam created successfully');
+
+      debugPrint('Starting to reload exams...');
       await loadExams(); // 重新加載考試列表
+      debugPrint('Exams reloaded successfully');
     } catch (e) {
+      debugPrint('Error in createExam: $e');
       emit(state.copyWith(
         error: e.toString(),
         isLoading: false,
       ));
+      rethrow; // 重新拋出錯誤讓 UI 層處理
+    } finally {
+      emit(state.copyWith(isLoading: false));
     }
   }
 

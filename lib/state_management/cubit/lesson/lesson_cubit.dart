@@ -22,7 +22,7 @@ class LessonCubit extends Cubit<LessonState> {
 
       // 獲取當月的開始和結束日期
       final now = DateTime.now();
-      final startDate = DateTime(now.year, now.month, 1);
+      final startDate = DateTime(now.year, now.month - 1, 1);
       final endDate = DateTime(now.year, now.month + 1, 0);
 
       final lessons = await _repository.getLessons(

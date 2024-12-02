@@ -1,9 +1,10 @@
 import 'package:edutec_hub/config/router/provider_config.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_contact_book_model.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
 import 'package:edutec_hub/data/models/common/user_role.dart';
-import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
+
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
-import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
+
 import 'package:edutec_hub/presentation/screens/message_board/message_board_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/booking/student_booking_history_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_detail_screen.dart';
@@ -15,7 +16,9 @@ import 'package:edutec_hub/presentation/screens/student/homework/student_homewor
 import 'package:edutec_hub/presentation/screens/student/attendance/student_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homwork_submit_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
-import 'package:edutec_hub/presentation/screens/teacher/attendance/teacher_attendance_screen.dart';
+import 'package:edutec_hub/presentation/screens/teacher/attendance/teacher_leave_screen.dart';
+
+import 'package:edutec_hub/presentation/screens/teacher/contact_book/teacher_contact_book_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/contact_book/teacher_contact_book_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/exam/teacher_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/exam/teacher_exam_screen.dart';
@@ -23,7 +26,7 @@ import 'package:edutec_hub/presentation/screens/teacher/exam/teaher_create_edit_
 import 'package:edutec_hub/presentation/screens/teacher/homework/teacher_homework_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/homework/teacher_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/lesson/teacher_lesson_screen.dart';
-import 'package:edutec_hub/presentation/screens/teacher/schedule/teacher_schedule_screen.dart';
+
 import 'package:edutec_hub/presentation/screens/teacher/home/teacher_home_screen.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
@@ -628,9 +631,19 @@ class AppRouter {
             builder: (context, state) => const TeacherContactBookScreen(),
           ),
           GoRoute(
+            path: '/teacher-contact-detail/:id',
+            builder: (context, state) {
+              return TeacherContactBookDetailScreen(
+                contactBook: state.extra as TeacherContactBook,
+              );
+            },
+          ),
+          GoRoute(
             path: '/teacher-schedule',
             builder: (context, state) => const TeacherLessonScreen(),
           ),
+
+          //老師請假相關
           GoRoute(
             path: '/teacher-leave',
             builder: (context, state) => const TeacherLeaveScreen(),

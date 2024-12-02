@@ -26,8 +26,8 @@ class TeacherExam with _$TeacherExam {
     @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'teacher_id') required int teacherId,
     @JsonKey(name: 'teacher_name') required String teacherName,
-    @JsonKey(name: 'total_students') required int totalStudents,
-    @JsonKey(name: 'rating_count') required int ratingCount,
+    @JsonKey(name: 'total_students') int? totalStudents,
+    @JsonKey(name: 'rating_count') int? ratingCount,
   }) = _TeacherExam;
 
   factory TeacherExam.fromJson(Map<String, dynamic> json) =>

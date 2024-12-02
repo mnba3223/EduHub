@@ -6,7 +6,9 @@ import 'package:edutec_hub/data/repositories/course/course_repository.dart';
 import 'package:edutec_hub/data/repositories/exam/teacher_exam_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
+import 'package:edutec_hub/data/repositories/leave/teacher_leave_repository.dart';
 import 'package:edutec_hub/data/repositories/lesson/lesson_repository.dart';
+import 'package:edutec_hub/data/repositories/silder_repository.dart';
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
@@ -17,9 +19,11 @@ import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/leave/teacher_leave_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
+import 'package:edutec_hub/state_management/cubit/silder/silder_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProvidersManager {
@@ -113,6 +117,11 @@ class ProvidersManager {
       BlocProvider<DownloadCubit>(
         create: (context) => DownloadCubit(),
       ),
+      BlocProvider<SliderCubit>(
+        create: (context) => SliderCubit(
+          repository: ImageSliderRepository(useMock: false), // 或 true 用於測試
+        )..loadSliders(),
+      ),
       BlocProvider<TeacherHomeworkCubit>(
         create: (context) => TeacherHomeworkCubit(
           repository: TeacherHomeworkRepositoryImpl(useMock: false),
@@ -170,6 +179,11 @@ class ProvidersManager {
         create: (context) => LessonCubit(
           repository: LessonRepositoryImpl(useMock: false),
         )..loadLessons(),
+      ),
+      BlocProvider<TeacherLeaveCubit>(
+        create: (context) => TeacherLeaveCubit(
+          TeacherLeaveRepositoryImpl(useMock: false),
+        ),
       ),
     ];
   }

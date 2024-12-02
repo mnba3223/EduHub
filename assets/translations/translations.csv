@@ -151,6 +151,23 @@ contact_book_date_format,MM/dd (E),MM/dd (E),MM/dd (E),MM/dd (E)
 unsigned,Unsigned,未簽名,未签名,未署名
 no_contact_book_data,No contact book data,無聯絡簿資料,无联络簿资料,連絡帳データなし
 retry,Retry,重試,重试,再試行
+#Teacher contact related 
+create_contact_book,Create Contact Book,建立聯絡簿,建立联络簿,連絡帳作成
+select_lesson,Select Lesson,選擇課程,选择课程,授業を選択
+select_student,Select Student,選擇學生,选择学生,生徒を選択
+please_select_lesson,Please select a lesson,請選擇課程,请选择课程,授業を選択してください
+please_select_student,Please select a student,請選擇學生,请选择学生,生徒を選択してください
+title,Title,標題,标题,タイトル
+messages,Messages,訊息,消息,メッセージ
+contact_book_created,Contact book created successfully,聯絡簿建立成功,联络簿建立成功,連絡帳が作成されました
+contact_book_update_failed,Failed to update contact book,更新聯絡簿失敗,更新联络簿失败,連絡帳の更新に失敗しました
+replied,Replied,已回覆,已回复,返信済み
+no_contact_books_today,No contact books today,今日無聯絡簿,今日无联络簿,本日の連絡帳なし
+title_cannot_be_empty,Title cannot be empty,標題不能為空,标题不能为空,タイトルを入力してください
+please_select_lesson_first,Please select a lesson first,請先選擇課程,请先选择课程,授業を選択してください
+please_select_student_first,Please select a student first,請先選擇學生,请先选择学生,生徒を選択してください
+teacher_contact_book,聯絡簿,聯絡簿,聯絡簿
+message_content,Message Content,訊息內容,訊息內容
 
 # General UI
 date,Date,日期,
@@ -159,6 +176,10 @@ submit,Submit,提交
 month,Month,月,月,月
 week,Week,週,周,週
 two_weeks,Two Weeks,兩週,两周,二週間
+add_message,Add meesage,增加訊息內容,增加訊息內容
+attachment,Attachment,附件,附件,附件
+time,Time,時間,時間
+request_date,Request Date,申請日期,申請時間
 
 #attachments
 attendance_statistics,Attendance Statistics,出勤統計
@@ -279,9 +300,30 @@ all_classrooms,All Classrooms,所有教室,所有教室,すべての教室
 select_lesson,Select Lesson,選擇課程,选择课程,授業を選択
 all_lessons,All Lessons,所有課程,所有课程,すべての授業
 
+# Teacher Leave Management
+teacher_leave_management,Leave Management,請假管理,请假管理,休暇管理
+create_leave_request,Create Leave Request,建立請假申請,创建请假申请,休暇申請を作成
+no_leave_requests,No Leave Requests,無請假紀錄,无请假记录,休暇申請なし
+select_lesson_for_leave,Select Lesson for Leave,選擇請假課程,选择请假课程,休暇を申請する授業を選択
+no_lessons_available,No Lessons Available,無可用課程,无可用课程,利用可能な授業なし
+select_leave_type,Select Leave Type,選擇請假類型,选择请假类型,休暇種類を選択
+sick_leave,Sick Leave,病假,病假,病気休暇
+personal_leave,Personal Leave,事假,事假,私用休暇
+other,Other,其他,其他,その他
+leave_request_submitted,Leave Request Submitted,請假申請已提交,请假申请已提交,休暇申請を提出しました
+cancel_request,Cancel Request,取消申請,取消申请,申請をキャンセル
+confirm_cancel,Confirm Cancel,確認取消,确认取消,キャンセルの確認
+cancel_leave_confirm_message,Are you sure you want to cancel this leave request?,確定要取消這個請假申請嗎？,确定要取消这个请假申请吗？,この休暇申請をキャンセルしてもよろしいですか？
+leave_request_failed,Leave Request Failed,請假申請失敗,请假申请失败,休暇申請が失敗しました
+available_lessons,Available Lessons,可選課程,可选课程,選択可能な授業
+confirm_leave_request,Confirm Leave Request,確認請假申請,确认请假申请,休暇申請の確認
+leave_request_confirm_message,Are you sure you want to request leave for the following lesson?,確定要為以下課程申請請假嗎？,确定要为以下课程申请请假吗？,以下の授業について休暇を申請しますか？
+leave_request_already_exists,Leave request already exists for this lesson,此課程已經申請過請假,此课程已经申请过请假,この授業の休暇申請は既に提出済みです
+
 # Teacher Homework Card Stats
 submitted_count,{count}/{total} Submitted,已繳交 {count}/{total},已提交 {count}/{total},提出済み {count}/{total}
 graded_count,{count}/{total} Graded,已評分 {count}/{total},已评分 {count}/{total},採点済み {count}/{total}
+
 
 # Create Homework
 create_homework,Create Homework,建立作業,创建作业,課題作成

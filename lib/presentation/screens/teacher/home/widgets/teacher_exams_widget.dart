@@ -1,6 +1,11 @@
 // widgets/teacher_exams_widget.dart
 import 'package:easy_localization/easy_localization.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
+import 'package:edutec_hub/data/models/teacher/teacher_home_state.dart';
+import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/home/teacher_home_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,40 +14,52 @@ class TeacherExamsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
+      builder: (context, state) {
+        final now = DateTime.now();
+        final weekStart = now.subtract(Duration(days: now.weekday - 1));
+        final weekEnd = weekStart.add(const Duration(days: 7));
+
+        final weeklyExams = state.weeklyExams.where((exam) {
+          return exam.examDate.isAfter(weekStart) &&
+              exam.examDate.isBefore(weekEnd);
+        }).toList();
+
+        return Container(
+          margin: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'teacher_weekly_exams'.tr(),
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'teacher_weekly_exams'.tr(),
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                    onTap: () => context.push('/teacher-exams'),
+                    child: Text(
+                      'teacher_view_more'.tr(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () => context.push('/teacher-exams'),
-                child: Text(
-                  'teacher_view_more'.tr(),
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
+              SizedBox(height: 10.h),
+              if (weeklyExams.isEmpty)
+                Center(child: Text('no_exam_records'.tr()))
+              else
+                ...weeklyExams.map((exam) => _buildExamCard(
+                      date: DateFormat('MM/dd').format(exam.examDate),
+                      subject: exam.examName,
+                      className: exam.lessonTitle,
+                    )),
             ],
           ),
-          SizedBox(height: 10.h),
-          _buildExamCard(
-            date: '03/20',
-            subject: '數學期中考',
-            className: '三年級A班',
-          ),
-          _buildExamCard(
-            date: '03/22',
-            subject: '英文期中考',
-            className: '二年級B班',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -68,7 +85,7 @@ class TeacherExamsWidget extends StatelessWidget {
             ),
             child: Text(
               date,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

@@ -1,11 +1,17 @@
 // 基本的老師首頁
+import 'package:edutec_hub/data/models/teacher/teacher_home_state.dart';
 import 'package:edutec_hub/presentation/screens/teacher/home/widgets/teacher_announcement_widget.dart';
 import 'package:edutec_hub/presentation/screens/teacher/home/widgets/teacher_courses_widget.dart';
 import 'package:edutec_hub/presentation/screens/teacher/home/widgets/teacher_exams_widget.dart';
 import 'package:edutec_hub/presentation/screens/teacher/home/widgets/teacher_homework_widget.dart';
+import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/home/teacher_home_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,8 +20,14 @@ class TeacherHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 直接返回 TeacherHomeContent，移除 MultiBlocProvider
-    return const TeacherHomeContent();
+    return BlocProvider(
+      create: (context) => TeacherHomeCubit(
+        examCubit: context.read<TeacherExamCubit>(),
+        homeworkCubit: context.read<TeacherHomeworkCubit>(),
+        lessonCubit: context.read<LessonCubit>(),
+      )..loadAllData(),
+      child: const TeacherHomeContent(),
+    );
   }
 }
 
@@ -34,13 +46,40 @@ class _TeacherHomeContentState extends State<TeacherHomeContent> {
         children: [
           _buildTopBar(),
           Expanded(
-            child: ListView(
-              children: const [
-                TeacherAnnouncementWidget(),
-                TeacherCoursesWidget(),
-                TeacherExamsWidget(),
-                TeacherHomeworkWidget(),
-              ],
+            child: BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
+              builder: (context, state) {
+                if (state.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (state.error != null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(state.error!),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () =>
+                              context.read<TeacherHomeCubit>().loadAllData(),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView(
+                  children: const [
+                    TeacherAnnouncementWidget(),
+                    TeacherCoursesWidget(),
+                    TeacherExamsWidget(),
+                    TeacherHomeworkWidget(),
+                  ],
+                );
+              },
             ),
           ),
         ],

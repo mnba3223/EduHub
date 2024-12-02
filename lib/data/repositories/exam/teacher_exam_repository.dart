@@ -7,7 +7,7 @@ import 'package:edutec_hub/data/network/core/exceptions.dart';
 
 abstract class TeacherExamRepository {
   Future<List<TeacherExam>> getTeacherExams();
-  Future<TeacherExam> createExam(ExamCreateRequest request);
+  Future<void> createExam(ExamCreateRequest request);
   Future<TeacherExam> updateExam(int examId, ExamCreateRequest request);
   Future<void> deleteExam(int examId);
   Future<List<TeacherExamRegistration>> getExamRegistrations(int examId);
@@ -54,19 +54,17 @@ class TeacherExamRepositoryImpl implements TeacherExamRepository {
   }
 
   @override
-  Future<TeacherExam> createExam(ExamCreateRequest request) async {
+  Future<void> createExam(ExamCreateRequest request) async {
     try {
       final response = await _api.createExam(
-        lessonId: request.lessonId.toString(),
+        lessonId: request.lessonId,
         examName: request.examName,
         examDescription: request.examDescription,
         examDate: request.examDate.toIso8601String(),
         uploadedFile: request.uploadedFile,
       );
 
-      if (response.success) {
-        return TeacherExam.fromJson(response.data as Map<String, dynamic>);
-      } else {
+      if (!response.success) {
         throw ApiException(
           response.message,
           errorCode: response.code.toString(),

@@ -1,6 +1,8 @@
 // screens/teacher/exam/teacher_exam_form_screen.dart
 import 'dart:io';
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +40,10 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
   @override
   void initState() {
     super.initState();
+    if (!isEditing) {
+      context.read<LessonCubit>().loadLessons();
+    }
+
     if (widget.initialExam != null) {
       _initializeWithExam(widget.initialExam!);
     }
@@ -74,7 +80,7 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // _buildLessonDropdown(),
+                    _buildLessonDropdown(),
                     SizedBox(height: 16.h),
                     _buildExamNameField(),
                     SizedBox(height: 16.h),
@@ -92,6 +98,60 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildLessonDropdown() {
+    if (isEditing && widget.initialExam != null) {
+      return InputDecorator(
+        decoration: InputDecoration(
+          labelText: '課程',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 16.h,
+          ),
+        ),
+        child: Text(widget.initialExam!.lessonTitle),
+      );
+    }
+    return BlocBuilder<LessonCubit, LessonState>(
+      // 改用 LessonCubit
+      builder: (context, lessonState) {
+        if (lessonState.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return DropdownButtonFormField<int>(
+          decoration: InputDecoration(
+            labelText: '選擇課程*',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 16.h,
+            ),
+          ),
+          value: _selectedLessonId,
+          items: lessonState.lessons.map((lesson) {
+            // 使用 lessonState 中的數據
+            return DropdownMenuItem(
+              value: lesson.lessonId,
+              child: Text('${lesson.lessonTitle} - ${lesson.courseName}'),
+            );
+          }).toList(),
+          validator: (value) {
+            if (value == null) return '請選擇課程';
+            return null;
+          },
+          onChanged: (value) {
+            setState(() => _selectedLessonId = value);
+          },
+        );
+      },
     );
   }
 
@@ -324,6 +384,11 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
       );
       return;
     }
+    // 添加日誌來追蹤值
+    debugPrint('Selected Date: $_selectedDate');
+    debugPrint('Selected File: $_selectedFile');
+    debugPrint('Selected Lesson ID: $_selectedLessonId');
+
     try {
       final request = ExamCreateRequest(
         lessonId: _selectedLessonId!,
@@ -336,15 +401,11 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
         keepExistingFile:
             _selectedFile == null && widget.initialExam?.uploadFile != null,
       );
-
+      final cubit = context.read<TeacherExamCubit>();
       if (isEditing) {
-        await context
-            .read<TeacherExamCubit>()
-            .updateExam(widget.examId!, request);
-        if (!mounted) return;
-        await context.read<TeacherExamCubit>().loadExams();
+        await cubit.updateExam(widget.examId!, request);
       } else {
-        await context.read<TeacherExamCubit>().createExam(request);
+        await cubit.createExam(request);
       }
 
       if (!mounted) return;

@@ -7,6 +7,7 @@ class UserSession {
   UserSession._internal();
 
   int? _userId; // 登录返回的用户 ID
+  String? _username;
   int? _roleId; // 根据角色获取的特定 ID（如 student_id, teacher_id）
   String? _token;
   String? _refreshToken;
@@ -15,6 +16,7 @@ class UserSession {
   DateTime? _refreshTokenExpiresAt;
 
   int? get userId => _userId;
+  String? get username => _username;
   int? get roleId => _roleId;
   String? get token => _token;
   UserRole? get userRole => _userRole;
@@ -28,6 +30,7 @@ class UserSession {
     required UserRole role,
   }) {
     _userId = int.tryParse(authData.userId);
+    _username = authData.username;
     _token = authData.accessToken;
     _refreshToken = authData.refreshToken;
     _userRole = role;

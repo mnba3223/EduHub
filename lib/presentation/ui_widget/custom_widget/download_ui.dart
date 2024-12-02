@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,6 +100,87 @@ class DownloadButton extends StatelessWidget {
                 fileNames: fileNames,
                 customPath: customPath,
               ),
+        );
+      },
+    );
+  }
+}
+
+class AttachmentDownloadButton extends StatelessWidget {
+  final String url;
+  final String fileName;
+  final String? customPath;
+
+  const AttachmentDownloadButton({
+    Key? key,
+    required this.url,
+    required this.fileName,
+    this.customPath,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<DownloadCubit, DownloadState>(
+      listenWhen: (previous, current) =>
+          (current.successMessage != null &&
+              previous.successMessage != current.successMessage) ||
+          (current.error != null && previous.error != current.error),
+      listener: (context, state) {
+        if (state.error != null) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.error!),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+      },
+      builder: (context, state) {
+        final progress = state.downloadProgress[fileName] ?? 0;
+        final isDownloading = state.isDownloading && progress > 0;
+
+        return InkWell(
+          onTap: () => context.read<DownloadCubit>().downloadMultipleFiles(
+            urls: [url],
+            fileNames: [fileName],
+            customPath: customPath,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isDownloading) ...[
+                SizedBox(
+                  width: 16.sp,
+                  height: 16.sp,
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Text(
+                  '${(progress * 100).toInt()}%',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.blue,
+                  ),
+                ),
+              ] else ...[
+                Icon(Icons.attachment, size: 16.sp, color: Colors.blue),
+                SizedBox(width: 4.w),
+                Text(
+                  'attachment'.tr(),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ],
+          ),
         );
       },
     );
