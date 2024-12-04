@@ -1,98 +1,102 @@
 import 'package:dio/dio.dart';
+import 'package:edutec_hub/config/user_session.dart';
 import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/exam/student_exam.dart';
+import 'package:edutec_hub/data/network/apis/student_api.dart';
+import 'package:edutec_hub/data/network/core/dio_client.dart';
+import 'package:edutec_hub/data/network/core/exceptions.dart';
 
 class StudentExamRepository {
+  final StudentApi _api;
   final bool useMock;
-  static List<StudentExam> _mockExams = [];
 
   StudentExamRepository({
+    StudentApi? api,
     this.useMock = false,
-  }) {
-    if (_mockExams.isEmpty) {
-      _mockExams = _initMockExams();
-    }
-  }
+  }) : _api = api ?? StudentApi(DioClient().dio);
 
   Future<ApiResponse<List<StudentExam>>> getExams() async {
     if (useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
       return ApiResponse(
         code: 200,
         success: true,
         message: '獲取考試列表成功',
-        data: _mockExams,
+        data: _getMockExams(),
       );
     }
 
     try {
-      // 這裡之後接入實際 API
-      throw UnimplementedError('API not implemented');
-    } on DioException catch (e) {
-      return ApiResponse(
-        code: e.response?.statusCode ?? 500,
-        success: false,
-        message: e.message ?? '未知錯誤',
-        data: null,
-      );
-    }
-  }
-
-  Future<ApiResponse<void>> updateExamStatus(
-      String examId, bool isCompleted) async {
-    if (useMock) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final examIndex = _mockExams.indexWhere((exam) => exam.id == examId);
-
-      if (examIndex != -1) {
-        _mockExams[examIndex] = _mockExams[examIndex].copyWith(
-          isCompleted: isCompleted,
-          completedAt: isCompleted ? DateTime.now().toIso8601String() : null,
-        );
-        return const ApiResponse(
-          code: 200,
-          success: true,
-          message: '更新考試狀態成功',
-        );
+      final roleId = UserSession.instance.roleId;
+      if (roleId == null) {
+        throw ApiException('User not logged in');
       }
-      return const ApiResponse(
-        code: 404,
-        success: false,
-        message: '找不到指定考試',
-      );
-    }
 
-    try {
-      // 這裡之後接入實際 API
-      throw UnimplementedError('API not implemented');
+      final response = await _api.getStudentExams(roleId);
+      return response;
     } on DioException catch (e) {
-      return ApiResponse(
-        code: e.response?.statusCode ?? 500,
-        success: false,
-        message: e.message ?? '未知錯誤',
-      );
+      throw e.toApiException();
     }
   }
 
-  List<StudentExam> _initMockExams() {
+  List<StudentExam> _getMockExams() {
     final now = DateTime.now();
-
     return [
       StudentExam(
-        id: '1',
-        subject: '數學',
+        examId: 1,
+        lessonId: 1,
+        examName: '數學期中考',
+        examDescription: '第一學期期中考試',
         examDate: now.add(const Duration(days: 2)),
-        location: '第一教室',
-        description: '期中考試',
+        lessonTitle: '數學',
+        teacherId: 1,
+        teacherName: '王老師',
       ),
       StudentExam(
-        id: '2',
-        subject: '英語',
+        examId: 2,
+        lessonId: 2,
+        examName: '英語單元測驗',
+        examDescription: '第三單元測驗',
         examDate: now.add(const Duration(days: 5)),
-        location: '語言教室',
-        description: '單元測驗',
+        lessonTitle: '英語',
+        teacherId: 2,
+        teacherName: '李老師',
       ),
-      // 可以根據需求添加更多測試數據
     ];
   }
+
+  // Future<ApiResponse<void>> updateExamStatus(
+  //     String examId, bool isCompleted) async {
+  //   if (useMock) {
+  //     await Future.delayed(const Duration(milliseconds: 500));
+  //     final examIndex = _mockExams.indexWhere((exam) => exam.id == examId);
+
+  //     if (examIndex != -1) {
+  //       _mockExams[examIndex] = _mockExams[examIndex].copyWith(
+  //         isCompleted: isCompleted,
+  //         completedAt: isCompleted ? DateTime.now().toIso8601String() : null,
+  //       );
+  //       return const ApiResponse(
+  //         code: 200,
+  //         success: true,
+  //         message: '更新考試狀態成功',
+  //       );
+  //     }
+  //     return const ApiResponse(
+  //       code: 404,
+  //       success: false,
+  //       message: '找不到指定考試',
+  //     );
+  //   }
+
+  //   try {
+  //     // 這裡之後接入實際 API
+  //     throw UnimplementedError('API not implemented');
+  //   } on DioException catch (e) {
+  //     return ApiResponse(
+  //       code: e.response?.statusCode ?? 500,
+  //       success: false,
+  //       message: e.message ?? '未知錯誤',
+  //     );
+  //   }
+  // }
 }

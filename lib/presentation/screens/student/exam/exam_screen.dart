@@ -1,5 +1,6 @@
 import 'package:edutec_hub/data/models/exam/student_eaxm_state.dart';
-import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
+import 'package:edutec_hub/data/models/exam/student_exam.dart';
+import 'package:edutec_hub/presentation/screens/student/exam/exam_details_bottom_sheet.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam.card.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam_top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
@@ -15,7 +16,6 @@ class StudentExamScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 移除 BlocProvider，因為已經在路由中提供
     return const _ExamView();
   }
 }
@@ -85,19 +85,29 @@ class _ExamView extends StatelessWidget {
           context.read<StudentExamCubit>().selectDate(selectedDay);
         },
         markerBuilder: (context, date, events) {
-          final hasExam = state.exams
+          final examsOnDay = state.exams
               .where((exam) => isSameDay(exam.examDate, date))
-              .isNotEmpty;
+              .toList();
 
-          if (hasExam) {
-            return Container(
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
+          if (examsOnDay.isNotEmpty) {
+            return Positioned(
+              right: 4,
+              top: 2,
+              child: Container(
+                padding: EdgeInsets.all(4.w),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Text(
+                  examsOnDay.length.toString(),
+                  style: TextStyle(
+                    color: Colors.blue.shade900,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              width: 8,
-              height: 8,
-              margin: const EdgeInsets.only(top: 20),
             );
           }
           return null;
@@ -132,7 +142,9 @@ class _ExamView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: exams.length,
       itemBuilder: (context, index) {
-        return ExamCard(exam: exams[index]);
+        return ExamCard(
+          exam: exams[index],
+        );
       },
     );
   }

@@ -105,6 +105,11 @@ class SignInCubit extends Cubit<SignInState> {
     }
   }
 
+  void logout() {
+    UserSession.instance.clearSession();
+    emit(SignInInitial());
+  }
+
   @override
   Future<void> close() {
     UserSession.instance.clearSession();

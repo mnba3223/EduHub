@@ -39,7 +39,7 @@ class TeacherExamsWidget extends StatelessWidget {
                         TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),
                   GestureDetector(
-                    onTap: () => context.push('/teacher-exams'),
+                    onTap: () => context.push('/teacher-exam'),
                     child: Text(
                       'teacher_view_more'.tr(),
                       style: TextStyle(color: Colors.blue),

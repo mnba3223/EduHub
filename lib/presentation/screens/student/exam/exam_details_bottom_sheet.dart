@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/exam/student_exam.dart';
+import 'package:edutec_hub/presentation/ui_widget/button/custom_button.dart';
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,6 @@ class ExamDetailsBottomSheet extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context),
           Expanded(
@@ -34,9 +34,11 @@ class ExamDetailsBottomSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _buildExamStatus(),
+                  SizedBox(height: 16.h),
                   _buildSection(
                     'exam_subject'.tr(),
-                    exam.subject,
+                    exam.lessonTitle,
                     icon: Icons.book,
                   ),
                   _buildSection(
@@ -45,46 +47,26 @@ class ExamDetailsBottomSheet extends StatelessWidget {
                     icon: Icons.access_time,
                   ),
                   _buildSection(
-                    'exam_location'.tr(),
-                    exam.location,
-                    icon: Icons.location_on,
+                    'teacher'.tr(),
+                    exam.teacherName,
+                    icon: Icons.person,
                   ),
                   _buildSection(
                     'exam_description'.tr(),
-                    exam.description,
+                    exam.examDescription,
                     icon: Icons.description,
                   ),
-                  _buildSection(
-                    'required_items'.tr(),
-                    '${'stationery'.tr()}, ${'calculator'.tr()}, ${'student_id'.tr()}',
-                    icon: Icons.inventory,
-                  ),
-                  _buildSection(
-                    'exam_notes'.tr(),
-                    '1. ${'please_arrive_early'.tr()}\n2. ${'no_phones_allowed'.tr()}\n3. ${'bring_student_id'.tr()}',
-                    icon: Icons.warning,
-                  ),
+                  if (exam.isScore) _buildScoreSection(),
                 ],
               ),
             ),
           ),
-          if (!exam.isCompleted)
+          if (exam.uploadFile != null && !exam.isScore)
             Padding(
               padding: EdgeInsets.all(16.w),
-              child: ElevatedButton(
-                onPressed: () {
-                  context
-                      .read<StudentExamCubit>()
-                      .updateExamStatus(exam.id, true);
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 48.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
-                child: Text('confirm_completion'.tr()),
+              child: CustomButton(
+                onPressed: () {},
+                text: 'download_attachment'.tr(),
               ),
             ),
         ],
@@ -107,7 +89,7 @@ class ExamDetailsBottomSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'exam_details'.tr(),
+            'exam_detail'.tr(),
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -120,6 +102,57 @@ class ExamDetailsBottomSheet extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildExamStatus() {
+    final now = DateTime.now();
+    final isUpcoming = exam.examDate.isAfter(now);
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+      decoration: BoxDecoration(
+        color: _getStatusColor().withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _getStatusIcon(),
+            color: _getStatusColor(),
+            size: 20.sp,
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            _getStatusText(isUpcoming),
+            style: TextStyle(
+              color: _getStatusColor(),
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScoreSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSection(
+          'score'.tr(),
+          exam.score?.toString() ?? 'not_graded'.tr(),
+          icon: Icons.grade,
+        ),
+        if (exam.scoreDesc != null)
+          _buildSection(
+            'teacher_comment'.tr(),
+            exam.scoreDesc!,
+            icon: Icons.comment,
+          ),
+      ],
     );
   }
 
@@ -157,5 +190,28 @@ class ExamDetailsBottomSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _getStatusColor() {
+    if (exam.isScore) {
+      return Colors.green;
+    }
+    final now = DateTime.now();
+    return exam.examDate.isAfter(now) ? Colors.blue : Colors.orange;
+  }
+
+  IconData _getStatusIcon() {
+    if (exam.isScore) {
+      return Icons.check_circle;
+    }
+    final now = DateTime.now();
+    return exam.examDate.isAfter(now) ? Icons.upcoming : Icons.pending;
+  }
+
+  String _getStatusText(bool isUpcoming) {
+    if (exam.isScore) {
+      return 'completed'.tr();
+    }
+    return isUpcoming ? 'upcoming'.tr() : 'pending'.tr();
   }
 }

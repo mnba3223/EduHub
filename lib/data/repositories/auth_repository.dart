@@ -17,7 +17,7 @@ import 'package:edutec_hub/data/network/core/dio_client.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
 import 'package:edutec_hub/data/network/core/token_manager.dart';
 
-import 'package:edutec_hub/utils/hiveBoxKeys.dart';
+// import 'package:edutec_hub/utils/hiveBoxKeys.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:hive/hive.dart';
@@ -33,49 +33,49 @@ class AuthRepository {
 
   AuthRepository({this.useMock = false});
   //LocalDataSource
-  bool getIsLogIn() {
-    return Hive.box(authBoxKey).get(isLogInKey) ?? false;
-  }
+  // bool getIsLogIn() {
+  //   return Hive.box(authBoxKey).get(isLogInKey) ?? false;
+  // }
 
-  Future<void> setIsLogIn(bool value) async {
-    return Hive.box(authBoxKey).put(isLogInKey, value);
-  }
+  // Future<void> setIsLogIn(bool value) async {
+  //   return Hive.box(authBoxKey).put(isLogInKey, value);
+  // }
 
-  bool getIsStudentLogIn() {
-    return Hive.box(authBoxKey).get(isStudentLogInKey) ?? false;
-  }
+  // bool getIsStudentLogIn() {
+  //   return Hive.box(authBoxKey).get(isStudentLogInKey) ?? false;
+  // }
 
-  Future<void> setIsStudentLogIn(bool value) async {
-    return Hive.box(authBoxKey).put(isStudentLogInKey, value);
-  }
+  // Future<void> setIsStudentLogIn(bool value) async {
+  //   return Hive.box(authBoxKey).put(isStudentLogInKey, value);
+  // }
 
-  Student getStudentDetails() {
-    return Student.fromJson(
-      Map.from(Hive.box(authBoxKey).get(studentDetailsKey) ?? {}),
-    );
-  }
+  // Student getStudentDetails() {
+  //   return Student.fromJson(
+  //     Map.from(Hive.box(authBoxKey).get(studentDetailsKey) ?? {}),
+  //   );
+  // }
 
-  Future<void> setStudentDetails(Student student) async {
-    return Hive.box(authBoxKey).put(studentDetailsKey, student.toJson());
-  }
+  // Future<void> setStudentDetails(Student student) async {
+  //   return Hive.box(authBoxKey).put(studentDetailsKey, student.toJson());
+  // }
 
-  Parent getParentDetails() {
-    return Parent.fromJson(
-      Map.from(Hive.box(authBoxKey).get(parentDetailsKey) ?? {}),
-    );
-  }
+  // Parent getParentDetails() {
+  //   return Parent.fromJson(
+  //     Map.from(Hive.box(authBoxKey).get(parentDetailsKey) ?? {}),
+  //   );
+  // }
 
-  Future<void> setParentDetails(Parent parent) async {
-    return Hive.box(authBoxKey).put(parentDetailsKey, parent.toJson());
-  }
+  // Future<void> setParentDetails(Parent parent) async {
+  //   return Hive.box(authBoxKey).put(parentDetailsKey, parent.toJson());
+  // }
 
-  String getJwtToken() {
-    return Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
-  }
+  // String getJwtToken() {
+  //   return Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
+  // }
 
-  Future<void> setJwtToken(String value) async {
-    return Hive.box(authBoxKey).put(jwtTokenKey, value);
-  }
+  // Future<void> setJwtToken(String value) async {
+  //   return Hive.box(authBoxKey).put(jwtTokenKey, value);
+  // }
 
   Future<void> signOutUser() async {}
   // ApiResponse<AuthData> _getMockAuthResponse(String userId) {
@@ -185,27 +185,27 @@ class AuthRepository {
     }
   }
 
-  Future<Map<String, dynamic>> signInTeacher({
-    required String teacherId,
-    required String password,
-  }) async {
-    return {};
-  }
+  // Future<Map<String, dynamic>> signInTeacher({
+  //   required String teacherId,
+  //   required String password,
+  // }) async {
+  //   return {};
+  // }
 
-  //RemoteDataSource
-  Future<Map<String, dynamic>> signInStudent({
-    required String grNumber,
-    required String password,
-  }) async {
-    return {};
-  }
+  // //RemoteDataSource
+  // Future<Map<String, dynamic>> signInStudent({
+  //   required String grNumber,
+  //   required String password,
+  // }) async {
+  //   return {};
+  // }
 
-  Future<Map<String, dynamic>> signInParent({
-    required String email,
-    required String password,
-  }) async {
-    return {};
-  }
+  // Future<Map<String, dynamic>> signInParent({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   return {};
+  // }
 
   Future<void> resetPasswordRequest({
     required String grNumber,

@@ -1,5 +1,6 @@
 // providers_manager.dart
 import 'package:edutec_hub/data/models/common/user_role.dart';
+import 'package:edutec_hub/data/repositories/booking/student_classroom_booking_repository.dart';
 import 'package:edutec_hub/data/repositories/contact_book/teacher_contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/contact_book_repository.dart';
 import 'package:edutec_hub/data/repositories/course/course_repository.dart';
@@ -10,7 +11,9 @@ import 'package:edutec_hub/data/repositories/leave/teacher_leave_repository.dart
 import 'package:edutec_hub/data/repositories/lesson/lesson_repository.dart';
 import 'package:edutec_hub/data/repositories/silder_repository.dart';
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
-import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/blocs/booking/booking_bloc.dart';
+import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/classroom_booking_event.dart';
+import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/student_classroom_booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/contact_book/teacher_contact_book_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/course/course_cubit.dart';
@@ -96,6 +99,13 @@ class ProvidersManager {
       ),
       BlocProvider<BookingBloc>(
         create: (context) => BookingBloc(),
+      ),
+      BlocProvider<StudentClassroomBookingBloc>(
+        create: (context) => StudentClassroomBookingBloc(
+          repository: StudentClassroomBookingRepository(
+            useMock: false,
+          ),
+        )..add(const ClassroomBookingEvent.loadClassrooms()),
       ),
       // 其他學生需要的 providers...
     ];

@@ -4,7 +4,7 @@ import 'package:edutec_hub/data/models/booking/booking_event.dart';
 import 'package:edutec_hub/data/models/booking/booking_state.dart';
 import 'package:edutec_hub/data/models/common/user_role.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
-import 'package:edutec_hub/state_management/blocs/booking_bloc.dart';
+import 'package:edutec_hub/state_management/blocs/booking/booking_bloc.dart';
 // import 'package:edutec_hub/state_management/cubit/payment/payment_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:flutter/material.dart';

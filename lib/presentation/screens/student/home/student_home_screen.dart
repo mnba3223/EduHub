@@ -1,11 +1,14 @@
+import 'package:edutec_hub/config/user_session.dart';
 import 'package:edutec_hub/data/models/card_list.dart';
 import 'package:edutec_hub/data/repositories/silder_repository.dart';
+import 'package:edutec_hub/presentation/screens/student/home/widgets/student_home_setting_dialog.dart';
 
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/card/card.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/slider.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
+import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
 import 'package:edutec_hub/state_management/cubit/silder/silder_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/silder/slider_state.dart';
 import 'package:flutter/material.dart';
@@ -104,19 +107,29 @@ class _StudentHomeContentState extends State<StudentHomeContent> {
   }
 
   Widget _buildTopBar() {
+    final String username = UserSession.instance.username ?? 'Unknown Teacher';
+
     return FixedHeightSmoothTopBarV2(
-      height: 160.h,
-      // ellipticalRadius: 40.r,
+      height: 140.h,
       child: SafeArea(
         child: Container(
-          padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 60.h),
+          padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 0.w),
           child: Column(
             children: [
               Row(
                 children: [
+                  // 顯示使用者頭像縮寫
                   CircleAvatar(
-                    backgroundColor: Colors.amber,
+                    backgroundColor: Colors.blue,
                     radius: 25,
+                    child: Text(
+                      username.isNotEmpty ? username[0].toUpperCase() : 'T',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -125,29 +138,47 @@ class _StudentHomeContentState extends State<StudentHomeContent> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '陳小明',
+                            username,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18.sp,
                             ),
                           ),
-                          Text(
-                            'student@gmail.com',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14.sp,
-                            ),
-                          ),
+                          // // 可以顯示 Role ID 或其他信息
+                          // if (UserSession.instance.roleId != null)
+                          //   Text(
+                          //     'Teacher ID: ${UserSession.instance.roleId}',
+                          //     style: TextStyle(
+                          //       color: Colors.white70,
+                          //       fontSize: 14.sp,
+                          //     ),
+                          //   ),
                         ],
                       ),
                     ),
                   ),
-                  Icon(Icons.settings, color: Colors.white),
+                  IconButton(
+                    icon: Icon(Icons.settings, color: Colors.white),
+                    onPressed: _showSettingsDialog,
+                  ),
                 ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showSettingsDialog() {
+    // 取得上層的 SignInCubit
+    final signInCubit = context.read<SignInCubit>();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => BlocProvider.value(
+        value: signInCubit, // 將已存在的 SignInCubit 傳遞給對話框
+        child: const StudentHomeSettingDialog(),
       ),
     );
   }

@@ -1,4 +1,4 @@
-key,en_US,zh_TW,zh_CN,ja_JP
+﻿key,en_US,zh_TW,zh_CN,ja_JP
 
 # App Core
 app_title,EduTec Hub,教育科技中心,教育科技中心,教育テックハブ
@@ -88,6 +88,9 @@ uploading_files,Uploading files...,正在上傳檔案...,正在上传文件...,�
 upload_successful,Upload Successful!,上傳成功！,上传成功！,アップロード完了！
 payment_review_message,Your payment proof has been uploaded and is under review. We will process it within 1-2 business days.,您的付款憑證已上傳並正在審核中。我們將在1-2個工作日內處理。,您的付款凭证已上传并正在审核中。我们将在1-2个工作日内处理。,支払証明書がアップロードされ、現在確認中です。1-2営業日以内に処理いたします。
 cancel_upload,Cancel Upload,取消上傳,取消上传,アップロードをキャンセル
+
+
+
 
 # Status
 pending_review,Pending Review,待審核,待审核,審査待ち
@@ -226,7 +229,26 @@ stationery,Stationery,文具,文具,文房具
 calculator,Calculator,計算機,计算器,計算機
 student_id,Student ID,學生證,学生证,学生証
 
+# Exam Status
+exam_detail,Exam Detail,考試詳情,考试详情,試験詳細
+exam_upcoming,Upcoming,即將到來,即将到来,近日開催
+exam_completed,Completed,已完成,已完成,完了
+exam_pending,Pending,待評分,待评分,採点待ち
+exam_graded,Graded,已評分,已评分,採点済み
+exam_status,Exam Status,考試狀態,考试状态,試験状態
 
+# Downloads and Files
+download_exam_file,Download Exam File,下載考試檔案,下载考试文件,試験ファイルをダウンロード
+exam_file,Exam File,考試檔案,考试文件,試験ファイル
+file_download_success,File Downloaded Successfully,檔案下載成功,文件下载成功,ファイルのダウンロードが完了しました
+file_download_failed,File Download Failed,檔案下載失敗,文件下载失败,ファイルのダウンロードに失敗しました
+
+# Exam Details
+exam_info,Exam Information,考試資訊,考试信息,試験情報
+exam_file_download,Download,下載,下载,ダウンロード
+lesson_info,Lesson Information,課程資訊,课程信息,授業情報
+not_available,Not Available,暫無,暂无,利用不可
+exam_count,{count} Exams,{count}個考試,{count}个考试,{count}つの試験
 
 # Teacher Home
 teacher_home_title,Teacher Home,教師首頁,教师首页,教師ホーム
@@ -268,6 +290,9 @@ teacher_exam_graded_count,Graded Students,已評分學生數,已评分学生数,
 teacher_exam_not_graded,Not Graded,未評分,未评分,未採点
 teacher_exam_score,Score,分數,分数,点数
 no_registrations,尚無資料,尚無資料,尚無資料
+
+
+
 
 # Teacher Homework
 teacher_home_title,Teacher Homework,作業管理,作業管理,作業管理

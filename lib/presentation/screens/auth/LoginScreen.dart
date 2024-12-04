@@ -76,8 +76,8 @@ class _UserLoginScreenState extends State<UserLoginScreen>
   @override
   void initState() {
     // remove when official
-    // _grNumberTextEditingController.text = "teststudent1";
-    _grNumberTextEditingController.text = "testteacher";
+    _grNumberTextEditingController.text = "teststudent1";
+    // _grNumberTextEditingController.text = "testteacher";
     _passwordTextEditingController.text = "1234";
     super.initState();
     _animationController.forward();

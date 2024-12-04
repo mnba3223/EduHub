@@ -278,7 +278,7 @@ class NavItems {
   static final Map<String, List<NavItem>> items = {
     'student': [
       NavItem(route: '/student-home', icon: Icons.home, label: '首頁'),
-      NavItem(route: '/student-courses', icon: Icons.school, label: '課程'),
+      NavItem(route: '/student-contact', icon: Icons.school, label: '聯絡簿'),
       NavItem(
           route: '/student-booking', icon: Icons.calendar_today, label: '預約'),
       NavItem(
@@ -293,7 +293,7 @@ class NavItems {
     ],
     'teacher': [
       NavItem(route: '/teacher-home', icon: Icons.home, label: '首頁'),
-      NavItem(route: '/teacher-exams', icon: Icons.assignment, label: '考試管理'),
+      NavItem(route: '/teacher-exam', icon: Icons.assignment, label: '考試管理'),
       NavItem(route: '/teacher-homework', icon: Icons.book, label: '作業管理'),
       NavItem(route: '/teacher-contact', icon: Icons.note, label: '聯絡簿'),
       NavItem(
@@ -327,13 +327,19 @@ class ScaffoldWithNavBarV2 extends StatelessWidget {
   }
 
   bool _shouldShowNavBar(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+
+    // 檢查是否為子路由
+    if (_isSubRoute(location)) {
+      return true; // 仍然顯示導航欄，但會保持父路由的選中狀態
+    }
+
     final items = NavItems.items[role] ?? [];
     if (items.isEmpty) {
       return false;
     }
 
     if (role == 'parent') {
-      final location = GoRouterState.of(context).uri.toString();
       if (location.contains('/parent/student/')) {
         return false;
       }
@@ -342,13 +348,40 @@ class ScaffoldWithNavBarV2 extends StatelessWidget {
     return true;
   }
 
+  String _getBaseRoute(String location) {
+    // 獲取第一個和第二個斜線之間的部分
+    final parts = location.split('/');
+    if (parts.length >= 2) {
+      // 重建基礎路由路徑，如 /teacher-homework
+      return '/${parts[1]}';
+    }
+    return location;
+  }
+
+  bool _isSubRoute(String location) {
+    final items = NavItems.items[role] ?? [];
+
+    // 檢查是否為子路由
+    final baseRoute = _getBaseRoute(location);
+    return items
+        .any((item) => item.route == baseRoute && location != baseRoute);
+  }
+
+  bool _isRouteSelected(BuildContext context, String route) {
+    final location = GoRouterState.of(context).uri.toString();
+
+    // 如果是子路由，檢查基礎路由是否匹配
+    if (_isSubRoute(location)) {
+      final baseRoute = _getBaseRoute(location);
+      return route == baseRoute;
+    }
+
+    return location == route;
+  }
+
   Widget _buildCurvedNavigationBar(BuildContext context) {
     final items = NavItems.items[role] ?? [];
     final index = _calculateSelectedIndex(context);
-
-    developer
-        .log('Current location: ${GoRouterState.of(context).uri.toString()}');
-    developer.log('Selected index: $index');
 
     return Container(
       margin: EdgeInsets.only(top: 20.sp),
@@ -361,12 +394,18 @@ class ScaffoldWithNavBarV2 extends StatelessWidget {
             .map((item) => Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(item.icon, size: 24, color: Colors.black54),
+                    Icon(item.icon,
+                        size: 24,
+                        color: _isRouteSelected(context, item.route)
+                            ? Colors.blue
+                            : Colors.black54),
                     Text(
                       item.label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Colors.black54,
+                        color: _isRouteSelected(context, item.route)
+                            ? Colors.blue
+                            : Colors.black54,
                       ),
                     ),
                   ],
@@ -382,22 +421,25 @@ class ScaffoldWithNavBarV2 extends StatelessWidget {
     final String location = GoRouterState.of(context).uri.toString();
     final items = NavItems.items[role] ?? [];
 
-    // 精確匹配路徑
-    int index = items.indexWhere((item) => location == item.route);
-
-    // 如果精確匹配找不到，使用startsWith
-    if (index == -1) {
-      index = items.indexWhere((item) => location.startsWith(item.route));
+    // 如果是子路由，使用基礎路由來匹配
+    if (_isSubRoute(location)) {
+      final baseRoute = _getBaseRoute(location);
+      final baseRouteIndex =
+          items.indexWhere((item) => item.route == baseRoute);
+      if (baseRouteIndex != -1) {
+        return baseRouteIndex;
+      }
     }
 
-    // 如果仍然找不到，返回首頁索引
-    if (index == -1) {
-      developer.log('No matching route found for location: $location');
-      return 0;
+    // 精確匹配
+    final exactMatchIndex = items.indexWhere((item) => location == item.route);
+    if (exactMatchIndex != -1) {
+      return exactMatchIndex;
     }
 
-    developer.log('Found index $index for location: $location');
-    return index;
+    // 如果都沒有匹配，返回首頁索引
+    developer.log('No matching route found for location: $location');
+    return 0;
   }
 
   void _onItemTapped(int index, BuildContext context) {

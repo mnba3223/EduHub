@@ -31,18 +31,18 @@ class StudentExamCubit extends Cubit<StudentExamState> {
     }
   }
 
-  Future<void> updateExamStatus(String examId, bool isCompleted) async {
-    final currentState = state;
-    if (currentState is StudentExamStateLoaded) {
-      try {
-        final response =
-            await _repository.updateExamStatus(examId, isCompleted);
-        if (response.success) {
-          await loadExams();
-        }
-      } catch (e) {
-        emit(StudentExamState.error(message: e.toString()));
-      }
-    }
-  }
+  // Future<void> updateExamStatus(String examId, bool isCompleted) async {
+  //   final currentState = state;
+  //   if (currentState is StudentExamStateLoaded) {
+  //     try {
+  //       final response =
+  //           await _repository.updateExamStatus(examId, isCompleted);
+  //       if (response.success) {
+  //         await loadExams();
+  //       }
+  //     } catch (e) {
+  //       emit(StudentExamState.error(message: e.toString()));
+  //     }
+  //   }
+  // }
 }

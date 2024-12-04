@@ -154,7 +154,7 @@ class _TeacherContactBookScreenState extends State<TeacherContactBookScreen> {
       child: InkWell(
         onTap: () {
           context.push(
-            '/teacher-contact-detail/${contactBook.contactBookId}',
+            '/teacher-contact/detail/${contactBook.contactBookId}',
             extra: contactBook,
           );
         },

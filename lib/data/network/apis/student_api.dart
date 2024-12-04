@@ -1,5 +1,6 @@
 import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/attendance/attendance_models.dart';
+import 'package:edutec_hub/data/models/exam/student_exam.dart';
 import 'package:edutec_hub/data/models/image_slider.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/models/student/student.dart';
@@ -60,6 +61,10 @@ abstract class StudentApi {
     @Part() required List<MultipartFile> UploadedFiles,
   });
 
+  @GET('/api/Exam/student/{studentId}')
+  Future<ApiResponse<List<StudentExam>>> getStudentExams(
+    @Path('studentId') int studentId,
+  );
   // 出勤相關 API
   @GET('/api/Attendance/student/{studentId}/records')
   Future<ApiResponse<List<AttendanceCourseRecord>>> getAttendanceRecords(

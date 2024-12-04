@@ -20,13 +20,31 @@ StudentExam _$StudentExamFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$StudentExam {
-  String get id => throw _privateConstructorUsedError;
-  String get subject => throw _privateConstructorUsedError;
+  @JsonKey(name: 'exam_id')
+  int get examId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lesson_id')
+  int get lessonId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'exam_name')
+  String get examName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'exam_description')
+  String get examDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'upload_file')
+  String? get uploadFile => throw _privateConstructorUsedError;
+  @JsonKey(name: 'exam_date')
   DateTime get examDate => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  bool get isCompleted => throw _privateConstructorUsedError;
-  String? get completedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lesson_title')
+  String get lessonTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lesson_description')
+  String? get lessonDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'teacher_id')
+  int get teacherId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'teacher_name')
+  String get teacherName => throw _privateConstructorUsedError;
+  int? get score => throw _privateConstructorUsedError;
+  @JsonKey(name: 'score_desc')
+  String? get scoreDesc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'isScore')
+  bool get isScore => throw _privateConstructorUsedError;
 
   /// Serializes this StudentExam to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,13 +63,19 @@ abstract class $StudentExamCopyWith<$Res> {
       _$StudentExamCopyWithImpl<$Res, StudentExam>;
   @useResult
   $Res call(
-      {String id,
-      String subject,
-      DateTime examDate,
-      String location,
-      String description,
-      bool isCompleted,
-      String? completedAt});
+      {@JsonKey(name: 'exam_id') int examId,
+      @JsonKey(name: 'lesson_id') int lessonId,
+      @JsonKey(name: 'exam_name') String examName,
+      @JsonKey(name: 'exam_description') String examDescription,
+      @JsonKey(name: 'upload_file') String? uploadFile,
+      @JsonKey(name: 'exam_date') DateTime examDate,
+      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'lesson_description') String? lessonDescription,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'teacher_name') String teacherName,
+      int? score,
+      @JsonKey(name: 'score_desc') String? scoreDesc,
+      @JsonKey(name: 'isScore') bool isScore});
 }
 
 /// @nodoc
@@ -69,43 +93,73 @@ class _$StudentExamCopyWithImpl<$Res, $Val extends StudentExam>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? subject = null,
+    Object? examId = null,
+    Object? lessonId = null,
+    Object? examName = null,
+    Object? examDescription = null,
+    Object? uploadFile = freezed,
     Object? examDate = null,
-    Object? location = null,
-    Object? description = null,
-    Object? isCompleted = null,
-    Object? completedAt = freezed,
+    Object? lessonTitle = null,
+    Object? lessonDescription = freezed,
+    Object? teacherId = null,
+    Object? teacherName = null,
+    Object? score = freezed,
+    Object? scoreDesc = freezed,
+    Object? isScore = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      examId: null == examId
+          ? _value.examId
+          : examId // ignore: cast_nullable_to_non_nullable
+              as int,
+      lessonId: null == lessonId
+          ? _value.lessonId
+          : lessonId // ignore: cast_nullable_to_non_nullable
+              as int,
+      examName: null == examName
+          ? _value.examName
+          : examName // ignore: cast_nullable_to_non_nullable
               as String,
-      subject: null == subject
-          ? _value.subject
-          : subject // ignore: cast_nullable_to_non_nullable
+      examDescription: null == examDescription
+          ? _value.examDescription
+          : examDescription // ignore: cast_nullable_to_non_nullable
               as String,
+      uploadFile: freezed == uploadFile
+          ? _value.uploadFile
+          : uploadFile // ignore: cast_nullable_to_non_nullable
+              as String?,
       examDate: null == examDate
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
+      lessonTitle: null == lessonTitle
+          ? _value.lessonTitle
+          : lessonTitle // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      isCompleted: null == isCompleted
-          ? _value.isCompleted
-          : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      completedAt: freezed == completedAt
-          ? _value.completedAt
-          : completedAt // ignore: cast_nullable_to_non_nullable
+      lessonDescription: freezed == lessonDescription
+          ? _value.lessonDescription
+          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String?,
+      teacherId: null == teacherId
+          ? _value.teacherId
+          : teacherId // ignore: cast_nullable_to_non_nullable
+              as int,
+      teacherName: null == teacherName
+          ? _value.teacherName
+          : teacherName // ignore: cast_nullable_to_non_nullable
+              as String,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
+      scoreDesc: freezed == scoreDesc
+          ? _value.scoreDesc
+          : scoreDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isScore: null == isScore
+          ? _value.isScore
+          : isScore // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -119,13 +173,19 @@ abstract class _$$StudentExamImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String subject,
-      DateTime examDate,
-      String location,
-      String description,
-      bool isCompleted,
-      String? completedAt});
+      {@JsonKey(name: 'exam_id') int examId,
+      @JsonKey(name: 'lesson_id') int lessonId,
+      @JsonKey(name: 'exam_name') String examName,
+      @JsonKey(name: 'exam_description') String examDescription,
+      @JsonKey(name: 'upload_file') String? uploadFile,
+      @JsonKey(name: 'exam_date') DateTime examDate,
+      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'lesson_description') String? lessonDescription,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'teacher_name') String teacherName,
+      int? score,
+      @JsonKey(name: 'score_desc') String? scoreDesc,
+      @JsonKey(name: 'isScore') bool isScore});
 }
 
 /// @nodoc
@@ -141,43 +201,73 @@ class __$$StudentExamImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? subject = null,
+    Object? examId = null,
+    Object? lessonId = null,
+    Object? examName = null,
+    Object? examDescription = null,
+    Object? uploadFile = freezed,
     Object? examDate = null,
-    Object? location = null,
-    Object? description = null,
-    Object? isCompleted = null,
-    Object? completedAt = freezed,
+    Object? lessonTitle = null,
+    Object? lessonDescription = freezed,
+    Object? teacherId = null,
+    Object? teacherName = null,
+    Object? score = freezed,
+    Object? scoreDesc = freezed,
+    Object? isScore = null,
   }) {
     return _then(_$StudentExamImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      examId: null == examId
+          ? _value.examId
+          : examId // ignore: cast_nullable_to_non_nullable
+              as int,
+      lessonId: null == lessonId
+          ? _value.lessonId
+          : lessonId // ignore: cast_nullable_to_non_nullable
+              as int,
+      examName: null == examName
+          ? _value.examName
+          : examName // ignore: cast_nullable_to_non_nullable
               as String,
-      subject: null == subject
-          ? _value.subject
-          : subject // ignore: cast_nullable_to_non_nullable
+      examDescription: null == examDescription
+          ? _value.examDescription
+          : examDescription // ignore: cast_nullable_to_non_nullable
               as String,
+      uploadFile: freezed == uploadFile
+          ? _value.uploadFile
+          : uploadFile // ignore: cast_nullable_to_non_nullable
+              as String?,
       examDate: null == examDate
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
+      lessonTitle: null == lessonTitle
+          ? _value.lessonTitle
+          : lessonTitle // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      isCompleted: null == isCompleted
-          ? _value.isCompleted
-          : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      completedAt: freezed == completedAt
-          ? _value.completedAt
-          : completedAt // ignore: cast_nullable_to_non_nullable
+      lessonDescription: freezed == lessonDescription
+          ? _value.lessonDescription
+          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String?,
+      teacherId: null == teacherId
+          ? _value.teacherId
+          : teacherId // ignore: cast_nullable_to_non_nullable
+              as int,
+      teacherName: null == teacherName
+          ? _value.teacherName
+          : teacherName // ignore: cast_nullable_to_non_nullable
+              as String,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
+      scoreDesc: freezed == scoreDesc
+          ? _value.scoreDesc
+          : scoreDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isScore: null == isScore
+          ? _value.isScore
+          : isScore // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -186,36 +276,65 @@ class __$$StudentExamImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StudentExamImpl implements _StudentExam {
   const _$StudentExamImpl(
-      {required this.id,
-      required this.subject,
-      required this.examDate,
-      required this.location,
-      required this.description,
-      this.isCompleted = false,
-      this.completedAt});
+      {@JsonKey(name: 'exam_id') required this.examId,
+      @JsonKey(name: 'lesson_id') required this.lessonId,
+      @JsonKey(name: 'exam_name') required this.examName,
+      @JsonKey(name: 'exam_description') required this.examDescription,
+      @JsonKey(name: 'upload_file') this.uploadFile,
+      @JsonKey(name: 'exam_date') required this.examDate,
+      @JsonKey(name: 'lesson_title') required this.lessonTitle,
+      @JsonKey(name: 'lesson_description') this.lessonDescription,
+      @JsonKey(name: 'teacher_id') required this.teacherId,
+      @JsonKey(name: 'teacher_name') required this.teacherName,
+      this.score,
+      @JsonKey(name: 'score_desc') this.scoreDesc,
+      @JsonKey(name: 'isScore') this.isScore = false});
 
   factory _$StudentExamImpl.fromJson(Map<String, dynamic> json) =>
       _$$StudentExamImplFromJson(json);
 
   @override
-  final String id;
+  @JsonKey(name: 'exam_id')
+  final int examId;
   @override
-  final String subject;
+  @JsonKey(name: 'lesson_id')
+  final int lessonId;
   @override
+  @JsonKey(name: 'exam_name')
+  final String examName;
+  @override
+  @JsonKey(name: 'exam_description')
+  final String examDescription;
+  @override
+  @JsonKey(name: 'upload_file')
+  final String? uploadFile;
+  @override
+  @JsonKey(name: 'exam_date')
   final DateTime examDate;
   @override
-  final String location;
+  @JsonKey(name: 'lesson_title')
+  final String lessonTitle;
   @override
-  final String description;
+  @JsonKey(name: 'lesson_description')
+  final String? lessonDescription;
   @override
-  @JsonKey()
-  final bool isCompleted;
+  @JsonKey(name: 'teacher_id')
+  final int teacherId;
   @override
-  final String? completedAt;
+  @JsonKey(name: 'teacher_name')
+  final String teacherName;
+  @override
+  final int? score;
+  @override
+  @JsonKey(name: 'score_desc')
+  final String? scoreDesc;
+  @override
+  @JsonKey(name: 'isScore')
+  final bool isScore;
 
   @override
   String toString() {
-    return 'StudentExam(id: $id, subject: $subject, examDate: $examDate, location: $location, description: $description, isCompleted: $isCompleted, completedAt: $completedAt)';
+    return 'StudentExam(examId: $examId, lessonId: $lessonId, examName: $examName, examDescription: $examDescription, uploadFile: $uploadFile, examDate: $examDate, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, teacherId: $teacherId, teacherName: $teacherName, score: $score, scoreDesc: $scoreDesc, isScore: $isScore)';
   }
 
   @override
@@ -223,24 +342,48 @@ class _$StudentExamImpl implements _StudentExam {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudentExamImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.subject, subject) || other.subject == subject) &&
+            (identical(other.examId, examId) || other.examId == examId) &&
+            (identical(other.lessonId, lessonId) ||
+                other.lessonId == lessonId) &&
+            (identical(other.examName, examName) ||
+                other.examName == examName) &&
+            (identical(other.examDescription, examDescription) ||
+                other.examDescription == examDescription) &&
+            (identical(other.uploadFile, uploadFile) ||
+                other.uploadFile == uploadFile) &&
             (identical(other.examDate, examDate) ||
                 other.examDate == examDate) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.isCompleted, isCompleted) ||
-                other.isCompleted == isCompleted) &&
-            (identical(other.completedAt, completedAt) ||
-                other.completedAt == completedAt));
+            (identical(other.lessonTitle, lessonTitle) ||
+                other.lessonTitle == lessonTitle) &&
+            (identical(other.lessonDescription, lessonDescription) ||
+                other.lessonDescription == lessonDescription) &&
+            (identical(other.teacherId, teacherId) ||
+                other.teacherId == teacherId) &&
+            (identical(other.teacherName, teacherName) ||
+                other.teacherName == teacherName) &&
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.scoreDesc, scoreDesc) ||
+                other.scoreDesc == scoreDesc) &&
+            (identical(other.isScore, isScore) || other.isScore == isScore));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, subject, examDate, location,
-      description, isCompleted, completedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      examId,
+      lessonId,
+      examName,
+      examDescription,
+      uploadFile,
+      examDate,
+      lessonTitle,
+      lessonDescription,
+      teacherId,
+      teacherName,
+      score,
+      scoreDesc,
+      isScore);
 
   /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
@@ -260,31 +403,61 @@ class _$StudentExamImpl implements _StudentExam {
 
 abstract class _StudentExam implements StudentExam {
   const factory _StudentExam(
-      {required final String id,
-      required final String subject,
-      required final DateTime examDate,
-      required final String location,
-      required final String description,
-      final bool isCompleted,
-      final String? completedAt}) = _$StudentExamImpl;
+      {@JsonKey(name: 'exam_id') required final int examId,
+      @JsonKey(name: 'lesson_id') required final int lessonId,
+      @JsonKey(name: 'exam_name') required final String examName,
+      @JsonKey(name: 'exam_description') required final String examDescription,
+      @JsonKey(name: 'upload_file') final String? uploadFile,
+      @JsonKey(name: 'exam_date') required final DateTime examDate,
+      @JsonKey(name: 'lesson_title') required final String lessonTitle,
+      @JsonKey(name: 'lesson_description') final String? lessonDescription,
+      @JsonKey(name: 'teacher_id') required final int teacherId,
+      @JsonKey(name: 'teacher_name') required final String teacherName,
+      final int? score,
+      @JsonKey(name: 'score_desc') final String? scoreDesc,
+      @JsonKey(name: 'isScore') final bool isScore}) = _$StudentExamImpl;
 
   factory _StudentExam.fromJson(Map<String, dynamic> json) =
       _$StudentExamImpl.fromJson;
 
   @override
-  String get id;
+  @JsonKey(name: 'exam_id')
+  int get examId;
   @override
-  String get subject;
+  @JsonKey(name: 'lesson_id')
+  int get lessonId;
   @override
+  @JsonKey(name: 'exam_name')
+  String get examName;
+  @override
+  @JsonKey(name: 'exam_description')
+  String get examDescription;
+  @override
+  @JsonKey(name: 'upload_file')
+  String? get uploadFile;
+  @override
+  @JsonKey(name: 'exam_date')
   DateTime get examDate;
   @override
-  String get location;
+  @JsonKey(name: 'lesson_title')
+  String get lessonTitle;
   @override
-  String get description;
+  @JsonKey(name: 'lesson_description')
+  String? get lessonDescription;
   @override
-  bool get isCompleted;
+  @JsonKey(name: 'teacher_id')
+  int get teacherId;
   @override
-  String? get completedAt;
+  @JsonKey(name: 'teacher_name')
+  String get teacherName;
+  @override
+  int? get score;
+  @override
+  @JsonKey(name: 'score_desc')
+  String? get scoreDesc;
+  @override
+  @JsonKey(name: 'isScore')
+  bool get isScore;
 
   /// Create a copy of StudentExam
   /// with the given fields replaced by the non-null parameter values.
