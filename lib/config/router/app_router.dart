@@ -211,15 +211,20 @@ class AppRouter {
           ),
 
           // 學生考試和出席相關
+          // GoRoute(
+          //   path: '/student-exam',
+          //   builder: (context, state) => BlocProvider(
+          //     create: (context) => StudentExamCubit(
+          //       StudentExamRepository(useMock: true),
+          //     )..loadExams(),
+          //     child: const StudentExamScreen(),
+          //   ),
+          // ),
           GoRoute(
             path: '/student-exam',
-            builder: (context, state) => BlocProvider(
-              create: (context) => StudentExamCubit(
-                StudentExamRepository(useMock: true),
-              )..loadExams(),
-              child: const StudentExamScreen(),
-            ),
+            builder: (context, state) => const StudentExamScreen(),
           ),
+
           GoRoute(
             path: '/student-attendance',
             builder: (context, state) => const StudentAttendanceScreen(),

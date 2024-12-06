@@ -57,6 +57,11 @@ unavailable,Unavailable,不可預約,不可预约,予約不可
 selected_date,Selected Date,選擇日期,选择日期,選択日
 selected_time,Selected Time,選擇時間,选择时间,選択時間
 price,Price,價格,价格,価格
+classroom_booking,Class Room booking,預定教室,教室預定,教室預定
+booking_confirmation,Booking Comfirm,確認預定,確認預定,確認預定
+booking_capacity,Capacity,人數,人數,人數
+select_date_first,Please Select a date first,請先選擇一個日期,請先選擇一個日期,請先選擇一個日期
+
 
 # Payment
 payment_method,Payment Method,付款方式,付款方式,支払方法
@@ -97,6 +102,10 @@ pending_review,Pending Review,待審核,待审核,審査待ち
 approved,Approved,已通過,已通过,承認済み
 rejected,Rejected,已拒絕,已拒绝,却下
 under_review,Under Review,審核中,审核中,確認中
+downloading,Downloading...,下載中...,下载中...,ダウンロード中...
+download_complete,Download Complete,下載完成,下载完成,ダウンロード完了
+download_attachment,Download Attachment,下載附件,下载附件,添付ファイルをダウンロード
+download_failed,Download Failed,下載失敗,下载失败,ダウンロード失敗
 
 # Homework
 homework,Homework,作業,作业,宿題
@@ -120,7 +129,7 @@ submitted_content,Submitted Content,已提交內容,已提交内容,提出内容
 attachments,Attachments,附件,附件,添付ファイル
 add_attachment,Add Attachment,添加附件,添加附件,添付ファイルを追加
 no_attachments,No attachments,沒有附件,没有附件,添付ファイルなし
-score,Score: {0},分數：{0},分数：{0},得点：{0}
+score,Score {},分數 {},分数 {},得点 {}
 teacher_comment,Teacher's Comment,教師評語,教师评语,教師のコメント
 submit,Submit,提交,提交,提出
 error_picking_files,Error picking files,選擇檔案時發生錯誤,选择文件时发生错误,ファイル選択エラー
@@ -183,6 +192,16 @@ add_message,Add meesage,增加訊息內容,增加訊息內容
 attachment,Attachment,附件,附件,附件
 time,Time,時間,時間
 request_date,Request Date,申請日期,申請時間
+
+
+
+# Navigation Items & Menu
+attendance,Attendance,出勤,出勤,出席
+setting,Settings,設定,设置,設定
+exam,Exam,考試,考试,試験
+contact_us,Contact Us,聯絡我們,联系我们,お問い合わせ
+bulletin_board,Bulletin Board,公佈欄,公告栏,掲示板
+exam_name,Exam Name,考試名稱,考试名称,試験名
 
 #attachments
 attendance_statistics,Attendance Statistics,出勤統計

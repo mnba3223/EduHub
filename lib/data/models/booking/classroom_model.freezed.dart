@@ -367,9 +367,9 @@ mixin _$Booking {
   @JsonKey(name: 'booking_date')
   DateTime get bookingDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_start_time')
-  String get startTime => throw _privateConstructorUsedError;
+  String? get startTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_end_time')
-  String get endTime => throw _privateConstructorUsedError;
+  String? get endTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'isOccupied')
   int get isOccupied => throw _privateConstructorUsedError;
 
@@ -390,8 +390,8 @@ abstract class $BookingCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'booking_id') int bookingId,
       @JsonKey(name: 'booking_date') DateTime bookingDate,
-      @JsonKey(name: 'booking_start_time') String startTime,
-      @JsonKey(name: 'booking_end_time') String endTime,
+      @JsonKey(name: 'booking_start_time') String? startTime,
+      @JsonKey(name: 'booking_end_time') String? endTime,
       @JsonKey(name: 'isOccupied') int isOccupied});
 }
 
@@ -412,8 +412,8 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
   $Res call({
     Object? bookingId = null,
     Object? bookingDate = null,
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? isOccupied = null,
   }) {
     return _then(_value.copyWith(
@@ -425,14 +425,14 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
           ? _value.bookingDate
           : bookingDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
+              as String?,
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isOccupied: null == isOccupied
           ? _value.isOccupied
           : isOccupied // ignore: cast_nullable_to_non_nullable
@@ -451,8 +451,8 @@ abstract class _$$BookingImplCopyWith<$Res> implements $BookingCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'booking_id') int bookingId,
       @JsonKey(name: 'booking_date') DateTime bookingDate,
-      @JsonKey(name: 'booking_start_time') String startTime,
-      @JsonKey(name: 'booking_end_time') String endTime,
+      @JsonKey(name: 'booking_start_time') String? startTime,
+      @JsonKey(name: 'booking_end_time') String? endTime,
       @JsonKey(name: 'isOccupied') int isOccupied});
 }
 
@@ -471,8 +471,8 @@ class __$$BookingImplCopyWithImpl<$Res>
   $Res call({
     Object? bookingId = null,
     Object? bookingDate = null,
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? isOccupied = null,
   }) {
     return _then(_$BookingImpl(
@@ -484,14 +484,14 @@ class __$$BookingImplCopyWithImpl<$Res>
           ? _value.bookingDate
           : bookingDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
+              as String?,
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isOccupied: null == isOccupied
           ? _value.isOccupied
           : isOccupied // ignore: cast_nullable_to_non_nullable
@@ -506,8 +506,8 @@ class _$BookingImpl implements _Booking {
   const _$BookingImpl(
       {@JsonKey(name: 'booking_id') required this.bookingId,
       @JsonKey(name: 'booking_date') required this.bookingDate,
-      @JsonKey(name: 'booking_start_time') required this.startTime,
-      @JsonKey(name: 'booking_end_time') required this.endTime,
+      @JsonKey(name: 'booking_start_time') this.startTime,
+      @JsonKey(name: 'booking_end_time') this.endTime,
       @JsonKey(name: 'isOccupied') required this.isOccupied});
 
   factory _$BookingImpl.fromJson(Map<String, dynamic> json) =>
@@ -521,10 +521,10 @@ class _$BookingImpl implements _Booking {
   final DateTime bookingDate;
   @override
   @JsonKey(name: 'booking_start_time')
-  final String startTime;
+  final String? startTime;
   @override
   @JsonKey(name: 'booking_end_time')
-  final String endTime;
+  final String? endTime;
   @override
   @JsonKey(name: 'isOccupied')
   final int isOccupied;
@@ -575,8 +575,8 @@ abstract class _Booking implements Booking {
   const factory _Booking(
           {@JsonKey(name: 'booking_id') required final int bookingId,
           @JsonKey(name: 'booking_date') required final DateTime bookingDate,
-          @JsonKey(name: 'booking_start_time') required final String startTime,
-          @JsonKey(name: 'booking_end_time') required final String endTime,
+          @JsonKey(name: 'booking_start_time') final String? startTime,
+          @JsonKey(name: 'booking_end_time') final String? endTime,
           @JsonKey(name: 'isOccupied') required final int isOccupied}) =
       _$BookingImpl;
 
@@ -590,10 +590,10 @@ abstract class _Booking implements Booking {
   DateTime get bookingDate;
   @override
   @JsonKey(name: 'booking_start_time')
-  String get startTime;
+  String? get startTime;
   @override
   @JsonKey(name: 'booking_end_time')
-  String get endTime;
+  String? get endTime;
   @override
   @JsonKey(name: 'isOccupied')
   int get isOccupied;

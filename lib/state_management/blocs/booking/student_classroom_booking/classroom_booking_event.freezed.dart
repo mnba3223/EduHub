@@ -23,7 +23,9 @@ mixin _$ClassroomBookingEvent {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -33,7 +35,9 @@ mixin _$ClassroomBookingEvent {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,7 +47,9 @@ mixin _$ClassroomBookingEvent {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -145,7 +151,9 @@ class _$LoadClassroomsImpl implements LoadClassrooms {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) {
     return loadClassrooms();
   }
@@ -158,7 +166,9 @@ class _$LoadClassroomsImpl implements LoadClassrooms {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) {
     return loadClassrooms?.call();
   }
@@ -171,7 +181,9 @@ class _$LoadClassroomsImpl implements LoadClassrooms {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) {
     if (loadClassrooms != null) {
@@ -298,7 +310,9 @@ class _$SelectDateImpl implements SelectDate {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) {
     return selectDate(date);
   }
@@ -311,7 +325,9 @@ class _$SelectDateImpl implements SelectDate {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) {
     return selectDate?.call(date);
   }
@@ -324,7 +340,9 @@ class _$SelectDateImpl implements SelectDate {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) {
     if (selectDate != null) {
@@ -479,7 +497,9 @@ class _$SelectTimeSlotImpl implements SelectTimeSlot {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) {
     return selectTimeSlot(time, bookingDate, classroom);
   }
@@ -492,7 +512,9 @@ class _$SelectTimeSlotImpl implements SelectTimeSlot {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) {
     return selectTimeSlot?.call(time, bookingDate, classroom);
   }
@@ -505,7 +527,9 @@ class _$SelectTimeSlotImpl implements SelectTimeSlot {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) {
     if (selectTimeSlot != null) {
@@ -659,7 +683,9 @@ class _$SelectClassroomImpl implements SelectClassroom {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) {
     return selectClassroom(classroom);
   }
@@ -672,7 +698,9 @@ class _$SelectClassroomImpl implements SelectClassroom {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) {
     return selectClassroom?.call(classroom);
   }
@@ -685,7 +713,9 @@ class _$SelectClassroomImpl implements SelectClassroom {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) {
     if (selectClassroom != null) {
@@ -753,6 +783,14 @@ abstract class _$$CreateBookingImplCopyWith<$Res> {
   factory _$$CreateBookingImplCopyWith(
           _$CreateBookingImpl value, $Res Function(_$CreateBookingImpl) then) =
       __$$CreateBookingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {DateTime bookingDate,
+      String startTime,
+      String endTime,
+      Classroom classroom});
+
+  $ClassroomCopyWith<$Res> get classroom;
 }
 
 /// @nodoc
@@ -765,26 +803,93 @@ class __$$CreateBookingImplCopyWithImpl<$Res>
 
   /// Create a copy of ClassroomBookingEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookingDate = null,
+    Object? startTime = null,
+    Object? endTime = null,
+    Object? classroom = null,
+  }) {
+    return _then(_$CreateBookingImpl(
+      bookingDate: null == bookingDate
+          ? _value.bookingDate
+          : bookingDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      classroom: null == classroom
+          ? _value.classroom
+          : classroom // ignore: cast_nullable_to_non_nullable
+              as Classroom,
+    ));
+  }
+
+  /// Create a copy of ClassroomBookingEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ClassroomCopyWith<$Res> get classroom {
+    return $ClassroomCopyWith<$Res>(_value.classroom, (value) {
+      return _then(_value.copyWith(classroom: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$CreateBookingImpl implements CreateBooking {
-  const _$CreateBookingImpl();
+  const _$CreateBookingImpl(
+      {required this.bookingDate,
+      required this.startTime,
+      required this.endTime,
+      required this.classroom});
+
+  @override
+  final DateTime bookingDate;
+  @override
+  final String startTime;
+  @override
+  final String endTime;
+  @override
+  final Classroom classroom;
 
   @override
   String toString() {
-    return 'ClassroomBookingEvent.createBooking()';
+    return 'ClassroomBookingEvent.createBooking(bookingDate: $bookingDate, startTime: $startTime, endTime: $endTime, classroom: $classroom)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CreateBookingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$CreateBookingImpl &&
+            (identical(other.bookingDate, bookingDate) ||
+                other.bookingDate == bookingDate) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.classroom, classroom) ||
+                other.classroom == classroom));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, bookingDate, startTime, endTime, classroom);
+
+  /// Create a copy of ClassroomBookingEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CreateBookingImplCopyWith<_$CreateBookingImpl> get copyWith =>
+      __$$CreateBookingImplCopyWithImpl<_$CreateBookingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -794,9 +899,11 @@ class _$CreateBookingImpl implements CreateBooking {
     required TResult Function(String time, DateTime bookingDate, int classroom)
         selectTimeSlot,
     required TResult Function(Classroom classroom) selectClassroom,
-    required TResult Function() createBooking,
+    required TResult Function(DateTime bookingDate, String startTime,
+            String endTime, Classroom classroom)
+        createBooking,
   }) {
-    return createBooking();
+    return createBooking(bookingDate, startTime, endTime, classroom);
   }
 
   @override
@@ -807,9 +914,11 @@ class _$CreateBookingImpl implements CreateBooking {
     TResult? Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult? Function(Classroom classroom)? selectClassroom,
-    TResult? Function()? createBooking,
+    TResult? Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
   }) {
-    return createBooking?.call();
+    return createBooking?.call(bookingDate, startTime, endTime, classroom);
   }
 
   @override
@@ -820,11 +929,13 @@ class _$CreateBookingImpl implements CreateBooking {
     TResult Function(String time, DateTime bookingDate, int classroom)?
         selectTimeSlot,
     TResult Function(Classroom classroom)? selectClassroom,
-    TResult Function()? createBooking,
+    TResult Function(DateTime bookingDate, String startTime, String endTime,
+            Classroom classroom)?
+        createBooking,
     required TResult orElse(),
   }) {
     if (createBooking != null) {
-      return createBooking();
+      return createBooking(bookingDate, startTime, endTime, classroom);
     }
     return orElse();
   }
@@ -871,5 +982,20 @@ class _$CreateBookingImpl implements CreateBooking {
 }
 
 abstract class CreateBooking implements ClassroomBookingEvent {
-  const factory CreateBooking() = _$CreateBookingImpl;
+  const factory CreateBooking(
+      {required final DateTime bookingDate,
+      required final String startTime,
+      required final String endTime,
+      required final Classroom classroom}) = _$CreateBookingImpl;
+
+  DateTime get bookingDate;
+  String get startTime;
+  String get endTime;
+  Classroom get classroom;
+
+  /// Create a copy of ClassroomBookingEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CreateBookingImplCopyWith<_$CreateBookingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

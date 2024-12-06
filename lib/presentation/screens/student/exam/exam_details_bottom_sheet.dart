@@ -1,19 +1,30 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/exam/student_exam.dart';
 import 'package:edutec_hub/presentation/ui_widget/button/custom_button.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/download_ui.dart';
+import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
+import 'package:edutec_hub/state_management/cubit/download/download_state.dart';
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ExamDetailsBottomSheet extends StatelessWidget {
+class ExamDetailsBottomSheet extends StatefulWidget {
   final StudentExam exam;
-
+  final BuildContext context;
   const ExamDetailsBottomSheet({
-    Key? key,
+    super.key,
     required this.exam,
-  }) : super(key: key);
+    required this.context,
+  });
 
+  @override
+  State<ExamDetailsBottomSheet> createState() => _ExamDetailsBottomSheetState();
+}
+
+class _ExamDetailsBottomSheetState extends State<ExamDetailsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,40 +48,145 @@ class ExamDetailsBottomSheet extends StatelessWidget {
                   _buildExamStatus(),
                   SizedBox(height: 16.h),
                   _buildSection(
+                    'exam_name'.tr(),
+                    widget.exam.examName,
+                    icon: Icons.assignment,
+                  ),
+                  _buildSection(
                     'exam_subject'.tr(),
-                    exam.lessonTitle,
+                    widget.exam.lessonTitle,
                     icon: Icons.book,
                   ),
                   _buildSection(
                     'exam_time'.tr(),
-                    DateFormat('yyyy/MM/dd HH:mm').format(exam.examDate),
+                    DateFormat('yyyy/MM/dd HH:mm').format(widget.exam.examDate),
                     icon: Icons.access_time,
                   ),
                   _buildSection(
                     'teacher'.tr(),
-                    exam.teacherName,
+                    widget.exam.teacherName,
                     icon: Icons.person,
                   ),
                   _buildSection(
                     'exam_description'.tr(),
-                    exam.examDescription,
+                    widget.exam.examDescription,
                     icon: Icons.description,
                   ),
-                  if (exam.isScore) _buildScoreSection(),
+                  if (widget.exam.isScore) _buildScoreSection(),
+                  if (widget.exam.uploadFile != null)
+                    _buildAttachmentSection(context, widget.context),
                 ],
               ),
             ),
           ),
-          if (exam.uploadFile != null && !exam.isScore)
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: CustomButton(
-                onPressed: () {},
-                text: 'download_attachment'.tr(),
-              ),
-            ),
+          // if (exam.uploadFile?.isNotEmpty == true && !exam.isScore)
+          // Padding(
+          //   padding: EdgeInsets.all(16.w),
+          //   child: ExamFileDownloadButton(fileUrl: widget.exam.uploadFile!),
+          // ),
         ],
       ),
+    );
+  }
+
+  // Widget _buildAttachmentSection(BuildContext context) {
+  Widget _buildAttachmentSection(
+      BuildContext context, BuildContext downloadContext) {
+    final fileName = widget.exam.uploadFile!.split('/').last;
+
+    return BlocConsumer<DownloadCubit, DownloadState>(
+      listenWhen: (previous, current) {
+        log('Previous state: ${previous.successMessage}, ${previous.error}');
+        log('Current state: ${current.successMessage}, ${current.error}');
+        return current.successMessage != previous.successMessage ||
+            current.error != previous.error;
+      },
+      listener: (downloadContext, state) {
+        log('Listener triggered with state: ${state.successMessage}, ${state.error}');
+        if (state.successMessage != null || state.error != null) {
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text(state.successMessage ?? state.error ?? ''),
+          //     backgroundColor:
+          //         state.successMessage != null ? Colors.green : Colors.red,
+          //   ),
+          // );
+          //show success message below the attachment section
+        }
+      },
+      builder: (downloadContext, state) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 16.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.attach_file, size: 20.sp, color: Colors.blue),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'attachment'.tr(),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              GestureDetector(
+                onTap: () {
+                  context.read<DownloadCubit>().downloadMultipleFiles(
+                    urls: [widget.exam.uploadFile!],
+                    fileNames: [fileName],
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: Colors.grey[300]!),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.insert_drive_file,
+                          color: Colors.blue, size: 24.sp),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Text(
+                          fileName,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.blue,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(Icons.download, color: Colors.blue, size: 24.sp),
+                    ],
+                  ),
+                ),
+              ),
+              if (state.successMessage != null || state.error != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 8.h),
+                  child: Text(
+                    state.successMessage ?? state.error ?? '',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: state.successMessage != null
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -107,7 +223,7 @@ class ExamDetailsBottomSheet extends StatelessWidget {
 
   Widget _buildExamStatus() {
     final now = DateTime.now();
-    final isUpcoming = exam.examDate.isAfter(now);
+    final isUpcoming = widget.exam.examDate.isAfter(now);
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
@@ -124,14 +240,15 @@ class ExamDetailsBottomSheet extends StatelessWidget {
             size: 20.sp,
           ),
           SizedBox(width: 8.w),
-          Text(
-            _getStatusText(isUpcoming),
-            style: TextStyle(
-              color: _getStatusColor(),
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
+          if (widget.exam.isScore)
+            Text(
+              _getStatusText(isUpcoming),
+              style: TextStyle(
+                color: _getStatusColor(),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -142,14 +259,14 @@ class ExamDetailsBottomSheet extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSection(
-          'score'.tr(),
-          exam.score?.toString() ?? 'not_graded'.tr(),
+          'score'.tr(args: [""]),
+          widget.exam.score?.toString() ?? 'not_graded'.tr(),
           icon: Icons.grade,
         ),
-        if (exam.scoreDesc != null)
+        if (widget.exam.scoreDesc != null)
           _buildSection(
             'teacher_comment'.tr(),
-            exam.scoreDesc!,
+            widget.exam.scoreDesc!,
             icon: Icons.comment,
           ),
       ],
@@ -193,25 +310,25 @@ class ExamDetailsBottomSheet extends StatelessWidget {
   }
 
   Color _getStatusColor() {
-    if (exam.isScore) {
+    if (widget.exam.isScore) {
       return Colors.green;
     }
     final now = DateTime.now();
-    return exam.examDate.isAfter(now) ? Colors.blue : Colors.orange;
+    return widget.exam.examDate.isAfter(now) ? Colors.blue : Colors.orange;
   }
 
   IconData _getStatusIcon() {
-    if (exam.isScore) {
+    if (widget.exam.isScore) {
       return Icons.check_circle;
     }
     final now = DateTime.now();
-    return exam.examDate.isAfter(now) ? Icons.upcoming : Icons.pending;
+    return widget.exam.examDate.isAfter(now) ? Icons.upcoming : Icons.pending;
   }
 
   String _getStatusText(bool isUpcoming) {
-    if (exam.isScore) {
-      return 'completed'.tr();
+    if (widget.exam.isScore) {
+      return 'exam_graded'.tr();
     }
-    return isUpcoming ? 'upcoming'.tr() : 'pending'.tr();
+    return isUpcoming ? 'upcoming'.tr() : 'exam_pending'.tr();
   }
 }

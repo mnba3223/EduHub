@@ -32,7 +32,7 @@ mixin _$StudentExam {
   String? get uploadFile => throw _privateConstructorUsedError;
   @JsonKey(name: 'exam_date')
   DateTime get examDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_title')
+  @JsonKey(name: 'class_name')
   String get lessonTitle => throw _privateConstructorUsedError;
   @JsonKey(name: 'lesson_description')
   String? get lessonDescription => throw _privateConstructorUsedError;
@@ -40,6 +40,7 @@ mixin _$StudentExam {
   int get teacherId => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_name')
   String get teacherName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'score')
   int? get score => throw _privateConstructorUsedError;
   @JsonKey(name: 'score_desc')
   String? get scoreDesc => throw _privateConstructorUsedError;
@@ -69,11 +70,11 @@ abstract class $StudentExamCopyWith<$Res> {
       @JsonKey(name: 'exam_description') String examDescription,
       @JsonKey(name: 'upload_file') String? uploadFile,
       @JsonKey(name: 'exam_date') DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'class_name') String lessonTitle,
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
-      int? score,
+      @JsonKey(name: 'score') int? score,
       @JsonKey(name: 'score_desc') String? scoreDesc,
       @JsonKey(name: 'isScore') bool isScore});
 }
@@ -179,11 +180,11 @@ abstract class _$$StudentExamImplCopyWith<$Res>
       @JsonKey(name: 'exam_description') String examDescription,
       @JsonKey(name: 'upload_file') String? uploadFile,
       @JsonKey(name: 'exam_date') DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'class_name') String lessonTitle,
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
-      int? score,
+      @JsonKey(name: 'score') int? score,
       @JsonKey(name: 'score_desc') String? scoreDesc,
       @JsonKey(name: 'isScore') bool isScore});
 }
@@ -282,11 +283,11 @@ class _$StudentExamImpl implements _StudentExam {
       @JsonKey(name: 'exam_description') required this.examDescription,
       @JsonKey(name: 'upload_file') this.uploadFile,
       @JsonKey(name: 'exam_date') required this.examDate,
-      @JsonKey(name: 'lesson_title') required this.lessonTitle,
+      @JsonKey(name: 'class_name') required this.lessonTitle,
       @JsonKey(name: 'lesson_description') this.lessonDescription,
       @JsonKey(name: 'teacher_id') required this.teacherId,
       @JsonKey(name: 'teacher_name') required this.teacherName,
-      this.score,
+      @JsonKey(name: 'score') this.score,
       @JsonKey(name: 'score_desc') this.scoreDesc,
       @JsonKey(name: 'isScore') this.isScore = false});
 
@@ -312,7 +313,7 @@ class _$StudentExamImpl implements _StudentExam {
   @JsonKey(name: 'exam_date')
   final DateTime examDate;
   @override
-  @JsonKey(name: 'lesson_title')
+  @JsonKey(name: 'class_name')
   final String lessonTitle;
   @override
   @JsonKey(name: 'lesson_description')
@@ -324,6 +325,7 @@ class _$StudentExamImpl implements _StudentExam {
   @JsonKey(name: 'teacher_name')
   final String teacherName;
   @override
+  @JsonKey(name: 'score')
   final int? score;
   @override
   @JsonKey(name: 'score_desc')
@@ -409,11 +411,11 @@ abstract class _StudentExam implements StudentExam {
       @JsonKey(name: 'exam_description') required final String examDescription,
       @JsonKey(name: 'upload_file') final String? uploadFile,
       @JsonKey(name: 'exam_date') required final DateTime examDate,
-      @JsonKey(name: 'lesson_title') required final String lessonTitle,
+      @JsonKey(name: 'class_name') required final String lessonTitle,
       @JsonKey(name: 'lesson_description') final String? lessonDescription,
       @JsonKey(name: 'teacher_id') required final int teacherId,
       @JsonKey(name: 'teacher_name') required final String teacherName,
-      final int? score,
+      @JsonKey(name: 'score') final int? score,
       @JsonKey(name: 'score_desc') final String? scoreDesc,
       @JsonKey(name: 'isScore') final bool isScore}) = _$StudentExamImpl;
 
@@ -439,7 +441,7 @@ abstract class _StudentExam implements StudentExam {
   @JsonKey(name: 'exam_date')
   DateTime get examDate;
   @override
-  @JsonKey(name: 'lesson_title')
+  @JsonKey(name: 'class_name')
   String get lessonTitle;
   @override
   @JsonKey(name: 'lesson_description')
@@ -451,6 +453,7 @@ abstract class _StudentExam implements StudentExam {
   @JsonKey(name: 'teacher_name')
   String get teacherName;
   @override
+  @JsonKey(name: 'score')
   int? get score;
   @override
   @JsonKey(name: 'score_desc')

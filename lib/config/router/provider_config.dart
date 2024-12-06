@@ -67,6 +67,9 @@ class ProvidersManager {
   // 學生特定的 providers
   static List<BlocProvider> getStudentProviders(SignInSuccess state) {
     return [
+      BlocProvider<DownloadCubit>(
+        create: (context) => DownloadCubit(),
+      ),
       // BlocProvider<HomeworkCubit>(
       //   create: (context) => HomeworkCubit(
       //     repository: HomeworkRepositoryImpl(
@@ -86,14 +89,14 @@ class ProvidersManager {
       ),
       BlocProvider<StudentExamCubit>(
         create: (context) => StudentExamCubit(
-          StudentExamRepository(useMock: true),
+          StudentExamRepository(useMock: false),
         )..loadExams(),
       ),
       BlocProvider<ContactBookBloc>(
         create: (context) => ContactBookBloc(
           repository: ContactBookRepository(
             signInCubit: context.read<SignInCubit>(),
-            useMock: true,
+            useMock: false,
           ),
         ),
       ),
@@ -163,12 +166,12 @@ class ProvidersManager {
         )..loadExams(),
       ),
       // 添加課程相關的 provider
-      BlocProvider<TeacherCourseCubit>(
-        create: (context) => TeacherCourseCubit(
-          courseRepository: CourseRepositoryImpl(useMock: false),
-          homeworkRepository: context.read<TeacherHomeworkRepository>(),
-        )..loadCourses(),
-      ),
+      // BlocProvider<TeacherCourseCubit>(
+      //   create: (context) => TeacherCourseCubit(
+      //     courseRepository: CourseRepositoryImpl(useMock: false),
+      //     homeworkRepository: context.read<TeacherHomeworkRepository>(),
+      //   )..loadCourses(),
+      // ),
       // BlocProvider<TeacherHomeworkCubit>(
       //   create: (context) => TeacherHomeworkCubit(
       //     repository: TeacherHomeworkRepository(

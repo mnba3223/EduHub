@@ -320,7 +320,7 @@ class DownloadCubit extends Cubit<DownloadState> {
       }
 
       final displayPath = downloadPath.replaceAll('/storage/emulated/0', '');
-
+      log('Download completed, emitting success state');
       emit(state.copyWith(
         isDownloading: false,
         downloadProgress: {},
@@ -328,6 +328,10 @@ class DownloadCubit extends Cubit<DownloadState> {
         successMessage: '文件已下載到：$displayPath',
         downloadedFilePath: downloadPath,
       ));
+      // 保持成功消息一段時間
+      await Future.delayed(const Duration(seconds: 2));
+      log('Clearing success message');
+      emit(state.copyWith(successMessage: null));
     } catch (e) {
       log('Download error: $e');
       emit(state.copyWith(

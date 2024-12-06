@@ -9,8 +9,8 @@ part of 'classroom_booking_time_slot.dart';
 _$ClassroomTimeSlotImpl _$$ClassroomTimeSlotImplFromJson(
         Map<String, dynamic> json) =>
     _$ClassroomTimeSlotImpl(
-      startTime: json['startTime'] as String,
-      endTime: json['endTime'] as String,
+      startTime: json['startTime'] as String?,
+      endTime: json['endTime'] as String?,
       status: $enumDecode(_$ClassroomBookingStatusEnumMap, json['status']),
       isSelected: json['isSelected'] as bool? ?? false,
     );

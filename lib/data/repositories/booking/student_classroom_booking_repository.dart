@@ -41,7 +41,15 @@ class StudentClassroomBookingRepository {
     }
 
     try {
-      final response = await _api.createBooking(request);
+      final response = await _api.createBooking(
+        request.studentId,
+        request.classroomId,
+        request.bookingDate.toIso8601String(),
+        request.startTime,
+        request.endTime,
+        request.totalAmount,
+      );
+
       if (!response.success) {
         throw ApiException(
           response.message,

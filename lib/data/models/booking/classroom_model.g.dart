@@ -36,8 +36,8 @@ _$BookingImpl _$$BookingImplFromJson(Map<String, dynamic> json) =>
     _$BookingImpl(
       bookingId: (json['booking_id'] as num).toInt(),
       bookingDate: DateTime.parse(json['booking_date'] as String),
-      startTime: json['booking_start_time'] as String,
-      endTime: json['booking_end_time'] as String,
+      startTime: json['booking_start_time'] as String?,
+      endTime: json['booking_end_time'] as String?,
       isOccupied: (json['isOccupied'] as num).toInt(),
     );
 

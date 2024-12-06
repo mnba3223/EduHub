@@ -1,14 +1,12 @@
-// lib/data/repositories/course/course_repository.dart
 import 'package:dio/dio.dart';
-import 'package:edutec_hub/data/models/common/course.dart';
+import 'package:edutec_hub/data/models/course/course.dart';
 import 'package:edutec_hub/data/network/apis/course/course_api.dart';
-
 import 'package:edutec_hub/data/network/core/dio_client.dart';
 import 'package:edutec_hub/data/network/core/exceptions.dart';
 
 abstract class CourseRepository {
-  Future<List<Course>> getCourses();
-  Future<Course> getCourseById(int courseId);
+  Future<List<Course>> getAllCourses();
+  Future<List<StudentLesson>> getStudentLessons(int studentId);
 }
 
 class CourseRepositoryImpl implements CourseRepository {
@@ -21,7 +19,7 @@ class CourseRepositoryImpl implements CourseRepository {
   }) : _api = api ?? CourseApi(DioClient().dio);
 
   @override
-  Future<List<Course>> getCourses() async {
+  Future<List<Course>> getAllCourses() async {
     if (useMock) {
       return _getMockCourses();
     }
@@ -29,12 +27,11 @@ class CourseRepositoryImpl implements CourseRepository {
     try {
       final response = await _api.getCourses();
       if (response.success) {
-        return response.data!;
+        return response.data ?? [];
       } else {
         throw ApiException(
           response.message,
           errorCode: response.code.toString(),
-          errorDetails: response.data,
         );
       }
     } on DioException catch (e) {
@@ -43,20 +40,19 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-  Future<Course> getCourseById(int courseId) async {
+  Future<List<StudentLesson>> getStudentLessons(int studentId) async {
     if (useMock) {
-      return _getMockCourses().then((value) => value.first);
+      return _getMockStudentLessons();
     }
 
     try {
-      final response = await _api.getCourseById(courseId);
+      final response = await _api.getStudentLessons(studentId);
       if (response.success) {
-        return response.data!;
+        return response.data ?? [];
       } else {
         throw ApiException(
           response.message,
           errorCode: response.code.toString(),
-          errorDetails: response.data,
         );
       }
     } on DioException catch (e) {
@@ -67,19 +63,36 @@ class CourseRepositoryImpl implements CourseRepository {
   Future<List<Course>> _getMockCourses() async {
     await Future.delayed(const Duration(milliseconds: 800));
     return [
-      const Course(
-          courseId: 1,
-          courseName: "初階日語",
-          subjectId: 1,
-          courseDescription: "初階日語課程",
-          courseColor: "#FF0000",
-          courseCategory: "語言",
-          courseImage: "http://example.com/image.jpg",
-          courseType: "GROUP",
-          subjectName: "基礎日語發音",
-          subjectDescription: "基礎發音課程",
-          sort: 1),
-      // 可以添加更多模擬數據
+      Course(
+        courseId: 1,
+        courseName: "初階中文",
+        courseDescription: "初階中文課程",
+        subjectId: 1,
+        price: 2000,
+        courseColor: "#3BE338",
+        courseImage: "path/to/image",
+        subjectName: "中文",
+      ),
+    ];
+  }
+
+  Future<List<StudentLesson>> _getMockStudentLessons() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    final now = DateTime.now();
+    return [
+      StudentLesson(
+        classId: 1,
+        className: "初階中文A班",
+        lessonId: 1,
+        lessonDate: now,
+        startTime: "10:00:00",
+        endTime: "12:00:00",
+        courseName: "初階中文",
+        classroomName: "教室A",
+        courseColor: "#3BE338",
+        subjectName: "中文",
+        courseImage: 'path/to/image',
+      ),
     ];
   }
 }

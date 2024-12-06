@@ -21,5 +21,11 @@ class ClassroomBookingEvent with _$ClassroomBookingEvent {
     required Classroom classroom,
   }) = SelectClassroom;
 
-  const factory ClassroomBookingEvent.createBooking() = CreateBooking;
+  // 修改這個
+  const factory ClassroomBookingEvent.createBooking({
+    required DateTime bookingDate,
+    required String startTime,
+    required String endTime,
+    required Classroom classroom,
+  }) = CreateBooking;
 }

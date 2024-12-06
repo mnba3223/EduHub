@@ -14,6 +14,14 @@ abstract class BookingApi {
   @GET('/api/Classroom')
   Future<ApiResponse<List<Classroom>>> getClassrooms();
 
+  @MultiPart()
   @POST('/api/Classroom/Booking')
-  Future<ApiResponse> createBooking(@Body() ClassroomBookingRequest request);
+  Future<ApiResponse> createBooking(
+    @Part(name: 'student_id') int studentId,
+    @Part(name: 'classroom_id') int classroomId,
+    @Part(name: 'booking_date') String bookingDate,
+    @Part(name: 'start_time') String startTime,
+    @Part(name: 'end_time') String endTime,
+    @Part(name: 'total_amount') double totalAmount,
+  );
 }

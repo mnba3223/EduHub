@@ -64,15 +64,46 @@ class _BookingApi implements BookingApi {
 
   @override
   Future<ApiResponse<dynamic>> createBooking(
-      ClassroomBookingRequest request) async {
+    int studentId,
+    int classroomId,
+    String bookingDate,
+    String startTime,
+    String endTime,
+    double totalAmount,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'student_id',
+      studentId.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'classroom_id',
+      classroomId.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'booking_date',
+      bookingDate,
+    ));
+    _data.fields.add(MapEntry(
+      'start_time',
+      startTime,
+    ));
+    _data.fields.add(MapEntry(
+      'end_time',
+      endTime,
+    ));
+    _data.fields.add(MapEntry(
+      'total_amount',
+      totalAmount.toString(),
+    ));
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,

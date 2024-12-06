@@ -1,14 +1,22 @@
 import 'package:edutec_hub/presentation/screens/student/exam/exam_details_bottom_sheet.dart';
+import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:edutec_hub/data/models/exam/student_exam.dart';
 
-class ExamCard extends StatelessWidget {
+class ExamCard extends StatefulWidget {
   final StudentExam exam;
+  final BuildContext context;
+  const ExamCard({Key? key, required this.exam, required this.context})
+      : super(key: key);
 
-  const ExamCard({Key? key, required this.exam}) : super(key: key);
+  @override
+  State<ExamCard> createState() => _ExamCardState();
+}
 
+class _ExamCardState extends State<ExamCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -17,7 +25,14 @@ class ExamCard extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) => ExamDetailsBottomSheet(exam: exam),
+          useRootNavigator: true,
+          builder: (context) => BlocProvider.value(
+            value: widget.context.read<DownloadCubit>(),
+            child: ExamDetailsBottomSheet(
+              exam: widget.exam,
+              context: widget.context,
+            ),
+          ),
         );
       },
       child: Card(
@@ -25,6 +40,7 @@ class ExamCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
         ),
+        elevation: 2,
         child: Padding(
           padding: EdgeInsets.all(16.w),
           child: Column(
@@ -35,11 +51,13 @@ class ExamCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      exam.examName,
+                      widget.exam.examName,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   _buildStatusBadge(),
@@ -47,42 +65,87 @@ class ExamCard extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
               Text(
-                exam.lessonTitle,
+                widget.exam.lessonTitle,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: Colors.grey[600],
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 4.h),
-              Text(
-                DateFormat('yyyy-MM-dd HH:mm').format(exam.examDate),
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey[600],
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: 16.sp,
+                    color: Colors.grey[600],
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    widget.exam.teacherName,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  Icon(
+                    Icons.access_time,
+                    size: 16.sp,
+                    color: Colors.grey[600],
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    DateFormat('yyyy-MM-dd HH:mm').format(widget.exam.examDate),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 8.h),
               Text(
-                exam.examDescription,
+                widget.exam.examDescription,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: Colors.grey[800],
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
-              if (exam.isScore && exam.scoreDesc != null) ...[
+              if (widget.exam.isScore && widget.exam.scoreDesc != null) ...[
                 SizedBox(height: 8.h),
                 Container(
+                  width: double.infinity,
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Text(
-                    exam.scoreDesc!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[700],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'teacher_comment'.tr(),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        widget.exam.scoreDesc!,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[700],
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -94,7 +157,7 @@ class ExamCard extends StatelessWidget {
   }
 
   Widget _buildStatusBadge() {
-    if (exam.isScore) {
+    if (widget.exam.isScore) {
       return Container(
         padding: EdgeInsets.symmetric(
           horizontal: 12.w,
@@ -114,8 +177,8 @@ class ExamCard extends StatelessWidget {
             ),
             SizedBox(width: 4.w),
             Text(
-              exam.score != null
-                  ? 'score'.tr(args: [exam.score.toString()])
+              widget.exam.score != null
+                  ? 'score'.tr(args: [widget.exam.score.toString()])
                   : 'completed'.tr(),
               style: TextStyle(
                 color: Colors.green.shade700,
@@ -127,7 +190,7 @@ class ExamCard extends StatelessWidget {
       );
     } else {
       final now = DateTime.now();
-      final isUpcoming = exam.examDate.isAfter(now);
+      final isUpcoming = widget.exam.examDate.isAfter(now);
 
       return Container(
         padding: EdgeInsets.symmetric(

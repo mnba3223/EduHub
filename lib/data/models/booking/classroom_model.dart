@@ -25,8 +25,8 @@ class Booking with _$Booking {
   const factory Booking({
     @JsonKey(name: 'booking_id') required int bookingId,
     @JsonKey(name: 'booking_date') required DateTime bookingDate,
-    @JsonKey(name: 'booking_start_time') required String startTime,
-    @JsonKey(name: 'booking_end_time') required String endTime,
+    @JsonKey(name: 'booking_start_time') String? startTime,
+    @JsonKey(name: 'booking_end_time') String? endTime,
     @JsonKey(name: 'isOccupied') required int isOccupied,
   }) = _Booking;
 

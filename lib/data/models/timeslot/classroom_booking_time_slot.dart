@@ -12,8 +12,8 @@ enum ClassroomBookingStatus {
 @freezed
 class ClassroomTimeSlot with _$ClassroomTimeSlot {
   const factory ClassroomTimeSlot({
-    required String startTime,
-    required String endTime,
+    required String? startTime,
+    required String? endTime,
     required ClassroomBookingStatus status,
     @Default(false) bool isSelected,
   }) = _ClassroomTimeSlot;

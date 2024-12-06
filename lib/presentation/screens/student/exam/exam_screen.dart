@@ -4,6 +4,7 @@ import 'package:edutec_hub/presentation/screens/student/exam/exam_details_bottom
 import 'package:edutec_hub/presentation/screens/student/exam/exam.card.dart';
 import 'package:edutec_hub/presentation/screens/student/exam/exam_top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
+import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +12,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class StudentExamScreen extends StatelessWidget {
+class StudentExamScreen extends StatefulWidget {
   const StudentExamScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StudentExamScreen> createState() => _StudentExamScreenState();
+}
+
+class _StudentExamScreenState extends State<StudentExamScreen> {
+  @override
+  initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<StudentExamCubit>().loadExams();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +155,12 @@ class _ExamView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: exams.length,
       itemBuilder: (context, index) {
-        return ExamCard(
-          exam: exams[index],
+        return BlocProvider.value(
+          value: context.read<DownloadCubit>(),
+          child: ExamCard(
+            exam: exams[index],
+            context: context,
+          ),
         );
       },
     );

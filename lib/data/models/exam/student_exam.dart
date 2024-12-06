@@ -28,11 +28,11 @@ class StudentExam with _$StudentExam {
     @JsonKey(name: 'exam_description') required String examDescription,
     @JsonKey(name: 'upload_file') String? uploadFile,
     @JsonKey(name: 'exam_date') required DateTime examDate,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
+    @JsonKey(name: 'class_name') required String lessonTitle,
     @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'teacher_id') required int teacherId,
     @JsonKey(name: 'teacher_name') required String teacherName,
-    int? score,
+    @JsonKey(name: 'score') int? score,
     @JsonKey(name: 'score_desc') String? scoreDesc,
     @JsonKey(name: 'isScore') @Default(false) bool isScore,
   }) = _StudentExam;

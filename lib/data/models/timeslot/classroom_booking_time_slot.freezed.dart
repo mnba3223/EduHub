@@ -20,8 +20,8 @@ ClassroomTimeSlot _$ClassroomTimeSlotFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClassroomTimeSlot {
-  String get startTime => throw _privateConstructorUsedError;
-  String get endTime => throw _privateConstructorUsedError;
+  String? get startTime => throw _privateConstructorUsedError;
+  String? get endTime => throw _privateConstructorUsedError;
   ClassroomBookingStatus get status => throw _privateConstructorUsedError;
   bool get isSelected => throw _privateConstructorUsedError;
 
@@ -42,8 +42,8 @@ abstract class $ClassroomTimeSlotCopyWith<$Res> {
       _$ClassroomTimeSlotCopyWithImpl<$Res, ClassroomTimeSlot>;
   @useResult
   $Res call(
-      {String startTime,
-      String endTime,
+      {String? startTime,
+      String? endTime,
       ClassroomBookingStatus status,
       bool isSelected});
 }
@@ -63,20 +63,20 @@ class _$ClassroomTimeSlotCopyWithImpl<$Res, $Val extends ClassroomTimeSlot>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? status = null,
     Object? isSelected = null,
   }) {
     return _then(_value.copyWith(
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
+              as String?,
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -98,8 +98,8 @@ abstract class _$$ClassroomTimeSlotImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String startTime,
-      String endTime,
+      {String? startTime,
+      String? endTime,
       ClassroomBookingStatus status,
       bool isSelected});
 }
@@ -117,20 +117,20 @@ class __$$ClassroomTimeSlotImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? status = null,
     Object? isSelected = null,
   }) {
     return _then(_$ClassroomTimeSlotImpl(
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
+              as String?,
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -156,9 +156,9 @@ class _$ClassroomTimeSlotImpl implements _ClassroomTimeSlot {
       _$$ClassroomTimeSlotImplFromJson(json);
 
   @override
-  final String startTime;
+  final String? startTime;
   @override
-  final String endTime;
+  final String? endTime;
   @override
   final ClassroomBookingStatus status;
   @override
@@ -207,8 +207,8 @@ class _$ClassroomTimeSlotImpl implements _ClassroomTimeSlot {
 
 abstract class _ClassroomTimeSlot implements ClassroomTimeSlot {
   const factory _ClassroomTimeSlot(
-      {required final String startTime,
-      required final String endTime,
+      {required final String? startTime,
+      required final String? endTime,
       required final ClassroomBookingStatus status,
       final bool isSelected}) = _$ClassroomTimeSlotImpl;
 
@@ -216,9 +216,9 @@ abstract class _ClassroomTimeSlot implements ClassroomTimeSlot {
       _$ClassroomTimeSlotImpl.fromJson;
 
   @override
-  String get startTime;
+  String? get startTime;
   @override
-  String get endTime;
+  String? get endTime;
   @override
   ClassroomBookingStatus get status;
   @override

@@ -79,29 +79,32 @@ class StudentClassroomBookingBloc
     CreateBooking event,
     Emitter<ClassroomBookingState> emit,
   ) async {
-    if (state.selectedDate == null ||
-        state.selectedTimeSlot == null ||
-        state.selectedClassroom == null) {
-      emit(state.copyWith(
-        error: 'Please select all required fields',
-      ));
-      return;
-    }
-
     emit(state.copyWith(isLoading: true, error: null));
-
     try {
-      await _repository.createBooking(ClassroomBookingRequest(
+      // 記錄請求數據
+      print('Creating booking with data:');
+      print('Student ID: ${UserSession.instance.roleId}');
+      print('Classroom ID: ${event.classroom.classroomId}');
+      print('Booking Date: ${event.bookingDate}');
+      print('Start Time: ${event.startTime}');
+      print('End Time: ${event.endTime}');
+      print(
+          'Total Amount: ${_calculateAmount(event.classroom, event.bookingDate)}');
+
+      final request = ClassroomBookingRequest(
         studentId: UserSession.instance.roleId!,
-        classroomId: state.selectedClassroom!.classroomId,
-        bookingDate: state.selectedDate!,
-        startTime: state.selectedTimeSlot!,
-        endTime: _calculateEndTime(state.selectedTimeSlot!),
+        classroomId: event.classroom.classroomId,
+        bookingDate: event.bookingDate,
+        startTime: event.startTime,
+        endTime: event.endTime,
         totalAmount: _calculateAmount(
-          state.selectedClassroom!,
-          state.selectedDate!,
+          event.classroom,
+          event.bookingDate,
         ),
-      ));
+      );
+      await _repository.createBooking(request);
+      // 記錄序列化後的請求
+      print('Serialized request: ${request.toJson()}');
 
       emit(state.copyWith(isLoading: false));
     } catch (e) {
