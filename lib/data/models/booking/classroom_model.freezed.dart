@@ -35,7 +35,9 @@ mixin _$Classroom {
   @JsonKey(name: 'classroom_image')
   String? get classroomImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'Bookings')
-  List<Booking>? get bookings => throw _privateConstructorUsedError;
+  List<Booking>? get bookings => throw _privateConstructorUsedError; // 添加新字段
+  @JsonKey(name: 'AvailableTimeSlots')
+  List<String>? get availableTimeSlots => throw _privateConstructorUsedError;
 
   /// Serializes this Classroom to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,7 +62,8 @@ abstract class $ClassroomCopyWith<$Res> {
       @JsonKey(name: 'weekday_price') double weekdayPrice,
       @JsonKey(name: 'weekend_price') double weekendPrice,
       @JsonKey(name: 'classroom_image') String? classroomImage,
-      @JsonKey(name: 'Bookings') List<Booking>? bookings});
+      @JsonKey(name: 'Bookings') List<Booking>? bookings,
+      @JsonKey(name: 'AvailableTimeSlots') List<String>? availableTimeSlots});
 }
 
 /// @nodoc
@@ -86,6 +89,7 @@ class _$ClassroomCopyWithImpl<$Res, $Val extends Classroom>
     Object? weekendPrice = null,
     Object? classroomImage = freezed,
     Object? bookings = freezed,
+    Object? availableTimeSlots = freezed,
   }) {
     return _then(_value.copyWith(
       classroomId: null == classroomId
@@ -120,6 +124,10 @@ class _$ClassroomCopyWithImpl<$Res, $Val extends Classroom>
           ? _value.bookings
           : bookings // ignore: cast_nullable_to_non_nullable
               as List<Booking>?,
+      availableTimeSlots: freezed == availableTimeSlots
+          ? _value.availableTimeSlots
+          : availableTimeSlots // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -140,7 +148,8 @@ abstract class _$$ClassroomImplCopyWith<$Res>
       @JsonKey(name: 'weekday_price') double weekdayPrice,
       @JsonKey(name: 'weekend_price') double weekendPrice,
       @JsonKey(name: 'classroom_image') String? classroomImage,
-      @JsonKey(name: 'Bookings') List<Booking>? bookings});
+      @JsonKey(name: 'Bookings') List<Booking>? bookings,
+      @JsonKey(name: 'AvailableTimeSlots') List<String>? availableTimeSlots});
 }
 
 /// @nodoc
@@ -164,6 +173,7 @@ class __$$ClassroomImplCopyWithImpl<$Res>
     Object? weekendPrice = null,
     Object? classroomImage = freezed,
     Object? bookings = freezed,
+    Object? availableTimeSlots = freezed,
   }) {
     return _then(_$ClassroomImpl(
       classroomId: null == classroomId
@@ -198,6 +208,10 @@ class __$$ClassroomImplCopyWithImpl<$Res>
           ? _value._bookings
           : bookings // ignore: cast_nullable_to_non_nullable
               as List<Booking>?,
+      availableTimeSlots: freezed == availableTimeSlots
+          ? _value._availableTimeSlots
+          : availableTimeSlots // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -213,8 +227,11 @@ class _$ClassroomImpl implements _Classroom {
       @JsonKey(name: 'weekday_price') required this.weekdayPrice,
       @JsonKey(name: 'weekend_price') required this.weekendPrice,
       @JsonKey(name: 'classroom_image') this.classroomImage,
-      @JsonKey(name: 'Bookings') final List<Booking>? bookings})
-      : _bookings = bookings;
+      @JsonKey(name: 'Bookings') final List<Booking>? bookings,
+      @JsonKey(name: 'AvailableTimeSlots')
+      final List<String>? availableTimeSlots})
+      : _bookings = bookings,
+        _availableTimeSlots = availableTimeSlots;
 
   factory _$ClassroomImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClassroomImplFromJson(json);
@@ -251,9 +268,23 @@ class _$ClassroomImpl implements _Classroom {
     return EqualUnmodifiableListView(value);
   }
 
+// 添加新字段
+  final List<String>? _availableTimeSlots;
+// 添加新字段
+  @override
+  @JsonKey(name: 'AvailableTimeSlots')
+  List<String>? get availableTimeSlots {
+    final value = _availableTimeSlots;
+    if (value == null) return null;
+    if (_availableTimeSlots is EqualUnmodifiableListView)
+      return _availableTimeSlots;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'Classroom(classroomId: $classroomId, classroomName: $classroomName, classroomDescription: $classroomDescription, peopleNumber: $peopleNumber, weekdayPrice: $weekdayPrice, weekendPrice: $weekendPrice, classroomImage: $classroomImage, bookings: $bookings)';
+    return 'Classroom(classroomId: $classroomId, classroomName: $classroomName, classroomDescription: $classroomDescription, peopleNumber: $peopleNumber, weekdayPrice: $weekdayPrice, weekendPrice: $weekendPrice, classroomImage: $classroomImage, bookings: $bookings, availableTimeSlots: $availableTimeSlots)';
   }
 
   @override
@@ -275,7 +306,9 @@ class _$ClassroomImpl implements _Classroom {
                 other.weekendPrice == weekendPrice) &&
             (identical(other.classroomImage, classroomImage) ||
                 other.classroomImage == classroomImage) &&
-            const DeepCollectionEquality().equals(other._bookings, _bookings));
+            const DeepCollectionEquality().equals(other._bookings, _bookings) &&
+            const DeepCollectionEquality()
+                .equals(other._availableTimeSlots, _availableTimeSlots));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -289,7 +322,8 @@ class _$ClassroomImpl implements _Classroom {
       weekdayPrice,
       weekendPrice,
       classroomImage,
-      const DeepCollectionEquality().hash(_bookings));
+      const DeepCollectionEquality().hash(_bookings),
+      const DeepCollectionEquality().hash(_availableTimeSlots));
 
   /// Create a copy of Classroom
   /// with the given fields replaced by the non-null parameter values.
@@ -317,8 +351,9 @@ abstract class _Classroom implements Classroom {
       @JsonKey(name: 'weekday_price') required final double weekdayPrice,
       @JsonKey(name: 'weekend_price') required final double weekendPrice,
       @JsonKey(name: 'classroom_image') final String? classroomImage,
-      @JsonKey(name: 'Bookings')
-      final List<Booking>? bookings}) = _$ClassroomImpl;
+      @JsonKey(name: 'Bookings') final List<Booking>? bookings,
+      @JsonKey(name: 'AvailableTimeSlots')
+      final List<String>? availableTimeSlots}) = _$ClassroomImpl;
 
   factory _Classroom.fromJson(Map<String, dynamic> json) =
       _$ClassroomImpl.fromJson;
@@ -346,7 +381,10 @@ abstract class _Classroom implements Classroom {
   String? get classroomImage;
   @override
   @JsonKey(name: 'Bookings')
-  List<Booking>? get bookings;
+  List<Booking>? get bookings; // 添加新字段
+  @override
+  @JsonKey(name: 'AvailableTimeSlots')
+  List<String>? get availableTimeSlots;
 
   /// Create a copy of Classroom
   /// with the given fields replaced by the non-null parameter values.
@@ -882,6 +920,197 @@ abstract class _ClassroomBookingState implements ClassroomBookingState {
       get copyWith => throw _privateConstructorUsedError;
 }
 
+/// @nodoc
+mixin _$ClassroomBookingHistoryState {
+  List<ClassroomBookingHistory> get bookings =>
+      throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
+
+  /// Create a copy of ClassroomBookingHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ClassroomBookingHistoryStateCopyWith<ClassroomBookingHistoryState>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClassroomBookingHistoryStateCopyWith<$Res> {
+  factory $ClassroomBookingHistoryStateCopyWith(
+          ClassroomBookingHistoryState value,
+          $Res Function(ClassroomBookingHistoryState) then) =
+      _$ClassroomBookingHistoryStateCopyWithImpl<$Res,
+          ClassroomBookingHistoryState>;
+  @useResult
+  $Res call(
+      {List<ClassroomBookingHistory> bookings, bool isLoading, String? error});
+}
+
+/// @nodoc
+class _$ClassroomBookingHistoryStateCopyWithImpl<$Res,
+        $Val extends ClassroomBookingHistoryState>
+    implements $ClassroomBookingHistoryStateCopyWith<$Res> {
+  _$ClassroomBookingHistoryStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ClassroomBookingHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookings = null,
+    Object? isLoading = null,
+    Object? error = freezed,
+  }) {
+    return _then(_value.copyWith(
+      bookings: null == bookings
+          ? _value.bookings
+          : bookings // ignore: cast_nullable_to_non_nullable
+              as List<ClassroomBookingHistory>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ClassroomBookingHistoryStateImplCopyWith<$Res>
+    implements $ClassroomBookingHistoryStateCopyWith<$Res> {
+  factory _$$ClassroomBookingHistoryStateImplCopyWith(
+          _$ClassroomBookingHistoryStateImpl value,
+          $Res Function(_$ClassroomBookingHistoryStateImpl) then) =
+      __$$ClassroomBookingHistoryStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {List<ClassroomBookingHistory> bookings, bool isLoading, String? error});
+}
+
+/// @nodoc
+class __$$ClassroomBookingHistoryStateImplCopyWithImpl<$Res>
+    extends _$ClassroomBookingHistoryStateCopyWithImpl<$Res,
+        _$ClassroomBookingHistoryStateImpl>
+    implements _$$ClassroomBookingHistoryStateImplCopyWith<$Res> {
+  __$$ClassroomBookingHistoryStateImplCopyWithImpl(
+      _$ClassroomBookingHistoryStateImpl _value,
+      $Res Function(_$ClassroomBookingHistoryStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ClassroomBookingHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookings = null,
+    Object? isLoading = null,
+    Object? error = freezed,
+  }) {
+    return _then(_$ClassroomBookingHistoryStateImpl(
+      bookings: null == bookings
+          ? _value._bookings
+          : bookings // ignore: cast_nullable_to_non_nullable
+              as List<ClassroomBookingHistory>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ClassroomBookingHistoryStateImpl
+    implements _ClassroomBookingHistoryState {
+  const _$ClassroomBookingHistoryStateImpl(
+      {final List<ClassroomBookingHistory> bookings = const [],
+      this.isLoading = false,
+      this.error})
+      : _bookings = bookings;
+
+  final List<ClassroomBookingHistory> _bookings;
+  @override
+  @JsonKey()
+  List<ClassroomBookingHistory> get bookings {
+    if (_bookings is EqualUnmodifiableListView) return _bookings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_bookings);
+  }
+
+  @override
+  @JsonKey()
+  final bool isLoading;
+  @override
+  final String? error;
+
+  @override
+  String toString() {
+    return 'ClassroomBookingHistoryState(bookings: $bookings, isLoading: $isLoading, error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClassroomBookingHistoryStateImpl &&
+            const DeepCollectionEquality().equals(other._bookings, _bookings) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_bookings), isLoading, error);
+
+  /// Create a copy of ClassroomBookingHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClassroomBookingHistoryStateImplCopyWith<
+          _$ClassroomBookingHistoryStateImpl>
+      get copyWith => __$$ClassroomBookingHistoryStateImplCopyWithImpl<
+          _$ClassroomBookingHistoryStateImpl>(this, _$identity);
+}
+
+abstract class _ClassroomBookingHistoryState
+    implements ClassroomBookingHistoryState {
+  const factory _ClassroomBookingHistoryState(
+      {final List<ClassroomBookingHistory> bookings,
+      final bool isLoading,
+      final String? error}) = _$ClassroomBookingHistoryStateImpl;
+
+  @override
+  List<ClassroomBookingHistory> get bookings;
+  @override
+  bool get isLoading;
+  @override
+  String? get error;
+
+  /// Create a copy of ClassroomBookingHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ClassroomBookingHistoryStateImplCopyWith<
+          _$ClassroomBookingHistoryStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 ClassroomBookingRequest _$ClassroomBookingRequestFromJson(
     Map<String, dynamic> json) {
   return _ClassroomBookingRequest.fromJson(json);
@@ -1163,5 +1392,397 @@ abstract class _ClassroomBookingRequest implements ClassroomBookingRequest {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ClassroomBookingRequestImplCopyWith<_$ClassroomBookingRequestImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ClassroomBookingHistory _$ClassroomBookingHistoryFromJson(
+    Map<String, dynamic> json) {
+  return _ClassroomBookingHistory.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ClassroomBookingHistory {
+  @JsonKey(name: 'booking_id')
+  int get bookingId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'student_id')
+  int get studentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'classroom_id')
+  int get classroomId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'booking_date')
+  DateTime get bookingDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'booking_start_time')
+  String get bookingStartTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'booking_end_time')
+  String get bookingEndTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_amount')
+  double get totalAmount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'payment_status')
+  int get paymentStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: 'isOccupied')
+  int get isOccupied => throw _privateConstructorUsedError;
+  @JsonKey(name: 'classroom_name')
+  String get classroomName => throw _privateConstructorUsedError;
+
+  /// Serializes this ClassroomBookingHistory to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of ClassroomBookingHistory
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ClassroomBookingHistoryCopyWith<ClassroomBookingHistory> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClassroomBookingHistoryCopyWith<$Res> {
+  factory $ClassroomBookingHistoryCopyWith(ClassroomBookingHistory value,
+          $Res Function(ClassroomBookingHistory) then) =
+      _$ClassroomBookingHistoryCopyWithImpl<$Res, ClassroomBookingHistory>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'booking_id') int bookingId,
+      @JsonKey(name: 'student_id') int studentId,
+      @JsonKey(name: 'classroom_id') int classroomId,
+      @JsonKey(name: 'booking_date') DateTime bookingDate,
+      @JsonKey(name: 'booking_start_time') String bookingStartTime,
+      @JsonKey(name: 'booking_end_time') String bookingEndTime,
+      @JsonKey(name: 'total_amount') double totalAmount,
+      @JsonKey(name: 'payment_status') int paymentStatus,
+      @JsonKey(name: 'isOccupied') int isOccupied,
+      @JsonKey(name: 'classroom_name') String classroomName});
+}
+
+/// @nodoc
+class _$ClassroomBookingHistoryCopyWithImpl<$Res,
+        $Val extends ClassroomBookingHistory>
+    implements $ClassroomBookingHistoryCopyWith<$Res> {
+  _$ClassroomBookingHistoryCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ClassroomBookingHistory
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookingId = null,
+    Object? studentId = null,
+    Object? classroomId = null,
+    Object? bookingDate = null,
+    Object? bookingStartTime = null,
+    Object? bookingEndTime = null,
+    Object? totalAmount = null,
+    Object? paymentStatus = null,
+    Object? isOccupied = null,
+    Object? classroomName = null,
+  }) {
+    return _then(_value.copyWith(
+      bookingId: null == bookingId
+          ? _value.bookingId
+          : bookingId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
+      classroomId: null == classroomId
+          ? _value.classroomId
+          : classroomId // ignore: cast_nullable_to_non_nullable
+              as int,
+      bookingDate: null == bookingDate
+          ? _value.bookingDate
+          : bookingDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      bookingStartTime: null == bookingStartTime
+          ? _value.bookingStartTime
+          : bookingStartTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookingEndTime: null == bookingEndTime
+          ? _value.bookingEndTime
+          : bookingEndTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalAmount: null == totalAmount
+          ? _value.totalAmount
+          : totalAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      paymentStatus: null == paymentStatus
+          ? _value.paymentStatus
+          : paymentStatus // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOccupied: null == isOccupied
+          ? _value.isOccupied
+          : isOccupied // ignore: cast_nullable_to_non_nullable
+              as int,
+      classroomName: null == classroomName
+          ? _value.classroomName
+          : classroomName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ClassroomBookingHistoryImplCopyWith<$Res>
+    implements $ClassroomBookingHistoryCopyWith<$Res> {
+  factory _$$ClassroomBookingHistoryImplCopyWith(
+          _$ClassroomBookingHistoryImpl value,
+          $Res Function(_$ClassroomBookingHistoryImpl) then) =
+      __$$ClassroomBookingHistoryImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'booking_id') int bookingId,
+      @JsonKey(name: 'student_id') int studentId,
+      @JsonKey(name: 'classroom_id') int classroomId,
+      @JsonKey(name: 'booking_date') DateTime bookingDate,
+      @JsonKey(name: 'booking_start_time') String bookingStartTime,
+      @JsonKey(name: 'booking_end_time') String bookingEndTime,
+      @JsonKey(name: 'total_amount') double totalAmount,
+      @JsonKey(name: 'payment_status') int paymentStatus,
+      @JsonKey(name: 'isOccupied') int isOccupied,
+      @JsonKey(name: 'classroom_name') String classroomName});
+}
+
+/// @nodoc
+class __$$ClassroomBookingHistoryImplCopyWithImpl<$Res>
+    extends _$ClassroomBookingHistoryCopyWithImpl<$Res,
+        _$ClassroomBookingHistoryImpl>
+    implements _$$ClassroomBookingHistoryImplCopyWith<$Res> {
+  __$$ClassroomBookingHistoryImplCopyWithImpl(
+      _$ClassroomBookingHistoryImpl _value,
+      $Res Function(_$ClassroomBookingHistoryImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ClassroomBookingHistory
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookingId = null,
+    Object? studentId = null,
+    Object? classroomId = null,
+    Object? bookingDate = null,
+    Object? bookingStartTime = null,
+    Object? bookingEndTime = null,
+    Object? totalAmount = null,
+    Object? paymentStatus = null,
+    Object? isOccupied = null,
+    Object? classroomName = null,
+  }) {
+    return _then(_$ClassroomBookingHistoryImpl(
+      bookingId: null == bookingId
+          ? _value.bookingId
+          : bookingId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
+      classroomId: null == classroomId
+          ? _value.classroomId
+          : classroomId // ignore: cast_nullable_to_non_nullable
+              as int,
+      bookingDate: null == bookingDate
+          ? _value.bookingDate
+          : bookingDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      bookingStartTime: null == bookingStartTime
+          ? _value.bookingStartTime
+          : bookingStartTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookingEndTime: null == bookingEndTime
+          ? _value.bookingEndTime
+          : bookingEndTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalAmount: null == totalAmount
+          ? _value.totalAmount
+          : totalAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      paymentStatus: null == paymentStatus
+          ? _value.paymentStatus
+          : paymentStatus // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOccupied: null == isOccupied
+          ? _value.isOccupied
+          : isOccupied // ignore: cast_nullable_to_non_nullable
+              as int,
+      classroomName: null == classroomName
+          ? _value.classroomName
+          : classroomName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ClassroomBookingHistoryImpl implements _ClassroomBookingHistory {
+  const _$ClassroomBookingHistoryImpl(
+      {@JsonKey(name: 'booking_id') required this.bookingId,
+      @JsonKey(name: 'student_id') required this.studentId,
+      @JsonKey(name: 'classroom_id') required this.classroomId,
+      @JsonKey(name: 'booking_date') required this.bookingDate,
+      @JsonKey(name: 'booking_start_time') required this.bookingStartTime,
+      @JsonKey(name: 'booking_end_time') required this.bookingEndTime,
+      @JsonKey(name: 'total_amount') required this.totalAmount,
+      @JsonKey(name: 'payment_status') required this.paymentStatus,
+      @JsonKey(name: 'isOccupied') required this.isOccupied,
+      @JsonKey(name: 'classroom_name') required this.classroomName});
+
+  factory _$ClassroomBookingHistoryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClassroomBookingHistoryImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'booking_id')
+  final int bookingId;
+  @override
+  @JsonKey(name: 'student_id')
+  final int studentId;
+  @override
+  @JsonKey(name: 'classroom_id')
+  final int classroomId;
+  @override
+  @JsonKey(name: 'booking_date')
+  final DateTime bookingDate;
+  @override
+  @JsonKey(name: 'booking_start_time')
+  final String bookingStartTime;
+  @override
+  @JsonKey(name: 'booking_end_time')
+  final String bookingEndTime;
+  @override
+  @JsonKey(name: 'total_amount')
+  final double totalAmount;
+  @override
+  @JsonKey(name: 'payment_status')
+  final int paymentStatus;
+  @override
+  @JsonKey(name: 'isOccupied')
+  final int isOccupied;
+  @override
+  @JsonKey(name: 'classroom_name')
+  final String classroomName;
+
+  @override
+  String toString() {
+    return 'ClassroomBookingHistory(bookingId: $bookingId, studentId: $studentId, classroomId: $classroomId, bookingDate: $bookingDate, bookingStartTime: $bookingStartTime, bookingEndTime: $bookingEndTime, totalAmount: $totalAmount, paymentStatus: $paymentStatus, isOccupied: $isOccupied, classroomName: $classroomName)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClassroomBookingHistoryImpl &&
+            (identical(other.bookingId, bookingId) ||
+                other.bookingId == bookingId) &&
+            (identical(other.studentId, studentId) ||
+                other.studentId == studentId) &&
+            (identical(other.classroomId, classroomId) ||
+                other.classroomId == classroomId) &&
+            (identical(other.bookingDate, bookingDate) ||
+                other.bookingDate == bookingDate) &&
+            (identical(other.bookingStartTime, bookingStartTime) ||
+                other.bookingStartTime == bookingStartTime) &&
+            (identical(other.bookingEndTime, bookingEndTime) ||
+                other.bookingEndTime == bookingEndTime) &&
+            (identical(other.totalAmount, totalAmount) ||
+                other.totalAmount == totalAmount) &&
+            (identical(other.paymentStatus, paymentStatus) ||
+                other.paymentStatus == paymentStatus) &&
+            (identical(other.isOccupied, isOccupied) ||
+                other.isOccupied == isOccupied) &&
+            (identical(other.classroomName, classroomName) ||
+                other.classroomName == classroomName));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      bookingId,
+      studentId,
+      classroomId,
+      bookingDate,
+      bookingStartTime,
+      bookingEndTime,
+      totalAmount,
+      paymentStatus,
+      isOccupied,
+      classroomName);
+
+  /// Create a copy of ClassroomBookingHistory
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClassroomBookingHistoryImplCopyWith<_$ClassroomBookingHistoryImpl>
+      get copyWith => __$$ClassroomBookingHistoryImplCopyWithImpl<
+          _$ClassroomBookingHistoryImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ClassroomBookingHistoryImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ClassroomBookingHistory implements ClassroomBookingHistory {
+  const factory _ClassroomBookingHistory(
+      {@JsonKey(name: 'booking_id') required final int bookingId,
+      @JsonKey(name: 'student_id') required final int studentId,
+      @JsonKey(name: 'classroom_id') required final int classroomId,
+      @JsonKey(name: 'booking_date') required final DateTime bookingDate,
+      @JsonKey(name: 'booking_start_time')
+      required final String bookingStartTime,
+      @JsonKey(name: 'booking_end_time') required final String bookingEndTime,
+      @JsonKey(name: 'total_amount') required final double totalAmount,
+      @JsonKey(name: 'payment_status') required final int paymentStatus,
+      @JsonKey(name: 'isOccupied') required final int isOccupied,
+      @JsonKey(name: 'classroom_name')
+      required final String classroomName}) = _$ClassroomBookingHistoryImpl;
+
+  factory _ClassroomBookingHistory.fromJson(Map<String, dynamic> json) =
+      _$ClassroomBookingHistoryImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'booking_id')
+  int get bookingId;
+  @override
+  @JsonKey(name: 'student_id')
+  int get studentId;
+  @override
+  @JsonKey(name: 'classroom_id')
+  int get classroomId;
+  @override
+  @JsonKey(name: 'booking_date')
+  DateTime get bookingDate;
+  @override
+  @JsonKey(name: 'booking_start_time')
+  String get bookingStartTime;
+  @override
+  @JsonKey(name: 'booking_end_time')
+  String get bookingEndTime;
+  @override
+  @JsonKey(name: 'total_amount')
+  double get totalAmount;
+  @override
+  @JsonKey(name: 'payment_status')
+  int get paymentStatus;
+  @override
+  @JsonKey(name: 'isOccupied')
+  int get isOccupied;
+  @override
+  @JsonKey(name: 'classroom_name')
+  String get classroomName;
+
+  /// Create a copy of ClassroomBookingHistory
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ClassroomBookingHistoryImplCopyWith<_$ClassroomBookingHistoryImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

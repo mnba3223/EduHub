@@ -20,8 +20,13 @@ abstract class BookingApi {
     @Part(name: 'student_id') int studentId,
     @Part(name: 'classroom_id') int classroomId,
     @Part(name: 'booking_date') String bookingDate,
-    @Part(name: 'start_time') String startTime,
-    @Part(name: 'end_time') String endTime,
+    @Part(name: 'booking_start_time') String startTime,
+    @Part(name: 'booking_end_time') String endTime,
     @Part(name: 'total_amount') double totalAmount,
+  );
+  // 添加获取预订历史的方法
+  @GET('/api/Classroom/booking')
+  Future<ApiResponse<List<ClassroomBookingHistory>>> getBookingHistory(
+    @Query('student_id') int studentId,
   );
 }

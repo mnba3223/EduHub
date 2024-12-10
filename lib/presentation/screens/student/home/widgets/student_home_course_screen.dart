@@ -87,17 +87,25 @@ class _SelfAnimatedCourseListViewState extends State<SelfAnimatedCourseListView>
                       ),
                     );
 
-                    return widget.isToday
-                        ? TodayLessonCard(
-                            lesson: widget.items[index] as StudentLesson,
-                            animation: animation,
-                            animationController: animationController,
-                          )
-                        : CourseCard(
-                            course: widget.items[index] as Course,
-                            animation: animation,
-                            animationController: animationController,
-                          );
+                    // 添加一个右边距的 Container
+                    return Container(
+                      margin: EdgeInsets.only(
+                        right: index == widget.items.length - 1
+                            ? 20.w
+                            : 16.w, // 最后一个项目有额外的右边距
+                      ),
+                      child: widget.isToday
+                          ? TodayLessonCard(
+                              lesson: widget.items[index] as StudentLesson,
+                              animation: animation,
+                              animationController: animationController,
+                            )
+                          : CourseCard(
+                              course: widget.items[index] as Course,
+                              animation: animation,
+                              animationController: animationController,
+                            ),
+                    );
                   },
                 ),
               ),

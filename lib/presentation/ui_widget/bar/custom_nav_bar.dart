@@ -280,7 +280,9 @@ class NavItems {
       NavItem(route: '/student-home', icon: Icons.home, label: '首頁'),
       NavItem(route: '/student-contact', icon: Icons.school, label: '聯絡簿'),
       NavItem(
-          route: '/student-booking', icon: Icons.calendar_today, label: '預約'),
+          route: '/student-classroom-booking',
+          icon: Icons.calendar_today,
+          label: '預約'),
       NavItem(
           route: '/student-announcements',
           icon: Icons.announcement,

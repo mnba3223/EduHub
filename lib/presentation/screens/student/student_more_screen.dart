@@ -48,12 +48,12 @@ class StudentMoreScreen extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.all(20.w),
       children: [
-        _buildListItem(context, Icons.book, 'booking'.tr(), '/booking'),
+        // _buildListItem(context, Icons.book, 'booking'.tr(), '/booking'),
         _buildListItem(
             context, Icons.event, 'attendance'.tr(), '/student-attendance',
             activate: true),
         _buildListItem(context, Icons.settings, 'setting'.tr(), '/settings'),
-        _buildListItem(context, Icons.assignment, 'homework'.tr(), '/homework'),
+        // _buildListItem(context, Icons.assignment, 'homework'.tr(), '/homework'),
         _buildListItem(context, Icons.school, 'exam'.tr(), '/student-exam',
             activate: true),
         _buildListItem(context, Icons.picture_as_pdf, 'PP'.tr(), '/pp'),

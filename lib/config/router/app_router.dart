@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:edutec_hub/config/router/provider_config.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_contact_book_model.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
@@ -9,6 +11,7 @@ import 'package:edutec_hub/presentation/screens/message_board/message_board_scre
 import 'package:edutec_hub/presentation/screens/student/booking/student_booking_history_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_detail_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/contact_book/contact_book_list_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/course/student_lesson_screen.dart';
 
 import 'package:edutec_hub/presentation/screens/student/exam/exam_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_detail_screen.dart';
@@ -43,7 +46,7 @@ import 'package:edutec_hub/presentation/screens/auth/LoginScreen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_announcement_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/booking/student_booking_Info_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/booking/classroom_booking_screen.dart';
-import 'package:edutec_hub/presentation/screens/student/student_courses_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/course/student_courses_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/home/student_home_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_more_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_complete_screen.dart';
@@ -141,27 +144,35 @@ class AppRouter {
             builder: (context, state) => const StudentCoursesScreen(),
           ),
           GoRoute(
+            path: '/student-lessons',
+            builder: (context, state) => const StudentLessonsScreen(),
+          ),
+          GoRoute(
             path: '/student-contact',
             builder: (context, state) => ContactBookListScreen(),
           ),
           GoRoute(
-            path: '/student-booking',
-            builder: (context, state) => StudentBookingScreen(),
+            path: '/student-classroom-booking',
+            builder: (context, state) => StudentClassroomBookingScreen(),
+            routes: [
+              // 添加预订历史作为子路由
+              GoRoute(
+                path: 'history',
+                builder: (context, state) =>
+                    const ClassroomBookingHistoryScreen(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/student-announcements',
             builder: (context, state) => StudentAnnouncementsScreen(),
           ),
+
           GoRoute(
             path: '/student-more',
             builder: (context, state) => StudentMoreScreen(),
           ),
 
-          // 學生預約相關
-          GoRoute(
-            path: '/booking-history',
-            builder: (context, state) => BookingHistoryScreen(),
-          ),
           GoRoute(
             path: '/booking-info',
             builder: (context, state) => BookingInfoScreen(),
@@ -238,9 +249,34 @@ class AppRouter {
               GoRoute(
                 path: 'daily',
                 builder: (context, state) {
-                  final date =
-                      DateTime.parse(state.uri.queryParameters['date']!);
-                  return ContactBookDetailScreen(date: date);
+                  final contactBookId = int.tryParse(
+                      state.uri.queryParameters['contactBookId'] ?? '');
+                  if (contactBookId == null) {
+                    return const Scaffold(body: Center(child: Text('找不到聯絡簿')));
+                  }
+
+                  // 使用 BlocBuilder 来监听状态变化
+                  return BlocBuilder<ContactBookBloc, ContactBookState>(
+                    builder: (context, state) {
+                      if (state is ContactBookListLoaded) {
+                        try {
+                          final contactBook = state.contactBooks.firstWhere(
+                              (book) => book.contactBookId == contactBookId);
+                          return ContactBookDetailScreen(
+                              contactBook: contactBook);
+                        } catch (e) {
+                          // 如果找不到对应的联络簿，重新加载数据
+                          context.read<ContactBookBloc>().add(
+                                LoadContactBooks(date: DateTime.now()),
+                              );
+                        }
+                      }
+
+                      return const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                  );
                 },
               ),
             ],

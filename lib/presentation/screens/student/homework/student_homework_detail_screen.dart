@@ -4,6 +4,7 @@ import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
 
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
+import 'package:edutec_hub/presentation/ui_widget/custom_widget/download_ui.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
@@ -29,67 +30,68 @@ class StudentHomeworkDetailScreen extends StatefulWidget {
 class _StudentHomeworkDetailScreenState
     extends State<StudentHomeworkDetailScreen> {
   @override
+  void initState() {
+    super.initState();
+    // 使用已存在的 HomeworkCubit
+    context.read<HomeworkCubit>().loadHomeworkDetail(widget.homeworkId);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeworkCubit(
-        repository: context.read<HomeworkRepository>(),
-        // studentId: userId,
-      )..loadHomeworkDetail(widget.homeworkId),
-      child: Scaffold(
-        appBar: null,
-        body: Column(
-          children: [
-            _buildTopBar(context),
-            Expanded(
-              child: BlocBuilder<HomeworkCubit, HomeworkState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+    return Scaffold(
+      appBar: null,
+      body: Column(
+        children: [
+          _buildTopBar(context),
+          Expanded(
+            child: BlocBuilder<HomeworkCubit, HomeworkState>(
+              builder: (context, state) {
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (state.error != null) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(state.error!),
-                          SizedBox(height: 16.h),
-                          ElevatedButton(
-                            onPressed: () {
-                              context
-                                  .read<HomeworkCubit>()
-                                  .loadHomeworkDetail(widget.homeworkId);
-                            },
-                            child: Text('retry'.tr()),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  final homework = state.currentHomework;
-                  if (homework == null) return const SizedBox();
-
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.all(16.w),
+                if (state.error != null) {
+                  return Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildHeader(homework),
+                        Text(state.error!),
                         SizedBox(height: 16.h),
-                        _buildTimeInfo(homework),
-                        SizedBox(height: 24.h),
-                        _buildDescription(homework),
-                        SizedBox(height: 24.h),
-                        _buildStatusSection(context, homework),
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<HomeworkCubit>()
+                                .loadHomeworkDetail(widget.homeworkId);
+                          },
+                          child: Text('retry'.tr()),
+                        ),
                       ],
                     ),
                   );
-                },
-              ),
+                }
+
+                final homework = state.currentHomework;
+                if (homework == null) return const SizedBox();
+
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(homework),
+                      SizedBox(height: 16.h),
+                      _buildTimeInfo(homework),
+                      SizedBox(height: 24.h),
+                      _buildDescription(homework),
+                      SizedBox(height: 24.h),
+                      _buildStatusSection(context, homework),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -133,7 +135,7 @@ class _StudentHomeworkDetailScreenState
           children: [
             Expanded(
               child: Text(
-                homework.lessonTitle,
+                homework.className, // 使用 className 替代 lessonTitle
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
@@ -143,16 +145,14 @@ class _StudentHomeworkDetailScreenState
             _buildStatusChip(homework.status),
           ],
         ),
-        if (homework.lessonDescription != null) ...[
-          SizedBox(height: 4.h),
-          Text(
-            homework.lessonDescription!,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[600],
-            ),
+        SizedBox(height: 4.h),
+        Text(
+          homework.homeworkDescription, // 使用 homeworkDescription 作为副标题
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: Colors.grey[600],
           ),
-        ],
+        ),
       ],
     );
   }
@@ -177,12 +177,13 @@ class _StudentHomeworkDetailScreenState
             label: 'due_time'.tr(),
             time: homework.endTime,
           ),
-          if (homework.submitDate != null) ...[
+          if (homework.submissionTime != null) ...[
+            // 使用 submissionTime 替代 submitDate
             SizedBox(height: 8.h),
             _buildTimeRow(
               icon: Icons.check_circle_outline,
               label: 'submit_time'.tr(),
-              time: homework.submitDate!,
+              time: homework.submissionTime!,
             ),
           ],
         ],
@@ -222,9 +223,16 @@ class _StudentHomeworkDetailScreenState
         ),
         SizedBox(height: 8.h),
         Text(
-          homework.description,
+          homework.homeworkDescription,
           style: TextStyle(fontSize: 14.sp, height: 1.5),
         ),
+        // if (homework.hasAttachment && homework.uploadFile != null) ...[
+        //   SizedBox(height: 12.h),
+        //   AttachmentDownloadButton(
+        //     url: homework.uploadFile!,
+        //     fileName: homework.uploadFile!.split('/').last,
+        //   ),
+        // ],
       ],
     );
   }
@@ -326,9 +334,9 @@ class _StudentHomeworkDetailScreenState
           child: ListTile(
             leading: _getFileIcon(fileType),
             title: Text(fileName),
-            trailing: IconButton(
-              icon: Icon(Icons.download, color: Colors.blue),
-              onPressed: () => _downloadFile(fileUrl, context),
+            trailing: AttachmentDownloadButton(
+              url: fileUrl,
+              fileName: fileName,
             ),
           ),
         );
@@ -362,42 +370,47 @@ class _StudentHomeworkDetailScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSubmittedSection(homework),
-        SizedBox(height: 16.h),
-        Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: Colors.green[50],
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: Colors.green[200]!),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.grade, color: Colors.amber),
-                  SizedBox(width: 8.w),
-                  Text(
-                    'score'.tr(args: [homework.score?.toString() ?? '0']),
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
+        if (homework.hasRating) ...[
+          // 使用 hasRating 检查
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.green[50],
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: Colors.green[200]!),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.grade, color: Colors.amber),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'score'.tr(args: [
+                        homework.rating?.toString() ?? '0'
+                      ]), // 使用 rating 替代 score
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              if (homework.comment != null) ...[
-                SizedBox(height: 8.h),
-                Text(
-                  'teacher_comment'.tr(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  ],
                 ),
-                SizedBox(height: 4.h),
-                Text(homework.comment!),
+                if (homework.comment != null) ...[
+                  SizedBox(height: 8.h),
+                  Text(
+                    'teacher_comment'.tr(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(homework.comment!),
+                ],
               ],
-            ],
+            ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -510,7 +523,7 @@ class _StudentHomeworkDetailScreenState
     context.pushNamed(
       'student-homework-submit',
       pathParameters: {
-        'homework_id': homework.homework_id.toString(),
+        'homework_id': homework.homeworkId.toString(), // 使用 homeworkId
       },
       extra: {
         'submissionId': homework.submissionId,

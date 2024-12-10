@@ -18,6 +18,9 @@ _$ClassroomImpl _$$ClassroomImplFromJson(Map<String, dynamic> json) =>
       bookings: (json['Bookings'] as List<dynamic>?)
           ?.map((e) => Booking.fromJson(e as Map<String, dynamic>))
           .toList(),
+      availableTimeSlots: (json['AvailableTimeSlots'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$ClassroomImplToJson(_$ClassroomImpl instance) =>
@@ -30,6 +33,7 @@ Map<String, dynamic> _$$ClassroomImplToJson(_$ClassroomImpl instance) =>
       'weekend_price': instance.weekendPrice,
       'classroom_image': instance.classroomImage,
       'Bookings': instance.bookings,
+      'AvailableTimeSlots': instance.availableTimeSlots,
     };
 
 _$BookingImpl _$$BookingImplFromJson(Map<String, dynamic> json) =>
@@ -70,4 +74,34 @@ Map<String, dynamic> _$$ClassroomBookingRequestImplToJson(
       'booking_start_time': instance.startTime,
       'booking_end_time': instance.endTime,
       'total_amount': instance.totalAmount,
+    };
+
+_$ClassroomBookingHistoryImpl _$$ClassroomBookingHistoryImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ClassroomBookingHistoryImpl(
+      bookingId: (json['booking_id'] as num).toInt(),
+      studentId: (json['student_id'] as num).toInt(),
+      classroomId: (json['classroom_id'] as num).toInt(),
+      bookingDate: DateTime.parse(json['booking_date'] as String),
+      bookingStartTime: json['booking_start_time'] as String,
+      bookingEndTime: json['booking_end_time'] as String,
+      totalAmount: (json['total_amount'] as num).toDouble(),
+      paymentStatus: (json['payment_status'] as num).toInt(),
+      isOccupied: (json['isOccupied'] as num).toInt(),
+      classroomName: json['classroom_name'] as String,
+    );
+
+Map<String, dynamic> _$$ClassroomBookingHistoryImplToJson(
+        _$ClassroomBookingHistoryImpl instance) =>
+    <String, dynamic>{
+      'booking_id': instance.bookingId,
+      'student_id': instance.studentId,
+      'classroom_id': instance.classroomId,
+      'booking_date': instance.bookingDate.toIso8601String(),
+      'booking_start_time': instance.bookingStartTime,
+      'booking_end_time': instance.bookingEndTime,
+      'total_amount': instance.totalAmount,
+      'payment_status': instance.paymentStatus,
+      'isOccupied': instance.isOccupied,
+      'classroom_name': instance.classroomName,
     };

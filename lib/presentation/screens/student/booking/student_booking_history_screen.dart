@@ -1,12 +1,29 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/data/models/booking/booking_state.dart';
+import 'package:edutec_hub/data/models/booking/classroom_model.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/blocs/booking/booking_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/classroom/student_classroom_booking_history_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BookingHistoryScreen extends StatelessWidget {
+class ClassroomBookingHistoryScreen extends StatefulWidget {
+  const ClassroomBookingHistoryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ClassroomBookingHistoryScreen> createState() =>
+      _ClassroomBookingHistoryScreenState();
+}
+
+class _ClassroomBookingHistoryScreenState
+    extends State<ClassroomBookingHistoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ClassroomBookingHistoryCubit>().loadBookingHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,16 +31,31 @@ class BookingHistoryScreen extends StatelessWidget {
         children: [
           _buildTopBar(context),
           Expanded(
-            child: BlocBuilder<BookingBloc, BookingState>(
+            child: BlocBuilder<ClassroomBookingHistoryCubit,
+                ClassroomBookingHistoryState>(
               builder: (context, state) {
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state.error != null) {
+                  return Center(child: Text(state.error!));
+                }
+
+                final pendingBookings = state.bookings
+                    .where((booking) => booking.paymentStatus == 0)
+                    .toList();
+                final historyBookings = state.bookings
+                    .where((booking) => booking.paymentStatus != 0)
+                    .toList();
+
                 return ListView(
                   padding: EdgeInsets.all(16.w),
                   children: [
-                    _buildStatusSection(
-                        'pending_review'.tr(), _buildPendingList()),
+                    _buildStatusSection('pending_review'.tr(), pendingBookings),
                     SizedBox(height: 24.h),
                     _buildStatusSection(
-                        'booking_history'.tr(), _buildHistoryList()),
+                        'booking_history'.tr(), historyBookings),
                   ],
                 );
               },
@@ -43,7 +75,7 @@ class BookingHistoryScreen extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                 onPressed: () => Navigator.pop(context),
               ),
               Expanded(
@@ -51,13 +83,13 @@ class BookingHistoryScreen extends StatelessWidget {
                   child: Text(
                     'booking_history'.tr(),
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
                       fontSize: 18.sp,
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 40.w), // 為了平衡左邊的返回按鈕
+              SizedBox(width: 40.w),
             ],
           ),
         ),
@@ -65,7 +97,8 @@ class BookingHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusSection(String title, List<Widget> items) {
+  Widget _buildStatusSection(
+      String title, List<ClassroomBookingHistory> bookings) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,51 +110,31 @@ class BookingHistoryScreen extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12.h),
-        ...items,
+        if (bookings.isEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.h),
+            child: Center(
+              child: Text(
+                'no_bookings'.tr(),
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+          )
+        else
+          ...bookings.map((booking) => _buildBookingCard(booking)).toList(),
       ],
     );
   }
 
-  List<Widget> _buildPendingList() {
-    return [
-      _buildBookingCard(
-        date: '2024-02-20',
-        time: '14:00',
-        classroom: 'classroom_1'.tr(),
-        status: 'pending_review'.tr(),
-        statusColor: Colors.orange,
-      ),
-      // 更多待審核項目...
-    ];
-  }
+  Widget _buildBookingCard(ClassroomBookingHistory booking) {
+    final statusColor = _getStatusColor(booking.paymentStatus);
+    final statusText = _getStatusText(booking.paymentStatus);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(booking.bookingDate);
+    final formattedTime = booking.bookingStartTime.substring(0, 5);
 
-  List<Widget> _buildHistoryList() {
-    return [
-      _buildBookingCard(
-        date: '2024-02-19',
-        time: '15:00',
-        classroom: 'classroom_2'.tr(),
-        status: 'approved'.tr(),
-        statusColor: Colors.green,
-      ),
-      _buildBookingCard(
-        date: '2024-02-18',
-        time: '16:00',
-        classroom: 'classroom_1'.tr(),
-        status: 'rejected'.tr(),
-        statusColor: Colors.red,
-      ),
-      // 更多歷史記錄...
-    ];
-  }
-
-  Widget _buildBookingCard({
-    required String date,
-    required String time,
-    required String classroom,
-    required String status,
-    required Color statusColor,
-  }) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
@@ -142,7 +155,7 @@ class BookingHistoryScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$date $time',
+                '$formattedDate $formattedTime',
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -158,7 +171,7 @@ class BookingHistoryScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: Text(
-                  status,
+                  statusText,
                   style: TextStyle(
                     color: statusColor,
                     fontSize: 14.sp,
@@ -173,7 +186,7 @@ class BookingHistoryScreen extends StatelessWidget {
               Icon(Icons.location_on, size: 16.sp, color: Colors.grey),
               SizedBox(width: 4.w),
               Text(
-                classroom,
+                booking.classroomName,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 14.sp,
@@ -184,5 +197,31 @@ class BookingHistoryScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getStatusText(int status) {
+    switch (status) {
+      case 0:
+        return 'pending_review'.tr();
+      case 1:
+        return 'approved'.tr();
+      case 2:
+        return 'rejected'.tr();
+      default:
+        return 'unknown'.tr();
+    }
+  }
+
+  Color _getStatusColor(int status) {
+    switch (status) {
+      case 0:
+        return Colors.orange;
+      case 1:
+        return Colors.green;
+      case 2:
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 }

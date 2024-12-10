@@ -45,6 +45,8 @@ class _HomeworkSubmitScreenState extends State<HomeworkSubmitScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('homework_submitted_success'.tr())),
           );
+          // 返回前重新加载作业详情
+          context.read<HomeworkCubit>().loadHomeworkDetail(widget.homeworkId);
           context.pop();
         }
       },

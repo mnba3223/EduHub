@@ -45,6 +45,12 @@ course,Course,課程,课程,コース
 todays_course,Today's Courses,今天課程,今天课程,今日の授業
 my_courses,My Courses,預約教室,預約教室,マイコース
 classroom,Classroom,教室,教室,教室
+approved,Approved,已通過,已通过,承認済み
+my_lessons,My Lessons,我的課程,我的课程,私の授業
+search_lessons,Search lessons...,搜尋課程...,搜索课程...,授業を検索...
+no_available_slots,NO availalbe Time,沒有可以預約的時間,沒有可以預約的時間,沒有可以預約的時間
+no_bookings,No Bookings,沒有預約紀錄,沒有預約紀錄,沒有預約紀錄
+
 
 # Booking System
 booking,Booking,預約,预约,予約
@@ -120,7 +126,7 @@ no_homework_for_selected_date,No homework for selected date,所選日期沒有�
 no_pending_homework,No pending homework,沒有待完成的作業,没有待完成的作业,未完了の宿題なし
 no_completed_homework,No completed homework,沒有已完成的作業,没有已完成的作业,完了した宿題なし
 error_loading_homework,Error loading homework,載入作業時發生錯誤,加载作业时发生错误,宿題の読み込みエラー
-due_date,Due Date: {0},截止日期：{0},截止日期：{0},提出期限：{0}
+due_date,Due Date: {},截止日期：{},截止日期：{},提出期限：{}
 description,Description,作業說明,作业说明,説明
 homework_content,Homework Content,作業內容,作业内容,宿題内容
 enter_homework_content,Enter your homework content...,請輸入作業內容...,请输入作业内容...,宿題の内容を入力してください...
@@ -136,6 +142,7 @@ error_picking_files,Error picking files,選擇檔案時發生錯誤,选择文件
 error_submitting_homework,Error submitting homework,提交作業時發生錯誤,提交作业时发生错误,宿題提出エラー
 please_enter_content,Please enter content,請輸入內容,请输入内容,内容を入力してください
 homework_submitted_success,Homework submitted successfully,作業提交成功,作业提交成功,宿題を提出しました
+
 
 # Contact Book
 contact_book,Contact Book,聯絡簿,联络簿,連絡帳
@@ -180,6 +187,13 @@ please_select_lesson_first,Please select a lesson first,請先選擇課程,请�
 please_select_student_first,Please select a student first,請先選擇學生,请先选择学生,生徒を選択してください
 teacher_contact_book,聯絡簿,聯絡簿,聯絡簿
 message_content,Message Content,訊息內容,訊息內容
+contact_book_loaded_success,Contact book loaded successfully,聯絡簿載入成功,联络簿载入成功,連絡帳の読み込みが完了しました
+contact_book_content,Content,內容,内容,内容
+contact_book_message_sent,Message sent successfully,訊息發送成功,消息发送成功,メッセージを送信しました
+contact_book_send,Send,發送,发送,送信
+contact_book_submit_time,Submit Time,提交時間,提交时间,提出時間
+contact_book_reply_hint,Enter your reply here...,請在此輸入回覆...,请在此输入回复...,返信を入力してください...
+contact_book_messages,Messages,訊息列表,消息列表,メッセージ一覧
 
 # General UI
 date,Date,日期,
@@ -192,8 +206,10 @@ add_message,Add meesage,增加訊息內容,增加訊息內容
 attachment,Attachment,附件,附件,附件
 time,Time,時間,時間
 request_date,Request Date,申請日期,申請時間
-
-
+due_time,Due Time,繳交期限,繳交期限,繳交期限
+submit_time,Submit Time,提交時間,提交時間,提交時間
+homework_overdue_warnin,Overtime!,您已經超過繳交期限,您已經超過繳交期限,您已經超過繳交期限
+message_cannot_be_empty,Message Can not be empty,訊息不能為空,訊息不能為空,訊息不能為空
 
 # Navigation Items & Menu
 attendance,Attendance,出勤,出勤,出席

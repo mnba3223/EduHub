@@ -166,6 +166,34 @@ class CourseCubit extends Cubit<CourseState> {
     }
   }
 
+  Future<void> loadStudentLessons() async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final studentLessons = await _repository.getStudentLessons(
+        UserSession.instance.roleId!,
+      );
+
+      // 过滤出今天的课程
+      final today = DateTime.now();
+      final todayLessons = studentLessons.where((lesson) {
+        return lesson.lessonDate.year == today.year &&
+            lesson.lessonDate.month == today.month &&
+            lesson.lessonDate.day == today.day;
+      }).toList();
+
+      emit(state.copyWith(
+        isLoading: false,
+        studentLessons: studentLessons,
+        todayLessons: todayLessons,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      ));
+    }
+  }
+
   List<Course> getTopSubjectCourses() {
     final coursesBySubject = <String, List<Course>>{};
 

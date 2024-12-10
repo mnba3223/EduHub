@@ -812,11 +812,19 @@ class TimeSlotBottomSheet extends StatelessWidget {
     required this.classroom,
     required this.selectedDate,
   }) : super(key: key);
+  // 修改时间格式化方法
+  String _formatTimeString(String timeString) {
+    // 确保时间格式为 "HH:mm:00"
+    if (!timeString.endsWith(":00")) {
+      timeString = "$timeString:00";
+    }
+    return timeString;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final timeSlots =
-        BookingUtils.getAvailableTimeSlots(classroom, selectedDate);
+    // 直接使用 classroom 的 availableTimeSlots
+    final timeSlots = classroom.availableTimeSlots ?? [];
     final isWeekend = selectedDate.weekday == DateTime.saturday ||
         selectedDate.weekday == DateTime.sunday;
     final price = isWeekend ? classroom.weekendPrice : classroom.weekdayPrice;
@@ -843,20 +851,23 @@ class TimeSlotBottomSheet extends StatelessWidget {
                     padding: EdgeInsets.all(16.w),
                     itemCount: timeSlots.length,
                     itemBuilder: (context, index) {
-                      final slot = timeSlots[index];
+                      final startTime = timeSlots[index];
+                      // 计算结束时间（假设每个时段为2小时）
+                      final endTime = _calculateEndTime(startTime);
+
                       return TimeSlotListItem(
-                        startTime: slot.startTime ?? "",
-                        endTime: slot.endTime ?? "",
+                        startTime: startTime,
+                        endTime: endTime,
                         isAvailable:
-                            slot.status == ClassroomBookingStatus.available,
+                            _isTimeSlotAvailable(startTime, selectedDate),
                         isSelected: false,
                         onTap: () {
                           Navigator.pop(context);
                           _showBookingConfirmDialog(
                             context,
                             selectedDate,
-                            slot.startTime ?? "",
-                            slot.endTime ?? "",
+                            startTime,
+                            endTime,
                             classroom,
                           );
                         },
@@ -867,6 +878,32 @@ class TimeSlotBottomSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // 计算结束时间
+  String _calculateEndTime(String startTime) {
+    final timeParts = startTime.split(':');
+    final hour = int.parse(timeParts[0]);
+    final minute = int.parse(timeParts[1]);
+
+    final startDateTime = DateTime(2024, 1, 1, hour, minute);
+    final endDateTime = startDateTime.add(const Duration(hours: 2));
+
+    return '${endDateTime.hour.toString().padLeft(2, '0')}:${endDateTime.minute.toString().padLeft(2, '0')}:00';
+  }
+
+  // 检查时间段是否可用
+  bool _isTimeSlotAvailable(String startTime, DateTime date) {
+    // 检查是否有冲突的预订
+    final hasConflict = classroom.bookings?.any((booking) =>
+            booking.bookingDate.year == date.year &&
+            booking.bookingDate.month == date.month &&
+            booking.bookingDate.day == date.day &&
+            booking.startTime == startTime &&
+            booking.isOccupied == 1) ??
+        false;
+
+    return !hasConflict;
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -950,14 +987,19 @@ class TimeSlotBottomSheet extends StatelessWidget {
     String endTime,
     Classroom classroom,
   ) {
+    final formattedDate = DateTime.utc(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+    );
     showDialog(
       context: context,
       builder: (dialogContext) => BlocProvider.value(
         value: context.read<StudentClassroomBookingBloc>(),
         child: BookingConfirmDialog(
-          selectedDate: selectedDate,
-          startTime: startTime,
-          endTime: endTime,
+          selectedDate: formattedDate,
+          startTime: _formatTimeString(startTime),
+          endTime: _formatTimeString(endTime),
           classroom: classroom,
         ),
       ),

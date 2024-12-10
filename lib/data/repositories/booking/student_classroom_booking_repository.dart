@@ -61,6 +61,33 @@ class StudentClassroomBookingRepository {
     }
   }
 
+  Future<List<ClassroomBookingHistory>> getClassroomBookingHistory(
+      int studentId) async {
+    if (useMock) {
+      return _getMockBookingHistory();
+    }
+
+    try {
+      final response = await _api.getBookingHistory(studentId);
+      if (response.success) {
+        return response.data!;
+      } else {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  List<ClassroomBookingHistory> _getMockBookingHistory() {
+    return [
+      // 模拟数据
+    ];
+  }
+
   List<Classroom> _getMockClassrooms() {
     return [
       Classroom(

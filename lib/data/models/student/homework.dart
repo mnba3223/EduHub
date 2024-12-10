@@ -6,29 +6,25 @@ part 'homework.freezed.dart';
 part 'homework.g.dart';
 
 // @freezed
-// class Homework with _$Homework {
-//   const factory Homework({
-//     @JsonKey(name: 'submission_id')
-//     required int submissionId, // 改名為更明確的 submissionId
-//     @JsonKey(name: 'homework_id') required int id, // 添加 homework_id
-//     @JsonKey(name: 'student_id') required int studentId,
+// class HomeworkListItem with _$HomeworkListItem {
+//   const factory HomeworkListItem({
+//     @JsonKey(name: 'homework_id') required int homeworkId,
+//     @JsonKey(name: 'lesson_id') required int lessonId,
 //     @JsonKey(name: 'homework_description') required String description,
 //     @JsonKey(name: 'homework_start_time') required DateTime startTime,
-//     @JsonKey(name: 'homework_end_time') required DateTime dueDate,
-//     @JsonKey(name: 'lesson_title') required String courseName,
-//     @JsonKey(name: 'lesson_description') String? courseDescription,
+//     @JsonKey(name: 'homework_end_time') required DateTime endTime,
+//     @JsonKey(name: 'upload_file') String? attachmentUrl,
+//     @JsonKey(name: 'lesson_title') required String lessonTitle,
+//     @JsonKey(name: 'lesson_description') String? lessonDescription,
 //     @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
 //     required HomeworkStatus status,
-//     @JsonKey(name: 'submission_time') DateTime? submitDate,
-//     @JsonKey(name: 'upload_file') String? attachmentUrl,
-//     @JsonKey(name: 'comment') String? teacherComment,
-//     @JsonKey(name: 'rating') int? score,
-//   }) = _Homework;
+//     @JsonKey(name: 'teacher_id') required int teacherId,
+//     @JsonKey(name: 'teacher_name') required String teacherName,
+//   }) = _HomeworkListItem;
 
-//   factory Homework.fromJson(Map<String, dynamic> json) =>
-//       _$HomeworkFromJson(json);
+//   factory HomeworkListItem.fromJson(Map<String, dynamic> json) =>
+//       _$HomeworkListItemFromJson(json);
 // }
-
 @freezed
 class HomeworkListItem with _$HomeworkListItem {
   const factory HomeworkListItem({
@@ -38,12 +34,15 @@ class HomeworkListItem with _$HomeworkListItem {
     @JsonKey(name: 'homework_start_time') required DateTime startTime,
     @JsonKey(name: 'homework_end_time') required DateTime endTime,
     @JsonKey(name: 'upload_file') String? attachmentUrl,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
-    @JsonKey(name: 'lesson_description') String? lessonDescription,
+    @JsonKey(name: 'class_name') required String className,
+    @JsonKey(name: 'classroom_name') required String classroomName,
     @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
     required HomeworkStatus status,
     @JsonKey(name: 'teacher_id') required int teacherId,
     @JsonKey(name: 'teacher_name') required String teacherName,
+    @JsonKey(name: 'total_students') required int totalStudents,
+    @JsonKey(name: 'submitted_count') required int submittedCount,
+    @JsonKey(name: 'rating_count') required int ratingCount,
   }) = _HomeworkListItem;
 
   factory HomeworkListItem.fromJson(Map<String, dynamic> json) =>
@@ -61,26 +60,27 @@ enum HomeworkStatus {
   overdue
 }
 
-// 作業提交詳情模型
 @freezed
 class HomeworkSubmission with _$HomeworkSubmission {
   const factory HomeworkSubmission({
-    @JsonKey(name: 'submission_id')
-    required int submissionId, // 改名為更明確的 submissionId
-    @JsonKey(name: 'homework_id') required int homework_id, // 添加 homework_id
+    @JsonKey(name: 'submission_id') required int submissionId,
+    @JsonKey(name: 'homework_id') required int homeworkId,
     @JsonKey(name: 'student_id') required int studentId,
-    @JsonKey(name: 'homework_description') required String description,
-    @JsonKey(name: 'homework_start_time') required DateTime startTime,
-    @JsonKey(name: 'homework_end_time') required DateTime endTime,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
-    @JsonKey(name: 'lesson_description') String? lessonDescription,
-    @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
-    required HomeworkStatus status,
-    @JsonKey(name: 'submission_time') DateTime? submitDate,
+    @JsonKey(name: 'student_name') required String studentName,
+    @JsonKey(name: 'submission_time') DateTime? submissionTime,
+    @JsonKey(name: 'comment') String? comment,
+    @JsonKey(name: 'rating') int? rating,
     @JsonKey(name: 'upload_file') String? uploadFile,
     @JsonKey(name: 'upload_file_urls') List<String>? uploadFileUrls,
-    @JsonKey(name: 'comment') String? comment,
-    @JsonKey(name: 'rating') int? score,
+    @JsonKey(name: 'status', unknownEnumValue: HomeworkStatus.pending)
+    required HomeworkStatus status,
+    @JsonKey(name: 'lesson_id') required int lessonId,
+    @JsonKey(name: 'homework_description') required String homeworkDescription,
+    @JsonKey(name: 'homework_start_time') required DateTime startTime,
+    @JsonKey(name: 'homework_end_time') required DateTime endTime,
+    @JsonKey(name: 'class_name') required String className,
+    @JsonKey(name: 'has_Attachment') required bool hasAttachment,
+    @JsonKey(name: 'has_rating') required bool hasRating,
   }) = _HomeworkSubmission;
 
   factory HomeworkSubmission.fromJson(Map<String, dynamic> json) =>

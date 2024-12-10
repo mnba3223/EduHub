@@ -20,11 +20,28 @@ ContactBook _$ContactBookFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ContactBook {
-  StudentInfo get studentInfo => throw _privateConstructorUsedError;
-  CalendarData get calendar => throw _privateConstructorUsedError;
-  List<ContactBookPreview> get contactBooks =>
-      throw _privateConstructorUsedError;
-  Statistics? get statistics => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ContactBookId')
+  int get contactBookId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'StudentId')
+  int get studentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'StudentName')
+  String get studentName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TeacherId')
+  int get teacherId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TeacherName')
+  String get teacherName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'LessonId')
+  int get lessonId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ClassId')
+  int get classId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'LessonDate')
+  DateTime get lessonDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Title')
+  String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Content')
+  String get content => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Messages')
+  List<ContactBookMessage> get messages => throw _privateConstructorUsedError;
 
   /// Serializes this ContactBook to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,14 +60,17 @@ abstract class $ContactBookCopyWith<$Res> {
       _$ContactBookCopyWithImpl<$Res, ContactBook>;
   @useResult
   $Res call(
-      {StudentInfo studentInfo,
-      CalendarData calendar,
-      List<ContactBookPreview> contactBooks,
-      Statistics? statistics});
-
-  $StudentInfoCopyWith<$Res> get studentInfo;
-  $CalendarDataCopyWith<$Res> get calendar;
-  $StatisticsCopyWith<$Res>? get statistics;
+      {@JsonKey(name: 'ContactBookId') int contactBookId,
+      @JsonKey(name: 'StudentId') int studentId,
+      @JsonKey(name: 'StudentName') String studentName,
+      @JsonKey(name: 'TeacherId') int teacherId,
+      @JsonKey(name: 'TeacherName') String teacherName,
+      @JsonKey(name: 'LessonId') int lessonId,
+      @JsonKey(name: 'ClassId') int classId,
+      @JsonKey(name: 'LessonDate') DateTime lessonDate,
+      @JsonKey(name: 'Title') String title,
+      @JsonKey(name: 'Content') String content,
+      @JsonKey(name: 'Messages') List<ContactBookMessage> messages});
 }
 
 /// @nodoc
@@ -68,63 +88,64 @@ class _$ContactBookCopyWithImpl<$Res, $Val extends ContactBook>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studentInfo = null,
-    Object? calendar = null,
-    Object? contactBooks = null,
-    Object? statistics = freezed,
+    Object? contactBookId = null,
+    Object? studentId = null,
+    Object? studentName = null,
+    Object? teacherId = null,
+    Object? teacherName = null,
+    Object? lessonId = null,
+    Object? classId = null,
+    Object? lessonDate = null,
+    Object? title = null,
+    Object? content = null,
+    Object? messages = null,
   }) {
     return _then(_value.copyWith(
-      studentInfo: null == studentInfo
-          ? _value.studentInfo
-          : studentInfo // ignore: cast_nullable_to_non_nullable
-              as StudentInfo,
-      calendar: null == calendar
-          ? _value.calendar
-          : calendar // ignore: cast_nullable_to_non_nullable
-              as CalendarData,
-      contactBooks: null == contactBooks
-          ? _value.contactBooks
-          : contactBooks // ignore: cast_nullable_to_non_nullable
-              as List<ContactBookPreview>,
-      statistics: freezed == statistics
-          ? _value.statistics
-          : statistics // ignore: cast_nullable_to_non_nullable
-              as Statistics?,
+      contactBookId: null == contactBookId
+          ? _value.contactBookId
+          : contactBookId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentName: null == studentName
+          ? _value.studentName
+          : studentName // ignore: cast_nullable_to_non_nullable
+              as String,
+      teacherId: null == teacherId
+          ? _value.teacherId
+          : teacherId // ignore: cast_nullable_to_non_nullable
+              as int,
+      teacherName: null == teacherName
+          ? _value.teacherName
+          : teacherName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lessonId: null == lessonId
+          ? _value.lessonId
+          : lessonId // ignore: cast_nullable_to_non_nullable
+              as int,
+      classId: null == classId
+          ? _value.classId
+          : classId // ignore: cast_nullable_to_non_nullable
+              as int,
+      lessonDate: null == lessonDate
+          ? _value.lessonDate
+          : lessonDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      messages: null == messages
+          ? _value.messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<ContactBookMessage>,
     ) as $Val);
-  }
-
-  /// Create a copy of ContactBook
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $StudentInfoCopyWith<$Res> get studentInfo {
-    return $StudentInfoCopyWith<$Res>(_value.studentInfo, (value) {
-      return _then(_value.copyWith(studentInfo: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ContactBook
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CalendarDataCopyWith<$Res> get calendar {
-    return $CalendarDataCopyWith<$Res>(_value.calendar, (value) {
-      return _then(_value.copyWith(calendar: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ContactBook
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $StatisticsCopyWith<$Res>? get statistics {
-    if (_value.statistics == null) {
-      return null;
-    }
-
-    return $StatisticsCopyWith<$Res>(_value.statistics!, (value) {
-      return _then(_value.copyWith(statistics: value) as $Val);
-    });
   }
 }
 
@@ -137,17 +158,17 @@ abstract class _$$ContactBookImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {StudentInfo studentInfo,
-      CalendarData calendar,
-      List<ContactBookPreview> contactBooks,
-      Statistics? statistics});
-
-  @override
-  $StudentInfoCopyWith<$Res> get studentInfo;
-  @override
-  $CalendarDataCopyWith<$Res> get calendar;
-  @override
-  $StatisticsCopyWith<$Res>? get statistics;
+      {@JsonKey(name: 'ContactBookId') int contactBookId,
+      @JsonKey(name: 'StudentId') int studentId,
+      @JsonKey(name: 'StudentName') String studentName,
+      @JsonKey(name: 'TeacherId') int teacherId,
+      @JsonKey(name: 'TeacherName') String teacherName,
+      @JsonKey(name: 'LessonId') int lessonId,
+      @JsonKey(name: 'ClassId') int classId,
+      @JsonKey(name: 'LessonDate') DateTime lessonDate,
+      @JsonKey(name: 'Title') String title,
+      @JsonKey(name: 'Content') String content,
+      @JsonKey(name: 'Messages') List<ContactBookMessage> messages});
 }
 
 /// @nodoc
@@ -163,28 +184,63 @@ class __$$ContactBookImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studentInfo = null,
-    Object? calendar = null,
-    Object? contactBooks = null,
-    Object? statistics = freezed,
+    Object? contactBookId = null,
+    Object? studentId = null,
+    Object? studentName = null,
+    Object? teacherId = null,
+    Object? teacherName = null,
+    Object? lessonId = null,
+    Object? classId = null,
+    Object? lessonDate = null,
+    Object? title = null,
+    Object? content = null,
+    Object? messages = null,
   }) {
     return _then(_$ContactBookImpl(
-      studentInfo: null == studentInfo
-          ? _value.studentInfo
-          : studentInfo // ignore: cast_nullable_to_non_nullable
-              as StudentInfo,
-      calendar: null == calendar
-          ? _value.calendar
-          : calendar // ignore: cast_nullable_to_non_nullable
-              as CalendarData,
-      contactBooks: null == contactBooks
-          ? _value._contactBooks
-          : contactBooks // ignore: cast_nullable_to_non_nullable
-              as List<ContactBookPreview>,
-      statistics: freezed == statistics
-          ? _value.statistics
-          : statistics // ignore: cast_nullable_to_non_nullable
-              as Statistics?,
+      contactBookId: null == contactBookId
+          ? _value.contactBookId
+          : contactBookId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentId: null == studentId
+          ? _value.studentId
+          : studentId // ignore: cast_nullable_to_non_nullable
+              as int,
+      studentName: null == studentName
+          ? _value.studentName
+          : studentName // ignore: cast_nullable_to_non_nullable
+              as String,
+      teacherId: null == teacherId
+          ? _value.teacherId
+          : teacherId // ignore: cast_nullable_to_non_nullable
+              as int,
+      teacherName: null == teacherName
+          ? _value.teacherName
+          : teacherName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lessonId: null == lessonId
+          ? _value.lessonId
+          : lessonId // ignore: cast_nullable_to_non_nullable
+              as int,
+      classId: null == classId
+          ? _value.classId
+          : classId // ignore: cast_nullable_to_non_nullable
+              as int,
+      lessonDate: null == lessonDate
+          ? _value.lessonDate
+          : lessonDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      messages: null == messages
+          ? _value._messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<ContactBookMessage>,
     ));
   }
 }
@@ -193,33 +249,65 @@ class __$$ContactBookImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ContactBookImpl implements _ContactBook {
   const _$ContactBookImpl(
-      {required this.studentInfo,
-      required this.calendar,
-      required final List<ContactBookPreview> contactBooks,
-      this.statistics})
-      : _contactBooks = contactBooks;
+      {@JsonKey(name: 'ContactBookId') required this.contactBookId,
+      @JsonKey(name: 'StudentId') required this.studentId,
+      @JsonKey(name: 'StudentName') required this.studentName,
+      @JsonKey(name: 'TeacherId') required this.teacherId,
+      @JsonKey(name: 'TeacherName') required this.teacherName,
+      @JsonKey(name: 'LessonId') required this.lessonId,
+      @JsonKey(name: 'ClassId') required this.classId,
+      @JsonKey(name: 'LessonDate') required this.lessonDate,
+      @JsonKey(name: 'Title') required this.title,
+      @JsonKey(name: 'Content') required this.content,
+      @JsonKey(name: 'Messages')
+      required final List<ContactBookMessage> messages})
+      : _messages = messages;
 
   factory _$ContactBookImpl.fromJson(Map<String, dynamic> json) =>
       _$$ContactBookImplFromJson(json);
 
   @override
-  final StudentInfo studentInfo;
+  @JsonKey(name: 'ContactBookId')
+  final int contactBookId;
   @override
-  final CalendarData calendar;
-  final List<ContactBookPreview> _contactBooks;
+  @JsonKey(name: 'StudentId')
+  final int studentId;
   @override
-  List<ContactBookPreview> get contactBooks {
-    if (_contactBooks is EqualUnmodifiableListView) return _contactBooks;
+  @JsonKey(name: 'StudentName')
+  final String studentName;
+  @override
+  @JsonKey(name: 'TeacherId')
+  final int teacherId;
+  @override
+  @JsonKey(name: 'TeacherName')
+  final String teacherName;
+  @override
+  @JsonKey(name: 'LessonId')
+  final int lessonId;
+  @override
+  @JsonKey(name: 'ClassId')
+  final int classId;
+  @override
+  @JsonKey(name: 'LessonDate')
+  final DateTime lessonDate;
+  @override
+  @JsonKey(name: 'Title')
+  final String title;
+  @override
+  @JsonKey(name: 'Content')
+  final String content;
+  final List<ContactBookMessage> _messages;
+  @override
+  @JsonKey(name: 'Messages')
+  List<ContactBookMessage> get messages {
+    if (_messages is EqualUnmodifiableListView) return _messages;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_contactBooks);
+    return EqualUnmodifiableListView(_messages);
   }
 
   @override
-  final Statistics? statistics;
-
-  @override
   String toString() {
-    return 'ContactBook(studentInfo: $studentInfo, calendar: $calendar, contactBooks: $contactBooks, statistics: $statistics)';
+    return 'ContactBook(contactBookId: $contactBookId, studentId: $studentId, studentName: $studentName, teacherId: $teacherId, teacherName: $teacherName, lessonId: $lessonId, classId: $classId, lessonDate: $lessonDate, title: $title, content: $content, messages: $messages)';
   }
 
   @override
@@ -227,20 +315,41 @@ class _$ContactBookImpl implements _ContactBook {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ContactBookImpl &&
-            (identical(other.studentInfo, studentInfo) ||
-                other.studentInfo == studentInfo) &&
-            (identical(other.calendar, calendar) ||
-                other.calendar == calendar) &&
-            const DeepCollectionEquality()
-                .equals(other._contactBooks, _contactBooks) &&
-            (identical(other.statistics, statistics) ||
-                other.statistics == statistics));
+            (identical(other.contactBookId, contactBookId) ||
+                other.contactBookId == contactBookId) &&
+            (identical(other.studentId, studentId) ||
+                other.studentId == studentId) &&
+            (identical(other.studentName, studentName) ||
+                other.studentName == studentName) &&
+            (identical(other.teacherId, teacherId) ||
+                other.teacherId == teacherId) &&
+            (identical(other.teacherName, teacherName) ||
+                other.teacherName == teacherName) &&
+            (identical(other.lessonId, lessonId) ||
+                other.lessonId == lessonId) &&
+            (identical(other.classId, classId) || other.classId == classId) &&
+            (identical(other.lessonDate, lessonDate) ||
+                other.lessonDate == lessonDate) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.content, content) || other.content == content) &&
+            const DeepCollectionEquality().equals(other._messages, _messages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, studentInfo, calendar,
-      const DeepCollectionEquality().hash(_contactBooks), statistics);
+  int get hashCode => Object.hash(
+      runtimeType,
+      contactBookId,
+      studentId,
+      studentName,
+      teacherId,
+      teacherName,
+      lessonId,
+      classId,
+      lessonDate,
+      title,
+      content,
+      const DeepCollectionEquality().hash(_messages));
 
   /// Create a copy of ContactBook
   /// with the given fields replaced by the non-null parameter values.
@@ -260,22 +369,55 @@ class _$ContactBookImpl implements _ContactBook {
 
 abstract class _ContactBook implements ContactBook {
   const factory _ContactBook(
-      {required final StudentInfo studentInfo,
-      required final CalendarData calendar,
-      required final List<ContactBookPreview> contactBooks,
-      final Statistics? statistics}) = _$ContactBookImpl;
+      {@JsonKey(name: 'ContactBookId') required final int contactBookId,
+      @JsonKey(name: 'StudentId') required final int studentId,
+      @JsonKey(name: 'StudentName') required final String studentName,
+      @JsonKey(name: 'TeacherId') required final int teacherId,
+      @JsonKey(name: 'TeacherName') required final String teacherName,
+      @JsonKey(name: 'LessonId') required final int lessonId,
+      @JsonKey(name: 'ClassId') required final int classId,
+      @JsonKey(name: 'LessonDate') required final DateTime lessonDate,
+      @JsonKey(name: 'Title') required final String title,
+      @JsonKey(name: 'Content') required final String content,
+      @JsonKey(name: 'Messages')
+      required final List<ContactBookMessage> messages}) = _$ContactBookImpl;
 
   factory _ContactBook.fromJson(Map<String, dynamic> json) =
       _$ContactBookImpl.fromJson;
 
   @override
-  StudentInfo get studentInfo;
+  @JsonKey(name: 'ContactBookId')
+  int get contactBookId;
   @override
-  CalendarData get calendar;
+  @JsonKey(name: 'StudentId')
+  int get studentId;
   @override
-  List<ContactBookPreview> get contactBooks;
+  @JsonKey(name: 'StudentName')
+  String get studentName;
   @override
-  Statistics? get statistics;
+  @JsonKey(name: 'TeacherId')
+  int get teacherId;
+  @override
+  @JsonKey(name: 'TeacherName')
+  String get teacherName;
+  @override
+  @JsonKey(name: 'LessonId')
+  int get lessonId;
+  @override
+  @JsonKey(name: 'ClassId')
+  int get classId;
+  @override
+  @JsonKey(name: 'LessonDate')
+  DateTime get lessonDate;
+  @override
+  @JsonKey(name: 'Title')
+  String get title;
+  @override
+  @JsonKey(name: 'Content')
+  String get content;
+  @override
+  @JsonKey(name: 'Messages')
+  List<ContactBookMessage> get messages;
 
   /// Create a copy of ContactBook
   /// with the given fields replaced by the non-null parameter values.
@@ -285,597 +427,240 @@ abstract class _ContactBook implements ContactBook {
       throw _privateConstructorUsedError;
 }
 
-StudentInfo _$StudentInfoFromJson(Map<String, dynamic> json) {
-  return _StudentInfo.fromJson(json);
+ContactBookMessage _$ContactBookMessageFromJson(Map<String, dynamic> json) {
+  return _ContactBookMessage.fromJson(json);
 }
 
 /// @nodoc
-mixin _$StudentInfo {
-  String get name => throw _privateConstructorUsedError;
-  String get className => throw _privateConstructorUsedError;
-  String get classTeacher => throw _privateConstructorUsedError;
+mixin _$ContactBookMessage {
+  @JsonKey(name: 'message_id')
+  int get messageId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'message_text')
+  String get messageText => throw _privateConstructorUsedError;
+  @JsonKey(name: 'message_type')
+  String get messageType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'upload_file')
+  List<String> get uploadFiles => throw _privateConstructorUsedError;
 
-  /// Serializes this StudentInfo to a JSON map.
+  /// Serializes this ContactBookMessage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of StudentInfo
+  /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $StudentInfoCopyWith<StudentInfo> get copyWith =>
+  $ContactBookMessageCopyWith<ContactBookMessage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $StudentInfoCopyWith<$Res> {
-  factory $StudentInfoCopyWith(
-          StudentInfo value, $Res Function(StudentInfo) then) =
-      _$StudentInfoCopyWithImpl<$Res, StudentInfo>;
-  @useResult
-  $Res call({String name, String className, String classTeacher});
-}
-
-/// @nodoc
-class _$StudentInfoCopyWithImpl<$Res, $Val extends StudentInfo>
-    implements $StudentInfoCopyWith<$Res> {
-  _$StudentInfoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of StudentInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = null,
-    Object? className = null,
-    Object? classTeacher = null,
-  }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      className: null == className
-          ? _value.className
-          : className // ignore: cast_nullable_to_non_nullable
-              as String,
-      classTeacher: null == classTeacher
-          ? _value.classTeacher
-          : classTeacher // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$StudentInfoImplCopyWith<$Res>
-    implements $StudentInfoCopyWith<$Res> {
-  factory _$$StudentInfoImplCopyWith(
-          _$StudentInfoImpl value, $Res Function(_$StudentInfoImpl) then) =
-      __$$StudentInfoImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String name, String className, String classTeacher});
-}
-
-/// @nodoc
-class __$$StudentInfoImplCopyWithImpl<$Res>
-    extends _$StudentInfoCopyWithImpl<$Res, _$StudentInfoImpl>
-    implements _$$StudentInfoImplCopyWith<$Res> {
-  __$$StudentInfoImplCopyWithImpl(
-      _$StudentInfoImpl _value, $Res Function(_$StudentInfoImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of StudentInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = null,
-    Object? className = null,
-    Object? classTeacher = null,
-  }) {
-    return _then(_$StudentInfoImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      className: null == className
-          ? _value.className
-          : className // ignore: cast_nullable_to_non_nullable
-              as String,
-      classTeacher: null == classTeacher
-          ? _value.classTeacher
-          : classTeacher // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$StudentInfoImpl implements _StudentInfo {
-  const _$StudentInfoImpl(
-      {required this.name,
-      required this.className,
-      required this.classTeacher});
-
-  factory _$StudentInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$StudentInfoImplFromJson(json);
-
-  @override
-  final String name;
-  @override
-  final String className;
-  @override
-  final String classTeacher;
-
-  @override
-  String toString() {
-    return 'StudentInfo(name: $name, className: $className, classTeacher: $classTeacher)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$StudentInfoImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.className, className) ||
-                other.className == className) &&
-            (identical(other.classTeacher, classTeacher) ||
-                other.classTeacher == classTeacher));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, name, className, classTeacher);
-
-  /// Create a copy of StudentInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StudentInfoImplCopyWith<_$StudentInfoImpl> get copyWith =>
-      __$$StudentInfoImplCopyWithImpl<_$StudentInfoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$StudentInfoImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _StudentInfo implements StudentInfo {
-  const factory _StudentInfo(
-      {required final String name,
-      required final String className,
-      required final String classTeacher}) = _$StudentInfoImpl;
-
-  factory _StudentInfo.fromJson(Map<String, dynamic> json) =
-      _$StudentInfoImpl.fromJson;
-
-  @override
-  String get name;
-  @override
-  String get className;
-  @override
-  String get classTeacher;
-
-  /// Create a copy of StudentInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$StudentInfoImplCopyWith<_$StudentInfoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Statistics _$StatisticsFromJson(Map<String, dynamic> json) {
-  return _Statistics.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Statistics {
-  int get totalBooks => throw _privateConstructorUsedError; // 總聯絡簿數量
-  int get signedCount => throw _privateConstructorUsedError; // 已簽名數量
-  int get unsignedCount => throw _privateConstructorUsedError;
-
-  /// Serializes this Statistics to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Statistics
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $StatisticsCopyWith<Statistics> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $StatisticsCopyWith<$Res> {
-  factory $StatisticsCopyWith(
-          Statistics value, $Res Function(Statistics) then) =
-      _$StatisticsCopyWithImpl<$Res, Statistics>;
-  @useResult
-  $Res call({int totalBooks, int signedCount, int unsignedCount});
-}
-
-/// @nodoc
-class _$StatisticsCopyWithImpl<$Res, $Val extends Statistics>
-    implements $StatisticsCopyWith<$Res> {
-  _$StatisticsCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Statistics
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? totalBooks = null,
-    Object? signedCount = null,
-    Object? unsignedCount = null,
-  }) {
-    return _then(_value.copyWith(
-      totalBooks: null == totalBooks
-          ? _value.totalBooks
-          : totalBooks // ignore: cast_nullable_to_non_nullable
-              as int,
-      signedCount: null == signedCount
-          ? _value.signedCount
-          : signedCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      unsignedCount: null == unsignedCount
-          ? _value.unsignedCount
-          : unsignedCount // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$StatisticsImplCopyWith<$Res>
-    implements $StatisticsCopyWith<$Res> {
-  factory _$$StatisticsImplCopyWith(
-          _$StatisticsImpl value, $Res Function(_$StatisticsImpl) then) =
-      __$$StatisticsImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int totalBooks, int signedCount, int unsignedCount});
-}
-
-/// @nodoc
-class __$$StatisticsImplCopyWithImpl<$Res>
-    extends _$StatisticsCopyWithImpl<$Res, _$StatisticsImpl>
-    implements _$$StatisticsImplCopyWith<$Res> {
-  __$$StatisticsImplCopyWithImpl(
-      _$StatisticsImpl _value, $Res Function(_$StatisticsImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Statistics
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? totalBooks = null,
-    Object? signedCount = null,
-    Object? unsignedCount = null,
-  }) {
-    return _then(_$StatisticsImpl(
-      totalBooks: null == totalBooks
-          ? _value.totalBooks
-          : totalBooks // ignore: cast_nullable_to_non_nullable
-              as int,
-      signedCount: null == signedCount
-          ? _value.signedCount
-          : signedCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      unsignedCount: null == unsignedCount
-          ? _value.unsignedCount
-          : unsignedCount // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$StatisticsImpl implements _Statistics {
-  const _$StatisticsImpl(
-      {required this.totalBooks,
-      required this.signedCount,
-      required this.unsignedCount});
-
-  factory _$StatisticsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$StatisticsImplFromJson(json);
-
-  @override
-  final int totalBooks;
-// 總聯絡簿數量
-  @override
-  final int signedCount;
-// 已簽名數量
-  @override
-  final int unsignedCount;
-
-  @override
-  String toString() {
-    return 'Statistics(totalBooks: $totalBooks, signedCount: $signedCount, unsignedCount: $unsignedCount)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$StatisticsImpl &&
-            (identical(other.totalBooks, totalBooks) ||
-                other.totalBooks == totalBooks) &&
-            (identical(other.signedCount, signedCount) ||
-                other.signedCount == signedCount) &&
-            (identical(other.unsignedCount, unsignedCount) ||
-                other.unsignedCount == unsignedCount));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, totalBooks, signedCount, unsignedCount);
-
-  /// Create a copy of Statistics
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StatisticsImplCopyWith<_$StatisticsImpl> get copyWith =>
-      __$$StatisticsImplCopyWithImpl<_$StatisticsImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$StatisticsImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Statistics implements Statistics {
-  const factory _Statistics(
-      {required final int totalBooks,
-      required final int signedCount,
-      required final int unsignedCount}) = _$StatisticsImpl;
-
-  factory _Statistics.fromJson(Map<String, dynamic> json) =
-      _$StatisticsImpl.fromJson;
-
-  @override
-  int get totalBooks; // 總聯絡簿數量
-  @override
-  int get signedCount; // 已簽名數量
-  @override
-  int get unsignedCount;
-
-  /// Create a copy of Statistics
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$StatisticsImplCopyWith<_$StatisticsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-CalendarData _$CalendarDataFromJson(Map<String, dynamic> json) {
-  return _CalendarData.fromJson(json);
-}
-
-/// @nodoc
-mixin _$CalendarData {
-  DateTime get currentDate => throw _privateConstructorUsedError;
-  DateRange get dateRange => throw _privateConstructorUsedError;
-  List<CalendarDate> get dates => throw _privateConstructorUsedError;
-
-  /// Serializes this CalendarData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CalendarData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $CalendarDataCopyWith<CalendarData> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CalendarDataCopyWith<$Res> {
-  factory $CalendarDataCopyWith(
-          CalendarData value, $Res Function(CalendarData) then) =
-      _$CalendarDataCopyWithImpl<$Res, CalendarData>;
+abstract class $ContactBookMessageCopyWith<$Res> {
+  factory $ContactBookMessageCopyWith(
+          ContactBookMessage value, $Res Function(ContactBookMessage) then) =
+      _$ContactBookMessageCopyWithImpl<$Res, ContactBookMessage>;
   @useResult
   $Res call(
-      {DateTime currentDate, DateRange dateRange, List<CalendarDate> dates});
-
-  $DateRangeCopyWith<$Res> get dateRange;
+      {@JsonKey(name: 'message_id') int messageId,
+      @JsonKey(name: 'message_text') String messageText,
+      @JsonKey(name: 'message_type') String messageType,
+      @JsonKey(name: 'upload_file') List<String> uploadFiles});
 }
 
 /// @nodoc
-class _$CalendarDataCopyWithImpl<$Res, $Val extends CalendarData>
-    implements $CalendarDataCopyWith<$Res> {
-  _$CalendarDataCopyWithImpl(this._value, this._then);
+class _$ContactBookMessageCopyWithImpl<$Res, $Val extends ContactBookMessage>
+    implements $ContactBookMessageCopyWith<$Res> {
+  _$ContactBookMessageCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CalendarData
+  /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentDate = null,
-    Object? dateRange = null,
-    Object? dates = null,
+    Object? messageId = null,
+    Object? messageText = null,
+    Object? messageType = null,
+    Object? uploadFiles = null,
   }) {
     return _then(_value.copyWith(
-      currentDate: null == currentDate
-          ? _value.currentDate
-          : currentDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      dateRange: null == dateRange
-          ? _value.dateRange
-          : dateRange // ignore: cast_nullable_to_non_nullable
-              as DateRange,
-      dates: null == dates
-          ? _value.dates
-          : dates // ignore: cast_nullable_to_non_nullable
-              as List<CalendarDate>,
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as int,
+      messageText: null == messageText
+          ? _value.messageText
+          : messageText // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as String,
+      uploadFiles: null == uploadFiles
+          ? _value.uploadFiles
+          : uploadFiles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
-  }
-
-  /// Create a copy of CalendarData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $DateRangeCopyWith<$Res> get dateRange {
-    return $DateRangeCopyWith<$Res>(_value.dateRange, (value) {
-      return _then(_value.copyWith(dateRange: value) as $Val);
-    });
   }
 }
 
 /// @nodoc
-abstract class _$$CalendarDataImplCopyWith<$Res>
-    implements $CalendarDataCopyWith<$Res> {
-  factory _$$CalendarDataImplCopyWith(
-          _$CalendarDataImpl value, $Res Function(_$CalendarDataImpl) then) =
-      __$$CalendarDataImplCopyWithImpl<$Res>;
+abstract class _$$ContactBookMessageImplCopyWith<$Res>
+    implements $ContactBookMessageCopyWith<$Res> {
+  factory _$$ContactBookMessageImplCopyWith(_$ContactBookMessageImpl value,
+          $Res Function(_$ContactBookMessageImpl) then) =
+      __$$ContactBookMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {DateTime currentDate, DateRange dateRange, List<CalendarDate> dates});
-
-  @override
-  $DateRangeCopyWith<$Res> get dateRange;
+      {@JsonKey(name: 'message_id') int messageId,
+      @JsonKey(name: 'message_text') String messageText,
+      @JsonKey(name: 'message_type') String messageType,
+      @JsonKey(name: 'upload_file') List<String> uploadFiles});
 }
 
 /// @nodoc
-class __$$CalendarDataImplCopyWithImpl<$Res>
-    extends _$CalendarDataCopyWithImpl<$Res, _$CalendarDataImpl>
-    implements _$$CalendarDataImplCopyWith<$Res> {
-  __$$CalendarDataImplCopyWithImpl(
-      _$CalendarDataImpl _value, $Res Function(_$CalendarDataImpl) _then)
+class __$$ContactBookMessageImplCopyWithImpl<$Res>
+    extends _$ContactBookMessageCopyWithImpl<$Res, _$ContactBookMessageImpl>
+    implements _$$ContactBookMessageImplCopyWith<$Res> {
+  __$$ContactBookMessageImplCopyWithImpl(_$ContactBookMessageImpl _value,
+      $Res Function(_$ContactBookMessageImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CalendarData
+  /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentDate = null,
-    Object? dateRange = null,
-    Object? dates = null,
+    Object? messageId = null,
+    Object? messageText = null,
+    Object? messageType = null,
+    Object? uploadFiles = null,
   }) {
-    return _then(_$CalendarDataImpl(
-      currentDate: null == currentDate
-          ? _value.currentDate
-          : currentDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      dateRange: null == dateRange
-          ? _value.dateRange
-          : dateRange // ignore: cast_nullable_to_non_nullable
-              as DateRange,
-      dates: null == dates
-          ? _value._dates
-          : dates // ignore: cast_nullable_to_non_nullable
-              as List<CalendarDate>,
+    return _then(_$ContactBookMessageImpl(
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as int,
+      messageText: null == messageText
+          ? _value.messageText
+          : messageText // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as String,
+      uploadFiles: null == uploadFiles
+          ? _value._uploadFiles
+          : uploadFiles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$CalendarDataImpl implements _CalendarData {
-  const _$CalendarDataImpl(
-      {required this.currentDate,
-      required this.dateRange,
-      required final List<CalendarDate> dates})
-      : _dates = dates;
+class _$ContactBookMessageImpl implements _ContactBookMessage {
+  const _$ContactBookMessageImpl(
+      {@JsonKey(name: 'message_id') required this.messageId,
+      @JsonKey(name: 'message_text') required this.messageText,
+      @JsonKey(name: 'message_type') required this.messageType,
+      @JsonKey(name: 'upload_file') required final List<String> uploadFiles})
+      : _uploadFiles = uploadFiles;
 
-  factory _$CalendarDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CalendarDataImplFromJson(json);
+  factory _$ContactBookMessageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactBookMessageImplFromJson(json);
 
   @override
-  final DateTime currentDate;
+  @JsonKey(name: 'message_id')
+  final int messageId;
   @override
-  final DateRange dateRange;
-  final List<CalendarDate> _dates;
+  @JsonKey(name: 'message_text')
+  final String messageText;
   @override
-  List<CalendarDate> get dates {
-    if (_dates is EqualUnmodifiableListView) return _dates;
+  @JsonKey(name: 'message_type')
+  final String messageType;
+  final List<String> _uploadFiles;
+  @override
+  @JsonKey(name: 'upload_file')
+  List<String> get uploadFiles {
+    if (_uploadFiles is EqualUnmodifiableListView) return _uploadFiles;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_dates);
+    return EqualUnmodifiableListView(_uploadFiles);
   }
 
   @override
   String toString() {
-    return 'CalendarData(currentDate: $currentDate, dateRange: $dateRange, dates: $dates)';
+    return 'ContactBookMessage(messageId: $messageId, messageText: $messageText, messageType: $messageType, uploadFiles: $uploadFiles)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CalendarDataImpl &&
-            (identical(other.currentDate, currentDate) ||
-                other.currentDate == currentDate) &&
-            (identical(other.dateRange, dateRange) ||
-                other.dateRange == dateRange) &&
-            const DeepCollectionEquality().equals(other._dates, _dates));
+            other is _$ContactBookMessageImpl &&
+            (identical(other.messageId, messageId) ||
+                other.messageId == messageId) &&
+            (identical(other.messageText, messageText) ||
+                other.messageText == messageText) &&
+            (identical(other.messageType, messageType) ||
+                other.messageType == messageType) &&
+            const DeepCollectionEquality()
+                .equals(other._uploadFiles, _uploadFiles));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, currentDate, dateRange,
-      const DeepCollectionEquality().hash(_dates));
+  int get hashCode => Object.hash(runtimeType, messageId, messageText,
+      messageType, const DeepCollectionEquality().hash(_uploadFiles));
 
-  /// Create a copy of CalendarData
+  /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CalendarDataImplCopyWith<_$CalendarDataImpl> get copyWith =>
-      __$$CalendarDataImplCopyWithImpl<_$CalendarDataImpl>(this, _$identity);
+  _$$ContactBookMessageImplCopyWith<_$ContactBookMessageImpl> get copyWith =>
+      __$$ContactBookMessageImplCopyWithImpl<_$ContactBookMessageImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CalendarDataImplToJson(
+    return _$$ContactBookMessageImplToJson(
       this,
     );
   }
 }
 
-abstract class _CalendarData implements CalendarData {
-  const factory _CalendarData(
-      {required final DateTime currentDate,
-      required final DateRange dateRange,
-      required final List<CalendarDate> dates}) = _$CalendarDataImpl;
+abstract class _ContactBookMessage implements ContactBookMessage {
+  const factory _ContactBookMessage(
+      {@JsonKey(name: 'message_id') required final int messageId,
+      @JsonKey(name: 'message_text') required final String messageText,
+      @JsonKey(name: 'message_type') required final String messageType,
+      @JsonKey(name: 'upload_file')
+      required final List<String> uploadFiles}) = _$ContactBookMessageImpl;
 
-  factory _CalendarData.fromJson(Map<String, dynamic> json) =
-      _$CalendarDataImpl.fromJson;
+  factory _ContactBookMessage.fromJson(Map<String, dynamic> json) =
+      _$ContactBookMessageImpl.fromJson;
 
   @override
-  DateTime get currentDate;
+  @JsonKey(name: 'message_id')
+  int get messageId;
   @override
-  DateRange get dateRange;
+  @JsonKey(name: 'message_text')
+  String get messageText;
   @override
-  List<CalendarDate> get dates;
+  @JsonKey(name: 'message_type')
+  String get messageType;
+  @override
+  @JsonKey(name: 'upload_file')
+  List<String> get uploadFiles;
 
-  /// Create a copy of CalendarData
+  /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CalendarDataImplCopyWith<_$CalendarDataImpl> get copyWith =>
+  _$$ContactBookMessageImplCopyWith<_$ContactBookMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -30,14 +30,14 @@ class UpdateSelectedDate extends ContactBookEvent {
 }
 
 class LoadDailyContactBook extends ContactBookEvent {
-  final DateTime date;
+  final int contactBookId;
 
   const LoadDailyContactBook({
-    required this.date,
+    required this.contactBookId,
   });
 
   @override
-  List<Object> get props => [date];
+  List<Object> get props => [contactBookId];
 }
 
 class SignContactBook extends ContactBookEvent {
@@ -64,4 +64,16 @@ class ReplyContactBook extends ContactBookEvent {
 
   @override
   List<Object> get props => [date, message];
+}
+
+class AddContactBookMessage extends ContactBookEvent {
+  final int contactBookId;
+  final String messageText;
+  final List<File>? uploadFiles;
+
+  const AddContactBookMessage({
+    required this.contactBookId,
+    required this.messageText,
+    this.uploadFiles,
+  });
 }

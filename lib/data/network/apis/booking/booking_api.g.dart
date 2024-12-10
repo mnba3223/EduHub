@@ -88,11 +88,11 @@ class _BookingApi implements BookingApi {
       bookingDate,
     ));
     _data.fields.add(MapEntry(
-      'start_time',
+      'booking_start_time',
       startTime,
     ));
     _data.fields.add(MapEntry(
-      'end_time',
+      'booking_end_time',
       endTime,
     ));
     _data.fields.add(MapEntry(
@@ -122,6 +122,49 @@ class _BookingApi implements BookingApi {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
         (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<ClassroomBookingHistory>>> getBookingHistory(
+      int studentId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'student_id': studentId};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<ApiResponse<List<ClassroomBookingHistory>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/Classroom/booking',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<ClassroomBookingHistory>> _value;
+    try {
+      _value = ApiResponse<List<ClassroomBookingHistory>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<ClassroomBookingHistory>((i) =>
+                    ClassroomBookingHistory.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

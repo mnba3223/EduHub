@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:edutec_hub/config/user_session.dart';
 import 'package:edutec_hub/data/models/api_model/api_response.dart';
 import 'package:edutec_hub/data/models/calendar/calendar_date.dart';
 import 'package:edutec_hub/data/models/contact_book/contact_book_detail.dart';
@@ -20,10 +23,16 @@ class ContactBookRepository {
   });
 
   int get _studentId {
-    final state = signInCubit.state;
-    if (state is SignInSuccess) {
-      return state.userId;
+    // final state = signInCubit.state;
+
+    // if (state is SignInSuccess) {
+    //   return state.userId;
+    // }
+    /// test user role id is exist
+    if (UserSession.instance.roleId != null) {
+      return UserSession.instance.roleId!;
     }
+
     throw ApiException('User not logged in');
   }
 
@@ -31,13 +40,13 @@ class ContactBookRepository {
     required DateTime date,
   }) async {
     if (useMock) {
-      return _getMockContactBooks(date).data ?? [];
+      return _getMockContactBooks();
     }
 
     try {
       final response = await api.getContactBooks(
-        _studentId.toString(),
-        date.toIso8601String(),
+        _studentId,
+        // date.toIso8601String(),
       );
 
       if (!response.success) {
@@ -87,62 +96,58 @@ class ContactBookRepository {
     }
   }
 
-  ApiResponse<List<ContactBook>> _getMockContactBooks(DateTime date) {
-    final monthStart = DateTime(date.year, date.month, 1);
-    final daysInMonth = DateTime(date.year, date.month + 1, 0).day;
-    final today = DateTime.now();
+  Future<void> addMessage({
+    required int contactBookId,
+    required String messageText,
+    List<File>? uploadFiles,
+  }) async {
+    if (useMock) {
+      await Future.delayed(const Duration(milliseconds: 800));
+      return;
+    }
 
-    final contactBooks = List.generate(daysInMonth, (index) {
-      final currentDate = DateTime(date.year, date.month, index + 1);
-      final hasBook =
-          currentDate.isBefore(today) || isSameDay(currentDate, today);
-      final isSigned = hasBook &&
-          currentDate.isBefore(today.subtract(const Duration(days: 2)));
-
-      return ContactBook(
-        studentInfo: StudentInfo(
-          name: "Test Student",
-          className: "Kindy A",
-          classTeacher: "Ms. Ariel",
-        ),
-        calendar: CalendarData(
-          currentDate: currentDate,
-          dateRange: DateRange(
-            start: monthStart,
-            end: DateTime(date.year, date.month + 1, 0),
-          ),
-          dates: [
-            if (hasBook)
-              CalendarDate(
-                date: currentDate,
-                dayOfWeek: _getDayOfWeek(currentDate),
-                hasContactBook: true,
-                isSigned: isSigned,
-                preview: PreviewInfo(
-                  title: "每日進度 ${currentDate.day}日",
-                  classType: "Kindy",
-                  hasHomework: true,
-                  hasAnnouncement: index % 3 == 0,
-                  subjects: _getMockSubjects(index),
-                ),
-              ),
-          ],
-        ),
-        contactBooks: [],
-        statistics: Statistics(
-          totalBooks: daysInMonth,
-          signedCount: (daysInMonth * 0.7).round(),
-          unsignedCount: (daysInMonth * 0.3).round(),
-        ),
+    try {
+      final response = await api.addContactBookMessage(
+        contactBookId: contactBookId,
+        messageText: messageText,
+        uploadFiles: uploadFiles,
       );
-    });
 
-    return ApiResponse(
-      code: 0,
-      success: true,
-      message: '成功獲取聯絡簿列表',
-      data: contactBooks,
-    );
+      if (!response.success) {
+        throw ApiException(
+          response.message,
+          errorCode: response.code.toString(),
+        );
+      }
+    } on DioException catch (e) {
+      throw e.toApiException();
+    }
+  }
+
+  Future<List<ContactBook>> _getMockContactBooks() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    return [
+      ContactBook(
+        contactBookId: 1,
+        studentId: _studentId,
+        studentName: "測試學生",
+        teacherId: 1,
+        teacherName: "測試教師",
+        lessonId: 1,
+        classId: 1,
+        lessonDate: DateTime.now(),
+        title: "每日聯絡簿",
+        content: "今日課程內容...",
+        messages: [
+          ContactBookMessage(
+            messageId: 1,
+            messageText: "請記得簽名確認",
+            messageType: "Teacher",
+            uploadFiles: [],
+          ),
+        ],
+      ),
+    ];
   }
 
   List<String> _getMockSubjects(int index) {

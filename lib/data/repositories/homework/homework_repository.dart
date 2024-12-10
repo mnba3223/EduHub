@@ -251,56 +251,5 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   }
 
   // 模擬數據
-  final List<HomeworkListItem> _mockHomeworks = [
-    HomeworkListItem(
-      homeworkId: 1,
-      description: '請完成課本第三章習題 1-10',
-      startTime: DateTime.now(),
-      endTime: DateTime.now().add(const Duration(days: 3)),
-      lessonTitle: '微積分',
-      lessonDescription: 'MATH101 微積分課程',
-      status: HomeworkStatus.pending,
-      teacherId: 1,
-      teacherName: '王老師', lessonId: 2,
-      // uploadFile: null,
-    ),
-    HomeworkListItem(
-      homeworkId: 2,
-      description: 'Write a 500-word essay about your summer vacation',
-      startTime: DateTime.now(),
-      endTime: DateTime.now().add(const Duration(days: 5)),
-      lessonTitle: '英文寫作',
-      lessonDescription: 'ENG101 英文寫作課程',
-      status: HomeworkStatus.pending,
-      teacherId: 2,
-      teacherName: '李老師', lessonId: 2,
-      // uploadFile: null,
-    ),
-    HomeworkListItem(
-        homeworkId: 3,
-        description: '完成實驗報告',
-        startTime: DateTime.now().subtract(const Duration(days: 7)),
-        endTime: DateTime.now().subtract(const Duration(days: 2)),
-        lessonTitle: '普通物理',
-        lessonDescription: 'PHY101 普通物理課程',
-        status: HomeworkStatus.submit,
-        teacherId: 3,
-        teacherName: '張老師',
-        lessonId: 2
-        // uploadFile: 'http://example.com/report.pdf',
-        ),
-    HomeworkListItem(
-        homeworkId: 4,
-        description: '完成元素特性分析',
-        startTime: DateTime.now().subtract(const Duration(days: 10)),
-        endTime: DateTime.now().subtract(const Duration(days: 5)),
-        lessonTitle: '普通化學',
-        lessonDescription: 'CHE101 普通化學課程',
-        status: HomeworkStatus.graded,
-        teacherId: 4,
-        teacherName: '陳老師',
-        lessonId: 2
-        // uploadFile: 'http://example.com/analysis.pdf',
-        ),
-  ];
+  final List<HomeworkListItem> _mockHomeworks = [];
 }

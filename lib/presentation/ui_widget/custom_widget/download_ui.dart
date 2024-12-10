@@ -139,6 +139,17 @@ class AttachmentDownloadButton extends StatelessWidget {
               ),
             );
         }
+        if (state.successMessage != null) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.successMessage!),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+        }
       },
       builder: (context, state) {
         final progress = state.downloadProgress[fileName] ?? 0;

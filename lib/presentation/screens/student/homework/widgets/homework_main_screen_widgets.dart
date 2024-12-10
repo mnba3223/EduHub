@@ -14,6 +14,34 @@ class HomeworkConstants {
   static const int maxLines = 2;
 }
 
+// class HomeworkStatusChip extends StatelessWidget {
+//   final HomeworkStatus status;
+
+//   const HomeworkStatusChip({
+//     required this.status,
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final config = context.read<HomeworkCubit>().getStatusConfig(status);
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+//       decoration: BoxDecoration(
+//         color: config.color.withOpacity(0.1),
+//         borderRadius: BorderRadius.circular(12.r),
+//       ),
+//       child: Text(
+//         config.text,
+//         style: TextStyle(
+//           color: config.color,
+//           fontSize: 12.sp,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class HomeworkStatusChip extends StatelessWidget {
   final HomeworkStatus status;
 
@@ -36,6 +64,7 @@ class HomeworkStatusChip extends StatelessWidget {
         style: TextStyle(
           color: config.color,
           fontSize: 12.sp,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -59,19 +88,17 @@ class HomeworkCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(HomeworkConstants.cardPadding.w),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
-              if (homework.lessonDescription != null) ...[
-                SizedBox(height: 4.h),
-                _buildDescription(),
-              ],
               SizedBox(height: 8.h),
-              _buildContent(),
+              _buildClassInfo(),
+              // SizedBox(height: 8.h),
+              // _buildDescription(),
               SizedBox(height: 8.h),
-              _buildFooter(),
+              _buildFooter(context),
             ],
           ),
         ),
@@ -83,11 +110,15 @@ class HomeworkCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          homework.lessonTitle,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
+        Expanded(
+          child: Text(
+            homework.className,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         HomeworkStatusChip(status: homework.status),
@@ -95,47 +126,106 @@ class HomeworkCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDescription() {
-    return Text(
-      homework.lessonDescription!,
-      style: TextStyle(
-        fontSize: 12.sp,
-        color: Colors.grey[600],
-      ),
-    );
-  }
-
-  Widget _buildContent() {
-    return Text(
-      homework.description,
-      style: TextStyle(fontSize: 14.sp),
-      maxLines: HomeworkConstants.maxLines,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget _buildFooter() {
+  Widget _buildClassInfo() {
     return Row(
       children: [
-        Icon(Icons.person_outline,
-            size: HomeworkConstants.iconSize.sp, color: Colors.grey[600]),
+        Icon(Icons.location_on_outlined, size: 16.sp, color: Colors.grey[600]),
         SizedBox(width: 4.w),
         Text(
-          homework.teacherName,
+          homework.classroomName,
           style: TextStyle(
-            color: Colors.grey[600],
             fontSize: 12.sp,
+            color: Colors.grey[600],
           ),
         ),
-        SizedBox(width: 16.w),
-        Icon(Icons.calendar_today,
-            size: HomeworkConstants.iconSize.sp, color: Colors.grey[600]),
+      ],
+    );
+  }
+
+  // Widget _buildDescription() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         homework.description,
+  //         style: TextStyle(fontSize: 14.sp),
+  //         maxLines: 2,
+  //         overflow: TextOverflow.ellipsis,
+  //       ),
+  //       if (homework.attachmentUrl != null) ...[
+  //         SizedBox(height: 4.h),
+  //         Row(
+  //           children: [
+  //             Icon(Icons.attachment, size: 16.sp, color: Colors.blue),
+  //             SizedBox(width: 4.w),
+  //             Text(
+  //               'attachment'.tr(),
+  //               style: TextStyle(
+  //                 fontSize: 12.sp,
+  //                 color: Colors.blue,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ],
+  //   );
+  // }
+
+  Widget _buildFooter(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.person_outline, size: 16.sp, color: Colors.grey[600]),
+            SizedBox(width: 4.w),
+            Text(
+              homework.teacherName,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Colors.grey[600],
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Icon(Icons.calendar_today, size: 16.sp, color: Colors.grey[600]),
+            SizedBox(width: 4.w),
+            Text(
+              'due_date'.tr(
+                  args: [DateFormat('yyyy/MM/dd').format(homework.endTime)]),
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        if (homework.submittedCount > 0) ...[
+          SizedBox(height: 4.h),
+          // _buildSubmissionProgress(),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildSubmissionProgress() {
+    return Row(
+      children: [
+        Icon(Icons.check_circle_outline, size: 16.sp, color: Colors.green),
         SizedBox(width: 4.w),
         Text(
-          DateFormat('yyyy-MM-dd HH:mm').format(homework.endTime),
+          'Submitted: ${homework.submittedCount}/${homework.totalStudents}',
           style: TextStyle(
-            color: Colors.grey[600],
             fontSize: 12.sp,
+            color: Colors.grey[600],
+          ),
+        ),
+        Expanded(
+          child: LinearProgressIndicator(
+            value: homework.submittedCount / homework.totalStudents,
+            backgroundColor: Colors.grey[200],
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+            minHeight: 4.h,
           ),
         ),
       ],
@@ -245,7 +335,7 @@ class HomeworkCalendar extends StatelessWidget {
       },
       eventLoader: (day) {
         return homeworks
-            .where((homework) => isSameDay(homework.endTime, day))
+            .where((homework) => isSameDay(homework.startTime, day))
             .toList();
       },
       onDaySelected: onDaySelected,

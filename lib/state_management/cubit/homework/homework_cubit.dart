@@ -10,17 +10,236 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+// class HomeworkCubit extends Cubit<HomeworkState> {
+//   final HomeworkRepository _repository;
+//   // final int _studentId;
+
+//   HomeworkCubit({
+//     required HomeworkRepository repository,
+//     // required int studentId,
+//   })  : _repository = repository,
+//         // _studentId = studentId,
+//         super(const HomeworkState());
+//   int roleid = UserSession.instance.roleId!;
+//   Future<void> loadHomeworks() async {
+//     try {
+//       emit(state.copyWith(isLoading: true, error: null));
+
+//       final now = DateTime.now();
+//       // 上個月的第一天
+//       final previousMonth = DateTime(now.year, now.month - 1, 1);
+//       // 下個月的最後一天
+//       final nextMonthEnd = DateTime(now.year, now.month + 2, 0);
+
+//       final homeworks =
+//           await _repository.getHomeworks(roleid, previousMonth, nextMonthEnd);
+
+//       // final todaysHomeworks = await _repository.getHomeworksByDate(roleid, now);
+//       final todaysHomeworks = _filterHomeworks(
+//         homeworks: homeworks,
+//         date: now,
+//         status: state.selectedStatus,
+//       );
+
+//       emit(state.copyWith(
+//         isLoading: false,
+//         homeworks: homeworks,
+//         filteredHomeworks: todaysHomeworks,
+//         selectedDate: now,
+//         selectedStatus: HomeworkStatus.pending,
+//       ));
+//     } catch (e) {
+//       emit(state.copyWith(
+//         isLoading: false,
+//         error: e.toString(),
+//         homeworks: [],
+//         filteredHomeworks: [],
+//       ));
+//     }
+//   }
+
+//   List<HomeworkListItem> _filterHomeworks({
+//     required List<HomeworkListItem> homeworks,
+//     required DateTime? date,
+//     required HomeworkStatus? status,
+//   }) {
+//     var filtered = homeworks;
+
+//     // 先按日期篩選
+//     if (date != null) {
+//       filtered = filtered
+//           .where((homework) => isSameDay(homework.endTime, date))
+//           .toList();
+//     }
+
+//     // 再按狀態篩選
+//     if (status != null) {
+//       filtered =
+//           filtered.where((homework) => homework.status == status).toList();
+//     }
+
+//     return filtered;
+//   }
+
+//   Future<void> filterHomeworksByDate(DateTime? date) async {
+//     try {
+//       emit(state.copyWith(isLoading: true));
+
+//       // 使用現有的作業列表，同時考慮日期和狀態
+//       final filteredHomeworks = _filterHomeworks(
+//         homeworks: state.homeworks,
+//         date: date,
+//         status: state.selectedStatus,
+//       );
+
+//       emit(state.copyWith(
+//         isLoading: false,
+//         filteredHomeworks: filteredHomeworks,
+//         selectedDate: date,
+//       ));
+//     } catch (e) {
+//       emit(state.copyWith(
+//         isLoading: false,
+//         error: e.toString(),
+//       ));
+//     }
+//   }
+
+//   Future<void> loadHomeworkDetail(int homeworkId) async {
+//     try {
+//       emit(state.copyWith(isLoading: true));
+
+//       final homework = await _repository.getHomeworkDetail(homeworkId, roleid);
+
+//       emit(state.copyWith(
+//         isLoading: false,
+//         currentHomework: homework,
+//       ));
+//     } catch (e) {
+//       emit(state.copyWith(
+//         isLoading: false,
+//         error: e.toString(),
+//       ));
+//     }
+//   }
+
+//   Future<void> submitHomework({
+//     required int submissionId,
+//     // required String content,
+//     required List<PlatformFile> files,
+//   }) async {
+//     try {
+//       emit(state.copyWith(isLoading: true, error: null));
+
+//       await _repository.submitHomeworkMultiple(
+//         submissionId: submissionId,
+//         // studentId: roleid,
+//         // content: content,
+//         files: files,
+//       );
+
+//       await loadHomeworks();
+//     } catch (e) {
+//       emit(state.copyWith(
+//         isLoading: false,
+//         error: e is ApiException ? e.message : 'error_submitting_homework'.tr(),
+//       ));
+//       rethrow;
+//     }
+//   }
+
+//   void updateCalendar(DateTime selectedDay, DateTime focusedDay) {
+//     final filtered = _filterHomeworks(
+//       homeworks: state.homeworks,
+//       date: selectedDay,
+//       status: state.selectedStatus,
+//     );
+
+//     emit(state.copyWith(
+//       selectedDate: selectedDay,
+//       focusedDay: focusedDay,
+//       filteredHomeworks: filtered,
+//     ));
+//   }
+
+//   void updateCalendarFormat(CalendarFormat format) {
+//     emit(state.copyWith(calendarFormat: format));
+//   }
+
+//   List<HomeworkListItem> getEventsForDay(DateTime day) {
+//     return state.homeworks
+//         .where((homework) => isSameDay(homework.endTime, day))
+//         .toList();
+//   }
+
+//   List<HomeworkListItem> getPendingHomeworks() {
+//     return state.filteredHomeworks
+//         .where((h) => h.status == HomeworkStatus.pending)
+//         .toList();
+//   }
+
+//   List<HomeworkListItem> getHomePageHomeworks() {
+//     return state.homeworks
+//         .where((homework) => homework.status == HomeworkStatus.pending)
+//         .toList()
+//       ..sort((a, b) => a.endTime.compareTo(b.endTime))
+//       ..take(3);
+//   }
+
+//   // 新增狀態相關方法
+//   HomeworkStatusConfig getStatusConfig(HomeworkStatus status) {
+//     switch (status) {
+//       case HomeworkStatus.pending:
+//         return HomeworkStatusConfig(Colors.orange, 'pending'.tr());
+//       case HomeworkStatus.submit:
+//         return HomeworkStatusConfig(Colors.blue, 'submitted'.tr());
+//       case HomeworkStatus.graded:
+//         return HomeworkStatusConfig(Colors.green, 'graded'.tr());
+//       case HomeworkStatus.overdue:
+//         return HomeworkStatusConfig(Colors.red, 'overdue'.tr());
+//     }
+//   }
+
+//   String getStatusText(HomeworkStatus status) {
+//     return getStatusConfig(status).text;
+//   }
+
+//   void updateSelectedStatus(HomeworkStatus? status) {
+//     filterHomeworksByStatus(status);
+//   }
+
+//   void updateSelectedDate(DateTime selectedDay, DateTime focusedDay) {
+//     filterHomeworksByDate(selectedDay);
+//   }
+
+//   void filterHomeworksByStatus(HomeworkStatus? status) {
+//     // 使用當前選中的日期和新的狀態進行篩選
+//     final filtered = _filterHomeworks(
+//       homeworks: state.homeworks,
+//       date: state.selectedDate,
+//       status: status,
+//     );
+
+//     emit(state.copyWith(
+//       filteredHomeworks: filtered,
+//       selectedStatus: status,
+//     ));
+//   }
+
+//   void clearError() {
+//     emit(state.copyWith(error: null));
+//   }
+// }
 class HomeworkCubit extends Cubit<HomeworkState> {
   final HomeworkRepository _repository;
-  // final int _studentId;
 
   HomeworkCubit({
     required HomeworkRepository repository,
-    // required int studentId,
   })  : _repository = repository,
-        // _studentId = studentId,
         super(const HomeworkState());
-  int roleid = UserSession.instance.roleId!;
+
+  int get roleId => UserSession.instance.roleId!;
+
   Future<void> loadHomeworks() async {
     try {
       emit(state.copyWith(isLoading: true, error: null));
@@ -32,9 +251,8 @@ class HomeworkCubit extends Cubit<HomeworkState> {
       final nextMonthEnd = DateTime(now.year, now.month + 2, 0);
 
       final homeworks =
-          await _repository.getHomeworks(roleid, previousMonth, nextMonthEnd);
+          await _repository.getHomeworks(roleId, previousMonth, nextMonthEnd);
 
-      // final todaysHomeworks = await _repository.getHomeworksByDate(roleid, now);
       final todaysHomeworks = _filterHomeworks(
         homeworks: homeworks,
         date: now,
@@ -65,14 +283,12 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   }) {
     var filtered = homeworks;
 
-    // 先按日期篩選
     if (date != null) {
       filtered = filtered
-          .where((homework) => isSameDay(homework.endTime, date))
+          .where((homework) => isSameDay(homework.startTime, date))
           .toList();
     }
 
-    // 再按狀態篩選
     if (status != null) {
       filtered =
           filtered.where((homework) => homework.status == status).toList();
@@ -85,7 +301,6 @@ class HomeworkCubit extends Cubit<HomeworkState> {
     try {
       emit(state.copyWith(isLoading: true));
 
-      // 使用現有的作業列表，同時考慮日期和狀態
       final filteredHomeworks = _filterHomeworks(
         homeworks: state.homeworks,
         date: date,
@@ -109,7 +324,7 @@ class HomeworkCubit extends Cubit<HomeworkState> {
     try {
       emit(state.copyWith(isLoading: true));
 
-      final homework = await _repository.getHomeworkDetail(homeworkId, roleid);
+      final homework = await _repository.getHomeworkDetail(homeworkId, roleId);
 
       emit(state.copyWith(
         isLoading: false,
@@ -125,7 +340,6 @@ class HomeworkCubit extends Cubit<HomeworkState> {
 
   Future<void> submitHomework({
     required int submissionId,
-    // required String content,
     required List<PlatformFile> files,
   }) async {
     try {
@@ -133,11 +347,15 @@ class HomeworkCubit extends Cubit<HomeworkState> {
 
       await _repository.submitHomeworkMultiple(
         submissionId: submissionId,
-        // studentId: roleid,
-        // content: content,
         files: files,
       );
 
+      // 提交成功后，重新加载当前作业的详情
+      if (state.currentHomework != null) {
+        await loadHomeworkDetail(state.currentHomework!.homeworkId);
+      }
+
+      // 然后刷新作业列表
       await loadHomeworks();
     } catch (e) {
       emit(state.copyWith(
@@ -168,7 +386,7 @@ class HomeworkCubit extends Cubit<HomeworkState> {
 
   List<HomeworkListItem> getEventsForDay(DateTime day) {
     return state.homeworks
-        .where((homework) => isSameDay(homework.endTime, day))
+        .where((homework) => isSameDay(homework.startTime, day))
         .toList();
   }
 
@@ -179,14 +397,13 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   }
 
   List<HomeworkListItem> getHomePageHomeworks() {
-    return state.homeworks
+    final pendingHomeworks = state.homeworks
         .where((homework) => homework.status == HomeworkStatus.pending)
-        .toList()
-      ..sort((a, b) => a.endTime.compareTo(b.endTime))
-      ..take(3);
+        .toList();
+    pendingHomeworks.sort((a, b) => a.endTime.compareTo(b.endTime));
+    return pendingHomeworks.take(3).toList();
   }
 
-  // 新增狀態相關方法
   HomeworkStatusConfig getStatusConfig(HomeworkStatus status) {
     switch (status) {
       case HomeworkStatus.pending:
@@ -213,7 +430,6 @@ class HomeworkCubit extends Cubit<HomeworkState> {
   }
 
   void filterHomeworksByStatus(HomeworkStatus? status) {
-    // 使用當前選中的日期和新的狀態進行篩選
     final filtered = _filterHomeworks(
       homeworks: state.homeworks,
       date: state.selectedDate,

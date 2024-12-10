@@ -40,7 +40,7 @@ class DioClient {
           if (!isPublicPath) {
             TokenManager.getToken().then((token) {
               if (token != null && token.isNotEmpty) {
-                options.headers['Authorization'] = '$token';
+                options.headers['Authorization'] = 'Bearer $token';
               }
             });
           }

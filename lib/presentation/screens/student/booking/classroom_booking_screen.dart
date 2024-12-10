@@ -1,38 +1,28 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:edutec_hub/data/models/booking/booking_event.dart';
 import 'package:edutec_hub/data/models/booking/classroom_model.dart';
-import 'package:edutec_hub/data/models/timeslot/classroom_booking_time_slot.dart';
-import 'package:edutec_hub/data/repositories/booking/student_classroom_booking_repository.dart';
-
 import 'package:edutec_hub/presentation/screens/student/booking/widgets/classroom_card.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
 import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/classroom_booking_event.dart';
 import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/student_classroom_booking_bloc.dart';
-import 'package:edutec_hub/utils/booking_utils.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class StudentBookingScreen extends StatefulWidget {
-  const StudentBookingScreen({Key? key}) : super(key: key);
+class StudentClassroomBookingScreen extends StatefulWidget {
+  const StudentClassroomBookingScreen({Key? key}) : super(key: key);
 
   @override
-  State<StudentBookingScreen> createState() => _StudentBookingScreenState();
+  State<StudentClassroomBookingScreen> createState() =>
+      _StudentClassroomBookingScreenState();
 }
 
-class _StudentBookingScreenState extends State<StudentBookingScreen> {
+class _StudentClassroomBookingScreenState
+    extends State<StudentClassroomBookingScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    ///loaddata
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<StudentClassroomBookingBloc>().add(LoadClassrooms());
@@ -60,7 +50,6 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
                     child: Center(child: CircularProgressIndicator()),
                   );
                 }
-
                 return Expanded(
                   child: Column(
                     children: [
@@ -100,7 +89,8 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
               ),
               IconButton(
                 icon: Icon(Icons.history, color: Colors.white70, size: 24.sp),
-                onPressed: () => context.push('/booking-history'),
+                onPressed: () =>
+                    context.push('/student-classroom-booking/history'),
               ),
             ],
           ),
@@ -111,70 +101,38 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
 
   Widget _buildDateSelection(
       BuildContext context, ClassroomBookingState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Padding(
-        //   padding: EdgeInsets.all(16.w),
-        //   child: Container(
-        //     padding: EdgeInsets.all(12.w),
-        //     decoration: BoxDecoration(
-        //       color: Colors.blue.shade50,
-        //       borderRadius: BorderRadius.circular(8.r),
-        //     ),
-        //     child: Row(
-        //       children: [
-        //         Icon(Icons.calendar_today,
-        //             size: 20.sp, color: Colors.blue.shade700),
-        //         SizedBox(width: 8.w),
-        //         Text(
-        //           DateFormat('yyyy-MM-dd')
-        //               .format(state.selectedDate ?? DateTime.now()),
-        //           style: TextStyle(
-        //             fontSize: 16.sp,
-        //             fontWeight: FontWeight.w500,
-        //             color: Colors.blue.shade700,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        ReusableCalendar(
-          selectedDay: state.selectedDate,
-          onDaySelected: (selectedDay, focusedDay) {
-            context.read<StudentClassroomBookingBloc>().add(
-                  ClassroomBookingEvent.selectDate(date: selectedDay),
-                );
-          },
-          markerBuilder: (context, date, events) {
-            final availableCount =
-                _getAvailableRoomsCount(date, state.classrooms);
-            if (availableCount > 0) {
-              return Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(4.r),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Text(
-                    availableCount.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+    return ReusableCalendar(
+      selectedDay: state.selectedDate,
+      onDaySelected: (selectedDay, focusedDay) {
+        context.read<StudentClassroomBookingBloc>().add(
+              ClassroomBookingEvent.selectDate(date: selectedDay),
+            );
+      },
+      markerBuilder: (context, date, events) {
+        final availableCount = _getAvailableRoomsCount(date, state.classrooms);
+        if (availableCount > 0) {
+          return Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.all(4.r),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                availableCount.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.bold,
                 ),
-              );
-            }
-            return null;
-          },
-        ),
-      ],
+              ),
+            ),
+          );
+        }
+        return null;
+      },
     );
   }
 
@@ -194,9 +152,9 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
       );
     }
 
-    final availableClassrooms = BookingUtils.getAvailableClassrooms(
-      state.classrooms,
+    final availableClassrooms = _getAvailableClassroomsForDate(
       state.selectedDate!,
+      state.classrooms,
     );
 
     if (availableClassrooms.isEmpty) {
@@ -275,166 +233,28 @@ class _StudentBookingScreenState extends State<StudentBookingScreen> {
     );
   }
 
-  // Widget _buildAvailableTimeSlots(
-  //     BuildContext context, ClassroomBookingState state) {
-  //   if (state.selectedClassroom == null) {
-  //     return const SizedBox.shrink();
-  //   }
-
-  //   final availableTimeSlots = BookingUtils.getAvailableTimeSlots(
-  //     state.selectedClassroom!,
-  //     state.selectedDate!,
-  //   );
-
-  //   if (availableTimeSlots.isEmpty) {
-  //     return Expanded(
-  //       child: Center(
-  //         child: Text(
-  //           'no_available_slots'.tr(),
-  //           style: TextStyle(
-  //             color: Colors.grey[600],
-  //             fontSize: 16.sp,
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  //   }
-
-  //   return Expanded(
-  //     child: ListView.builder(
-  //       padding: EdgeInsets.all(16.w),
-  //       itemCount: availableTimeSlots.length,
-  //       itemBuilder: (context, index) {
-  //         final timeSlot = availableTimeSlots[index];
-
-  //         return TimeSlotListItem(
-  //           startTime: timeSlot.startTime ?? "",
-  //           endTime: timeSlot.endTime ?? "",
-  //           isAvailable: timeSlot.status == ClassroomBookingStatus.available,
-  //           isSelected: state.selectedTimeSlot == timeSlot.startTime,
-  //           onTap: () {
-  //             if (timeSlot.status == ClassroomBookingStatus.available) {
-  //               _showBookingConfirmDialog(
-  //                 context,
-  //                 state.selectedDate!,
-  //                 timeSlot.startTime ?? "",
-  //                 timeSlot.endTime ?? "",
-  //                 state.selectedClassroom!,
-  //               );
-  //             }
-  //           },
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  // void _showBookingConfirmDialog(BuildContext context, DateTime selectedDate,
-  //     String startTime, String endTime, Classroom classroom) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (dialogContext) => BlocProvider.value(
-  //       value: context.read<StudentClassroomBookingBloc>(),
-  //       child: BookingConfirmDialog(
-  //         selectedDate: selectedDate,
-  //         startTime: startTime,
-  //         endTime: endTime,
-  //         classroom: classroom,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // void _showRoomSelectionDialog(
-  //   BuildContext context,
-  //   List<Classroom> rooms,
-  //   DateTime selectedDate,
-  //   String startTime,
-  //   String endTime,
-  // ) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (dialogContext) => BlocProvider.value(
-  //       value: context.read<StudentClassroomBookingBloc>(),
-  //       child: RoomSelectionDialog(
-  //         rooms: rooms,
-  //         selectedDate: selectedDate,
-  //         startTime: startTime,
-  //         endTime: endTime,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  List<ClassroomTimeSlot> _getAvailableTimeSlotsForDate(
+  // 新的获取可用教室方法
+  List<Classroom> _getAvailableClassroomsForDate(
     DateTime date,
     List<Classroom> classrooms,
   ) {
-    final Set<String> timeSlotKeys = {};
-    final List<ClassroomTimeSlot> timeSlots = [];
-
-    for (final classroom in classrooms) {
-      for (final booking in classroom.bookings ?? []) {
-        if (booking.bookingDate.year == date.year &&
-            booking.bookingDate.month == date.month &&
-            booking.bookingDate.day == date.day &&
-            booking.startTime != null &&
-            booking.endTime != null) {
-          final timeKey = '${booking.startTime}_${booking.endTime}';
-          if (!timeSlotKeys.contains(timeKey)) {
-            timeSlotKeys.add(timeKey);
-            timeSlots.add(ClassroomTimeSlot(
-              startTime: booking.startTime,
-              endTime: booking.endTime,
-              status: ClassroomBookingStatus.available,
-            ));
-          }
-        }
-      }
-    }
-
-    timeSlots.sort((a, b) => (a.startTime ?? '').compareTo(b.startTime ?? ''));
-    return timeSlots;
-  }
-
-  List<Classroom> _getAvailableRooms(
-    DateTime date,
-    String? startTime,
-    String? endTime,
-    List<Classroom> classrooms,
-  ) {
-    if (startTime == null || endTime == null) {
-      return [];
-    }
-
     return classrooms.where((classroom) {
-      // 找出這個教室在指定日期和時段的預訂
-      final bookingExists = classroom.bookings?.any((booking) =>
-          booking.bookingDate.year == date.year &&
-          booking.bookingDate.month == date.month &&
-          booking.bookingDate.day == date.day &&
-          booking.startTime == startTime &&
-          booking.endTime == endTime &&
-          booking.isOccupied == 0);
+      // 检查当天是否有冲突的预订
+      final hasConflict = classroom.bookings?.any((booking) =>
+              booking.bookingDate.year == date.year &&
+              booking.bookingDate.month == date.month &&
+              booking.bookingDate.day == date.day &&
+              booking.isOccupied == 1) ??
+          false;
 
-      // 如果有預訂且未被佔用，返回 true
-      return bookingExists ?? false;
+      // 如果没有冲突且有可用时间段，则该教室可用
+      return !hasConflict &&
+          (classroom.availableTimeSlots?.isNotEmpty ?? false);
     }).toList();
   }
 
+  // 修改后的获取可用房间数量方法
   int _getAvailableRoomsCount(DateTime date, List<Classroom> classrooms) {
-    final timeSlots = _getAvailableTimeSlotsForDate(date, classrooms);
-    if (timeSlots.isEmpty) return 0;
-
-    final availableCounts = timeSlots.map((slot) {
-      if (slot.startTime == null || slot.endTime == null) {
-        return 0;
-      }
-      return _getAvailableRooms(date, slot.startTime, slot.endTime, classrooms)
-          .length;
-    });
-
-    if (availableCounts.isEmpty) return 0;
-    return availableCounts.reduce(max);
+    return _getAvailableClassroomsForDate(date, classrooms).length;
   }
 }

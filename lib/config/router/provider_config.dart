@@ -15,6 +15,7 @@ import 'package:edutec_hub/state_management/blocs/booking/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/classroom_booking_event.dart';
 import 'package:edutec_hub/state_management/blocs/booking/student_classroom_booking/student_classroom_booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
+import 'package:edutec_hub/state_management/cubit/classroom/student_classroom_booking_history_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/contact_book/teacher_contact_book_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/course/course_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/download/downloadFileCubit.dart';
@@ -78,6 +79,7 @@ class ProvidersManager {
       //     ),
       //   )..loadHomeworks(),
       // ),
+
       BlocProvider<HomeworkCubit>(
         create: (context) {
           final repository = HomeworkRepositoryImpl(
@@ -111,6 +113,16 @@ class ProvidersManager {
         )..add(const ClassroomBookingEvent.loadClassrooms()),
       ),
       // 其他學生需要的 providers...
+      BlocProvider<CourseCubit>(
+        create: (context) => CourseCubit(
+          repository: CourseRepositoryImpl(useMock: false),
+        )..loadAllData(),
+      ),
+      BlocProvider<ClassroomBookingHistoryCubit>(
+        create: (context) => ClassroomBookingHistoryCubit(
+          repository: StudentClassroomBookingRepository(useMock: false),
+        )..loadBookingHistory(),
+      ),
     ];
   }
 
