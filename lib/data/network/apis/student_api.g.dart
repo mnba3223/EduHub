@@ -317,75 +317,20 @@ class _StudentApi implements StudentApi {
   }
 
   @override
-  Future<ApiResponse<List<AttendanceCourseRecord>>> getAttendanceRecords(
-    String studentId,
-    String startDate,
-    String endDate,
-  ) async {
+  Future<ApiResponse<AttendanceResponse>> getAttendanceAndLeave(
+      {required int studentId}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-    };
+    final queryParameters = <String, dynamic>{r'studentId': studentId};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<ApiResponse<List<AttendanceCourseRecord>>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/api/Attendance/student/${studentId}/records',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<AttendanceCourseRecord>> _value;
-    try {
-      _value = ApiResponse<List<AttendanceCourseRecord>>.fromJson(
-        _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                .map<AttendanceCourseRecord>((i) =>
-                    AttendanceCourseRecord.fromJson(i as Map<String, dynamic>))
-                .toList()
-            : List.empty(),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<AttendanceStatistics>> getAttendanceStatistics(
-    String studentId,
-    String startDate,
-    String endDate,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-    };
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<AttendanceStatistics>>(Options(
+    final _options = _setStreamType<ApiResponse<AttendanceResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/Attendance/student/${studentId}/statistics',
+          '/api/Attendance/AttendanceNLeave',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -395,11 +340,53 @@ class _StudentApi implements StudentApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AttendanceStatistics> _value;
+    late ApiResponse<AttendanceResponse> _value;
     try {
-      _value = ApiResponse<AttendanceStatistics>.fromJson(
+      _value = ApiResponse<AttendanceResponse>.fromJson(
         _result.data!,
-        (json) => AttendanceStatistics.fromJson(json as Map<String, dynamic>),
+        (json) => AttendanceResponse.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<List<LeaveRecord>>> getLeaveRecords(
+      {required int studentId}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'studentId': studentId};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<LeaveRecord>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/LeaveNotice',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<LeaveRecord>> _value;
+    try {
+      _value = ApiResponse<List<LeaveRecord>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<LeaveRecord>(
+                    (i) => LeaveRecord.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -410,22 +397,21 @@ class _StudentApi implements StudentApi {
 
   @override
   Future<ApiResponse<dynamic>> submitLeaveRequest(
-    String studentId,
-    Map<String, dynamic> form,
+    int studentId,
+    FormData formData,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(form);
+    final _data = formData;
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(
-      method: 'POST',
+      method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/Attendance/student/${studentId}/leave-requests',
+          '/api/LeaveNotice/${studentId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -440,126 +426,6 @@ class _StudentApi implements StudentApi {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
         (json) => json as dynamic,
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<dynamic>> cancelLeaveRequest(
-    String studentId,
-    String requestId,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/api/Attendance/student/${studentId}/leave-requests/${requestId}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<dynamic> _value;
-    try {
-      _value = ApiResponse<dynamic>.fromJson(
-        _result.data!,
-        (json) => json as dynamic,
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<List<LeaveRequestRecord>>> getLeaveRequestHistory(
-      String studentId) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<ApiResponse<List<LeaveRequestRecord>>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/api/Attendance/student/${studentId}/leave-requests',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<LeaveRequestRecord>> _value;
-    try {
-      _value = ApiResponse<List<LeaveRequestRecord>>.fromJson(
-        _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                .map<LeaveRequestRecord>((i) =>
-                    LeaveRequestRecord.fromJson(i as Map<String, dynamic>))
-                .toList()
-            : List.empty(),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<AttendanceCourseRecord>> getAttendanceDetail(
-      String recordId) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<ApiResponse<AttendanceCourseRecord>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/api/Attendance/records/${recordId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AttendanceCourseRecord> _value;
-    try {
-      _value = ApiResponse<AttendanceCourseRecord>.fromJson(
-        _result.data!,
-        (json) => AttendanceCourseRecord.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

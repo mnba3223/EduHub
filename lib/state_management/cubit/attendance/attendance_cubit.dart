@@ -1,145 +1,74 @@
-import 'package:bloc/bloc.dart';
+import 'package:edutec_hub/data/models/attendance/leave_models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:edutec_hub/data/models/attendance/attendance_models.dart';
 import 'package:edutec_hub/data/repositories/attendance_repository.dart';
-import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 
-part 'attendance_state.dart';
-
 class AttendanceCubit extends Cubit<AttendanceState> {
-  final AttendanceRepository repository;
+  final AttendanceRepository _repository;
 
   AttendanceCubit({
-    required this.repository,
-  }) : super(const AttendanceInitial());
+    required AttendanceRepository repository,
+  })  : _repository = repository,
+        super(const AttendanceState());
 
-  Future<void> loadAttendanceData({
-    DateTime? startDate,
-    DateTime? endDate,
-  }) async {
-    emit(const AttendanceLoading());
+  Future<void> loadAttendanceData() async {
+    emit(state.copyWith(isLoading: true, error: null));
 
     try {
-      final now = DateTime.now();
-      final start = startDate ?? DateTime(now.year, now.month, 1);
-      final end = endDate ?? DateTime(now.year, now.month + 1, 0);
+      final response = await _repository.getAttendanceAndLeave();
 
-      final records = await repository.getAttendanceRecords(
-        startDate: start,
-        endDate: end,
-      );
-
-      final statistics = await repository.getAttendanceStatistics(
-        startDate: start,
-        endDate: end,
-      );
-
-      emit(AttendanceLoaded(
-        records: records,
-        statistics: statistics,
-        selectedDate: now,
-        selectedMonth: DateTime(now.year, now.month),
+      emit(state.copyWith(
+        isLoading: false,
+        attendanceRecords: response.Attendance ?? [],
+        leaveRecords: response.Leave ?? [],
+        selectedDate: state.selectedDate ?? DateTime.now(),
       ));
-    } on Exception {
-      emit(const AttendanceError('請重新登入'));
     } catch (e) {
-      emit(AttendanceError(e.toString()));
-    }
-  }
-
-  Future<void> changeMonth(DateTime month) async {
-    final currentState = state;
-    if (currentState is AttendanceLoaded) {
-      final startDate = DateTime(month.year, month.month, 1);
-      final endDate = DateTime(month.year, month.month + 1, 0);
-
-      emit(const AttendanceLoading());
-
-      try {
-        final records = await repository.getAttendanceRecords(
-          startDate: startDate,
-          endDate: endDate,
-        );
-
-        final statistics = await repository.getAttendanceStatistics(
-          startDate: startDate,
-          endDate: endDate,
-        );
-
-        emit(AttendanceLoaded(
-          records: records,
-          statistics: statistics,
-          selectedDate: currentState.selectedDate,
-          selectedMonth: month,
-        ));
-      } catch (e) {
-        emit(AttendanceError(e.toString()));
-      }
+      emit(state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      ));
     }
   }
 
   void selectDate(DateTime date) {
-    final currentState = state;
-    if (currentState is AttendanceLoaded) {
-      emit(currentState.copyWith(selectedDate: date));
-    }
+    emit(state.copyWith(selectedDate: date));
   }
 
-  Future<void> submitLeaveRequest(LeaveRequestForm form) async {
-    // 保存當前狀態
-    final currentState = state;
-    emit(const LeaveRequestLoading());
-
-    try {
-      await repository.submitLeaveRequest(form);
-      emit(const LeaveRequestSuccess());
-
-      // 重新加載當月數據，使用保存的月份
-      if (currentState is AttendanceLoaded) {
-        await loadAttendanceData(
-          startDate: DateTime(
-            currentState.selectedMonth.year,
-            currentState.selectedMonth.month,
-            1,
-          ),
-          endDate: DateTime(
-            currentState.selectedMonth.year,
-            currentState.selectedMonth.month + 1,
-            0,
-          ),
-        );
-      } else {
-        await loadAttendanceData(); // 如果沒有當前狀態，加載當月數據
-      }
-    } catch (e) {
-      emit(LeaveRequestError(e.toString()));
-      // 恢復之前的狀態
-      if (currentState is AttendanceLoaded) {
-        emit(currentState);
-      }
-    }
+  List<AttendanceRecord> getAttendanceRecordsForDate(DateTime date) {
+    return state.attendanceRecords
+        .where((record) => DateUtils.isSameDay(record.attendanceDate, date))
+        .toList();
   }
 
-  Future<void> cancelLeaveRequest(String leaveRequestId) async {
-    emit(const LeaveRequestLoading());
+  List<StudentLeaveRecord> getLeaveRecordsForDate(DateTime date) {
+    return state.leaveRecords
+        .where((record) => DateUtils.isSameDay(record.lessonDate, date))
+        .toList();
+  }
 
-    try {
-      await repository.cancelLeaveRequest(leaveRequestId);
-      emit(const LeaveRequestSuccess());
+  bool hasRecordsForDate(DateTime date) {
+    return getAttendanceRecordsForDate(date).isNotEmpty ||
+        getLeaveRecordsForDate(date).isNotEmpty;
+  }
 
-      // 重新加載當月數據
-      final currentState = state;
-      if (currentState is AttendanceLoaded) {
-        await loadAttendanceData(
-          startDate: DateTime(currentState.selectedMonth.year,
-              currentState.selectedMonth.month, 1),
-          endDate: DateTime(currentState.selectedMonth.year,
-              currentState.selectedMonth.month + 1, 0),
-        );
-      }
-    } catch (e) {
-      emit(LeaveRequestError(e.toString()));
-    }
+  // 統計相關的輔助方法
+  int getTotalCheckInCount() {
+    return state.attendanceRecords
+        .where((record) => record.attendanceStatus == 'CheckIn')
+        .length;
+  }
+
+  int getTotalLeaveCount() {
+    return state.leaveRecords.length;
+  }
+
+  double getAttendanceRate() {
+    final totalDays = state.attendanceRecords.length;
+    if (totalDays == 0) return 0.0;
+
+    final presentDays = getTotalCheckInCount();
+    return presentDays / totalDays;
   }
 }

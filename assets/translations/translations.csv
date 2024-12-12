@@ -210,6 +210,8 @@ due_time,Due Time,繳交期限,繳交期限,繳交期限
 submit_time,Submit Time,提交時間,提交時間,提交時間
 homework_overdue_warnin,Overtime!,您已經超過繳交期限,您已經超過繳交期限,您已經超過繳交期限
 message_cannot_be_empty,Message Can not be empty,訊息不能為空,訊息不能為空,訊息不能為空
+bill,Bill Management,帳單管理,帳單管理,帳單管理
+
 
 # Navigation Items & Menu
 attendance,Attendance,出勤,出勤,出席
@@ -219,7 +221,7 @@ contact_us,Contact Us,聯絡我們,联系我们,お問い合わせ
 bulletin_board,Bulletin Board,公佈欄,公告栏,掲示板
 exam_name,Exam Name,考試名稱,考试名称,試験名
 
-#attachments
+#attendance
 attendance_statistics,Attendance Statistics,出勤統計
 attendance_records,Attendance Records,出席紀錄
 total_classes,Total Classes,總課程數
@@ -239,8 +241,15 @@ leave_application,Leave Application,請假申請
 leave_reason,Leave Reason,請假原因
 please_enter_leave_reason,Please enter leave reason,請輸入請假原因
 leave_request_submitted,Leave request submitted,請假申請已提交
-leave_request_failed,Leave request failed: {0},請假申請失敗: {0}
 not_attended,Not Attended,未出席
+check_in,Check in,出席,出席,
+leave_requests,Leave Requests,請假列表,请假列表,休暇申請
+leave_type,Leave Type,請假類型,请假类型,休暇種類
+select_lessons,Select Lessons,選擇課程,选择课程,授業選択
+no_lessons_on_selected_date,No lessons on selected date,所選日期無課程,所选日期无课程,選択日に授業はありません
+leave_application,Leave Application,請假申請,请假申请,休暇申請
+duplicate_leave_request,Leave request already exists for this lesson,此課程已有請假申請,此课程已有请假申请,この授業の休暇申請は既に存在します
+leave_request_submitted,Leave request submitted successfully,請假申請提交成功,请假申请提交成功,休暇申請を提出しました
 
 
 # Exam System
@@ -277,6 +286,7 @@ download_exam_file,Download Exam File,下載考試檔案,下载考试文件,試�
 exam_file,Exam File,考試檔案,考试文件,試験ファイル
 file_download_success,File Downloaded Successfully,檔案下載成功,文件下载成功,ファイルのダウンロードが完了しました
 file_download_failed,File Download Failed,檔案下載失敗,文件下载失败,ファイルのダウンロードに失敗しました
+download_failed_content,File Download Failed,檔案下載失敗，路徑及檔案遺失,檔案下載失敗，路徑及檔案遺失,ファイルのダウンロードに失敗しました
 
 # Exam Details
 exam_info,Exam Information,考試資訊,考试信息,試験情報

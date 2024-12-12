@@ -47,6 +47,7 @@ _$ContactBookMessageImpl _$$ContactBookMessageImplFromJson(
       uploadFiles: (json['upload_file'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      messageSender: json['name'] as String,
     );
 
 Map<String, dynamic> _$$ContactBookMessageImplToJson(
@@ -56,4 +57,5 @@ Map<String, dynamic> _$$ContactBookMessageImplToJson(
       'message_text': instance.messageText,
       'message_type': instance.messageType,
       'upload_file': instance.uploadFiles,
+      'name': instance.messageSender,
     };

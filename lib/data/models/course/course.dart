@@ -8,11 +8,12 @@ class Course with _$Course {
   const factory Course({
     @JsonKey(name: 'course_id') required int courseId,
     @JsonKey(name: 'course_name') required String courseName,
-    @JsonKey(name: 'course_description') required String courseDescription,
+    @JsonKey(name: 'course_description') String? courseDescription,
     @JsonKey(name: 'subject_id') required int subjectId,
     required double price,
-    @JsonKey(name: 'course_color') required String courseColor,
-    @JsonKey(name: 'course_image') required String courseImage,
+    @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+    required String courseColor,
+    @JsonKey(name: 'course_image') String? courseImage, // 允許為 null
     @JsonKey(name: 'subject_name') required String subjectName,
   }) = _Course;
 
@@ -30,8 +31,9 @@ class StudentLesson with _$StudentLesson {
     @JsonKey(name: 'end_time') required String endTime,
     @JsonKey(name: 'course_name') required String courseName,
     @JsonKey(name: 'classroom_name') required String classroomName,
-    @JsonKey(name: 'course_color') required String courseColor,
-    @JsonKey(name: 'course_image') required String courseImage,
+    @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+    required String courseColor,
+    @JsonKey(name: 'course_image') String? courseImage, // 允許為 null
     @JsonKey(name: 'subject_name') required String subjectName,
   }) = _StudentLesson;
 

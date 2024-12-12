@@ -6,111 +6,86 @@ part of 'attendance_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AttendanceCourseRecordImpl _$$AttendanceCourseRecordImplFromJson(
+_$AttendanceRecordImpl _$$AttendanceRecordImplFromJson(
         Map<String, dynamic> json) =>
-    _$AttendanceCourseRecordImpl(
-      id: json['id'] as String,
-      courseId: json['courseId'] as String,
-      courseName: json['courseName'] as String,
-      startTime: DateTime.parse(json['startTime'] as String),
-      endTime: DateTime.parse(json['endTime'] as String),
-      classroom: json['classroom'] as String,
-      teacherName: json['teacherName'] as String,
-      status: $enumDecode(_$AttendanceStatusEnumMap, json['status']),
-      leaveRequest: json['leaveRequest'] == null
-          ? null
-          : LeaveRequestRecord.fromJson(
-              json['leaveRequest'] as Map<String, dynamic>),
+    _$AttendanceRecordImpl(
+      attendanceId: (json['attendance_id'] as num).toInt(),
+      studentId: (json['student_id'] as num).toInt(),
+      attendanceDate: DateTime.parse(json['attendance_date'] as String),
+      temperature: (json['temperature'] as num).toDouble(),
+      attendanceStatus: json['attendance_status'] as String?,
+      attendanceImage: json['attendance_image'] as String?,
+      studentName: json['student_name'] as String,
+      studentCode: json['student_code'] as String,
     );
 
-Map<String, dynamic> _$$AttendanceCourseRecordImplToJson(
-        _$AttendanceCourseRecordImpl instance) =>
+Map<String, dynamic> _$$AttendanceRecordImplToJson(
+        _$AttendanceRecordImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'courseId': instance.courseId,
-      'courseName': instance.courseName,
-      'startTime': instance.startTime.toIso8601String(),
-      'endTime': instance.endTime.toIso8601String(),
-      'classroom': instance.classroom,
-      'teacherName': instance.teacherName,
-      'status': _$AttendanceStatusEnumMap[instance.status]!,
-      'leaveRequest': instance.leaveRequest,
+      'attendance_id': instance.attendanceId,
+      'student_id': instance.studentId,
+      'attendance_date': instance.attendanceDate.toIso8601String(),
+      'temperature': instance.temperature,
+      'attendance_status': instance.attendanceStatus,
+      'attendance_image': instance.attendanceImage,
+      'student_name': instance.studentName,
+      'student_code': instance.studentCode,
     };
 
-const _$AttendanceStatusEnumMap = {
-  AttendanceStatus.present: 'present',
-  AttendanceStatus.notAttended: 'notAttended',
-  AttendanceStatus.absent: 'absent',
-  AttendanceStatus.late: 'late',
-  AttendanceStatus.leave: 'leave',
-};
-
-_$LeaveRequestRecordImpl _$$LeaveRequestRecordImplFromJson(
+_$StudentLeaveRecordImpl _$$StudentLeaveRecordImplFromJson(
         Map<String, dynamic> json) =>
-    _$LeaveRequestRecordImpl(
-      id: json['id'] as String,
-      attendanceRecordId: json['attendanceRecordId'] as String,
-      reason: json['reason'] as String,
-      requestTime: DateTime.parse(json['requestTime'] as String),
-      status: $enumDecode(_$LeaveStatusEnumMap, json['status']),
-      reviewTime: json['reviewTime'] == null
-          ? null
-          : DateTime.parse(json['reviewTime'] as String),
-      reviewNote: json['reviewNote'] as String?,
+    _$StudentLeaveRecordImpl(
+      lessonId: (json['lesson_id'] as num).toInt(),
+      studentId: (json['student_id'] as num).toInt(),
+      status: json['status'] as String,
+      leaveRequested: (json['leave_requested'] as num).toInt(),
+      leaveStatus: json['leave_status'] as String,
+      leaveReason: json['leave_reason'] as String,
+      leaveRequestDate: DateTime.parse(json['leave_request_date'] as String),
+      adjustmentTypeId: (json['adjustment_type_id'] as num).toInt(),
+      studentName: json['student_name'] as String,
+      className: json['class_name'] as String,
+      lessonDate: DateTime.parse(json['lesson_date'] as String),
+      startTime: json['start_time'] as String,
+      endTime: json['end_time'] as String,
+      adjustmentType: json['adjustment_type'] as String,
+      makeupArranged: (json['makeup_arranged'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$LeaveRequestRecordImplToJson(
-        _$LeaveRequestRecordImpl instance) =>
+Map<String, dynamic> _$$StudentLeaveRecordImplToJson(
+        _$StudentLeaveRecordImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'attendanceRecordId': instance.attendanceRecordId,
-      'reason': instance.reason,
-      'requestTime': instance.requestTime.toIso8601String(),
-      'status': _$LeaveStatusEnumMap[instance.status]!,
-      'reviewTime': instance.reviewTime?.toIso8601String(),
-      'reviewNote': instance.reviewNote,
+      'lesson_id': instance.lessonId,
+      'student_id': instance.studentId,
+      'status': instance.status,
+      'leave_requested': instance.leaveRequested,
+      'leave_status': instance.leaveStatus,
+      'leave_reason': instance.leaveReason,
+      'leave_request_date': instance.leaveRequestDate.toIso8601String(),
+      'adjustment_type_id': instance.adjustmentTypeId,
+      'student_name': instance.studentName,
+      'class_name': instance.className,
+      'lesson_date': instance.lessonDate.toIso8601String(),
+      'start_time': instance.startTime,
+      'end_time': instance.endTime,
+      'adjustment_type': instance.adjustmentType,
+      'makeup_arranged': instance.makeupArranged,
     };
 
-const _$LeaveStatusEnumMap = {
-  LeaveStatus.pending: 'pending',
-  LeaveStatus.approved: 'approved',
-  LeaveStatus.rejected: 'rejected',
-};
-
-_$AttendanceStatisticsImpl _$$AttendanceStatisticsImplFromJson(
+_$AttendanceResponseImpl _$$AttendanceResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _$AttendanceStatisticsImpl(
-      totalClasses: (json['totalClasses'] as num).toInt(),
-      presentCount: (json['presentCount'] as num).toInt(),
-      absentCount: (json['absentCount'] as num).toInt(),
-      lateCount: (json['lateCount'] as num).toInt(),
-      leaveCount: (json['leaveCount'] as num).toInt(),
-      attendanceRate: (json['attendanceRate'] as num).toDouble(),
+    _$AttendanceResponseImpl(
+      Attendance: (json['Attendance'] as List<dynamic>?)
+          ?.map((e) => AttendanceRecord.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      Leave: (json['Leave'] as List<dynamic>?)
+          ?.map((e) => StudentLeaveRecord.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$$AttendanceStatisticsImplToJson(
-        _$AttendanceStatisticsImpl instance) =>
+Map<String, dynamic> _$$AttendanceResponseImplToJson(
+        _$AttendanceResponseImpl instance) =>
     <String, dynamic>{
-      'totalClasses': instance.totalClasses,
-      'presentCount': instance.presentCount,
-      'absentCount': instance.absentCount,
-      'lateCount': instance.lateCount,
-      'leaveCount': instance.leaveCount,
-      'attendanceRate': instance.attendanceRate,
-    };
-
-_$LeaveRequestFormImpl _$$LeaveRequestFormImplFromJson(
-        Map<String, dynamic> json) =>
-    _$LeaveRequestFormImpl(
-      attendanceRecordId: json['attendanceRecordId'] as String,
-      reason: json['reason'] as String,
-      requestTime: DateTime.parse(json['requestTime'] as String),
-    );
-
-Map<String, dynamic> _$$LeaveRequestFormImplToJson(
-        _$LeaveRequestFormImpl instance) =>
-    <String, dynamic>{
-      'attendanceRecordId': instance.attendanceRecordId,
-      'reason': instance.reason,
-      'requestTime': instance.requestTime.toIso8601String(),
+      'Attendance': instance.Attendance,
+      'Leave': instance.Leave,
     };

@@ -1,77 +1,89 @@
-// attendance_models.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'attendance_models.freezed.dart';
 part 'attendance_models.g.dart';
 
 @freezed
-class AttendanceCourseRecord with _$AttendanceCourseRecord {
-  const factory AttendanceCourseRecord({
-    required String id,
-    required String courseId,
-    required String courseName,
-    required DateTime startTime,
-    required DateTime endTime,
-    required String classroom,
-    required String teacherName,
-    required AttendanceStatus status,
-    LeaveRequestRecord? leaveRequest,
-  }) = _AttendanceCourseRecord;
+class AttendanceRecord with _$AttendanceRecord {
+  const factory AttendanceRecord({
+    @JsonKey(name: 'attendance_id') required int attendanceId,
+    @JsonKey(name: 'student_id') required int studentId,
+    @JsonKey(name: 'attendance_date') required DateTime attendanceDate,
+    required double temperature,
+    @JsonKey(name: 'attendance_status') String? attendanceStatus,
+    @JsonKey(name: 'attendance_image') String? attendanceImage,
+    @JsonKey(name: 'student_name') required String studentName,
+    @JsonKey(name: 'student_code') required String studentCode,
+  }) = _AttendanceRecord;
 
-  factory AttendanceCourseRecord.fromJson(Map<String, dynamic> json) =>
-      _$AttendanceCourseRecordFromJson(json);
+  factory AttendanceRecord.fromJson(Map<String, dynamic> json) =>
+      _$AttendanceRecordFromJson(json);
 }
 
 @freezed
-class LeaveRequestRecord with _$LeaveRequestRecord {
-  const factory LeaveRequestRecord({
-    required String id,
-    required String attendanceRecordId,
-    required String reason,
-    required DateTime requestTime,
-    required LeaveStatus status,
-    DateTime? reviewTime,
-    String? reviewNote,
-  }) = _LeaveRequestRecord;
+class StudentLeaveRecord with _$StudentLeaveRecord {
+  const factory StudentLeaveRecord({
+    @JsonKey(name: 'lesson_id') required int lessonId,
+    @JsonKey(name: 'student_id') required int studentId,
+    required String status,
+    @JsonKey(name: 'leave_requested') required int leaveRequested,
+    @JsonKey(name: 'leave_status') required String leaveStatus,
+    @JsonKey(name: 'leave_reason') required String leaveReason,
+    @JsonKey(name: 'leave_request_date') required DateTime leaveRequestDate,
+    @JsonKey(name: 'adjustment_type_id') required int adjustmentTypeId,
+    @JsonKey(name: 'student_name') required String studentName,
+    @JsonKey(name: 'class_name') required String className,
+    @JsonKey(name: 'lesson_date') required DateTime lessonDate,
+    @JsonKey(name: 'start_time') required String startTime,
+    @JsonKey(name: 'end_time') required String endTime,
+    @JsonKey(name: 'adjustment_type') required String adjustmentType,
+    @JsonKey(name: 'makeup_arranged') required int makeupArranged,
+  }) = _StudentLeaveRecord;
 
-  factory LeaveRequestRecord.fromJson(Map<String, dynamic> json) =>
-      _$LeaveRequestRecordFromJson(json);
+  factory StudentLeaveRecord.fromJson(Map<String, dynamic> json) =>
+      _$StudentLeaveRecordFromJson(json);
 }
 
 @freezed
-class AttendanceStatistics with _$AttendanceStatistics {
-  const factory AttendanceStatistics({
-    required int totalClasses,
-    required int presentCount,
-    required int absentCount,
-    required int lateCount,
-    required int leaveCount,
-    required double attendanceRate,
-  }) = _AttendanceStatistics;
+class AttendanceResponse with _$AttendanceResponse {
+  const factory AttendanceResponse({
+    List<AttendanceRecord>? Attendance,
+    List<StudentLeaveRecord>? Leave,
+  }) = _AttendanceResponse;
 
-  factory AttendanceStatistics.fromJson(Map<String, dynamic> json) =>
-      _$AttendanceStatisticsFromJson(json);
-}
-
-@freezed
-class LeaveRequestForm with _$LeaveRequestForm {
-  const factory LeaveRequestForm({
-    required String attendanceRecordId,
-    required String reason,
-    required DateTime requestTime,
-  }) = _LeaveRequestForm;
-
-  factory LeaveRequestForm.fromJson(Map<String, dynamic> json) =>
-      _$LeaveRequestFormFromJson(json);
+  factory AttendanceResponse.fromJson(Map<String, dynamic> json) =>
+      _$AttendanceResponseFromJson(json);
 }
 
 enum AttendanceStatus {
-  ///出席
-  present, //出席
-  notAttended, // 未出席(課程尚未開始或進行中,可以請假)
-  absent,
+  @JsonValue('CheckIn')
+  checkIn,
+  @JsonValue('CheckOut')
+  checkOut,
+  @JsonValue('Late')
   late,
-  leave
+  @JsonValue('Absent')
+  absent,
+  @JsonValue('Leave')
+  leave,
 }
 
-enum LeaveStatus { pending, approved, rejected }
+enum LeaveStatus {
+  @JsonValue('Pending')
+  pending,
+  @JsonValue('Approved')
+  approved,
+  @JsonValue('Rejected')
+  rejected,
+}
+
+@freezed
+class AttendanceState with _$AttendanceState {
+  const factory AttendanceState({
+    @Default([]) List<AttendanceRecord> attendanceRecords,
+    @Default([]) List<StudentLeaveRecord> leaveRecords,
+    @Default(null) DateTime? selectedDate,
+    @Default(false) bool isLoading,
+    String? error,
+  }) = _AttendanceState;
+}

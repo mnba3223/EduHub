@@ -7,6 +7,7 @@ import 'package:edutec_hub/data/repositories/course/course_repository.dart';
 import 'package:edutec_hub/data/repositories/exam/teacher_exam_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/homework_repository.dart';
 import 'package:edutec_hub/data/repositories/homework/teacher_homework_repository.dart';
+import 'package:edutec_hub/data/repositories/leave/leave_repository.dart';
 import 'package:edutec_hub/data/repositories/leave/teacher_leave_repository.dart';
 import 'package:edutec_hub/data/repositories/lesson/lesson_repository.dart';
 import 'package:edutec_hub/data/repositories/silder_repository.dart';
@@ -23,6 +24,7 @@ import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/teacher/teacher_homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/leave/leave_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/leave/teacher_leave_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
@@ -79,7 +81,11 @@ class ProvidersManager {
       //     ),
       //   )..loadHomeworks(),
       // ),
-
+      BlocProvider<LeaveCubit>(
+        create: (context) => LeaveCubit(
+          repository: LeaveRepository(useMock: false)..getLeaveRecords(),
+        ),
+      ),
       BlocProvider<HomeworkCubit>(
         create: (context) {
           final repository = HomeworkRepositoryImpl(

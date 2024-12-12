@@ -441,6 +441,8 @@ mixin _$ContactBookMessage {
   String get messageType => throw _privateConstructorUsedError;
   @JsonKey(name: 'upload_file')
   List<String> get uploadFiles => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String get messageSender => throw _privateConstructorUsedError;
 
   /// Serializes this ContactBookMessage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -462,7 +464,8 @@ abstract class $ContactBookMessageCopyWith<$Res> {
       {@JsonKey(name: 'message_id') int messageId,
       @JsonKey(name: 'message_text') String messageText,
       @JsonKey(name: 'message_type') String messageType,
-      @JsonKey(name: 'upload_file') List<String> uploadFiles});
+      @JsonKey(name: 'upload_file') List<String> uploadFiles,
+      @JsonKey(name: 'name') String messageSender});
 }
 
 /// @nodoc
@@ -484,6 +487,7 @@ class _$ContactBookMessageCopyWithImpl<$Res, $Val extends ContactBookMessage>
     Object? messageText = null,
     Object? messageType = null,
     Object? uploadFiles = null,
+    Object? messageSender = null,
   }) {
     return _then(_value.copyWith(
       messageId: null == messageId
@@ -502,6 +506,10 @@ class _$ContactBookMessageCopyWithImpl<$Res, $Val extends ContactBookMessage>
           ? _value.uploadFiles
           : uploadFiles // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      messageSender: null == messageSender
+          ? _value.messageSender
+          : messageSender // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -518,7 +526,8 @@ abstract class _$$ContactBookMessageImplCopyWith<$Res>
       {@JsonKey(name: 'message_id') int messageId,
       @JsonKey(name: 'message_text') String messageText,
       @JsonKey(name: 'message_type') String messageType,
-      @JsonKey(name: 'upload_file') List<String> uploadFiles});
+      @JsonKey(name: 'upload_file') List<String> uploadFiles,
+      @JsonKey(name: 'name') String messageSender});
 }
 
 /// @nodoc
@@ -538,6 +547,7 @@ class __$$ContactBookMessageImplCopyWithImpl<$Res>
     Object? messageText = null,
     Object? messageType = null,
     Object? uploadFiles = null,
+    Object? messageSender = null,
   }) {
     return _then(_$ContactBookMessageImpl(
       messageId: null == messageId
@@ -556,6 +566,10 @@ class __$$ContactBookMessageImplCopyWithImpl<$Res>
           ? _value._uploadFiles
           : uploadFiles // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      messageSender: null == messageSender
+          ? _value.messageSender
+          : messageSender // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -567,7 +581,8 @@ class _$ContactBookMessageImpl implements _ContactBookMessage {
       {@JsonKey(name: 'message_id') required this.messageId,
       @JsonKey(name: 'message_text') required this.messageText,
       @JsonKey(name: 'message_type') required this.messageType,
-      @JsonKey(name: 'upload_file') required final List<String> uploadFiles})
+      @JsonKey(name: 'upload_file') required final List<String> uploadFiles,
+      @JsonKey(name: 'name') required this.messageSender})
       : _uploadFiles = uploadFiles;
 
   factory _$ContactBookMessageImpl.fromJson(Map<String, dynamic> json) =>
@@ -592,8 +607,12 @@ class _$ContactBookMessageImpl implements _ContactBookMessage {
   }
 
   @override
+  @JsonKey(name: 'name')
+  final String messageSender;
+
+  @override
   String toString() {
-    return 'ContactBookMessage(messageId: $messageId, messageText: $messageText, messageType: $messageType, uploadFiles: $uploadFiles)';
+    return 'ContactBookMessage(messageId: $messageId, messageText: $messageText, messageType: $messageType, uploadFiles: $uploadFiles, messageSender: $messageSender)';
   }
 
   @override
@@ -608,13 +627,20 @@ class _$ContactBookMessageImpl implements _ContactBookMessage {
             (identical(other.messageType, messageType) ||
                 other.messageType == messageType) &&
             const DeepCollectionEquality()
-                .equals(other._uploadFiles, _uploadFiles));
+                .equals(other._uploadFiles, _uploadFiles) &&
+            (identical(other.messageSender, messageSender) ||
+                other.messageSender == messageSender));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, messageId, messageText,
-      messageType, const DeepCollectionEquality().hash(_uploadFiles));
+  int get hashCode => Object.hash(
+      runtimeType,
+      messageId,
+      messageText,
+      messageType,
+      const DeepCollectionEquality().hash(_uploadFiles),
+      messageSender);
 
   /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -635,11 +661,12 @@ class _$ContactBookMessageImpl implements _ContactBookMessage {
 
 abstract class _ContactBookMessage implements ContactBookMessage {
   const factory _ContactBookMessage(
-      {@JsonKey(name: 'message_id') required final int messageId,
-      @JsonKey(name: 'message_text') required final String messageText,
-      @JsonKey(name: 'message_type') required final String messageType,
-      @JsonKey(name: 'upload_file')
-      required final List<String> uploadFiles}) = _$ContactBookMessageImpl;
+          {@JsonKey(name: 'message_id') required final int messageId,
+          @JsonKey(name: 'message_text') required final String messageText,
+          @JsonKey(name: 'message_type') required final String messageType,
+          @JsonKey(name: 'upload_file') required final List<String> uploadFiles,
+          @JsonKey(name: 'name') required final String messageSender}) =
+      _$ContactBookMessageImpl;
 
   factory _ContactBookMessage.fromJson(Map<String, dynamic> json) =
       _$ContactBookMessageImpl.fromJson;
@@ -656,6 +683,9 @@ abstract class _ContactBookMessage implements ContactBookMessage {
   @override
   @JsonKey(name: 'upload_file')
   List<String> get uploadFiles;
+  @override
+  @JsonKey(name: 'name')
+  String get messageSender;
 
   /// Create a copy of ContactBookMessage
   /// with the given fields replaced by the non-null parameter values.

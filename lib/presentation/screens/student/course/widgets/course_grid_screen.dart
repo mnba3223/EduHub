@@ -203,27 +203,59 @@ class CourseCard extends StatelessWidget {
                     top: 2.h,
                     left: 10.w,
                     child: ClipOval(
-                      child: Image.network(
-                        course.courseImage,
-                        width: 80.w,
-                        height: 80.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 80.w,
-                            height: 80.w,
-                            decoration: const BoxDecoration(
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
+                      child: course.courseImage != null
+                          ? Image.network(
+                              course.courseImage!,
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.image,
+                                    color: Colors.grey[500],
+                                    size: 30.sp,
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              width: 80.w,
+                              height: 80.w,
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.image,
+                                color: Colors.grey[500],
+                                size: 30.sp,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.error,
-                              color: Colors.white,
-                              size: 30.sp,
-                            ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ],

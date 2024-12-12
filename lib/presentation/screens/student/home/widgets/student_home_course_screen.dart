@@ -234,27 +234,59 @@ class CourseCard extends StatelessWidget {
                     top: 2.h,
                     left: 10.w,
                     child: ClipOval(
-                      child: Image.network(
-                        course.courseImage,
-                        width: 80.w,
-                        height: 80.w, // 使用 width 來保持圓形
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 80.w,
-                            height: 80.w,
-                            decoration: const BoxDecoration(
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
+                      child: course.courseImage != null
+                          ? Image.network(
+                              course.courseImage!,
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.image,
+                                    color: Colors.grey[500],
+                                    size: 30.sp,
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              width: 80.w,
+                              height: 80.w,
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.image,
+                                color: Colors.grey[500],
+                                size: 30.sp,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.error,
-                              color: Colors.white,
-                              size: 30.sp,
-                            ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ],
@@ -394,15 +426,57 @@ class TodayLessonCard extends StatelessWidget {
                     child: SizedBox(
                       width: 80.w,
                       height: 80.w,
-                      child: Image.network(
-                        lesson.courseImage,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.play_circle_outline_rounded,
-                          size: 60.sp,
-                          color: Colors.white.withOpacity(0.9),
-                        ),
-                      ),
+                      child: lesson.courseImage != null
+                          ? Image.network(
+                              lesson.courseImage!,
+                              fit: BoxFit.contain,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 80.w,
+                                  height: 80.w,
+                                  color: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.image,
+                                    color: Colors.grey[500],
+                                    size: 30.sp,
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              width: 80.w,
+                              height: 80.w,
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.image,
+                                color: Colors.grey[500],
+                                size: 30.sp,
+                              ),
+                            ),
                     ),
                   ),
                 ],

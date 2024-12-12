@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/config/router/provider_config.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_contact_book_model.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
 import 'package:edutec_hub/data/models/common/user_role.dart';
+import 'package:edutec_hub/data/repositories/leave/leave_repository.dart';
 
 import 'package:edutec_hub/data/repositories/student_exam_repository.dart';
 
@@ -18,6 +20,8 @@ import 'package:edutec_hub/presentation/screens/student/homework/student_homewor
 import 'package:edutec_hub/presentation/screens/student/homework/student_homework_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/attendance/student_attendance_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/homework/student_homwork_submit_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/leave/student_leave_screen.dart';
+import 'package:edutec_hub/presentation/screens/student/leave/student_request_form_screen.dart';
 import 'package:edutec_hub/presentation/screens/student/student_payment_upload_screen.dart';
 import 'package:edutec_hub/presentation/screens/teacher/attendance/teacher_leave_screen.dart';
 
@@ -31,11 +35,13 @@ import 'package:edutec_hub/presentation/screens/teacher/homework/teacher_homewor
 import 'package:edutec_hub/presentation/screens/teacher/lesson/teacher_lesson_screen.dart';
 
 import 'package:edutec_hub/presentation/screens/teacher/home/teacher_home_screen.dart';
+import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/state_management/blocs/booking/booking_bloc.dart';
 import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
 
 import 'package:edutec_hub/state_management/cubit/exam/student_exam_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/leave/leave_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/message_board/message_board_cubit.dart';
 
 import 'package:edutec_hub/state_management/cubit/signInCubit.dart';
@@ -54,6 +60,7 @@ import 'package:edutec_hub/presentation/screens/student/student_payment_method_s
 import 'package:edutec_hub/presentation/ui_widget/bar/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/auth/authScreen.dart';
 import '../../presentation/screens/course_list_screen.dart';
@@ -147,10 +154,10 @@ class AppRouter {
             path: '/student-lessons',
             builder: (context, state) => const StudentLessonsScreen(),
           ),
-          GoRoute(
-            path: '/student-contact',
-            builder: (context, state) => ContactBookListScreen(),
-          ),
+          // GoRoute(
+          //   path: '/student-contact',
+          //   builder: (context, state) => ContactBookListScreen(),
+          // ),
           GoRoute(
             path: '/student-classroom-booking',
             builder: (context, state) => StudentClassroomBookingScreen(),
@@ -240,10 +247,18 @@ class AppRouter {
             path: '/student-attendance',
             builder: (context, state) => const StudentAttendanceScreen(),
           ),
+          GoRoute(
+            path: '/student-leave',
+            builder: (context, state) => const LeaveListScreen(),
+          ),
+          GoRoute(
+            path: '/student-leave/create',
+            builder: (context, state) => const LeaveRequestFormScreen(),
+          ),
 
           // 學生聯絡簿相關
           GoRoute(
-            path: '/student-contact-books',
+            path: '/student-contact',
             builder: (context, state) => const ContactBookListScreen(),
             routes: [
               GoRoute(
@@ -272,8 +287,42 @@ class AppRouter {
                         }
                       }
 
-                      return const Scaffold(
-                        body: Center(child: CircularProgressIndicator()),
+                      return Scaffold(
+                        body: Column(
+                          children: [
+                            FixedHeightSmoothTopBarV2(
+                              height: 130.h,
+                              child: SafeArea(
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.arrow_back_ios,
+                                            color: Colors.white70, size: 24.sp),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                      Text(
+                                        'contact_book_detail'.tr(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      // 使用 SizedBox 來平衡左側的返回按鈕
+                                      SizedBox(width: 48.w),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Center(child: CircularProgressIndicator()),
+                          ],
+                        ),
                       );
                     },
                   );

@@ -82,6 +82,7 @@ class ContactBookMessage with _$ContactBookMessage {
     @JsonKey(name: 'message_text') required String messageText,
     @JsonKey(name: 'message_type') required String messageType,
     @JsonKey(name: 'upload_file') required List<String> uploadFiles,
+    @JsonKey(name: 'name') required String messageSender,
   }) = _ContactBookMessage;
 
   factory ContactBookMessage.fromJson(Map<String, dynamic> json) =>

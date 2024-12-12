@@ -25,14 +25,14 @@ mixin _$Course {
   @JsonKey(name: 'course_name')
   String get courseName => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_description')
-  String get courseDescription => throw _privateConstructorUsedError;
+  String? get courseDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'subject_id')
   int get subjectId => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   String get courseColor => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_image')
-  String get courseImage => throw _privateConstructorUsedError;
+  String? get courseImage => throw _privateConstructorUsedError; // 允許為 null
   @JsonKey(name: 'subject_name')
   String get subjectName => throw _privateConstructorUsedError;
 
@@ -53,11 +53,12 @@ abstract class $CourseCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'course_id') int courseId,
       @JsonKey(name: 'course_name') String courseName,
-      @JsonKey(name: 'course_description') String courseDescription,
+      @JsonKey(name: 'course_description') String? courseDescription,
       @JsonKey(name: 'subject_id') int subjectId,
       double price,
-      @JsonKey(name: 'course_color') String courseColor,
-      @JsonKey(name: 'course_image') String courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
       @JsonKey(name: 'subject_name') String subjectName});
 }
 
@@ -78,11 +79,11 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
   $Res call({
     Object? courseId = null,
     Object? courseName = null,
-    Object? courseDescription = null,
+    Object? courseDescription = freezed,
     Object? subjectId = null,
     Object? price = null,
     Object? courseColor = null,
-    Object? courseImage = null,
+    Object? courseImage = freezed,
     Object? subjectName = null,
   }) {
     return _then(_value.copyWith(
@@ -94,10 +95,10 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
-      courseDescription: null == courseDescription
+      courseDescription: freezed == courseDescription
           ? _value.courseDescription
           : courseDescription // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectId: null == subjectId
           ? _value.subjectId
           : subjectId // ignore: cast_nullable_to_non_nullable
@@ -110,10 +111,10 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
           ? _value.courseColor
           : courseColor // ignore: cast_nullable_to_non_nullable
               as String,
-      courseImage: null == courseImage
+      courseImage: freezed == courseImage
           ? _value.courseImage
           : courseImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
@@ -132,11 +133,12 @@ abstract class _$$CourseImplCopyWith<$Res> implements $CourseCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'course_id') int courseId,
       @JsonKey(name: 'course_name') String courseName,
-      @JsonKey(name: 'course_description') String courseDescription,
+      @JsonKey(name: 'course_description') String? courseDescription,
       @JsonKey(name: 'subject_id') int subjectId,
       double price,
-      @JsonKey(name: 'course_color') String courseColor,
-      @JsonKey(name: 'course_image') String courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
       @JsonKey(name: 'subject_name') String subjectName});
 }
 
@@ -155,11 +157,11 @@ class __$$CourseImplCopyWithImpl<$Res>
   $Res call({
     Object? courseId = null,
     Object? courseName = null,
-    Object? courseDescription = null,
+    Object? courseDescription = freezed,
     Object? subjectId = null,
     Object? price = null,
     Object? courseColor = null,
-    Object? courseImage = null,
+    Object? courseImage = freezed,
     Object? subjectName = null,
   }) {
     return _then(_$CourseImpl(
@@ -171,10 +173,10 @@ class __$$CourseImplCopyWithImpl<$Res>
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
-      courseDescription: null == courseDescription
+      courseDescription: freezed == courseDescription
           ? _value.courseDescription
           : courseDescription // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectId: null == subjectId
           ? _value.subjectId
           : subjectId // ignore: cast_nullable_to_non_nullable
@@ -187,10 +189,10 @@ class __$$CourseImplCopyWithImpl<$Res>
           ? _value.courseColor
           : courseColor // ignore: cast_nullable_to_non_nullable
               as String,
-      courseImage: null == courseImage
+      courseImage: freezed == courseImage
           ? _value.courseImage
           : courseImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
@@ -205,11 +207,12 @@ class _$CourseImpl implements _Course {
   const _$CourseImpl(
       {@JsonKey(name: 'course_id') required this.courseId,
       @JsonKey(name: 'course_name') required this.courseName,
-      @JsonKey(name: 'course_description') required this.courseDescription,
+      @JsonKey(name: 'course_description') this.courseDescription,
       @JsonKey(name: 'subject_id') required this.subjectId,
       required this.price,
-      @JsonKey(name: 'course_color') required this.courseColor,
-      @JsonKey(name: 'course_image') required this.courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      required this.courseColor,
+      @JsonKey(name: 'course_image') this.courseImage,
       @JsonKey(name: 'subject_name') required this.subjectName});
 
   factory _$CourseImpl.fromJson(Map<String, dynamic> json) =>
@@ -223,18 +226,19 @@ class _$CourseImpl implements _Course {
   final String courseName;
   @override
   @JsonKey(name: 'course_description')
-  final String courseDescription;
+  final String? courseDescription;
   @override
   @JsonKey(name: 'subject_id')
   final int subjectId;
   @override
   final double price;
   @override
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   final String courseColor;
   @override
   @JsonKey(name: 'course_image')
-  final String courseImage;
+  final String? courseImage;
+// 允許為 null
   @override
   @JsonKey(name: 'subject_name')
   final String subjectName;
@@ -299,12 +303,12 @@ abstract class _Course implements Course {
   const factory _Course(
           {@JsonKey(name: 'course_id') required final int courseId,
           @JsonKey(name: 'course_name') required final String courseName,
-          @JsonKey(name: 'course_description')
-          required final String courseDescription,
+          @JsonKey(name: 'course_description') final String? courseDescription,
           @JsonKey(name: 'subject_id') required final int subjectId,
           required final double price,
-          @JsonKey(name: 'course_color') required final String courseColor,
-          @JsonKey(name: 'course_image') required final String courseImage,
+          @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+          required final String courseColor,
+          @JsonKey(name: 'course_image') final String? courseImage,
           @JsonKey(name: 'subject_name') required final String subjectName}) =
       _$CourseImpl;
 
@@ -318,18 +322,18 @@ abstract class _Course implements Course {
   String get courseName;
   @override
   @JsonKey(name: 'course_description')
-  String get courseDescription;
+  String? get courseDescription;
   @override
   @JsonKey(name: 'subject_id')
   int get subjectId;
   @override
   double get price;
   @override
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   String get courseColor;
   @override
   @JsonKey(name: 'course_image')
-  String get courseImage;
+  String? get courseImage; // 允許為 null
   @override
   @JsonKey(name: 'subject_name')
   String get subjectName;
@@ -364,10 +368,10 @@ mixin _$StudentLesson {
   String get courseName => throw _privateConstructorUsedError;
   @JsonKey(name: 'classroom_name')
   String get classroomName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   String get courseColor => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_image')
-  String get courseImage => throw _privateConstructorUsedError;
+  String? get courseImage => throw _privateConstructorUsedError; // 允許為 null
   @JsonKey(name: 'subject_name')
   String get subjectName => throw _privateConstructorUsedError;
 
@@ -396,8 +400,9 @@ abstract class $StudentLessonCopyWith<$Res> {
       @JsonKey(name: 'end_time') String endTime,
       @JsonKey(name: 'course_name') String courseName,
       @JsonKey(name: 'classroom_name') String classroomName,
-      @JsonKey(name: 'course_color') String courseColor,
-      @JsonKey(name: 'course_image') String courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
       @JsonKey(name: 'subject_name') String subjectName});
 }
 
@@ -425,7 +430,7 @@ class _$StudentLessonCopyWithImpl<$Res, $Val extends StudentLesson>
     Object? courseName = null,
     Object? classroomName = null,
     Object? courseColor = null,
-    Object? courseImage = null,
+    Object? courseImage = freezed,
     Object? subjectName = null,
   }) {
     return _then(_value.copyWith(
@@ -465,10 +470,10 @@ class _$StudentLessonCopyWithImpl<$Res, $Val extends StudentLesson>
           ? _value.courseColor
           : courseColor // ignore: cast_nullable_to_non_nullable
               as String,
-      courseImage: null == courseImage
+      courseImage: freezed == courseImage
           ? _value.courseImage
           : courseImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
@@ -494,8 +499,9 @@ abstract class _$$StudentLessonImplCopyWith<$Res>
       @JsonKey(name: 'end_time') String endTime,
       @JsonKey(name: 'course_name') String courseName,
       @JsonKey(name: 'classroom_name') String classroomName,
-      @JsonKey(name: 'course_color') String courseColor,
-      @JsonKey(name: 'course_image') String courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
       @JsonKey(name: 'subject_name') String subjectName});
 }
 
@@ -521,7 +527,7 @@ class __$$StudentLessonImplCopyWithImpl<$Res>
     Object? courseName = null,
     Object? classroomName = null,
     Object? courseColor = null,
-    Object? courseImage = null,
+    Object? courseImage = freezed,
     Object? subjectName = null,
   }) {
     return _then(_$StudentLessonImpl(
@@ -561,10 +567,10 @@ class __$$StudentLessonImplCopyWithImpl<$Res>
           ? _value.courseColor
           : courseColor // ignore: cast_nullable_to_non_nullable
               as String,
-      courseImage: null == courseImage
+      courseImage: freezed == courseImage
           ? _value.courseImage
           : courseImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
@@ -585,8 +591,9 @@ class _$StudentLessonImpl implements _StudentLesson {
       @JsonKey(name: 'end_time') required this.endTime,
       @JsonKey(name: 'course_name') required this.courseName,
       @JsonKey(name: 'classroom_name') required this.classroomName,
-      @JsonKey(name: 'course_color') required this.courseColor,
-      @JsonKey(name: 'course_image') required this.courseImage,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      required this.courseColor,
+      @JsonKey(name: 'course_image') this.courseImage,
       @JsonKey(name: 'subject_name') required this.subjectName});
 
   factory _$StudentLessonImpl.fromJson(Map<String, dynamic> json) =>
@@ -617,11 +624,12 @@ class _$StudentLessonImpl implements _StudentLesson {
   @JsonKey(name: 'classroom_name')
   final String classroomName;
   @override
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   final String courseColor;
   @override
   @JsonKey(name: 'course_image')
-  final String courseImage;
+  final String? courseImage;
+// 允許為 null
   @override
   @JsonKey(name: 'subject_name')
   final String subjectName;
@@ -700,8 +708,9 @@ abstract class _StudentLesson implements StudentLesson {
           @JsonKey(name: 'end_time') required final String endTime,
           @JsonKey(name: 'course_name') required final String courseName,
           @JsonKey(name: 'classroom_name') required final String classroomName,
-          @JsonKey(name: 'course_color') required final String courseColor,
-          @JsonKey(name: 'course_image') required final String courseImage,
+          @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+          required final String courseColor,
+          @JsonKey(name: 'course_image') final String? courseImage,
           @JsonKey(name: 'subject_name') required final String subjectName}) =
       _$StudentLessonImpl;
 
@@ -733,11 +742,11 @@ abstract class _StudentLesson implements StudentLesson {
   @JsonKey(name: 'classroom_name')
   String get classroomName;
   @override
-  @JsonKey(name: 'course_color')
+  @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
   String get courseColor;
   @override
   @JsonKey(name: 'course_image')
-  String get courseImage;
+  String? get courseImage; // 允許為 null
   @override
   @JsonKey(name: 'subject_name')
   String get subjectName;

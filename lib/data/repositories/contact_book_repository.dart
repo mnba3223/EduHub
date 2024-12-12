@@ -144,6 +144,7 @@ class ContactBookRepository {
             messageText: "請記得簽名確認",
             messageType: "Teacher",
             uploadFiles: [],
+            messageSender: "測試教師",
           ),
         ],
       ),

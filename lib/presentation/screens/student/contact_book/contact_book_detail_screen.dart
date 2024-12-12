@@ -31,6 +31,8 @@ class ContactBookDetailScreen extends StatefulWidget {
 class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
   final TextEditingController _messageController = TextEditingController();
   List<File> _selectedFiles = [];
+  final ScrollController _scrollController = ScrollController();
+  bool _isFirstBuild = true;
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,20 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (!_scrollController.hasClients) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   void _showSnackBar(BuildContext context, String message,
@@ -57,82 +72,131 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(130.h),
-          child: FixedHeightSmoothTopBarV2(
-            height: 130.h,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              alignment: Alignment.center,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'contact_book_detail'.tr(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(width: 40.w),
-                ],
-              ),
+      body: Column(
+        children: [
+          _buildTopBar(context), // TopBar 會保持在最上層
+          Expanded(
+            child: Stack(
+              children: [
+                // 主要内容
+                BlocConsumer<ContactBookBloc, ContactBookState>(
+                  listener: (context, state) {
+                    // ... 現有的 listener 邏輯保持不變
+                  },
+                  builder: (context, state) {
+                    if (_isFirstBuild) {
+                      _isFirstBuild = false;
+                    }
+
+                    ContactBook currentContactBook = widget.contactBook;
+                    if (state is ContactBookListLoaded) {
+                      try {
+                        currentContactBook = state.contactBooks.firstWhere(
+                          (book) =>
+                              book.contactBookId ==
+                              widget.contactBook.contactBookId,
+                        );
+                      } catch (_) {
+                        currentContactBook = widget.contactBook;
+                      }
+                    }
+
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: CustomScrollView(
+                            controller: _scrollController,
+                            slivers: [
+                              SliverToBoxAdapter(
+                                child: _buildBasicInfo(currentContactBook),
+                              ),
+                              SliverToBoxAdapter(
+                                child: _buildContent(currentContactBook),
+                              ),
+                              SliverToBoxAdapter(
+                                child: _buildMessagesSection(
+                                    currentContactBook.messages),
+                              ),
+                              SliverFillRemaining(
+                                hasScrollBody: false,
+                                fillOverscroll: true,
+                                child: Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                // Loading Overlay - 只會覆蓋內容區域
+                BlocBuilder<ContactBookBloc, ContactBookState>(
+                  builder: (context, state) {
+                    if (state is SendingMessage) {
+                      return Container(
+                        color: Colors.black.withOpacity(0.3),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                              SizedBox(height: 16.h),
+                              Text(
+                                'sending_message'.tr(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
             ),
           ),
-        ),
-        body: BlocConsumer<ContactBookBloc, ContactBookState>(
-          listener: (context, state) {
-            log("now detail state = $state");
-            if (state is MessageSent) {
-              _showSnackBar(context, 'contact_book_message_sent'.tr());
-              _messageController.clear();
-              setState(() {
-                _selectedFiles.clear();
-              });
-            } else if (state is ContactBookError) {
-              _showSnackBar(context, state.message, isError: true);
-            }
-          },
-          builder: (context, state) {
-            if (state is SendingMessage) {
-              // 只有发送消息时显示加载
-              return const Center(child: CircularProgressIndicator());
-            }
+          _buildMessageInput(),
+        ],
+      ),
+    );
+  }
 
-            // 获取最新的联络簿数据
-            ContactBook currentContactBook = widget.contactBook;
-            if (state is ContactBookListLoaded) {
-              try {
-                currentContactBook = state.contactBooks.firstWhere(
-                  (book) =>
-                      book.contactBookId == widget.contactBook.contactBookId,
-                );
-              } catch (_) {
-                // 如果找不到，使用原来的数据
-                currentContactBook = widget.contactBook;
-              }
-            }
-
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildBasicInfo(currentContactBook),
-                  _buildContent(currentContactBook),
-                  _buildMessagesSection(currentContactBook.messages),
-                  _buildMessageInput(),
-                ],
+  Widget _buildTopBar(BuildContext context) {
+    return FixedHeightSmoothTopBarV2(
+      height: 130.h,
+      child: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Colors.white70, size: 24.sp),
+                onPressed: () => Navigator.pop(context),
               ),
-            );
-          },
-        ));
+              Text(
+                'contact_book_detail'.tr(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // 使用 SizedBox 來平衡左側的返回按鈕
+              SizedBox(width: 48.w),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _pickFiles() async {
@@ -167,62 +231,6 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
     setState(() {
       _selectedFiles.removeAt(index);
     });
-  }
-
-  Widget _buildFileUploadButton() {
-    return IconButton(
-      icon: const Icon(Icons.attach_file),
-      onPressed: () async {
-        final result = await FilePicker.platform.pickFiles(
-          type: FileType.any,
-          allowMultiple: true,
-        );
-
-        if (result != null) {
-          setState(() {
-            _selectedFiles = result.paths.map((path) => File(path!)).toList();
-          });
-        }
-      },
-    );
-  }
-
-  Widget _buildBody() {
-    return BlocBuilder<ContactBookBloc, ContactBookState>(
-      builder: (context, state) {
-        if (state is ContactBookLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (state is ContactBookDetailLoaded) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildBasicInfo(state.detail),
-                _buildContent(state.detail),
-                _buildMessagesSection(state.detail.messages),
-                _buildMessageInput(),
-              ],
-            ),
-          );
-        }
-
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('no_data'.tr()),
-              SizedBox(height: 16.h),
-              // CustomButton(
-              //   onPressed: _loadContactBookDetail,
-              //   text: 'retry'.tr(),
-              // ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   Widget _buildSelectedFiles() {
@@ -382,7 +390,20 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildMessageTypeChip(message.messageType),
+              Row(
+                children: [
+                  _buildMessageTypeChip(message.messageType),
+                  SizedBox(width: 8.w),
+                  Text(
+                    message.messageSender,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
               Text(
                 '# ${message.messageId}',
                 style: TextStyle(
@@ -399,19 +420,23 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
           ),
           if (message.uploadFiles.isNotEmpty) ...[
             SizedBox(height: 12.h),
-            Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
-              children: message.uploadFiles.map((file) {
-                return AttachmentDownloadButton(
-                  url: file,
-                  fileName: file.split('/').last,
-                );
-              }).toList(),
-            ),
+            _buildAttachments(message.uploadFiles),
           ],
         ],
       ),
+    );
+  }
+
+  Widget _buildAttachments(List<String> files) {
+    return Wrap(
+      spacing: 8.w,
+      runSpacing: 8.h,
+      children: files.map((file) {
+        return AttachmentDownloadButton(
+          url: file,
+          fileName: file.split('/').last,
+        );
+      }).toList(),
     );
   }
 
@@ -420,6 +445,10 @@ class _ContactBookDetailScreenState extends State<ContactBookDetailScreen> {
     String label;
 
     switch (type.toLowerCase()) {
+      case 'student':
+        color = Colors.orange;
+        label = 'student'.tr();
+        break;
       case 'teacher':
         color = Colors.blue;
         label = 'teacher'.tr();

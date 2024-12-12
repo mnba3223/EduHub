@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/config/user_session.dart';
+import 'package:edutec_hub/data/models/contact_book/contact_book.dart';
 import 'package:edutec_hub/data/models/course/course.dart';
 import 'package:edutec_hub/data/models/student/homework.dart';
 import 'package:edutec_hub/data/repositories/course/course_repository.dart';
@@ -9,6 +10,7 @@ import 'package:edutec_hub/presentation/screens/student/home/widgets/student_hom
 import 'package:edutec_hub/presentation/screens/student/home/widgets/student_home_setting_dialog.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/slider.dart';
+import 'package:edutec_hub/state_management/blocs/contact_book/contact_book_bloc.dart';
 import 'package:edutec_hub/state_management/cubit/course/course_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_cubit.dart';
 import 'package:edutec_hub/state_management/cubit/homework/homework_state.dart';
@@ -51,6 +53,9 @@ class _StudentHomeContentState extends State<StudentHomeContent> {
   void initState() {
     super.initState();
     context.read<HomeworkCubit>().loadHomeworks();
+    context.read<ContactBookBloc>().add(
+          LoadContactBooks(date: DateTime.now()),
+        );
   }
 
   @override
@@ -312,7 +317,7 @@ class _StudentHomeContentState extends State<StudentHomeContent> {
                 ),
               ),
               GestureDetector(
-                onTap: () => context.push('/student-contact-books'),
+                onTap: () => context.push('/student-contact'),
                 child: Text(
                   'more'.tr(),
                   style: TextStyle(color: Colors.blue),
@@ -321,28 +326,144 @@ class _StudentHomeContentState extends State<StudentHomeContent> {
             ],
           ),
           SizedBox(height: 10.h),
-          _buildContactBookItem(),
-          SizedBox(height: 10.h),
-          _buildContactBookItem(),
+          BlocBuilder<ContactBookBloc, ContactBookState>(
+            builder: (context, state) {
+              if (state is ContactBookLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (state is ContactBookError) {
+                return Container(
+                  padding: EdgeInsets.all(15.w),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red),
+                      SizedBox(width: 8.w),
+                      Text(state.message),
+                    ],
+                  ),
+                );
+              }
+
+              if (state is ContactBookListLoaded) {
+                // 只顯示最近3天的聯絡簿
+                final recentBooks = state.contactBooks
+                    .where((book) => book.lessonDate.isAfter(
+                        DateTime.now().subtract(const Duration(days: 3))))
+                    .take(2)
+                    .toList();
+
+                if (recentBooks.isEmpty) {
+                  return Container(
+                    padding: EdgeInsets.all(15.w),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.info_outline, color: Colors.grey),
+                        SizedBox(width: 8.w),
+                        Text('no_contact_book_data'.tr()),
+                      ],
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: recentBooks
+                      .map((book) => _buildContactBookItem(book))
+                      .toList(),
+                );
+              }
+
+              return const SizedBox();
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildContactBookItem() {
+  Widget _buildContactBookItem(ContactBook book) {
     return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.grey[300]!),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('date'.tr()),
-          Text('course'.tr()),
-          Text('${('more'.tr())}→'),
-        ],
+      child: InkWell(
+        onTap: () {
+          context.push(
+            '/student-contact/daily?contactBookId=${book.contactBookId}',
+          );
+        },
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
+                Icons.book,
+                color: Colors.blue[700],
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    book.title,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    DateFormat('MM/dd (E)').format(book.lessonDate),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (book.messages.isNotEmpty)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Text(
+                  book.messages.length.toString(),
+                  style: TextStyle(
+                    color: Colors.blue.shade700,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            Icon(Icons.chevron_right, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }

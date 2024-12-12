@@ -36,3 +36,10 @@ This is a tutoring school system built with Flutter.
 ## Generate Files Command
 ```bash
 flutter packages pub run build_runner build --delete-conflicting-outputs
+
+
+
+
+## build example
+
+flutter build apk --release --dart-define-from-file=env/stage.json --no-tree-shake-icons

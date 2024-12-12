@@ -53,9 +53,13 @@ class StudentMoreScreen extends StatelessWidget {
             context, Icons.event, 'attendance'.tr(), '/student-attendance',
             activate: true),
         _buildListItem(context, Icons.settings, 'setting'.tr(), '/settings'),
+        _buildListItem(
+            context, Icons.schedule, 'leave_application'.tr(), '/student-leave',
+            activate: true),
         // _buildListItem(context, Icons.assignment, 'homework'.tr(), '/homework'),
         _buildListItem(context, Icons.school, 'exam'.tr(), '/student-exam',
             activate: true),
+        _buildListItem(context, Icons.receipt, 'bill'.tr(), '/bill'), // 新增帳單項目
         _buildListItem(context, Icons.picture_as_pdf, 'PP'.tr(), '/pp'),
         _buildListItem(context, Icons.description, 'T&C'.tr(), '/terms'),
         _buildListItem(

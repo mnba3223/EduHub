@@ -130,11 +130,12 @@ class AttachmentDownloadButton extends StatelessWidget {
           (current.error != null && previous.error != current.error),
       listener: (context, state) {
         if (state.error != null) {
+          log(state.error!);
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.error!),
+                content: Text("${"download_failed_content".tr()}"),
                 backgroundColor: Colors.red,
               ),
             );
