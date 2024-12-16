@@ -80,17 +80,52 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildLessonDropdown(),
+                    if (isEditing)
+                      _buildReadOnlyLessonInfo()
+                    else
+                      Column(
+                        children: [
+                          _buildDatePicker(),
+                          SizedBox(height: 16.h),
+                          if (_selectedDate != null)
+                            Builder(
+                              builder: (context) {
+                                final lessonState =
+                                    context.watch<LessonCubit>().state;
+                                if (lessonState.isLoading) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                final availableLessons =
+                                    lessonState.lessons.where((lesson) {
+                                  return lesson.lessonDate.year ==
+                                          _selectedDate!.year &&
+                                      lesson.lessonDate.month ==
+                                          _selectedDate!.month &&
+                                      lesson.lessonDate.day ==
+                                          _selectedDate!.day;
+                                }).toList();
+
+                                if (availableLessons.isEmpty) {
+                                  return Text('所選日期沒有可用的課程');
+                                }
+
+                                return _buildLessonDropdown(availableLessons);
+                              },
+                            ),
+                        ],
+                      ),
                     SizedBox(height: 16.h),
-                    _buildExamNameField(),
-                    SizedBox(height: 16.h),
-                    _buildDescriptionField(),
-                    SizedBox(height: 16.h),
-                    _buildDatePicker(),
-                    SizedBox(height: 16.h),
-                    _buildFilePicker(),
-                    SizedBox(height: 32.h),
-                    _buildSubmitButton(),
+                    if (isEditing || _selectedLessonId != null) ...[
+                      _buildExamNameField(),
+                      SizedBox(height: 16.h),
+                      _buildDescriptionField(),
+                      SizedBox(height: 16.h),
+                      _buildFilePicker(),
+                      SizedBox(height: 32.h),
+                      _buildSubmitButton(),
+                    ],
                   ],
                 ),
               ),
@@ -101,57 +136,49 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
     );
   }
 
-  Widget _buildLessonDropdown() {
-    if (isEditing && widget.initialExam != null) {
-      return InputDecorator(
-        decoration: InputDecoration(
-          labelText: '課程',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 16.h,
-          ),
+  Widget _buildLessonDropdown(List<Lesson> availableLessons) {
+    return DropdownButtonFormField<int>(
+      decoration: InputDecoration(
+        labelText: '選擇課程*',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
         ),
-        child: Text(widget.initialExam!.lessonTitle),
-      );
-    }
-    return BlocBuilder<LessonCubit, LessonState>(
-      // 改用 LessonCubit
-      builder: (context, lessonState) {
-        if (lessonState.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return DropdownButtonFormField<int>(
-          decoration: InputDecoration(
-            labelText: '選擇課程*',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 16.h,
-            ),
+      ),
+      value: _selectedLessonId,
+      items: availableLessons.map((lesson) {
+        return DropdownMenuItem(
+          value: lesson.lessonId,
+          child: Text(
+            lesson.className,
+            overflow: TextOverflow.ellipsis,
           ),
-          value: _selectedLessonId,
-          items: lessonState.lessons.map((lesson) {
-            // 使用 lessonState 中的數據
-            return DropdownMenuItem(
-              value: lesson.lessonId,
-              child: Text('${lesson.lessonTitle} - ${lesson.courseName}'),
-            );
-          }).toList(),
-          validator: (value) {
-            if (value == null) return '請選擇課程';
-            return null;
-          },
-          onChanged: (value) {
-            setState(() => _selectedLessonId = value);
-          },
         );
+      }).toList(),
+      onChanged: (value) {
+        setState(() => _selectedLessonId = value);
       },
+      validator: (value) => value == null ? '請選擇課程' : null,
+    );
+  }
+
+  Widget _buildReadOnlyLessonInfo() {
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: '課程',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(widget.initialExam!.className),
+          Text(
+            _formatDate(widget.initialExam!.examDate),
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        ],
+      ),
     );
   }
 
@@ -178,40 +205,6 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
       ),
     );
   }
-
-  // Widget _buildLessonDropdown() {
-  //   return BlocBuilder<TeacherExamCubit, TeacherExamState>(
-  //     buildWhen: (previous, current) => previous.lessons != current.lessons,
-  //     builder: (context, state) {
-  //       return DropdownButtonFormField<int>(
-  //         decoration: InputDecoration(
-  //           labelText: '選擇課程*',
-  //           border: OutlineInputBorder(
-  //             borderRadius: BorderRadius.circular(8.r),
-  //           ),
-  //           contentPadding: EdgeInsets.symmetric(
-  //             horizontal: 16.w,
-  //             vertical: 16.h,
-  //           ),
-  //         ),
-  //         value: _selectedLessonId,
-  //         items: state.lessons.map((lesson) {
-  //           return DropdownMenuItem(
-  //             value: lesson.lessonId,
-  //             child: Text(lesson.lessonTitle),
-  //           );
-  //         }).toList(),
-  //         validator: (value) {
-  //           if (value == null) return '請選擇課程';
-  //           return null;
-  //         },
-  //         onChanged: (value) {
-  //           setState(() => _selectedLessonId = value);
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildExamNameField() {
     return TextFormField(
@@ -378,16 +371,12 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate() || _selectedDate == null) {
+    if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('請填寫所有必填欄位')),
       );
       return;
     }
-    // 添加日誌來追蹤值
-    debugPrint('Selected Date: $_selectedDate');
-    debugPrint('Selected File: $_selectedFile');
-    debugPrint('Selected Lesson ID: $_selectedLessonId');
 
     try {
       final request = ExamCreateRequest(
@@ -396,11 +385,11 @@ class _TeacherExamFormScreenState extends State<TeacherExamFormScreen> {
         examDescription: _descriptionController.text.trim(),
         examDate: _selectedDate!,
         uploadedFile: _selectedFile,
-        // 如果是編輯模式且有原始檔案，則保留原始檔案路徑
         uploadFile: isEditing ? widget.initialExam?.uploadFile : null,
         keepExistingFile:
             _selectedFile == null && widget.initialExam?.uploadFile != null,
       );
+
       final cubit = context.read<TeacherExamCubit>();
       if (isEditing) {
         await cubit.updateExam(widget.examId!, request);

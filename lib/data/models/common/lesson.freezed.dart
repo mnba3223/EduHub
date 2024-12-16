@@ -20,18 +20,26 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Lesson {
+  @JsonKey(name: 'class_id')
+  int get classId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'class_name')
+  String get className => throw _privateConstructorUsedError;
+  @JsonKey(name: 'start_date')
+  DateTime get startDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'end_date')
+  DateTime get endDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'weekdays')
+  String get weekdays => throw _privateConstructorUsedError;
+  @JsonKey(name: 'WeekdaysArray')
+  List<int> get weekdaysArray => throw _privateConstructorUsedError;
   @JsonKey(name: 'lesson_id')
   int get lessonId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_id')
-  int? get teacherId => throw _privateConstructorUsedError;
+  int get teacherId => throw _privateConstructorUsedError;
   @JsonKey(name: 'classroom_id')
-  int? get classroomId => throw _privateConstructorUsedError;
+  int get classroomId => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_id')
-  int? get courseId => throw _privateConstructorUsedError;
+  int get courseId => throw _privateConstructorUsedError;
   @JsonKey(name: 'lesson_date')
   DateTime get lessonDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'start_time')
@@ -39,13 +47,25 @@ mixin _$Lesson {
   @JsonKey(name: 'end_time')
   String get endTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_name')
-  String? get teacherName => throw _privateConstructorUsedError;
+  String get teacherName => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_name')
-  String? get courseName => throw _privateConstructorUsedError;
+  String get courseName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'course_color')
+  String get courseColor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'course_image')
+  String? get courseImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'subject_name')
-  String? get subjectName => throw _privateConstructorUsedError;
+  String get subjectName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'color')
+  String get color => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image')
+  String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'classroom_name')
-  String? get classroomName => throw _privateConstructorUsedError;
+  String get classroomName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'leave_requested')
+  int get leaveRequested => throw _privateConstructorUsedError;
+  @JsonKey(name: 'substitute_teacher_id')
+  int? get substituteTeacherId => throw _privateConstructorUsedError;
 
   /// Serializes this Lesson to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,19 +82,29 @@ abstract class $LessonCopyWith<$Res> {
       _$LessonCopyWithImpl<$Res, Lesson>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'lesson_id') int lessonId,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
-      @JsonKey(name: 'teacher_id') int? teacherId,
-      @JsonKey(name: 'classroom_id') int? classroomId,
-      @JsonKey(name: 'course_id') int? courseId,
+      {@JsonKey(name: 'class_id') int classId,
+      @JsonKey(name: 'class_name') String className,
+      @JsonKey(name: 'start_date') DateTime startDate,
+      @JsonKey(name: 'end_date') DateTime endDate,
+      @JsonKey(name: 'weekdays') String weekdays,
+      @JsonKey(name: 'WeekdaysArray') List<int> weekdaysArray,
+      @JsonKey(name: 'lesson_id') int lessonId,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'classroom_id') int classroomId,
+      @JsonKey(name: 'course_id') int courseId,
       @JsonKey(name: 'lesson_date') DateTime lessonDate,
       @JsonKey(name: 'start_time') String startTime,
       @JsonKey(name: 'end_time') String endTime,
-      @JsonKey(name: 'teacher_name') String? teacherName,
-      @JsonKey(name: 'course_name') String? courseName,
-      @JsonKey(name: 'subject_name') String? subjectName,
-      @JsonKey(name: 'classroom_name') String? classroomName});
+      @JsonKey(name: 'teacher_name') String teacherName,
+      @JsonKey(name: 'course_name') String courseName,
+      @JsonKey(name: 'course_color') String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
+      @JsonKey(name: 'subject_name') String subjectName,
+      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'classroom_name') String classroomName,
+      @JsonKey(name: 'leave_requested') int leaveRequested,
+      @JsonKey(name: 'substitute_teacher_id') int? substituteTeacherId});
 }
 
 /// @nodoc
@@ -92,45 +122,71 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? classId = null,
+    Object? className = null,
+    Object? startDate = null,
+    Object? endDate = null,
+    Object? weekdays = null,
+    Object? weekdaysArray = null,
     Object? lessonId = null,
-    Object? lessonTitle = null,
-    Object? lessonDescription = freezed,
-    Object? teacherId = freezed,
-    Object? classroomId = freezed,
-    Object? courseId = freezed,
+    Object? teacherId = null,
+    Object? classroomId = null,
+    Object? courseId = null,
     Object? lessonDate = null,
     Object? startTime = null,
     Object? endTime = null,
-    Object? teacherName = freezed,
-    Object? courseName = freezed,
-    Object? subjectName = freezed,
-    Object? classroomName = freezed,
+    Object? teacherName = null,
+    Object? courseName = null,
+    Object? courseColor = null,
+    Object? courseImage = freezed,
+    Object? subjectName = null,
+    Object? color = null,
+    Object? image = freezed,
+    Object? classroomName = null,
+    Object? leaveRequested = null,
+    Object? substituteTeacherId = freezed,
   }) {
     return _then(_value.copyWith(
+      classId: null == classId
+          ? _value.classId
+          : classId // ignore: cast_nullable_to_non_nullable
+              as int,
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
+              as String,
+      startDate: null == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      endDate: null == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      weekdays: null == weekdays
+          ? _value.weekdays
+          : weekdays // ignore: cast_nullable_to_non_nullable
+              as String,
+      weekdaysArray: null == weekdaysArray
+          ? _value.weekdaysArray
+          : weekdaysArray // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       lessonId: null == lessonId
           ? _value.lessonId
           : lessonId // ignore: cast_nullable_to_non_nullable
               as int,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-      teacherId: freezed == teacherId
+      teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      classroomId: freezed == classroomId
+              as int,
+      classroomId: null == classroomId
           ? _value.classroomId
           : classroomId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      courseId: freezed == courseId
+              as int,
+      courseId: null == courseId
           ? _value.courseId
           : courseId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       lessonDate: null == lessonDate
           ? _value.lessonDate
           : lessonDate // ignore: cast_nullable_to_non_nullable
@@ -143,22 +199,46 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as String,
-      teacherName: freezed == teacherName
+      teacherName: null == teacherName
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      courseName: freezed == courseName
+              as String,
+      courseName: null == courseName
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseColor: null == courseColor
+          ? _value.courseColor
+          : courseColor // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseImage: freezed == courseImage
+          ? _value.courseImage
+          : courseImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      subjectName: freezed == subjectName
+      subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
+              as String,
+      color: null == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      classroomName: freezed == classroomName
+      classroomName: null == classroomName
           ? _value.classroomName
           : classroomName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      leaveRequested: null == leaveRequested
+          ? _value.leaveRequested
+          : leaveRequested // ignore: cast_nullable_to_non_nullable
+              as int,
+      substituteTeacherId: freezed == substituteTeacherId
+          ? _value.substituteTeacherId
+          : substituteTeacherId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -171,19 +251,29 @@ abstract class _$$LessonImplCopyWith<$Res> implements $LessonCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'lesson_id') int lessonId,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
-      @JsonKey(name: 'teacher_id') int? teacherId,
-      @JsonKey(name: 'classroom_id') int? classroomId,
-      @JsonKey(name: 'course_id') int? courseId,
+      {@JsonKey(name: 'class_id') int classId,
+      @JsonKey(name: 'class_name') String className,
+      @JsonKey(name: 'start_date') DateTime startDate,
+      @JsonKey(name: 'end_date') DateTime endDate,
+      @JsonKey(name: 'weekdays') String weekdays,
+      @JsonKey(name: 'WeekdaysArray') List<int> weekdaysArray,
+      @JsonKey(name: 'lesson_id') int lessonId,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'classroom_id') int classroomId,
+      @JsonKey(name: 'course_id') int courseId,
       @JsonKey(name: 'lesson_date') DateTime lessonDate,
       @JsonKey(name: 'start_time') String startTime,
       @JsonKey(name: 'end_time') String endTime,
-      @JsonKey(name: 'teacher_name') String? teacherName,
-      @JsonKey(name: 'course_name') String? courseName,
-      @JsonKey(name: 'subject_name') String? subjectName,
-      @JsonKey(name: 'classroom_name') String? classroomName});
+      @JsonKey(name: 'teacher_name') String teacherName,
+      @JsonKey(name: 'course_name') String courseName,
+      @JsonKey(name: 'course_color') String courseColor,
+      @JsonKey(name: 'course_image') String? courseImage,
+      @JsonKey(name: 'subject_name') String subjectName,
+      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'classroom_name') String classroomName,
+      @JsonKey(name: 'leave_requested') int leaveRequested,
+      @JsonKey(name: 'substitute_teacher_id') int? substituteTeacherId});
 }
 
 /// @nodoc
@@ -199,45 +289,71 @@ class __$$LessonImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? classId = null,
+    Object? className = null,
+    Object? startDate = null,
+    Object? endDate = null,
+    Object? weekdays = null,
+    Object? weekdaysArray = null,
     Object? lessonId = null,
-    Object? lessonTitle = null,
-    Object? lessonDescription = freezed,
-    Object? teacherId = freezed,
-    Object? classroomId = freezed,
-    Object? courseId = freezed,
+    Object? teacherId = null,
+    Object? classroomId = null,
+    Object? courseId = null,
     Object? lessonDate = null,
     Object? startTime = null,
     Object? endTime = null,
-    Object? teacherName = freezed,
-    Object? courseName = freezed,
-    Object? subjectName = freezed,
-    Object? classroomName = freezed,
+    Object? teacherName = null,
+    Object? courseName = null,
+    Object? courseColor = null,
+    Object? courseImage = freezed,
+    Object? subjectName = null,
+    Object? color = null,
+    Object? image = freezed,
+    Object? classroomName = null,
+    Object? leaveRequested = null,
+    Object? substituteTeacherId = freezed,
   }) {
     return _then(_$LessonImpl(
+      classId: null == classId
+          ? _value.classId
+          : classId // ignore: cast_nullable_to_non_nullable
+              as int,
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
+              as String,
+      startDate: null == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      endDate: null == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      weekdays: null == weekdays
+          ? _value.weekdays
+          : weekdays // ignore: cast_nullable_to_non_nullable
+              as String,
+      weekdaysArray: null == weekdaysArray
+          ? _value._weekdaysArray
+          : weekdaysArray // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       lessonId: null == lessonId
           ? _value.lessonId
           : lessonId // ignore: cast_nullable_to_non_nullable
               as int,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-      teacherId: freezed == teacherId
+      teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      classroomId: freezed == classroomId
+              as int,
+      classroomId: null == classroomId
           ? _value.classroomId
           : classroomId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      courseId: freezed == courseId
+              as int,
+      courseId: null == courseId
           ? _value.courseId
           : courseId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       lessonDate: null == lessonDate
           ? _value.lessonDate
           : lessonDate // ignore: cast_nullable_to_non_nullable
@@ -250,22 +366,46 @@ class __$$LessonImplCopyWithImpl<$Res>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as String,
-      teacherName: freezed == teacherName
+      teacherName: null == teacherName
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      courseName: freezed == courseName
+              as String,
+      courseName: null == courseName
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseColor: null == courseColor
+          ? _value.courseColor
+          : courseColor // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseImage: freezed == courseImage
+          ? _value.courseImage
+          : courseImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      subjectName: freezed == subjectName
+      subjectName: null == subjectName
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
+              as String,
+      color: null == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      classroomName: freezed == classroomName
+      classroomName: null == classroomName
           ? _value.classroomName
           : classroomName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      leaveRequested: null == leaveRequested
+          ? _value.leaveRequested
+          : leaveRequested // ignore: cast_nullable_to_non_nullable
+              as int,
+      substituteTeacherId: freezed == substituteTeacherId
+          ? _value.substituteTeacherId
+          : substituteTeacherId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -274,41 +414,70 @@ class __$$LessonImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$LessonImpl implements _Lesson {
   const _$LessonImpl(
-      {@JsonKey(name: 'lesson_id') required this.lessonId,
-      @JsonKey(name: 'lesson_title') required this.lessonTitle,
-      @JsonKey(name: 'lesson_description') this.lessonDescription,
-      @JsonKey(name: 'teacher_id') this.teacherId,
-      @JsonKey(name: 'classroom_id') this.classroomId,
-      @JsonKey(name: 'course_id') this.courseId,
+      {@JsonKey(name: 'class_id') required this.classId,
+      @JsonKey(name: 'class_name') required this.className,
+      @JsonKey(name: 'start_date') required this.startDate,
+      @JsonKey(name: 'end_date') required this.endDate,
+      @JsonKey(name: 'weekdays') required this.weekdays,
+      @JsonKey(name: 'WeekdaysArray') required final List<int> weekdaysArray,
+      @JsonKey(name: 'lesson_id') required this.lessonId,
+      @JsonKey(name: 'teacher_id') required this.teacherId,
+      @JsonKey(name: 'classroom_id') required this.classroomId,
+      @JsonKey(name: 'course_id') required this.courseId,
       @JsonKey(name: 'lesson_date') required this.lessonDate,
       @JsonKey(name: 'start_time') required this.startTime,
       @JsonKey(name: 'end_time') required this.endTime,
-      @JsonKey(name: 'teacher_name') this.teacherName,
-      @JsonKey(name: 'course_name') this.courseName,
-      @JsonKey(name: 'subject_name') this.subjectName,
-      @JsonKey(name: 'classroom_name') this.classroomName});
+      @JsonKey(name: 'teacher_name') required this.teacherName,
+      @JsonKey(name: 'course_name') required this.courseName,
+      @JsonKey(name: 'course_color') required this.courseColor,
+      @JsonKey(name: 'course_image') this.courseImage,
+      @JsonKey(name: 'subject_name') required this.subjectName,
+      @JsonKey(name: 'color') required this.color,
+      @JsonKey(name: 'image') this.image,
+      @JsonKey(name: 'classroom_name') required this.classroomName,
+      @JsonKey(name: 'leave_requested') required this.leaveRequested,
+      @JsonKey(name: 'substitute_teacher_id') this.substituteTeacherId})
+      : _weekdaysArray = weekdaysArray;
 
   factory _$LessonImpl.fromJson(Map<String, dynamic> json) =>
       _$$LessonImplFromJson(json);
 
   @override
+  @JsonKey(name: 'class_id')
+  final int classId;
+  @override
+  @JsonKey(name: 'class_name')
+  final String className;
+  @override
+  @JsonKey(name: 'start_date')
+  final DateTime startDate;
+  @override
+  @JsonKey(name: 'end_date')
+  final DateTime endDate;
+  @override
+  @JsonKey(name: 'weekdays')
+  final String weekdays;
+  final List<int> _weekdaysArray;
+  @override
+  @JsonKey(name: 'WeekdaysArray')
+  List<int> get weekdaysArray {
+    if (_weekdaysArray is EqualUnmodifiableListView) return _weekdaysArray;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_weekdaysArray);
+  }
+
+  @override
   @JsonKey(name: 'lesson_id')
   final int lessonId;
   @override
-  @JsonKey(name: 'lesson_title')
-  final String lessonTitle;
-  @override
-  @JsonKey(name: 'lesson_description')
-  final String? lessonDescription;
-  @override
   @JsonKey(name: 'teacher_id')
-  final int? teacherId;
+  final int teacherId;
   @override
   @JsonKey(name: 'classroom_id')
-  final int? classroomId;
+  final int classroomId;
   @override
   @JsonKey(name: 'course_id')
-  final int? courseId;
+  final int courseId;
   @override
   @JsonKey(name: 'lesson_date')
   final DateTime lessonDate;
@@ -320,20 +489,38 @@ class _$LessonImpl implements _Lesson {
   final String endTime;
   @override
   @JsonKey(name: 'teacher_name')
-  final String? teacherName;
+  final String teacherName;
   @override
   @JsonKey(name: 'course_name')
-  final String? courseName;
+  final String courseName;
+  @override
+  @JsonKey(name: 'course_color')
+  final String courseColor;
+  @override
+  @JsonKey(name: 'course_image')
+  final String? courseImage;
   @override
   @JsonKey(name: 'subject_name')
-  final String? subjectName;
+  final String subjectName;
+  @override
+  @JsonKey(name: 'color')
+  final String color;
+  @override
+  @JsonKey(name: 'image')
+  final String? image;
   @override
   @JsonKey(name: 'classroom_name')
-  final String? classroomName;
+  final String classroomName;
+  @override
+  @JsonKey(name: 'leave_requested')
+  final int leaveRequested;
+  @override
+  @JsonKey(name: 'substitute_teacher_id')
+  final int? substituteTeacherId;
 
   @override
   String toString() {
-    return 'Lesson(lessonId: $lessonId, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, teacherId: $teacherId, classroomId: $classroomId, courseId: $courseId, lessonDate: $lessonDate, startTime: $startTime, endTime: $endTime, teacherName: $teacherName, courseName: $courseName, subjectName: $subjectName, classroomName: $classroomName)';
+    return 'Lesson(classId: $classId, className: $className, startDate: $startDate, endDate: $endDate, weekdays: $weekdays, weekdaysArray: $weekdaysArray, lessonId: $lessonId, teacherId: $teacherId, classroomId: $classroomId, courseId: $courseId, lessonDate: $lessonDate, startTime: $startTime, endTime: $endTime, teacherName: $teacherName, courseName: $courseName, courseColor: $courseColor, courseImage: $courseImage, subjectName: $subjectName, color: $color, image: $image, classroomName: $classroomName, leaveRequested: $leaveRequested, substituteTeacherId: $substituteTeacherId)';
   }
 
   @override
@@ -341,12 +528,18 @@ class _$LessonImpl implements _Lesson {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LessonImpl &&
+            (identical(other.classId, classId) || other.classId == classId) &&
+            (identical(other.className, className) ||
+                other.className == className) &&
+            (identical(other.startDate, startDate) ||
+                other.startDate == startDate) &&
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.weekdays, weekdays) ||
+                other.weekdays == weekdays) &&
+            const DeepCollectionEquality()
+                .equals(other._weekdaysArray, _weekdaysArray) &&
             (identical(other.lessonId, lessonId) ||
                 other.lessonId == lessonId) &&
-            (identical(other.lessonTitle, lessonTitle) ||
-                other.lessonTitle == lessonTitle) &&
-            (identical(other.lessonDescription, lessonDescription) ||
-                other.lessonDescription == lessonDescription) &&
             (identical(other.teacherId, teacherId) ||
                 other.teacherId == teacherId) &&
             (identical(other.classroomId, classroomId) ||
@@ -362,29 +555,50 @@ class _$LessonImpl implements _Lesson {
                 other.teacherName == teacherName) &&
             (identical(other.courseName, courseName) ||
                 other.courseName == courseName) &&
+            (identical(other.courseColor, courseColor) ||
+                other.courseColor == courseColor) &&
+            (identical(other.courseImage, courseImage) ||
+                other.courseImage == courseImage) &&
             (identical(other.subjectName, subjectName) ||
                 other.subjectName == subjectName) &&
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.classroomName, classroomName) ||
-                other.classroomName == classroomName));
+                other.classroomName == classroomName) &&
+            (identical(other.leaveRequested, leaveRequested) ||
+                other.leaveRequested == leaveRequested) &&
+            (identical(other.substituteTeacherId, substituteTeacherId) ||
+                other.substituteTeacherId == substituteTeacherId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      lessonId,
-      lessonTitle,
-      lessonDescription,
-      teacherId,
-      classroomId,
-      courseId,
-      lessonDate,
-      startTime,
-      endTime,
-      teacherName,
-      courseName,
-      subjectName,
-      classroomName);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        classId,
+        className,
+        startDate,
+        endDate,
+        weekdays,
+        const DeepCollectionEquality().hash(_weekdaysArray),
+        lessonId,
+        teacherId,
+        classroomId,
+        courseId,
+        lessonDate,
+        startTime,
+        endTime,
+        teacherName,
+        courseName,
+        courseColor,
+        courseImage,
+        subjectName,
+        color,
+        image,
+        classroomName,
+        leaveRequested,
+        substituteTeacherId
+      ]);
 
   /// Create a copy of Lesson
   /// with the given fields replaced by the non-null parameter values.
@@ -404,41 +618,63 @@ class _$LessonImpl implements _Lesson {
 
 abstract class _Lesson implements Lesson {
   const factory _Lesson(
-          {@JsonKey(name: 'lesson_id') required final int lessonId,
-          @JsonKey(name: 'lesson_title') required final String lessonTitle,
-          @JsonKey(name: 'lesson_description') final String? lessonDescription,
-          @JsonKey(name: 'teacher_id') final int? teacherId,
-          @JsonKey(name: 'classroom_id') final int? classroomId,
-          @JsonKey(name: 'course_id') final int? courseId,
-          @JsonKey(name: 'lesson_date') required final DateTime lessonDate,
-          @JsonKey(name: 'start_time') required final String startTime,
-          @JsonKey(name: 'end_time') required final String endTime,
-          @JsonKey(name: 'teacher_name') final String? teacherName,
-          @JsonKey(name: 'course_name') final String? courseName,
-          @JsonKey(name: 'subject_name') final String? subjectName,
-          @JsonKey(name: 'classroom_name') final String? classroomName}) =
-      _$LessonImpl;
+      {@JsonKey(name: 'class_id') required final int classId,
+      @JsonKey(name: 'class_name') required final String className,
+      @JsonKey(name: 'start_date') required final DateTime startDate,
+      @JsonKey(name: 'end_date') required final DateTime endDate,
+      @JsonKey(name: 'weekdays') required final String weekdays,
+      @JsonKey(name: 'WeekdaysArray') required final List<int> weekdaysArray,
+      @JsonKey(name: 'lesson_id') required final int lessonId,
+      @JsonKey(name: 'teacher_id') required final int teacherId,
+      @JsonKey(name: 'classroom_id') required final int classroomId,
+      @JsonKey(name: 'course_id') required final int courseId,
+      @JsonKey(name: 'lesson_date') required final DateTime lessonDate,
+      @JsonKey(name: 'start_time') required final String startTime,
+      @JsonKey(name: 'end_time') required final String endTime,
+      @JsonKey(name: 'teacher_name') required final String teacherName,
+      @JsonKey(name: 'course_name') required final String courseName,
+      @JsonKey(name: 'course_color') required final String courseColor,
+      @JsonKey(name: 'course_image') final String? courseImage,
+      @JsonKey(name: 'subject_name') required final String subjectName,
+      @JsonKey(name: 'color') required final String color,
+      @JsonKey(name: 'image') final String? image,
+      @JsonKey(name: 'classroom_name') required final String classroomName,
+      @JsonKey(name: 'leave_requested') required final int leaveRequested,
+      @JsonKey(name: 'substitute_teacher_id')
+      final int? substituteTeacherId}) = _$LessonImpl;
 
   factory _Lesson.fromJson(Map<String, dynamic> json) = _$LessonImpl.fromJson;
 
   @override
+  @JsonKey(name: 'class_id')
+  int get classId;
+  @override
+  @JsonKey(name: 'class_name')
+  String get className;
+  @override
+  @JsonKey(name: 'start_date')
+  DateTime get startDate;
+  @override
+  @JsonKey(name: 'end_date')
+  DateTime get endDate;
+  @override
+  @JsonKey(name: 'weekdays')
+  String get weekdays;
+  @override
+  @JsonKey(name: 'WeekdaysArray')
+  List<int> get weekdaysArray;
+  @override
   @JsonKey(name: 'lesson_id')
   int get lessonId;
   @override
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle;
-  @override
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription;
-  @override
   @JsonKey(name: 'teacher_id')
-  int? get teacherId;
+  int get teacherId;
   @override
   @JsonKey(name: 'classroom_id')
-  int? get classroomId;
+  int get classroomId;
   @override
   @JsonKey(name: 'course_id')
-  int? get courseId;
+  int get courseId;
   @override
   @JsonKey(name: 'lesson_date')
   DateTime get lessonDate;
@@ -450,16 +686,34 @@ abstract class _Lesson implements Lesson {
   String get endTime;
   @override
   @JsonKey(name: 'teacher_name')
-  String? get teacherName;
+  String get teacherName;
   @override
   @JsonKey(name: 'course_name')
-  String? get courseName;
+  String get courseName;
+  @override
+  @JsonKey(name: 'course_color')
+  String get courseColor;
+  @override
+  @JsonKey(name: 'course_image')
+  String? get courseImage;
   @override
   @JsonKey(name: 'subject_name')
-  String? get subjectName;
+  String get subjectName;
+  @override
+  @JsonKey(name: 'color')
+  String get color;
+  @override
+  @JsonKey(name: 'image')
+  String? get image;
   @override
   @JsonKey(name: 'classroom_name')
-  String? get classroomName;
+  String get classroomName;
+  @override
+  @JsonKey(name: 'leave_requested')
+  int get leaveRequested;
+  @override
+  @JsonKey(name: 'substitute_teacher_id')
+  int? get substituteTeacherId;
 
   /// Create a copy of Lesson
   /// with the given fields replaced by the non-null parameter values.

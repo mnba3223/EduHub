@@ -60,7 +60,7 @@ class _CreateContactBookDialogState extends State<CreateContactBookDialog> {
                     value: selectedLesson,
                     hint: Text('please_select_lesson'.tr()),
                     items: lessonState.lessons.map((lesson) {
-                      final displayText = '${lesson.lessonTitle}\n'
+                      final displayText = '${lesson.className}\n'
                           '${lesson.courseName} (${DateFormat('MM/dd HH:mm').format(lesson.lessonDate)})';
 
                       return DropdownMenuItem<Lesson>(

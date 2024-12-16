@@ -15,6 +15,8 @@ class Course with _$Course {
     required String courseColor,
     @JsonKey(name: 'course_image') String? courseImage, // 允許為 null
     @JsonKey(name: 'subject_name') required String subjectName,
+    @JsonKey(name: 'subject_description') String? subjectDescription,
+    @JsonKey(name: 'currency') required String currency,
   }) = _Course;
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

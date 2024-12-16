@@ -15,6 +15,8 @@ _$CourseImpl _$$CourseImplFromJson(Map<String, dynamic> json) => _$CourseImpl(
       courseColor: json['course_color'] as String? ?? '#4A90E2',
       courseImage: json['course_image'] as String?,
       subjectName: json['subject_name'] as String,
+      subjectDescription: json['subject_description'] as String?,
+      currency: json['currency'] as String,
     );
 
 Map<String, dynamic> _$$CourseImplToJson(_$CourseImpl instance) =>
@@ -27,6 +29,8 @@ Map<String, dynamic> _$$CourseImplToJson(_$CourseImpl instance) =>
       'course_color': instance.courseColor,
       'course_image': instance.courseImage,
       'subject_name': instance.subjectName,
+      'subject_description': instance.subjectDescription,
+      'currency': instance.currency,
     };
 
 _$StudentLessonImpl _$$StudentLessonImplFromJson(Map<String, dynamic> json) =>

@@ -50,7 +50,7 @@ my_lessons,My Lessons,我的課程,我的课程,私の授業
 search_lessons,Search lessons...,搜尋課程...,搜索课程...,授業を検索...
 no_available_slots,NO availalbe Time,沒有可以預約的時間,沒有可以預約的時間,沒有可以預約的時間
 no_bookings,No Bookings,沒有預約紀錄,沒有預約紀錄,沒有預約紀錄
-
+select_course,select_course,選擇課程,選擇課程,選擇課程
 
 # Booking System
 booking,Booking,預約,预约,予約
@@ -211,7 +211,7 @@ submit_time,Submit Time,提交時間,提交時間,提交時間
 homework_overdue_warnin,Overtime!,您已經超過繳交期限,您已經超過繳交期限,您已經超過繳交期限
 message_cannot_be_empty,Message Can not be empty,訊息不能為空,訊息不能為空,訊息不能為空
 bill,Bill Management,帳單管理,帳單管理,帳單管理
-
+students,Students,學生,學生,學生
 
 # Navigation Items & Menu
 attendance,Attendance,出勤,出勤,出席

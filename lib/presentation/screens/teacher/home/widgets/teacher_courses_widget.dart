@@ -51,8 +51,10 @@ class TeacherCoursesWidget extends StatelessWidget {
               else
                 ...todayLessons.map((lesson) => _buildCourseCard(
                       time: '${lesson.startTime}-${lesson.endTime}',
-                      subject: lesson.lessonTitle ?? '',
+                      subject: lesson.className ?? '',
                       className: lesson.classroomName ?? '',
+                      context: context,
+                      lesson: lesson,
                     )),
             ],
           ),
@@ -65,53 +67,59 @@ class TeacherCoursesWidget extends StatelessWidget {
     required String time,
     required String subject,
     required String className,
+    required BuildContext context,
+    required Lesson lesson,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.all(15.w),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Text(
-              time,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => context.push('/teacher-schedule',
+          extra: {'selectedDate': lesson.lessonDate}), // 传递选中日期
+      child: Container(
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.all(15.w),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                time,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    subject,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  className,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey[600],
+                  Text(
+                    className,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -250,7 +250,7 @@ class _TeacherLeaveScreenState extends State<TeacherLeaveScreen> {
                             vertical: 8.h,
                           ),
                           title: Text(
-                            lesson.lessonTitle,
+                            lesson.className,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16.sp,
@@ -350,7 +350,7 @@ class _TeacherLeaveScreenState extends State<TeacherLeaveScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedLesson.lessonTitle,
+                        selectedLesson.className,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,

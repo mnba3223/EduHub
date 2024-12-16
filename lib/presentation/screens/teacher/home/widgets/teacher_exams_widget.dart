@@ -16,14 +16,14 @@ class TeacherExamsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
       builder: (context, state) {
-        final now = DateTime.now();
-        final weekStart = now.subtract(Duration(days: now.weekday - 1));
-        final weekEnd = weekStart.add(const Duration(days: 7));
+        // final now = DateTime.now();
+        // final weekStart = now.subtract(Duration(days: now.weekday - 1));
+        // final weekEnd = weekStart.add(const Duration(days: 7));
 
-        final weeklyExams = state.weeklyExams.where((exam) {
-          return exam.examDate.isAfter(weekStart) &&
-              exam.examDate.isBefore(weekEnd);
-        }).toList();
+        // final weeklyExams = state.weeklyExams.where((exam) {
+        //   return exam.examDate.isAfter(weekStart) &&
+        //       exam.examDate.isBefore(weekEnd);
+        // }).toList();
 
         return Container(
           margin: EdgeInsets.all(20.w),
@@ -48,13 +48,15 @@ class TeacherExamsWidget extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.h),
-              if (weeklyExams.isEmpty)
+              if (state.weeklyExams.isEmpty)
                 Center(child: Text('no_exam_records'.tr()))
               else
-                ...weeklyExams.map((exam) => _buildExamCard(
+                ...state.weeklyExams.map((exam) => _buildExamCard(
                       date: DateFormat('MM/dd').format(exam.examDate),
                       subject: exam.examName,
-                      className: exam.lessonTitle,
+                      className: exam.className,
+                      context: context,
+                      exam: exam,
                     )),
             ],
           ),
@@ -64,57 +66,62 @@ class TeacherExamsWidget extends StatelessWidget {
   }
 
   Widget _buildExamCard({
+    required BuildContext context,
     required String date,
     required String subject,
     required String className,
+    required TeacherExam exam,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.all(15.w),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Text(
-              date,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => context.push('/teacher-exam/${exam.examId}/detail'),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.all(15.w),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                date,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    subject,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  className,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey[600],
+                  Text(
+                    className,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Icon(Icons.chevron_right, color: Colors.grey),
-        ],
+            Icon(Icons.chevron_right, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }

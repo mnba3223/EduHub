@@ -210,7 +210,7 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(
-                  '${homework.classroomName} - ${homework.lessonTitle}',
+                  '${homework.classroomName} - ${homework.className}',
                   style: TextStyle(
                     color: Colors.blue,
                     fontSize: 14.sp,
@@ -228,7 +228,7 @@ class _TeacherHomeworkDetailViewState extends State<TeacherHomeworkDetailView> {
             ),
             SizedBox(height: 8.h),
             Text(
-              homework.lessonDescription ?? "",
+              homework.classroomName ?? "",
               style: TextStyle(
                 fontSize: 15.sp,
                 color: Colors.grey[800],

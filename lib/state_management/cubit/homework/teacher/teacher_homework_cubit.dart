@@ -43,7 +43,7 @@ class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
           .toList()
         ..sort();
 
-      final lessons = homeworks.map((h) => h.lessonTitle).toSet().toList()
+      final lessons = homeworks.map((h) => h.className).toSet().toList()
         ..sort();
 
       emit(state.copyWith(
@@ -260,7 +260,7 @@ class TeacherHomeworkCubit extends Cubit<TeacherHomeworkState> {
     // 課程過濾
     if (lesson != null) {
       filtered =
-          filtered.where((homework) => homework.lessonTitle == lesson).toList();
+          filtered.where((homework) => homework.className == lesson).toList();
     }
 
     return filtered;

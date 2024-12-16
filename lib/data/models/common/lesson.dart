@@ -4,22 +4,53 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'lesson.freezed.dart';
 part 'lesson.g.dart';
 
+// @freezed
+// class Lesson with _$Lesson {
+//   const factory Lesson({
+//     @JsonKey(name: 'lesson_id') required int lessonId,
+//     @JsonKey(name: 'lesson_title') required String lessonTitle,
+//     @JsonKey(name: 'lesson_description') String? lessonDescription,
+//     @JsonKey(name: 'teacher_id') int? teacherId,
+//     @JsonKey(name: 'classroom_id') int? classroomId,
+//     @JsonKey(name: 'course_id') int? courseId,
+//     @JsonKey(name: 'lesson_date') required DateTime lessonDate,
+//     @JsonKey(name: 'start_time') required String startTime,
+//     @JsonKey(name: 'end_time') required String endTime,
+//     @JsonKey(name: 'teacher_name') String? teacherName,
+//     @JsonKey(name: 'course_name') String? courseName,
+//     @JsonKey(name: 'subject_name') String? subjectName,
+//     @JsonKey(name: 'classroom_name') String? classroomName,
+//   }) = _Lesson;
+
+//   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
+// }
+
 @freezed
 class Lesson with _$Lesson {
   const factory Lesson({
+    @JsonKey(name: 'class_id') required int classId,
+    @JsonKey(name: 'class_name') required String className,
+    @JsonKey(name: 'start_date') required DateTime startDate,
+    @JsonKey(name: 'end_date') required DateTime endDate,
+    @JsonKey(name: 'weekdays') required String weekdays,
+    @JsonKey(name: 'WeekdaysArray') required List<int> weekdaysArray,
     @JsonKey(name: 'lesson_id') required int lessonId,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
-    @JsonKey(name: 'lesson_description') String? lessonDescription,
-    @JsonKey(name: 'teacher_id') int? teacherId,
-    @JsonKey(name: 'classroom_id') int? classroomId,
-    @JsonKey(name: 'course_id') int? courseId,
+    @JsonKey(name: 'teacher_id') required int teacherId,
+    @JsonKey(name: 'classroom_id') required int classroomId,
+    @JsonKey(name: 'course_id') required int courseId,
     @JsonKey(name: 'lesson_date') required DateTime lessonDate,
     @JsonKey(name: 'start_time') required String startTime,
     @JsonKey(name: 'end_time') required String endTime,
-    @JsonKey(name: 'teacher_name') String? teacherName,
-    @JsonKey(name: 'course_name') String? courseName,
-    @JsonKey(name: 'subject_name') String? subjectName,
-    @JsonKey(name: 'classroom_name') String? classroomName,
+    @JsonKey(name: 'teacher_name') required String teacherName,
+    @JsonKey(name: 'course_name') required String courseName,
+    @JsonKey(name: 'course_color') required String courseColor,
+    @JsonKey(name: 'course_image') String? courseImage,
+    @JsonKey(name: 'subject_name') required String subjectName,
+    @JsonKey(name: 'color') required String color,
+    @JsonKey(name: 'image') String? image,
+    @JsonKey(name: 'classroom_name') required String classroomName,
+    @JsonKey(name: 'leave_requested') required int leaveRequested,
+    @JsonKey(name: 'substitute_teacher_id') int? substituteTeacherId,
   }) = _Lesson;
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
@@ -66,11 +67,38 @@ class TeacherHomeCubit extends Cubit<TeacherHomeState> {
     if (_lessonCubit.state.error != null) {
       errors.add('Lesson: ${_lessonCubit.state.error}');
     }
+    // 获取当前周的开始和结束时间
+    final now = DateTime.now();
+    // 移除时分秒，只保留日期部分
+    final today = DateTime(now.year, now.month, now.day);
+    final weekStart = today.subtract(Duration(days: now.weekday - 1));
+    // 使用 isAfter 或等于，以及 isBefore 或等于
+    final weekEnd = weekStart
+        .add(const Duration(days: 6, hours: 23, minutes: 59, seconds: 59));
 
+    // 调试输出
+    log('Current date: $today');
+    log('Week range: $weekStart to $weekEnd');
+
+    final weeklyExams = _examCubit.state.exams.where((exam) {
+      // 移除考试日期的时分秒
+      final examDate = DateTime(
+        exam.examDate.year,
+        exam.examDate.month,
+        exam.examDate.day,
+      );
+      // 使用 isAtSameMomentAs 或 compareTo 进行比较
+      return (examDate.isAtSameMomentAs(weekStart) ||
+              examDate.isAfter(weekStart)) &&
+          (examDate.isAtSameMomentAs(weekEnd) || examDate.isBefore(weekEnd));
+    }).toList();
+
+    log('Weekly exams count: ${weeklyExams.length}');
+    weeklyExams.forEach((exam) => log('Exam date: ${exam.examDate}'));
     emit(state.copyWith(
       isLoading: !allLoaded,
       error: errors.isEmpty ? null : errors.join('\n'),
-      weeklyExams: _examCubit.state.exams,
+      weeklyExams: weeklyExams,
       weeklyHomework: _homeworkCubit.state.homeworks,
       todayCourses: _lessonCubit.state.lessons,
     ));

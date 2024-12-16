@@ -32,10 +32,9 @@ mixin _$TeacherExam {
   String? get uploadFile => throw _privateConstructorUsedError;
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get examDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'class_name')
+  String get className =>
+      throw _privateConstructorUsedError; // Changed from lessonTitle
   @JsonKey(name: 'teacher_id')
   int get teacherId => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_name')
@@ -69,8 +68,7 @@ abstract class $TeacherExamCopyWith<$Res> {
       @JsonKey(name: 'upload_file') String? uploadFile,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
+      @JsonKey(name: 'class_name') String className,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
       @JsonKey(name: 'total_students') int? totalStudents,
@@ -98,8 +96,7 @@ class _$TeacherExamCopyWithImpl<$Res, $Val extends TeacherExam>
     Object? examDescription = null,
     Object? uploadFile = freezed,
     Object? examDate = null,
-    Object? lessonTitle = null,
-    Object? lessonDescription = freezed,
+    Object? className = null,
     Object? teacherId = null,
     Object? teacherName = null,
     Object? totalStudents = freezed,
@@ -130,14 +127,10 @@ class _$TeacherExamCopyWithImpl<$Res, $Val extends TeacherExam>
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
       teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
@@ -174,8 +167,7 @@ abstract class _$$TeacherExamImplCopyWith<$Res>
       @JsonKey(name: 'upload_file') String? uploadFile,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
+      @JsonKey(name: 'class_name') String className,
       @JsonKey(name: 'teacher_id') int teacherId,
       @JsonKey(name: 'teacher_name') String teacherName,
       @JsonKey(name: 'total_students') int? totalStudents,
@@ -201,8 +193,7 @@ class __$$TeacherExamImplCopyWithImpl<$Res>
     Object? examDescription = null,
     Object? uploadFile = freezed,
     Object? examDate = null,
-    Object? lessonTitle = null,
-    Object? lessonDescription = freezed,
+    Object? className = null,
     Object? teacherId = null,
     Object? teacherName = null,
     Object? totalStudents = freezed,
@@ -233,14 +224,10 @@ class __$$TeacherExamImplCopyWithImpl<$Res>
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
       teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
@@ -272,8 +259,7 @@ class _$TeacherExamImpl implements _TeacherExam {
       @JsonKey(name: 'upload_file') this.uploadFile,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       required this.examDate,
-      @JsonKey(name: 'lesson_title') required this.lessonTitle,
-      @JsonKey(name: 'lesson_description') this.lessonDescription,
+      @JsonKey(name: 'class_name') required this.className,
       @JsonKey(name: 'teacher_id') required this.teacherId,
       @JsonKey(name: 'teacher_name') required this.teacherName,
       @JsonKey(name: 'total_students') this.totalStudents,
@@ -301,11 +287,9 @@ class _$TeacherExamImpl implements _TeacherExam {
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   final DateTime examDate;
   @override
-  @JsonKey(name: 'lesson_title')
-  final String lessonTitle;
-  @override
-  @JsonKey(name: 'lesson_description')
-  final String? lessonDescription;
+  @JsonKey(name: 'class_name')
+  final String className;
+// Changed from lessonTitle
   @override
   @JsonKey(name: 'teacher_id')
   final int teacherId;
@@ -321,7 +305,7 @@ class _$TeacherExamImpl implements _TeacherExam {
 
   @override
   String toString() {
-    return 'TeacherExam(examId: $examId, lessonId: $lessonId, examName: $examName, examDescription: $examDescription, uploadFile: $uploadFile, examDate: $examDate, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, teacherId: $teacherId, teacherName: $teacherName, totalStudents: $totalStudents, ratingCount: $ratingCount)';
+    return 'TeacherExam(examId: $examId, lessonId: $lessonId, examName: $examName, examDescription: $examDescription, uploadFile: $uploadFile, examDate: $examDate, className: $className, teacherId: $teacherId, teacherName: $teacherName, totalStudents: $totalStudents, ratingCount: $ratingCount)';
   }
 
   @override
@@ -340,10 +324,8 @@ class _$TeacherExamImpl implements _TeacherExam {
                 other.uploadFile == uploadFile) &&
             (identical(other.examDate, examDate) ||
                 other.examDate == examDate) &&
-            (identical(other.lessonTitle, lessonTitle) ||
-                other.lessonTitle == lessonTitle) &&
-            (identical(other.lessonDescription, lessonDescription) ||
-                other.lessonDescription == lessonDescription) &&
+            (identical(other.className, className) ||
+                other.className == className) &&
             (identical(other.teacherId, teacherId) ||
                 other.teacherId == teacherId) &&
             (identical(other.teacherName, teacherName) ||
@@ -364,8 +346,7 @@ class _$TeacherExamImpl implements _TeacherExam {
       examDescription,
       uploadFile,
       examDate,
-      lessonTitle,
-      lessonDescription,
+      className,
       teacherId,
       teacherName,
       totalStudents,
@@ -396,8 +377,7 @@ abstract class _TeacherExam implements TeacherExam {
       @JsonKey(name: 'upload_file') final String? uploadFile,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       required final DateTime examDate,
-      @JsonKey(name: 'lesson_title') required final String lessonTitle,
-      @JsonKey(name: 'lesson_description') final String? lessonDescription,
+      @JsonKey(name: 'class_name') required final String className,
       @JsonKey(name: 'teacher_id') required final int teacherId,
       @JsonKey(name: 'teacher_name') required final String teacherName,
       @JsonKey(name: 'total_students') final int? totalStudents,
@@ -426,11 +406,8 @@ abstract class _TeacherExam implements TeacherExam {
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get examDate;
   @override
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle;
-  @override
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription;
+  @JsonKey(name: 'class_name')
+  String get className; // Changed from lessonTitle
   @override
   @JsonKey(name: 'teacher_id')
   int get teacherId;
@@ -467,6 +444,9 @@ mixin _$TeacherExamRegistration {
   int get studentId => throw _privateConstructorUsedError;
   @JsonKey(name: 'score')
   int? get score => throw _privateConstructorUsedError;
+  @JsonKey(name: 'score_desc')
+  String? get scoreDesc =>
+      throw _privateConstructorUsedError; // Added new field
   @JsonKey(name: 'lesson_id')
   int get lessonId => throw _privateConstructorUsedError;
   @JsonKey(name: 'exam_name')
@@ -475,8 +455,9 @@ mixin _$TeacherExamRegistration {
   String get examDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get examDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'class_name')
+  String get className =>
+      throw _privateConstructorUsedError; // Changed from lessonTitle
   @JsonKey(name: 'lesson_description')
   String? get lessonDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_students')
@@ -507,12 +488,13 @@ abstract class $TeacherExamRegistrationCopyWith<$Res> {
       @JsonKey(name: 'exam_id') int examId,
       @JsonKey(name: 'student_id') int studentId,
       @JsonKey(name: 'score') int? score,
+      @JsonKey(name: 'score_desc') String? scoreDesc,
       @JsonKey(name: 'lesson_id') int lessonId,
       @JsonKey(name: 'exam_name') String examName,
       @JsonKey(name: 'exam_description') String examDescription,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'class_name') String className,
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'total_students') int totalStudents,
       @JsonKey(name: 'rating_count') int ratingCount,
@@ -539,11 +521,12 @@ class _$TeacherExamRegistrationCopyWithImpl<$Res,
     Object? examId = null,
     Object? studentId = null,
     Object? score = freezed,
+    Object? scoreDesc = freezed,
     Object? lessonId = null,
     Object? examName = null,
     Object? examDescription = null,
     Object? examDate = null,
-    Object? lessonTitle = null,
+    Object? className = null,
     Object? lessonDescription = freezed,
     Object? totalStudents = null,
     Object? ratingCount = null,
@@ -566,6 +549,10 @@ class _$TeacherExamRegistrationCopyWithImpl<$Res,
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as int?,
+      scoreDesc: freezed == scoreDesc
+          ? _value.scoreDesc
+          : scoreDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
       lessonId: null == lessonId
           ? _value.lessonId
           : lessonId // ignore: cast_nullable_to_non_nullable
@@ -582,9 +569,9 @@ class _$TeacherExamRegistrationCopyWithImpl<$Res,
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
       lessonDescription: freezed == lessonDescription
           ? _value.lessonDescription
@@ -620,12 +607,13 @@ abstract class _$$TeacherExamRegistrationImplCopyWith<$Res>
       @JsonKey(name: 'exam_id') int examId,
       @JsonKey(name: 'student_id') int studentId,
       @JsonKey(name: 'score') int? score,
+      @JsonKey(name: 'score_desc') String? scoreDesc,
       @JsonKey(name: 'lesson_id') int lessonId,
       @JsonKey(name: 'exam_name') String examName,
       @JsonKey(name: 'exam_description') String examDescription,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime examDate,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
+      @JsonKey(name: 'class_name') String className,
       @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'total_students') int totalStudents,
       @JsonKey(name: 'rating_count') int ratingCount,
@@ -651,11 +639,12 @@ class __$$TeacherExamRegistrationImplCopyWithImpl<$Res>
     Object? examId = null,
     Object? studentId = null,
     Object? score = freezed,
+    Object? scoreDesc = freezed,
     Object? lessonId = null,
     Object? examName = null,
     Object? examDescription = null,
     Object? examDate = null,
-    Object? lessonTitle = null,
+    Object? className = null,
     Object? lessonDescription = freezed,
     Object? totalStudents = null,
     Object? ratingCount = null,
@@ -678,6 +667,10 @@ class __$$TeacherExamRegistrationImplCopyWithImpl<$Res>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as int?,
+      scoreDesc: freezed == scoreDesc
+          ? _value.scoreDesc
+          : scoreDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
       lessonId: null == lessonId
           ? _value.lessonId
           : lessonId // ignore: cast_nullable_to_non_nullable
@@ -694,9 +687,9 @@ class __$$TeacherExamRegistrationImplCopyWithImpl<$Res>
           ? _value.examDate
           : examDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
       lessonDescription: freezed == lessonDescription
           ? _value.lessonDescription
@@ -726,12 +719,13 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
       @JsonKey(name: 'exam_id') required this.examId,
       @JsonKey(name: 'student_id') required this.studentId,
       @JsonKey(name: 'score') this.score,
+      @JsonKey(name: 'score_desc') this.scoreDesc,
       @JsonKey(name: 'lesson_id') required this.lessonId,
       @JsonKey(name: 'exam_name') required this.examName,
       @JsonKey(name: 'exam_description') required this.examDescription,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       required this.examDate,
-      @JsonKey(name: 'lesson_title') required this.lessonTitle,
+      @JsonKey(name: 'class_name') required this.className,
       @JsonKey(name: 'lesson_description') this.lessonDescription,
       @JsonKey(name: 'total_students') required this.totalStudents,
       @JsonKey(name: 'rating_count') required this.ratingCount,
@@ -753,6 +747,10 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
   @JsonKey(name: 'score')
   final int? score;
   @override
+  @JsonKey(name: 'score_desc')
+  final String? scoreDesc;
+// Added new field
+  @override
   @JsonKey(name: 'lesson_id')
   final int lessonId;
   @override
@@ -765,8 +763,9 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   final DateTime examDate;
   @override
-  @JsonKey(name: 'lesson_title')
-  final String lessonTitle;
+  @JsonKey(name: 'class_name')
+  final String className;
+// Changed from lessonTitle
   @override
   @JsonKey(name: 'lesson_description')
   final String? lessonDescription;
@@ -782,7 +781,7 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
 
   @override
   String toString() {
-    return 'TeacherExamRegistration(registrationId: $registrationId, examId: $examId, studentId: $studentId, score: $score, lessonId: $lessonId, examName: $examName, examDescription: $examDescription, examDate: $examDate, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, totalStudents: $totalStudents, ratingCount: $ratingCount, studentName: $studentName)';
+    return 'TeacherExamRegistration(registrationId: $registrationId, examId: $examId, studentId: $studentId, score: $score, scoreDesc: $scoreDesc, lessonId: $lessonId, examName: $examName, examDescription: $examDescription, examDate: $examDate, className: $className, lessonDescription: $lessonDescription, totalStudents: $totalStudents, ratingCount: $ratingCount, studentName: $studentName)';
   }
 
   @override
@@ -796,6 +795,8 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
             (identical(other.studentId, studentId) ||
                 other.studentId == studentId) &&
             (identical(other.score, score) || other.score == score) &&
+            (identical(other.scoreDesc, scoreDesc) ||
+                other.scoreDesc == scoreDesc) &&
             (identical(other.lessonId, lessonId) ||
                 other.lessonId == lessonId) &&
             (identical(other.examName, examName) ||
@@ -804,8 +805,8 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
                 other.examDescription == examDescription) &&
             (identical(other.examDate, examDate) ||
                 other.examDate == examDate) &&
-            (identical(other.lessonTitle, lessonTitle) ||
-                other.lessonTitle == lessonTitle) &&
+            (identical(other.className, className) ||
+                other.className == className) &&
             (identical(other.lessonDescription, lessonDescription) ||
                 other.lessonDescription == lessonDescription) &&
             (identical(other.totalStudents, totalStudents) ||
@@ -824,11 +825,12 @@ class _$TeacherExamRegistrationImpl implements _TeacherExamRegistration {
       examId,
       studentId,
       score,
+      scoreDesc,
       lessonId,
       examName,
       examDescription,
       examDate,
-      lessonTitle,
+      className,
       lessonDescription,
       totalStudents,
       ratingCount,
@@ -857,12 +859,13 @@ abstract class _TeacherExamRegistration implements TeacherExamRegistration {
       @JsonKey(name: 'exam_id') required final int examId,
       @JsonKey(name: 'student_id') required final int studentId,
       @JsonKey(name: 'score') final int? score,
+      @JsonKey(name: 'score_desc') final String? scoreDesc,
       @JsonKey(name: 'lesson_id') required final int lessonId,
       @JsonKey(name: 'exam_name') required final String examName,
       @JsonKey(name: 'exam_description') required final String examDescription,
       @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
       required final DateTime examDate,
-      @JsonKey(name: 'lesson_title') required final String lessonTitle,
+      @JsonKey(name: 'class_name') required final String className,
       @JsonKey(name: 'lesson_description') final String? lessonDescription,
       @JsonKey(name: 'total_students') required final int totalStudents,
       @JsonKey(name: 'rating_count') required final int ratingCount,
@@ -885,6 +888,9 @@ abstract class _TeacherExamRegistration implements TeacherExamRegistration {
   @JsonKey(name: 'score')
   int? get score;
   @override
+  @JsonKey(name: 'score_desc')
+  String? get scoreDesc; // Added new field
+  @override
   @JsonKey(name: 'lesson_id')
   int get lessonId;
   @override
@@ -897,8 +903,8 @@ abstract class _TeacherExamRegistration implements TeacherExamRegistration {
   @JsonKey(name: 'exam_date', fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get examDate;
   @override
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle;
+  @JsonKey(name: 'class_name')
+  String get className; // Changed from lessonTitle
   @override
   @JsonKey(name: 'lesson_description')
   String? get lessonDescription;
@@ -1238,12 +1244,17 @@ mixin _$TeacherExamState {
   List<TeacherExam> get filteredExams => throw _privateConstructorUsedError;
   List<TeacherExamRegistration> get registrations =>
       throw _privateConstructorUsedError;
+  List<Lesson> get availableLessons => throw _privateConstructorUsedError;
   DateTime get selectedDate => throw _privateConstructorUsedError;
   DateTime get focusedDay => throw _privateConstructorUsedError;
-  String? get selectedLesson => throw _privateConstructorUsedError;
-  List<String> get lessons => throw _privateConstructorUsedError;
+  Lesson? get selectedLesson =>
+      throw _privateConstructorUsedError; // 修改为 Lesson 类型
+  List<Lesson> get lessons =>
+      throw _privateConstructorUsedError; // 修改为 List<Lesson>
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  bool get isEditing => throw _privateConstructorUsedError;
+  TeacherExam? get editingExam => throw _privateConstructorUsedError;
 
   /// Create a copy of TeacherExamState
   /// with the given fields replaced by the non-null parameter values.
@@ -1262,12 +1273,18 @@ abstract class $TeacherExamStateCopyWith<$Res> {
       {List<TeacherExam> exams,
       List<TeacherExam> filteredExams,
       List<TeacherExamRegistration> registrations,
+      List<Lesson> availableLessons,
       DateTime selectedDate,
       DateTime focusedDay,
-      String? selectedLesson,
-      List<String> lessons,
+      Lesson? selectedLesson,
+      List<Lesson> lessons,
       bool isLoading,
-      String? error});
+      String? error,
+      bool isEditing,
+      TeacherExam? editingExam});
+
+  $LessonCopyWith<$Res>? get selectedLesson;
+  $TeacherExamCopyWith<$Res>? get editingExam;
 }
 
 /// @nodoc
@@ -1288,12 +1305,15 @@ class _$TeacherExamStateCopyWithImpl<$Res, $Val extends TeacherExamState>
     Object? exams = null,
     Object? filteredExams = null,
     Object? registrations = null,
+    Object? availableLessons = null,
     Object? selectedDate = null,
     Object? focusedDay = null,
     Object? selectedLesson = freezed,
     Object? lessons = null,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? isEditing = null,
+    Object? editingExam = freezed,
   }) {
     return _then(_value.copyWith(
       exams: null == exams
@@ -1308,6 +1328,10 @@ class _$TeacherExamStateCopyWithImpl<$Res, $Val extends TeacherExamState>
           ? _value.registrations
           : registrations // ignore: cast_nullable_to_non_nullable
               as List<TeacherExamRegistration>,
+      availableLessons: null == availableLessons
+          ? _value.availableLessons
+          : availableLessons // ignore: cast_nullable_to_non_nullable
+              as List<Lesson>,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -1319,11 +1343,11 @@ class _$TeacherExamStateCopyWithImpl<$Res, $Val extends TeacherExamState>
       selectedLesson: freezed == selectedLesson
           ? _value.selectedLesson
           : selectedLesson // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Lesson?,
       lessons: null == lessons
           ? _value.lessons
           : lessons // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Lesson>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1332,7 +1356,43 @@ class _$TeacherExamStateCopyWithImpl<$Res, $Val extends TeacherExamState>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      isEditing: null == isEditing
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editingExam: freezed == editingExam
+          ? _value.editingExam
+          : editingExam // ignore: cast_nullable_to_non_nullable
+              as TeacherExam?,
     ) as $Val);
+  }
+
+  /// Create a copy of TeacherExamState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LessonCopyWith<$Res>? get selectedLesson {
+    if (_value.selectedLesson == null) {
+      return null;
+    }
+
+    return $LessonCopyWith<$Res>(_value.selectedLesson!, (value) {
+      return _then(_value.copyWith(selectedLesson: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TeacherExamState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TeacherExamCopyWith<$Res>? get editingExam {
+    if (_value.editingExam == null) {
+      return null;
+    }
+
+    return $TeacherExamCopyWith<$Res>(_value.editingExam!, (value) {
+      return _then(_value.copyWith(editingExam: value) as $Val);
+    });
   }
 }
 
@@ -1348,12 +1408,20 @@ abstract class _$$TeacherExamStateImplCopyWith<$Res>
       {List<TeacherExam> exams,
       List<TeacherExam> filteredExams,
       List<TeacherExamRegistration> registrations,
+      List<Lesson> availableLessons,
       DateTime selectedDate,
       DateTime focusedDay,
-      String? selectedLesson,
-      List<String> lessons,
+      Lesson? selectedLesson,
+      List<Lesson> lessons,
       bool isLoading,
-      String? error});
+      String? error,
+      bool isEditing,
+      TeacherExam? editingExam});
+
+  @override
+  $LessonCopyWith<$Res>? get selectedLesson;
+  @override
+  $TeacherExamCopyWith<$Res>? get editingExam;
 }
 
 /// @nodoc
@@ -1372,12 +1440,15 @@ class __$$TeacherExamStateImplCopyWithImpl<$Res>
     Object? exams = null,
     Object? filteredExams = null,
     Object? registrations = null,
+    Object? availableLessons = null,
     Object? selectedDate = null,
     Object? focusedDay = null,
     Object? selectedLesson = freezed,
     Object? lessons = null,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? isEditing = null,
+    Object? editingExam = freezed,
   }) {
     return _then(_$TeacherExamStateImpl(
       exams: null == exams
@@ -1392,6 +1463,10 @@ class __$$TeacherExamStateImplCopyWithImpl<$Res>
           ? _value._registrations
           : registrations // ignore: cast_nullable_to_non_nullable
               as List<TeacherExamRegistration>,
+      availableLessons: null == availableLessons
+          ? _value._availableLessons
+          : availableLessons // ignore: cast_nullable_to_non_nullable
+              as List<Lesson>,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -1403,11 +1478,11 @@ class __$$TeacherExamStateImplCopyWithImpl<$Res>
       selectedLesson: freezed == selectedLesson
           ? _value.selectedLesson
           : selectedLesson // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Lesson?,
       lessons: null == lessons
           ? _value._lessons
           : lessons // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Lesson>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1416,6 +1491,14 @@ class __$$TeacherExamStateImplCopyWithImpl<$Res>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      isEditing: null == isEditing
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editingExam: freezed == editingExam
+          ? _value.editingExam
+          : editingExam // ignore: cast_nullable_to_non_nullable
+              as TeacherExam?,
     ));
   }
 }
@@ -1427,15 +1510,19 @@ class _$TeacherExamStateImpl implements _TeacherExamState {
       {final List<TeacherExam> exams = const [],
       final List<TeacherExam> filteredExams = const [],
       final List<TeacherExamRegistration> registrations = const [],
+      final List<Lesson> availableLessons = const [],
       required this.selectedDate,
       required this.focusedDay,
       this.selectedLesson,
-      final List<String> lessons = const [],
+      final List<Lesson> lessons = const [],
       this.isLoading = false,
-      this.error})
+      this.error,
+      this.isEditing = false,
+      this.editingExam})
       : _exams = exams,
         _filteredExams = filteredExams,
         _registrations = registrations,
+        _availableLessons = availableLessons,
         _lessons = lessons;
 
   final List<TeacherExam> _exams;
@@ -1465,30 +1552,48 @@ class _$TeacherExamStateImpl implements _TeacherExamState {
     return EqualUnmodifiableListView(_registrations);
   }
 
+  final List<Lesson> _availableLessons;
+  @override
+  @JsonKey()
+  List<Lesson> get availableLessons {
+    if (_availableLessons is EqualUnmodifiableListView)
+      return _availableLessons;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_availableLessons);
+  }
+
   @override
   final DateTime selectedDate;
   @override
   final DateTime focusedDay;
   @override
-  final String? selectedLesson;
-  final List<String> _lessons;
+  final Lesson? selectedLesson;
+// 修改为 Lesson 类型
+  final List<Lesson> _lessons;
+// 修改为 Lesson 类型
   @override
   @JsonKey()
-  List<String> get lessons {
+  List<Lesson> get lessons {
     if (_lessons is EqualUnmodifiableListView) return _lessons;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_lessons);
   }
 
+// 修改为 List<Lesson>
   @override
   @JsonKey()
   final bool isLoading;
   @override
   final String? error;
+  @override
+  @JsonKey()
+  final bool isEditing;
+  @override
+  final TeacherExam? editingExam;
 
   @override
   String toString() {
-    return 'TeacherExamState(exams: $exams, filteredExams: $filteredExams, registrations: $registrations, selectedDate: $selectedDate, focusedDay: $focusedDay, selectedLesson: $selectedLesson, lessons: $lessons, isLoading: $isLoading, error: $error)';
+    return 'TeacherExamState(exams: $exams, filteredExams: $filteredExams, registrations: $registrations, availableLessons: $availableLessons, selectedDate: $selectedDate, focusedDay: $focusedDay, selectedLesson: $selectedLesson, lessons: $lessons, isLoading: $isLoading, error: $error, isEditing: $isEditing, editingExam: $editingExam)';
   }
 
   @override
@@ -1501,6 +1606,8 @@ class _$TeacherExamStateImpl implements _TeacherExamState {
                 .equals(other._filteredExams, _filteredExams) &&
             const DeepCollectionEquality()
                 .equals(other._registrations, _registrations) &&
+            const DeepCollectionEquality()
+                .equals(other._availableLessons, _availableLessons) &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
             (identical(other.focusedDay, focusedDay) ||
@@ -1510,7 +1617,11 @@ class _$TeacherExamStateImpl implements _TeacherExamState {
             const DeepCollectionEquality().equals(other._lessons, _lessons) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.isEditing, isEditing) ||
+                other.isEditing == isEditing) &&
+            (identical(other.editingExam, editingExam) ||
+                other.editingExam == editingExam));
   }
 
   @override
@@ -1519,12 +1630,15 @@ class _$TeacherExamStateImpl implements _TeacherExamState {
       const DeepCollectionEquality().hash(_exams),
       const DeepCollectionEquality().hash(_filteredExams),
       const DeepCollectionEquality().hash(_registrations),
+      const DeepCollectionEquality().hash(_availableLessons),
       selectedDate,
       focusedDay,
       selectedLesson,
       const DeepCollectionEquality().hash(_lessons),
       isLoading,
-      error);
+      error,
+      isEditing,
+      editingExam);
 
   /// Create a copy of TeacherExamState
   /// with the given fields replaced by the non-null parameter values.
@@ -1541,12 +1655,15 @@ abstract class _TeacherExamState implements TeacherExamState {
       {final List<TeacherExam> exams,
       final List<TeacherExam> filteredExams,
       final List<TeacherExamRegistration> registrations,
+      final List<Lesson> availableLessons,
       required final DateTime selectedDate,
       required final DateTime focusedDay,
-      final String? selectedLesson,
-      final List<String> lessons,
+      final Lesson? selectedLesson,
+      final List<Lesson> lessons,
       final bool isLoading,
-      final String? error}) = _$TeacherExamStateImpl;
+      final String? error,
+      final bool isEditing,
+      final TeacherExam? editingExam}) = _$TeacherExamStateImpl;
 
   @override
   List<TeacherExam> get exams;
@@ -1555,17 +1672,23 @@ abstract class _TeacherExamState implements TeacherExamState {
   @override
   List<TeacherExamRegistration> get registrations;
   @override
+  List<Lesson> get availableLessons;
+  @override
   DateTime get selectedDate;
   @override
   DateTime get focusedDay;
   @override
-  String? get selectedLesson;
+  Lesson? get selectedLesson; // 修改为 Lesson 类型
   @override
-  List<String> get lessons;
+  List<Lesson> get lessons; // 修改为 List<Lesson>
   @override
   bool get isLoading;
   @override
   String? get error;
+  @override
+  bool get isEditing;
+  @override
+  TeacherExam? get editingExam;
 
   /// Create a copy of TeacherExamState
   /// with the given fields replaced by the non-null parameter values.

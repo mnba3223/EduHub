@@ -52,10 +52,12 @@ class TeacherHomeworkWidget extends StatelessWidget {
               else
                 ...weeklyHomework.map((homework) => _buildHomeworkCard(
                       dueDate: DateFormat('MM/dd').format(homework.endTime),
-                      subject: homework.lessonTitle ?? '',
+                      subject: homework.className ?? '',
                       className: homework.classroomName ?? '',
                       pendingCount:
                           homework.totalStudents - homework.submittedCount,
+                      homeworkId: homework.homeworkId,
+                      context: context,
                     )),
             ],
           ),
@@ -69,70 +71,76 @@ class TeacherHomeworkWidget extends StatelessWidget {
     required String subject,
     required String className,
     required int pendingCount,
+    required int homeworkId,
+    required BuildContext context,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.all(15.w),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Text(
-              dueDate,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => context.pushNamed('teacher-homework-detail',
+          pathParameters: {'id': homeworkId.toString()}),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.all(15.w),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                dueDate,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    subject,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        className,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          className,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey[600],
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        'teacher_pending_submissions'
+                            .tr(namedArgs: {'count': pendingCount.toString()}),
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.grey[600],
+                          color: Colors.red,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'teacher_pending_submissions'
-                          .tr(namedArgs: {'count': pendingCount.toString()}),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Icon(Icons.chevron_right, color: Colors.grey),
-        ],
+            Icon(Icons.chevron_right, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }

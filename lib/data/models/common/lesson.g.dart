@@ -7,26 +7,42 @@ part of 'lesson.dart';
 // **************************************************************************
 
 _$LessonImpl _$$LessonImplFromJson(Map<String, dynamic> json) => _$LessonImpl(
+      classId: (json['class_id'] as num).toInt(),
+      className: json['class_name'] as String,
+      startDate: DateTime.parse(json['start_date'] as String),
+      endDate: DateTime.parse(json['end_date'] as String),
+      weekdays: json['weekdays'] as String,
+      weekdaysArray: (json['WeekdaysArray'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
+          .toList(),
       lessonId: (json['lesson_id'] as num).toInt(),
-      lessonTitle: json['lesson_title'] as String,
-      lessonDescription: json['lesson_description'] as String?,
-      teacherId: (json['teacher_id'] as num?)?.toInt(),
-      classroomId: (json['classroom_id'] as num?)?.toInt(),
-      courseId: (json['course_id'] as num?)?.toInt(),
+      teacherId: (json['teacher_id'] as num).toInt(),
+      classroomId: (json['classroom_id'] as num).toInt(),
+      courseId: (json['course_id'] as num).toInt(),
       lessonDate: DateTime.parse(json['lesson_date'] as String),
       startTime: json['start_time'] as String,
       endTime: json['end_time'] as String,
-      teacherName: json['teacher_name'] as String?,
-      courseName: json['course_name'] as String?,
-      subjectName: json['subject_name'] as String?,
-      classroomName: json['classroom_name'] as String?,
+      teacherName: json['teacher_name'] as String,
+      courseName: json['course_name'] as String,
+      courseColor: json['course_color'] as String,
+      courseImage: json['course_image'] as String?,
+      subjectName: json['subject_name'] as String,
+      color: json['color'] as String,
+      image: json['image'] as String?,
+      classroomName: json['classroom_name'] as String,
+      leaveRequested: (json['leave_requested'] as num).toInt(),
+      substituteTeacherId: (json['substitute_teacher_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$LessonImplToJson(_$LessonImpl instance) =>
     <String, dynamic>{
+      'class_id': instance.classId,
+      'class_name': instance.className,
+      'start_date': instance.startDate.toIso8601String(),
+      'end_date': instance.endDate.toIso8601String(),
+      'weekdays': instance.weekdays,
+      'WeekdaysArray': instance.weekdaysArray,
       'lesson_id': instance.lessonId,
-      'lesson_title': instance.lessonTitle,
-      'lesson_description': instance.lessonDescription,
       'teacher_id': instance.teacherId,
       'classroom_id': instance.classroomId,
       'course_id': instance.courseId,
@@ -35,8 +51,14 @@ Map<String, dynamic> _$$LessonImplToJson(_$LessonImpl instance) =>
       'end_time': instance.endTime,
       'teacher_name': instance.teacherName,
       'course_name': instance.courseName,
+      'course_color': instance.courseColor,
+      'course_image': instance.courseImage,
       'subject_name': instance.subjectName,
+      'color': instance.color,
+      'image': instance.image,
       'classroom_name': instance.classroomName,
+      'leave_requested': instance.leaveRequested,
+      'substitute_teacher_id': instance.substituteTeacherId,
     };
 
 _$LessonQueryParamsImpl _$$LessonQueryParamsImplFromJson(

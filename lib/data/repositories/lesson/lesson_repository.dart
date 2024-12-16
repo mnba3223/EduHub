@@ -64,21 +64,21 @@ class LessonRepositoryImpl implements LessonRepository {
   Future<List<Lesson>> _getMockLessons() async {
     await Future.delayed(const Duration(milliseconds: 800));
     return [
-      Lesson(
-        lessonId: 1,
-        lessonTitle: "初階日語會話",
-        lessonDescription: "基礎對話練習",
-        teacherId: 4,
-        classroomId: 1,
-        courseId: 4,
-        lessonDate: DateTime.now(),
-        startTime: "10:00:00",
-        endTime: "12:00:00",
-        teacherName: "王老師",
-        courseName: "初階日語",
-        subjectName: "會話練習",
-        classroomName: "A101",
-      ),
+      // Lesson(
+      //   lessonId: 1,
+      //   lessonTitle: "初階日語會話",
+      //   lessonDescription: "基礎對話練習",
+      //   teacherId: 4,
+      //   classroomId: 1,
+      //   courseId: 4,
+      //   lessonDate: DateTime.now(),
+      //   startTime: "10:00:00",
+      //   endTime: "12:00:00",
+      //   teacherName: "王老師",
+      //   courseName: "初階日語",
+      //   subjectName: "會話練習",
+      //   classroomName: "A101",
+      // ),
     ];
   }
 }

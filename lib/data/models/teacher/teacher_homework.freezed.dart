@@ -216,9 +216,12 @@ mixin _$TeacherHomeworkListItem {
   int get lessonId => throw _privateConstructorUsedError;
   @JsonKey(name: 'homework_description')
   String? get homeworkDescription => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle => throw _privateConstructorUsedError;
-  String? get classroomName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'class_name')
+  String get className =>
+      throw _privateConstructorUsedError; // Changed from lessonTitle
+  @JsonKey(name: 'classroom_name')
+  String get classroomName =>
+      throw _privateConstructorUsedError; // Changed to required
   @JsonKey(name: 'homework_start_time')
   DateTime get startTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'homework_end_time')
@@ -229,13 +232,13 @@ mixin _$TeacherHomeworkListItem {
       defaultValue: HomeworkStatus.ongoing)
   HomeworkStatus get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_id')
-  int? get teacherId => throw _privateConstructorUsedError;
+  int get teacherId =>
+      throw _privateConstructorUsedError; // Changed to required
   @JsonKey(name: 'teacher_name')
-  String? get teacherName => throw _privateConstructorUsedError;
+  String get teacherName =>
+      throw _privateConstructorUsedError; // Changed to required
   @JsonKey(name: 'upload_file')
   String? get uploadFile => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_students')
   int get totalStudents => throw _privateConstructorUsedError;
   @JsonKey(name: 'submitted_count')
@@ -263,8 +266,8 @@ abstract class $TeacherHomeworkListItemCopyWith<$Res> {
       {@JsonKey(name: 'homework_id') int homeworkId,
       @JsonKey(name: 'lesson_id') int lessonId,
       @JsonKey(name: 'homework_description') String? homeworkDescription,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      String? classroomName,
+      @JsonKey(name: 'class_name') String className,
+      @JsonKey(name: 'classroom_name') String classroomName,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(
@@ -272,10 +275,9 @@ abstract class $TeacherHomeworkListItemCopyWith<$Res> {
           fromJson: _parseHomeworkStatus,
           defaultValue: HomeworkStatus.ongoing)
       HomeworkStatus status,
-      @JsonKey(name: 'teacher_id') int? teacherId,
-      @JsonKey(name: 'teacher_name') String? teacherName,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'teacher_name') String teacherName,
       @JsonKey(name: 'upload_file') String? uploadFile,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'total_students') int totalStudents,
       @JsonKey(name: 'submitted_count') int submittedCount,
       @JsonKey(name: 'rating_count') int ratingCount});
@@ -300,15 +302,14 @@ class _$TeacherHomeworkListItemCopyWithImpl<$Res,
     Object? homeworkId = null,
     Object? lessonId = null,
     Object? homeworkDescription = freezed,
-    Object? lessonTitle = null,
-    Object? classroomName = freezed,
+    Object? className = null,
+    Object? classroomName = null,
     Object? startTime = null,
     Object? endTime = null,
     Object? status = null,
-    Object? teacherId = freezed,
-    Object? teacherName = freezed,
+    Object? teacherId = null,
+    Object? teacherName = null,
     Object? uploadFile = freezed,
-    Object? lessonDescription = freezed,
     Object? totalStudents = null,
     Object? submittedCount = null,
     Object? ratingCount = null,
@@ -326,14 +327,14 @@ class _$TeacherHomeworkListItemCopyWithImpl<$Res,
           ? _value.homeworkDescription
           : homeworkDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
-      classroomName: freezed == classroomName
+      classroomName: null == classroomName
           ? _value.classroomName
           : classroomName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -346,21 +347,17 @@ class _$TeacherHomeworkListItemCopyWithImpl<$Res,
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus,
-      teacherId: freezed == teacherId
+      teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      teacherName: freezed == teacherName
+              as int,
+      teacherName: null == teacherName
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       uploadFile: freezed == uploadFile
           ? _value.uploadFile
           : uploadFile // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String?,
       totalStudents: null == totalStudents
           ? _value.totalStudents
@@ -391,8 +388,8 @@ abstract class _$$TeacherHomeworkListItemImplCopyWith<$Res>
       {@JsonKey(name: 'homework_id') int homeworkId,
       @JsonKey(name: 'lesson_id') int lessonId,
       @JsonKey(name: 'homework_description') String? homeworkDescription,
-      @JsonKey(name: 'lesson_title') String lessonTitle,
-      String? classroomName,
+      @JsonKey(name: 'class_name') String className,
+      @JsonKey(name: 'classroom_name') String classroomName,
       @JsonKey(name: 'homework_start_time') DateTime startTime,
       @JsonKey(name: 'homework_end_time') DateTime endTime,
       @JsonKey(
@@ -400,10 +397,9 @@ abstract class _$$TeacherHomeworkListItemImplCopyWith<$Res>
           fromJson: _parseHomeworkStatus,
           defaultValue: HomeworkStatus.ongoing)
       HomeworkStatus status,
-      @JsonKey(name: 'teacher_id') int? teacherId,
-      @JsonKey(name: 'teacher_name') String? teacherName,
+      @JsonKey(name: 'teacher_id') int teacherId,
+      @JsonKey(name: 'teacher_name') String teacherName,
       @JsonKey(name: 'upload_file') String? uploadFile,
-      @JsonKey(name: 'lesson_description') String? lessonDescription,
       @JsonKey(name: 'total_students') int totalStudents,
       @JsonKey(name: 'submitted_count') int submittedCount,
       @JsonKey(name: 'rating_count') int ratingCount});
@@ -427,15 +423,14 @@ class __$$TeacherHomeworkListItemImplCopyWithImpl<$Res>
     Object? homeworkId = null,
     Object? lessonId = null,
     Object? homeworkDescription = freezed,
-    Object? lessonTitle = null,
-    Object? classroomName = freezed,
+    Object? className = null,
+    Object? classroomName = null,
     Object? startTime = null,
     Object? endTime = null,
     Object? status = null,
-    Object? teacherId = freezed,
-    Object? teacherName = freezed,
+    Object? teacherId = null,
+    Object? teacherName = null,
     Object? uploadFile = freezed,
-    Object? lessonDescription = freezed,
     Object? totalStudents = null,
     Object? submittedCount = null,
     Object? ratingCount = null,
@@ -453,14 +448,14 @@ class __$$TeacherHomeworkListItemImplCopyWithImpl<$Res>
           ? _value.homeworkDescription
           : homeworkDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      lessonTitle: null == lessonTitle
-          ? _value.lessonTitle
-          : lessonTitle // ignore: cast_nullable_to_non_nullable
+      className: null == className
+          ? _value.className
+          : className // ignore: cast_nullable_to_non_nullable
               as String,
-      classroomName: freezed == classroomName
+      classroomName: null == classroomName
           ? _value.classroomName
           : classroomName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -473,21 +468,17 @@ class __$$TeacherHomeworkListItemImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as HomeworkStatus,
-      teacherId: freezed == teacherId
+      teacherId: null == teacherId
           ? _value.teacherId
           : teacherId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      teacherName: freezed == teacherName
+              as int,
+      teacherName: null == teacherName
           ? _value.teacherName
           : teacherName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       uploadFile: freezed == uploadFile
           ? _value.uploadFile
           : uploadFile // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lessonDescription: freezed == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String?,
       totalStudents: null == totalStudents
           ? _value.totalStudents
@@ -512,8 +503,8 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
       {@JsonKey(name: 'homework_id') required this.homeworkId,
       @JsonKey(name: 'lesson_id') required this.lessonId,
       @JsonKey(name: 'homework_description') this.homeworkDescription,
-      @JsonKey(name: 'lesson_title') required this.lessonTitle,
-      this.classroomName,
+      @JsonKey(name: 'class_name') required this.className,
+      @JsonKey(name: 'classroom_name') required this.classroomName,
       @JsonKey(name: 'homework_start_time') required this.startTime,
       @JsonKey(name: 'homework_end_time') required this.endTime,
       @JsonKey(
@@ -521,10 +512,9 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
           fromJson: _parseHomeworkStatus,
           defaultValue: HomeworkStatus.ongoing)
       required this.status,
-      @JsonKey(name: 'teacher_id') this.teacherId,
-      @JsonKey(name: 'teacher_name') this.teacherName,
+      @JsonKey(name: 'teacher_id') required this.teacherId,
+      @JsonKey(name: 'teacher_name') required this.teacherName,
       @JsonKey(name: 'upload_file') this.uploadFile,
-      @JsonKey(name: 'lesson_description') this.lessonDescription,
       @JsonKey(name: 'total_students') required this.totalStudents,
       @JsonKey(name: 'submitted_count') required this.submittedCount,
       @JsonKey(name: 'rating_count') required this.ratingCount});
@@ -542,10 +532,13 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
   @JsonKey(name: 'homework_description')
   final String? homeworkDescription;
   @override
-  @JsonKey(name: 'lesson_title')
-  final String lessonTitle;
+  @JsonKey(name: 'class_name')
+  final String className;
+// Changed from lessonTitle
   @override
-  final String? classroomName;
+  @JsonKey(name: 'classroom_name')
+  final String classroomName;
+// Changed to required
   @override
   @JsonKey(name: 'homework_start_time')
   final DateTime startTime;
@@ -560,16 +553,15 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
   final HomeworkStatus status;
   @override
   @JsonKey(name: 'teacher_id')
-  final int? teacherId;
+  final int teacherId;
+// Changed to required
   @override
   @JsonKey(name: 'teacher_name')
-  final String? teacherName;
+  final String teacherName;
+// Changed to required
   @override
   @JsonKey(name: 'upload_file')
   final String? uploadFile;
-  @override
-  @JsonKey(name: 'lesson_description')
-  final String? lessonDescription;
   @override
   @JsonKey(name: 'total_students')
   final int totalStudents;
@@ -582,7 +574,7 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
 
   @override
   String toString() {
-    return 'TeacherHomeworkListItem(homeworkId: $homeworkId, lessonId: $lessonId, homeworkDescription: $homeworkDescription, lessonTitle: $lessonTitle, classroomName: $classroomName, startTime: $startTime, endTime: $endTime, status: $status, teacherId: $teacherId, teacherName: $teacherName, uploadFile: $uploadFile, lessonDescription: $lessonDescription, totalStudents: $totalStudents, submittedCount: $submittedCount, ratingCount: $ratingCount)';
+    return 'TeacherHomeworkListItem(homeworkId: $homeworkId, lessonId: $lessonId, homeworkDescription: $homeworkDescription, className: $className, classroomName: $classroomName, startTime: $startTime, endTime: $endTime, status: $status, teacherId: $teacherId, teacherName: $teacherName, uploadFile: $uploadFile, totalStudents: $totalStudents, submittedCount: $submittedCount, ratingCount: $ratingCount)';
   }
 
   @override
@@ -596,8 +588,8 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
                 other.lessonId == lessonId) &&
             (identical(other.homeworkDescription, homeworkDescription) ||
                 other.homeworkDescription == homeworkDescription) &&
-            (identical(other.lessonTitle, lessonTitle) ||
-                other.lessonTitle == lessonTitle) &&
+            (identical(other.className, className) ||
+                other.className == className) &&
             (identical(other.classroomName, classroomName) ||
                 other.classroomName == classroomName) &&
             (identical(other.startTime, startTime) ||
@@ -610,8 +602,6 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
                 other.teacherName == teacherName) &&
             (identical(other.uploadFile, uploadFile) ||
                 other.uploadFile == uploadFile) &&
-            (identical(other.lessonDescription, lessonDescription) ||
-                other.lessonDescription == lessonDescription) &&
             (identical(other.totalStudents, totalStudents) ||
                 other.totalStudents == totalStudents) &&
             (identical(other.submittedCount, submittedCount) ||
@@ -627,7 +617,7 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
       homeworkId,
       lessonId,
       homeworkDescription,
-      lessonTitle,
+      className,
       classroomName,
       startTime,
       endTime,
@@ -635,7 +625,6 @@ class _$TeacherHomeworkListItemImpl implements _TeacherHomeworkListItem {
       teacherId,
       teacherName,
       uploadFile,
-      lessonDescription,
       totalStudents,
       submittedCount,
       ratingCount);
@@ -662,8 +651,8 @@ abstract class _TeacherHomeworkListItem implements TeacherHomeworkListItem {
       {@JsonKey(name: 'homework_id') required final int homeworkId,
       @JsonKey(name: 'lesson_id') required final int lessonId,
       @JsonKey(name: 'homework_description') final String? homeworkDescription,
-      @JsonKey(name: 'lesson_title') required final String lessonTitle,
-      final String? classroomName,
+      @JsonKey(name: 'class_name') required final String className,
+      @JsonKey(name: 'classroom_name') required final String classroomName,
       @JsonKey(name: 'homework_start_time') required final DateTime startTime,
       @JsonKey(name: 'homework_end_time') required final DateTime endTime,
       @JsonKey(
@@ -671,10 +660,9 @@ abstract class _TeacherHomeworkListItem implements TeacherHomeworkListItem {
           fromJson: _parseHomeworkStatus,
           defaultValue: HomeworkStatus.ongoing)
       required final HomeworkStatus status,
-      @JsonKey(name: 'teacher_id') final int? teacherId,
-      @JsonKey(name: 'teacher_name') final String? teacherName,
+      @JsonKey(name: 'teacher_id') required final int teacherId,
+      @JsonKey(name: 'teacher_name') required final String teacherName,
       @JsonKey(name: 'upload_file') final String? uploadFile,
-      @JsonKey(name: 'lesson_description') final String? lessonDescription,
       @JsonKey(name: 'total_students') required final int totalStudents,
       @JsonKey(name: 'submitted_count') required final int submittedCount,
       @JsonKey(name: 'rating_count')
@@ -693,10 +681,11 @@ abstract class _TeacherHomeworkListItem implements TeacherHomeworkListItem {
   @JsonKey(name: 'homework_description')
   String? get homeworkDescription;
   @override
-  @JsonKey(name: 'lesson_title')
-  String get lessonTitle;
+  @JsonKey(name: 'class_name')
+  String get className; // Changed from lessonTitle
   @override
-  String? get classroomName;
+  @JsonKey(name: 'classroom_name')
+  String get classroomName; // Changed to required
   @override
   @JsonKey(name: 'homework_start_time')
   DateTime get startTime;
@@ -711,16 +700,13 @@ abstract class _TeacherHomeworkListItem implements TeacherHomeworkListItem {
   HomeworkStatus get status;
   @override
   @JsonKey(name: 'teacher_id')
-  int? get teacherId;
+  int get teacherId; // Changed to required
   @override
   @JsonKey(name: 'teacher_name')
-  String? get teacherName;
+  String get teacherName; // Changed to required
   @override
   @JsonKey(name: 'upload_file')
   String? get uploadFile;
-  @override
-  @JsonKey(name: 'lesson_description')
-  String? get lessonDescription;
   @override
   @JsonKey(name: 'total_students')
   int get totalStudents;
@@ -749,8 +735,8 @@ mixin _$TeacherHomeworkDetail {
   int get homeworkId => throw _privateConstructorUsedError;
   String get homeworkDescription => throw _privateConstructorUsedError;
   int get lessonId => throw _privateConstructorUsedError;
-  String get lessonTitle => throw _privateConstructorUsedError;
-  String get lessonDescription => throw _privateConstructorUsedError;
+  String get lessonTitle =>
+      throw _privateConstructorUsedError; //  String lessonDescription,
   String? get classroomName => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
@@ -780,7 +766,6 @@ abstract class $TeacherHomeworkDetailCopyWith<$Res> {
       String homeworkDescription,
       int lessonId,
       String lessonTitle,
-      String lessonDescription,
       String? classroomName,
       DateTime startTime,
       DateTime endTime,
@@ -811,7 +796,6 @@ class _$TeacherHomeworkDetailCopyWithImpl<$Res,
     Object? homeworkDescription = null,
     Object? lessonId = null,
     Object? lessonTitle = null,
-    Object? lessonDescription = null,
     Object? classroomName = freezed,
     Object? startTime = null,
     Object? endTime = null,
@@ -835,10 +819,6 @@ class _$TeacherHomeworkDetailCopyWithImpl<$Res,
       lessonTitle: null == lessonTitle
           ? _value.lessonTitle
           : lessonTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      lessonDescription: null == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String,
       classroomName: freezed == classroomName
           ? _value.classroomName
@@ -892,7 +872,6 @@ abstract class _$$TeacherHomeworkDetailImplCopyWith<$Res>
       String homeworkDescription,
       int lessonId,
       String lessonTitle,
-      String lessonDescription,
       String? classroomName,
       DateTime startTime,
       DateTime endTime,
@@ -922,7 +901,6 @@ class __$$TeacherHomeworkDetailImplCopyWithImpl<$Res>
     Object? homeworkDescription = null,
     Object? lessonId = null,
     Object? lessonTitle = null,
-    Object? lessonDescription = null,
     Object? classroomName = freezed,
     Object? startTime = null,
     Object? endTime = null,
@@ -946,10 +924,6 @@ class __$$TeacherHomeworkDetailImplCopyWithImpl<$Res>
       lessonTitle: null == lessonTitle
           ? _value.lessonTitle
           : lessonTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      lessonDescription: null == lessonDescription
-          ? _value.lessonDescription
-          : lessonDescription // ignore: cast_nullable_to_non_nullable
               as String,
       classroomName: freezed == classroomName
           ? _value.classroomName
@@ -987,7 +961,6 @@ class _$TeacherHomeworkDetailImpl implements _TeacherHomeworkDetail {
       required this.homeworkDescription,
       required this.lessonId,
       required this.lessonTitle,
-      required this.lessonDescription,
       this.classroomName,
       required this.startTime,
       required this.endTime,
@@ -1007,8 +980,7 @@ class _$TeacherHomeworkDetailImpl implements _TeacherHomeworkDetail {
   final int lessonId;
   @override
   final String lessonTitle;
-  @override
-  final String lessonDescription;
+//  String lessonDescription,
   @override
   final String? classroomName;
   @override
@@ -1029,7 +1001,7 @@ class _$TeacherHomeworkDetailImpl implements _TeacherHomeworkDetail {
 
   @override
   String toString() {
-    return 'TeacherHomeworkDetail(homeworkId: $homeworkId, homeworkDescription: $homeworkDescription, lessonId: $lessonId, lessonTitle: $lessonTitle, lessonDescription: $lessonDescription, classroomName: $classroomName, startTime: $startTime, endTime: $endTime, uploadFile: $uploadFile, stats: $stats, submissions: $submissions)';
+    return 'TeacherHomeworkDetail(homeworkId: $homeworkId, homeworkDescription: $homeworkDescription, lessonId: $lessonId, lessonTitle: $lessonTitle, classroomName: $classroomName, startTime: $startTime, endTime: $endTime, uploadFile: $uploadFile, stats: $stats, submissions: $submissions)';
   }
 
   @override
@@ -1045,8 +1017,6 @@ class _$TeacherHomeworkDetailImpl implements _TeacherHomeworkDetail {
                 other.lessonId == lessonId) &&
             (identical(other.lessonTitle, lessonTitle) ||
                 other.lessonTitle == lessonTitle) &&
-            (identical(other.lessonDescription, lessonDescription) ||
-                other.lessonDescription == lessonDescription) &&
             (identical(other.classroomName, classroomName) ||
                 other.classroomName == classroomName) &&
             (identical(other.startTime, startTime) ||
@@ -1067,7 +1037,6 @@ class _$TeacherHomeworkDetailImpl implements _TeacherHomeworkDetail {
       homeworkDescription,
       lessonId,
       lessonTitle,
-      lessonDescription,
       classroomName,
       startTime,
       endTime,
@@ -1098,7 +1067,6 @@ abstract class _TeacherHomeworkDetail implements TeacherHomeworkDetail {
           required final String homeworkDescription,
           required final int lessonId,
           required final String lessonTitle,
-          required final String lessonDescription,
           final String? classroomName,
           required final DateTime startTime,
           required final DateTime endTime,
@@ -1117,9 +1085,7 @@ abstract class _TeacherHomeworkDetail implements TeacherHomeworkDetail {
   @override
   int get lessonId;
   @override
-  String get lessonTitle;
-  @override
-  String get lessonDescription;
+  String get lessonTitle; //  String lessonDescription,
   @override
   String? get classroomName;
   @override

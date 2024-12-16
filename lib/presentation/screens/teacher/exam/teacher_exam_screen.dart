@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
 import 'package:edutec_hub/state_management/cubit/exam/teacher_exam_cubit.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:edutec_hub/presentation/ui_widget/bar/top_bar.dart';
 import 'package:edutec_hub/presentation/ui_widget/custom_widget/calendar.dart';
 
@@ -21,7 +23,7 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<TeacherExamCubit>()..loadExams();
+      context.read<TeacherExamCubit>().loadExams();
     });
   }
 
@@ -35,43 +37,14 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
         child: Column(
           children: [
             _buildTopBar(context),
-            BlocBuilder<TeacherExamCubit, TeacherExamState>(
-              buildWhen: (previous, current) =>
-                  previous.selectedDate != current.selectedDate ||
-                  previous.exams != current.exams,
-              builder: (context, state) {
-                return ReusableCalendar(
-                  selectedDay: state.selectedDate,
-                  onDaySelected: (selectedDay, focusedDay) {
-                    context
-                        .read<TeacherExamCubit>()
-                        .updateSelectedDate(selectedDay, focusedDay);
-                  },
-                  markerBuilder: (context, date, events) => context
-                      .read<TeacherExamCubit>()
-                      .markerBuilder(context, date, events),
-                );
-              },
-            ),
-            _buildFilters(),
-            Expanded(
-              child: BlocBuilder<TeacherExamCubit, TeacherExamState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state.error != null) {
-                    return Center(child: Text(state.error!));
-                  }
-                  return _buildExamList(state);
-                },
-              ),
-            ),
+            _buildCalendarSection(),
+            _buildLessonFilterSection(),
+            Expanded(child: _buildExamContent()),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/teacher-exam/create'),
+        onPressed: () => _showExamCreationFlow(context),
         child: const Icon(Icons.add),
       ),
     );
@@ -79,7 +52,7 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
 
   Widget _buildTopBar(BuildContext context) {
     return FixedHeightSmoothTopBarV2(
-      height: 160.h,
+      height: 140.h,
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -101,43 +74,85 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
     );
   }
 
-  Widget _buildFilters() {
+  Widget _buildCalendarSection() {
     return BlocBuilder<TeacherExamCubit, TeacherExamState>(
       buildWhen: (previous, current) =>
-          previous.lessons != current.lessons ||
-          previous.selectedLesson != current.selectedLesson,
+          previous.selectedDate != current.selectedDate ||
+          previous.exams != current.exams,
       builder: (context, state) {
+        return ReusableCalendar(
+          selectedDay: state.selectedDate,
+          onDaySelected: (selectedDay, focusedDay) {
+            context.read<TeacherExamCubit>().setSelectedDate(selectedDay);
+          },
+          markerBuilder: (context, date, events) => context
+              .read<TeacherExamCubit>()
+              .markerBuilder(context, date, events),
+        );
+      },
+    );
+  }
+
+  Widget _buildLessonFilterSection() {
+    return Builder(
+      builder: (context) {
+        final examState = context.watch<TeacherExamCubit>().state;
+        final lessonState = context.watch<LessonCubit>().state;
+
+        // 根据选中日期筛选课程
+        final dateFilteredLessons = lessonState.lessons.where((lesson) {
+          return lesson.lessonDate.year == examState.focusedDay.year &&
+              lesson.lessonDate.month == examState.focusedDay.month &&
+              lesson.lessonDate.day == examState.focusedDay.day;
+        }).toList();
+
+        if (dateFilteredLessons.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Text('no_lessons'.tr()),
+          );
+        }
+
         return Padding(
           padding: EdgeInsets.all(16.w),
-          child: DropdownButtonFormField<String>(
+          child: DropdownButtonFormField<int>(
             isExpanded: true,
             decoration: InputDecoration(
-              labelText: 'select_course'.tr(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              labelText: 'select_lesson'.tr(),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-            value: state.selectedLesson,
+            value: examState.lessons.isNotEmpty
+                ? examState.lessons.first.lessonId
+                : null,
             items: [
-              DropdownMenuItem(
+              DropdownMenuItem<int>(
                 value: null,
-                child: Text(
-                  'all_courses'.tr(),
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: Text('all_lessons'.tr()),
               ),
-              ...state.lessons.map((lesson) => DropdownMenuItem(
-                    value: lesson,
+              ...dateFilteredLessons.map((lesson) => DropdownMenuItem(
+                    value: lesson.lessonId,
                     child: Text(
-                      lesson,
+                      '${lesson.className} (${lesson.startTime}-${lesson.endTime})',
                       overflow: TextOverflow.ellipsis,
                     ),
                   )),
             ],
-            onChanged: (value) {
-              context.read<TeacherExamCubit>().updateLessonFilter(value);
+            onChanged: (lessonId) {
+              if (lessonId != null) {
+                final selectedLesson = dateFilteredLessons
+                    .firstWhere((l) => l.lessonId == lessonId);
+                context
+                    .read<TeacherExamCubit>()
+                    .updateLessonFilter(selectedLesson);
+              } else {
+                context.read<TeacherExamCubit>().updateLessonFilter(null);
+              }
             },
           ),
         );
@@ -145,182 +160,228 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
     );
   }
 
-  Widget _buildExamList(TeacherExamState state) {
-    if (state.filteredExams.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.assignment_outlined,
-                size: 48.sp, color: Colors.grey[400]),
-            SizedBox(height: 16.h),
-            Text(
-              'no_exams'.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _buildExamList() {
+    return BlocBuilder<TeacherExamCubit, TeacherExamState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return ListView.builder(
-      padding: EdgeInsets.all(16.w),
-      itemCount: state.filteredExams.length,
-      itemBuilder: (context, index) {
-        final exam = state.filteredExams[index];
-        return Card(
-          margin: EdgeInsets.only(bottom: 16.h),
-          child: InkWell(
-            onTap: () =>
-                context.push('/teacher-exam/${exam.examId}/detail'), // 添加點擊事件
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          exam.examName,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      _buildPopupMenu(context, exam),
-                    ],
+        if (state.error != null) {
+          return Center(child: Text(state.error!));
+        }
+
+        final filteredExams = state.filteredExams;
+
+        if (filteredExams.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.assignment_outlined,
+                    size: 48.sp, color: Colors.grey[400]),
+                SizedBox(height: 16.h),
+                Text(
+                  'no_exams'.tr(),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.grey[600],
                   ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    exam.lessonTitle,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today,
-                          size: 16.sp, color: Colors.grey[600]),
-                      SizedBox(width: 4.w),
-                      Text(
-                        _formatDate(exam.examDate),
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (exam.examDescription.isNotEmpty) ...[
-                    SizedBox(height: 8.h),
-                    Text(
-                      exam.examDescription,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        '${"students".tr()}: ${exam.totalStudents}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Text(
-                        '${"graded".tr()}: ${exam.ratingCount}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
+          );
+        }
+
+        return ListView.builder(
+          padding: EdgeInsets.all(16.w),
+          itemCount: filteredExams.length,
+          itemBuilder: (context, index) => _buildExamCard(filteredExams[index]),
         );
       },
     );
   }
 
-  Widget _buildPopupMenu(BuildContext context, TeacherExam exam) {
-    return PopupMenuButton<String>(
-      icon: Icon(Icons.more_vert, size: 24.sp),
-      onSelected: (value) async {
-        switch (value) {
-          case 'detail':
-            context.push('/teacher-exam/${exam.examId}/detail');
-            break;
-          case 'edit':
-            await _handleEdit(context, exam);
-            break;
-          case 'delete':
-            await _handleDelete(context, exam);
-            break;
+  Widget _buildExamContent() {
+    return BlocBuilder<TeacherExamCubit, TeacherExamState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
         }
+
+        if (state.error != null) {
+          return Center(child: Text(state.error!));
+        }
+
+        if (state.filteredExams.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.assignment_outlined,
+                    size: 48.sp, color: Colors.grey[400]),
+                SizedBox(height: 16.h),
+                Text(
+                  'no_exams'.tr(),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: EdgeInsets.all(16.w),
+          itemCount: state.filteredExams.length,
+          itemBuilder: (context, index) =>
+              _buildExamCard(state.filteredExams[index]),
+        );
       },
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 'detail',
-          child: Row(
+    );
+  }
+
+  Widget _buildExamCard(TeacherExam exam) {
+    return Card(
+      margin: EdgeInsets.only(bottom: 16.h),
+      child: InkWell(
+        onTap: () => context.push('/teacher-exam/${exam.examId}/detail'),
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.visibility, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text('view_detail'.tr()),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'edit',
-          child: Row(
-            children: [
-              Icon(Icons.edit, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text('edit'.tr()),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'delete',
-          child: Row(
-            children: [
-              Icon(Icons.delete, size: 20.sp, color: Colors.red),
-              SizedBox(width: 8.w),
-              Text(
-                'delete'.tr(),
-                style: const TextStyle(color: Colors.red),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      exam.examName,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  _buildExamActions(exam),
+                ],
               ),
+              SizedBox(height: 8.h),
+              Text(
+                exam.className,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+              ),
+              SizedBox(height: 4.h),
+              _buildExamInfo(exam),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExamInfo(TeacherExam exam) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.calendar_today, size: 16.sp, color: Colors.grey[600]),
+            SizedBox(width: 4.w),
+            Text(
+              DateFormat('yyyy/MM/dd').format(exam.examDate),
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        if (exam.examDescription.isNotEmpty) ...[
+          SizedBox(height: 8.h),
+          Text(
+            exam.examDescription,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey[600],
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+        SizedBox(height: 8.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              '${"students".tr()}: ${exam.totalStudents}',
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+            SizedBox(width: 16.w),
+            Text(
+              '${"graded".tr()}: ${exam.ratingCount}',
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Future<void> _handleEdit(BuildContext context, TeacherExam exam) async {
-    // TODO: 實現編輯功能
-    context.push('/teacher-exam/${exam.examId}/edit', extra: exam);
+  Widget _buildExamActions(TeacherExam exam) {
+    return PopupMenuButton<String>(
+      icon: Icon(Icons.more_vert, size: 24.sp),
+      onSelected: (value) => _handleExamAction(value, exam),
+      itemBuilder: (context) => [
+        _buildPopupMenuItem('detail', Icons.visibility, 'view_detail'.tr()),
+        _buildPopupMenuItem('edit', Icons.edit, 'edit'.tr()),
+        _buildPopupMenuItem('delete', Icons.delete, 'delete'.tr(),
+            color: Colors.red),
+      ],
+    );
   }
 
-  Future<void> _handleDelete(BuildContext context, TeacherExam exam) async {
+  PopupMenuItem<String> _buildPopupMenuItem(
+    String value,
+    IconData icon,
+    String text, {
+    Color? color,
+  }) {
+    return PopupMenuItem(
+      value: value,
+      child: Row(
+        children: [
+          Icon(icon, size: 20.sp, color: color),
+          SizedBox(width: 8.w),
+          Text(
+            text,
+            style: TextStyle(color: color),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleExamAction(String action, TeacherExam exam) async {
+    switch (action) {
+      case 'detail':
+        context.push('/teacher-exam/${exam.examId}/detail');
+        break;
+      case 'edit':
+        context.push('/teacher-exam/${exam.examId}/edit', extra: exam);
+        break;
+      case 'delete':
+        await _confirmAndDeleteExam(exam);
+        break;
+    }
+  }
+
+  Future<void> _confirmAndDeleteExam(TeacherExam exam) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -360,7 +421,7 @@ class _TeacherExamListScreenState extends State<TeacherExamListScreen> {
     }
   }
 
-  String _formatDate(DateTime date) {
-    return DateFormat('yyyy/MM/dd').format(date);
+  void _showExamCreationFlow(BuildContext context) {
+    context.push('/teacher-exam/create');
   }
 }

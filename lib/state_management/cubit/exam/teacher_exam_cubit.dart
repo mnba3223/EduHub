@@ -1,5 +1,7 @@
 // cubit/teacher_exam_cubit.dart
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:edutec_hub/data/repositories/exam/teacher_exam_repository.dart';
+import 'package:edutec_hub/state_management/cubit/lesson/lesson_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:edutec_hub/data/models/teacher/teacher_exam.dart';
@@ -10,8 +12,9 @@ import 'package:table_calendar/table_calendar.dart';
 class TeacherExamCubit extends Cubit<TeacherExamState> {
   final TeacherExamRepository _repository;
 
-  TeacherExamCubit(this._repository)
-      : super(TeacherExamState(
+  TeacherExamCubit(
+    this._repository,
+  ) : super(TeacherExamState(
           selectedDate: DateTime.now(),
           focusedDay: DateTime.now(),
         ));
@@ -19,18 +22,10 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
   Future<void> loadExams() async {
     try {
       emit(state.copyWith(isLoading: true, error: null));
-      debugPrint('Loading exams...');
-
       final exams = await _repository.getTeacherExams();
-      debugPrint('Loaded ${exams.length} exams');
-
-      final lessons = exams.map((e) => e.lessonTitle).toSet().toList()..sort();
-      debugPrint('Extracted ${lessons.length} unique lessons');
-
       emit(state.copyWith(
         exams: exams,
         filteredExams: exams,
-        lessons: lessons,
         isLoading: false,
       ));
     } catch (e) {
@@ -54,21 +49,21 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
     ));
   }
 
-  void updateLessonFilter(String? lesson) {
+  void updateLessonFilter(Lesson? lesson) {
     final filteredExams = _filterExams(
-      selectedDate: state.selectedDate,
+      selectedDate: state.focusedDay,
       lesson: lesson,
     );
 
     emit(state.copyWith(
-      selectedLesson: lesson,
+      lessons: lesson != null ? [lesson] : [], // 更新 lessons 列表
       filteredExams: filteredExams,
     ));
   }
 
   List<TeacherExam> _filterExams({
     DateTime? selectedDate,
-    String? lesson,
+    Lesson? lesson, // 修改参数类型
   }) {
     var filtered = List<TeacherExam>.from(state.exams);
 
@@ -79,7 +74,9 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
     }
 
     if (lesson != null) {
-      filtered = filtered.where((exam) => exam.lessonTitle == lesson).toList();
+      filtered = filtered
+          .where((exam) => exam.lessonId == lesson.lessonId) // 使用 lessonId 进行比较
+          .toList();
     }
 
     return filtered;
@@ -199,6 +196,39 @@ class TeacherExamCubit extends Cubit<TeacherExamState> {
     emit(TeacherExamState(
       selectedDate: DateTime.now(),
       focusedDay: DateTime.now(),
+    ));
+  }
+
+  // 设置选择的日期，并加载该日期的课程
+  void setSelectedDate(DateTime date) {
+    emit(state.copyWith(
+      selectedDate: date,
+      focusedDay: date,
+    ));
+  }
+
+  // 设置选择的课程
+  void setSelectedLesson(Lesson lesson) {
+    emit(state.copyWith(selectedLesson: lesson));
+  }
+
+  // 进入编辑模式
+  void enterEditMode(TeacherExam exam) {
+    emit(state.copyWith(
+      isEditing: true,
+      editingExam: exam,
+      selectedDate: exam.examDate,
+      // 其他相关状态...
+    ));
+  }
+
+  // 退出编辑模式
+  void exitEditMode() {
+    emit(state.copyWith(
+      isEditing: false,
+      editingExam: null,
+      selectedDate: DateTime.now(),
+      selectedLesson: null,
     ));
   }
 }

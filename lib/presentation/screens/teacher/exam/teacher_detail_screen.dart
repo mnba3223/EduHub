@@ -144,7 +144,7 @@ class _TeacherExamDetailScreenState extends State<TeacherExamDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        exam.lessonTitle,
+                        exam.className,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,

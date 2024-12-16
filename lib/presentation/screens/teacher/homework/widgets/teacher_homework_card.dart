@@ -52,7 +52,7 @@ class _TeacherHomeworkCardState extends State<TeacherHomeworkCard> {
                         SizedBox(height: 4.h),
                         if (widget.homework.classroomName != null)
                           Text(
-                            '${widget.homework.lessonTitle} - ${widget.homework.classroomName}',
+                            '${widget.homework.className} - ${widget.homework.classroomName}',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.grey[600],

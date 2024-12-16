@@ -1,5 +1,6 @@
 // models/teacher/teacher_exam.dart
 import 'dart:io';
+import 'package:edutec_hub/data/models/common/lesson.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'teacher_exam.freezed.dart';
@@ -22,8 +23,9 @@ class TeacherExam with _$TeacherExam {
       toJson: _dateToJson,
     )
     required DateTime examDate,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
-    @JsonKey(name: 'lesson_description') String? lessonDescription,
+    @JsonKey(name: 'class_name')
+    required String className, // Changed from lessonTitle
+
     @JsonKey(name: 'teacher_id') required int teacherId,
     @JsonKey(name: 'teacher_name') required String teacherName,
     @JsonKey(name: 'total_students') int? totalStudents,
@@ -41,6 +43,7 @@ class TeacherExamRegistration with _$TeacherExamRegistration {
     @JsonKey(name: 'exam_id') required int examId,
     @JsonKey(name: 'student_id') required int studentId,
     @JsonKey(name: 'score') int? score,
+    @JsonKey(name: 'score_desc') String? scoreDesc, // Added new field
     @JsonKey(name: 'lesson_id') required int lessonId,
     @JsonKey(name: 'exam_name') required String examName,
     @JsonKey(name: 'exam_description') required String examDescription,
@@ -50,7 +53,8 @@ class TeacherExamRegistration with _$TeacherExamRegistration {
       toJson: _dateToJson,
     )
     required DateTime examDate,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
+    @JsonKey(name: 'class_name')
+    required String className, // Changed from lessonTitle
     @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'total_students') required int totalStudents,
     @JsonKey(name: 'rating_count') required int ratingCount,
@@ -90,11 +94,14 @@ class TeacherExamState with _$TeacherExamState {
     @Default([]) List<TeacherExam> exams,
     @Default([]) List<TeacherExam> filteredExams,
     @Default([]) List<TeacherExamRegistration> registrations,
+    @Default([]) List<Lesson> availableLessons,
     required DateTime selectedDate,
     required DateTime focusedDay,
-    String? selectedLesson,
-    @Default([]) List<String> lessons,
+    Lesson? selectedLesson, // 修改为 Lesson 类型
+    @Default([]) List<Lesson> lessons, // 修改为 List<Lesson>
     @Default(false) bool isLoading,
     String? error,
+    @Default(false) bool isEditing,
+    TeacherExam? editingExam,
   }) = _TeacherExamState;
 }

@@ -306,7 +306,7 @@ class _TeacherHomeworkListScreenState extends State<TeacherHomeworkListScreen>
                                   return DropdownMenuItem<Lesson>(
                                     value: lesson,
                                     child: Text(
-                                      '${lesson.lessonTitle} - ${lesson.classroomName}',
+                                      '${lesson.className} - ${lesson.classroomName}',
                                       style: TextStyle(fontSize: 14.sp),
                                     ),
                                   );

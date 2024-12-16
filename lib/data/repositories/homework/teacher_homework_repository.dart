@@ -243,21 +243,21 @@ class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
   Future<List<Lesson>> _getMockLessons() async {
     await Future.delayed(const Duration(milliseconds: 800));
     return [
-      Lesson(
-        lessonId: 1,
-        lessonTitle: "lesson test",
-        lessonDescription: "desc test",
-        teacherId: _teacherId,
-        classroomId: 1,
-        courseId: 4,
-        lessonDate: DateTime.parse("2024-10-01T00:00:00Z"),
-        startTime: "10:00:00",
-        endTime: "12:00:00",
-        teacherName: "test teacher",
-        courseName: "初階日語",
-        subjectName: "基礎日語發音",
-        classroomName: "room A",
-      ),
+      // Lesson(
+      //   lessonId: 1,
+      //   lessonTitle: "lesson test",
+      //   lessonDescription: "desc test",
+      //   teacherId: _teacherId,
+      //   classroomId: 1,
+      //   courseId: 4,
+      //   lessonDate: DateTime.parse("2024-10-01T00:00:00Z"),
+      //   startTime: "10:00:00",
+      //   endTime: "12:00:00",
+      //   teacherName: "test teacher",
+      //   courseName: "初階日語",
+      //   subjectName: "基礎日語發音",
+      //   classroomName: "room A",
+      // ),
       // 可以添加更多模擬數據
     ];
   }
@@ -265,23 +265,23 @@ class TeacherHomeworkRepositoryImpl implements TeacherHomeworkRepository {
   Future<List<TeacherHomeworkListItem>> _getMockHomeworks() async {
     await Future.delayed(const Duration(milliseconds: 800));
     return [
-      TeacherHomeworkListItem(
-        homeworkId: 1,
-        lessonId: 1,
-        homeworkDescription: "第一章數學練習",
-        lessonTitle: "數學",
-        classroomName: "一年級A班",
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(const Duration(days: 7)),
-        status: HomeworkStatus.ongoing,
-        teacherId: _teacherId,
-        teacherName: "Teacher A",
-        uploadFile: null,
-        lessonDescription: "數學基礎課程",
-        totalStudents: 30,
-        submittedCount: 25,
-        ratingCount: 20,
-      ),
+      // TeacherHomeworkListItem(
+      //   homeworkId: 1,
+      //   lessonId: 1,
+      //   homeworkDescription: "第一章數學練習",
+      //   lessonTitle: "數學",
+      //   classroomName: "一年級A班",
+      //   startTime: DateTime.now(),
+      //   endTime: DateTime.now().add(const Duration(days: 7)),
+      //   status: HomeworkStatus.ongoing,
+      //   teacherId: _teacherId,
+      //   teacherName: "Teacher A",
+      //   uploadFile: null,
+      //   lessonDescription: "數學基礎課程",
+      //   totalStudents: 30,
+      //   submittedCount: 25,
+      //   ratingCount: 20,
+      // ),
     ];
   }
 

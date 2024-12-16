@@ -35,6 +35,10 @@ mixin _$Course {
   String? get courseImage => throw _privateConstructorUsedError; // 允許為 null
   @JsonKey(name: 'subject_name')
   String get subjectName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'subject_description')
+  String? get subjectDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'currency')
+  String get currency => throw _privateConstructorUsedError;
 
   /// Serializes this Course to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,7 +63,9 @@ abstract class $CourseCopyWith<$Res> {
       @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
       String courseColor,
       @JsonKey(name: 'course_image') String? courseImage,
-      @JsonKey(name: 'subject_name') String subjectName});
+      @JsonKey(name: 'subject_name') String subjectName,
+      @JsonKey(name: 'subject_description') String? subjectDescription,
+      @JsonKey(name: 'currency') String currency});
 }
 
 /// @nodoc
@@ -85,6 +91,8 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
     Object? courseColor = null,
     Object? courseImage = freezed,
     Object? subjectName = null,
+    Object? subjectDescription = freezed,
+    Object? currency = null,
   }) {
     return _then(_value.copyWith(
       courseId: null == courseId
@@ -119,6 +127,14 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
               as String,
+      subjectDescription: freezed == subjectDescription
+          ? _value.subjectDescription
+          : subjectDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -139,7 +155,9 @@ abstract class _$$CourseImplCopyWith<$Res> implements $CourseCopyWith<$Res> {
       @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
       String courseColor,
       @JsonKey(name: 'course_image') String? courseImage,
-      @JsonKey(name: 'subject_name') String subjectName});
+      @JsonKey(name: 'subject_name') String subjectName,
+      @JsonKey(name: 'subject_description') String? subjectDescription,
+      @JsonKey(name: 'currency') String currency});
 }
 
 /// @nodoc
@@ -163,6 +181,8 @@ class __$$CourseImplCopyWithImpl<$Res>
     Object? courseColor = null,
     Object? courseImage = freezed,
     Object? subjectName = null,
+    Object? subjectDescription = freezed,
+    Object? currency = null,
   }) {
     return _then(_$CourseImpl(
       courseId: null == courseId
@@ -197,6 +217,14 @@ class __$$CourseImplCopyWithImpl<$Res>
           ? _value.subjectName
           : subjectName // ignore: cast_nullable_to_non_nullable
               as String,
+      subjectDescription: freezed == subjectDescription
+          ? _value.subjectDescription
+          : subjectDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -213,7 +241,9 @@ class _$CourseImpl implements _Course {
       @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
       required this.courseColor,
       @JsonKey(name: 'course_image') this.courseImage,
-      @JsonKey(name: 'subject_name') required this.subjectName});
+      @JsonKey(name: 'subject_name') required this.subjectName,
+      @JsonKey(name: 'subject_description') this.subjectDescription,
+      @JsonKey(name: 'currency') required this.currency});
 
   factory _$CourseImpl.fromJson(Map<String, dynamic> json) =>
       _$$CourseImplFromJson(json);
@@ -242,10 +272,16 @@ class _$CourseImpl implements _Course {
   @override
   @JsonKey(name: 'subject_name')
   final String subjectName;
+  @override
+  @JsonKey(name: 'subject_description')
+  final String? subjectDescription;
+  @override
+  @JsonKey(name: 'currency')
+  final String currency;
 
   @override
   String toString() {
-    return 'Course(courseId: $courseId, courseName: $courseName, courseDescription: $courseDescription, subjectId: $subjectId, price: $price, courseColor: $courseColor, courseImage: $courseImage, subjectName: $subjectName)';
+    return 'Course(courseId: $courseId, courseName: $courseName, courseDescription: $courseDescription, subjectId: $subjectId, price: $price, courseColor: $courseColor, courseImage: $courseImage, subjectName: $subjectName, subjectDescription: $subjectDescription, currency: $currency)';
   }
 
   @override
@@ -267,7 +303,11 @@ class _$CourseImpl implements _Course {
             (identical(other.courseImage, courseImage) ||
                 other.courseImage == courseImage) &&
             (identical(other.subjectName, subjectName) ||
-                other.subjectName == subjectName));
+                other.subjectName == subjectName) &&
+            (identical(other.subjectDescription, subjectDescription) ||
+                other.subjectDescription == subjectDescription) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -281,7 +321,9 @@ class _$CourseImpl implements _Course {
       price,
       courseColor,
       courseImage,
-      subjectName);
+      subjectName,
+      subjectDescription,
+      currency);
 
   /// Create a copy of Course
   /// with the given fields replaced by the non-null parameter values.
@@ -301,16 +343,18 @@ class _$CourseImpl implements _Course {
 
 abstract class _Course implements Course {
   const factory _Course(
-          {@JsonKey(name: 'course_id') required final int courseId,
-          @JsonKey(name: 'course_name') required final String courseName,
-          @JsonKey(name: 'course_description') final String? courseDescription,
-          @JsonKey(name: 'subject_id') required final int subjectId,
-          required final double price,
-          @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
-          required final String courseColor,
-          @JsonKey(name: 'course_image') final String? courseImage,
-          @JsonKey(name: 'subject_name') required final String subjectName}) =
-      _$CourseImpl;
+      {@JsonKey(name: 'course_id') required final int courseId,
+      @JsonKey(name: 'course_name') required final String courseName,
+      @JsonKey(name: 'course_description') final String? courseDescription,
+      @JsonKey(name: 'subject_id') required final int subjectId,
+      required final double price,
+      @JsonKey(name: 'course_color', defaultValue: '#4A90E2')
+      required final String courseColor,
+      @JsonKey(name: 'course_image') final String? courseImage,
+      @JsonKey(name: 'subject_name') required final String subjectName,
+      @JsonKey(name: 'subject_description') final String? subjectDescription,
+      @JsonKey(name: 'currency')
+      required final String currency}) = _$CourseImpl;
 
   factory _Course.fromJson(Map<String, dynamic> json) = _$CourseImpl.fromJson;
 
@@ -337,6 +381,12 @@ abstract class _Course implements Course {
   @override
   @JsonKey(name: 'subject_name')
   String get subjectName;
+  @override
+  @JsonKey(name: 'subject_description')
+  String? get subjectDescription;
+  @override
+  @JsonKey(name: 'currency')
+  String get currency;
 
   /// Create a copy of Course
   /// with the given fields replaced by the non-null parameter values.

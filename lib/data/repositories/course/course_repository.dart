@@ -72,6 +72,8 @@ class CourseRepositoryImpl implements CourseRepository {
         courseColor: "#3BE338",
         courseImage: "path/to/image",
         subjectName: "中文",
+        subjectDescription: "中文課程",
+        currency: "NTD",
       ),
     ];
   }

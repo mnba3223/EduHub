@@ -86,8 +86,10 @@ class TeacherHomeworkListItem with _$TeacherHomeworkListItem {
     @JsonKey(name: 'homework_id') required int homeworkId,
     @JsonKey(name: 'lesson_id') required int lessonId,
     @JsonKey(name: 'homework_description') String? homeworkDescription,
-    @JsonKey(name: 'lesson_title') required String lessonTitle,
-    String? classroomName,
+    @JsonKey(name: 'class_name')
+    required String className, // Changed from lessonTitle
+    @JsonKey(name: 'classroom_name')
+    required String classroomName, // Changed to required
     @JsonKey(name: 'homework_start_time') required DateTime startTime,
     @JsonKey(name: 'homework_end_time') required DateTime endTime,
     @JsonKey(
@@ -95,10 +97,10 @@ class TeacherHomeworkListItem with _$TeacherHomeworkListItem {
         fromJson: _parseHomeworkStatus,
         defaultValue: HomeworkStatus.ongoing)
     required HomeworkStatus status,
-    @JsonKey(name: 'teacher_id') int? teacherId,
-    @JsonKey(name: 'teacher_name') String? teacherName,
+    @JsonKey(name: 'teacher_id') required int teacherId, // Changed to required
+    @JsonKey(name: 'teacher_name')
+    required String teacherName, // Changed to required
     @JsonKey(name: 'upload_file') String? uploadFile,
-    @JsonKey(name: 'lesson_description') String? lessonDescription,
     @JsonKey(name: 'total_students') required int totalStudents,
     @JsonKey(name: 'submitted_count') required int submittedCount,
     @JsonKey(name: 'rating_count') required int ratingCount,
@@ -115,7 +117,7 @@ class TeacherHomeworkDetail with _$TeacherHomeworkDetail {
     required String homeworkDescription,
     required int lessonId,
     required String lessonTitle,
-    required String lessonDescription,
+    //  String lessonDescription,
     String? classroomName,
     required DateTime startTime,
     required DateTime endTime,
@@ -218,8 +220,8 @@ extension TeacherHomeworkDetailX on TeacherHomeworkDetail {
       homeworkId: listItem.homeworkId,
       homeworkDescription: listItem.homeworkDescription ?? "",
       lessonId: listItem.lessonId,
-      lessonTitle: listItem.lessonTitle,
-      lessonDescription: listItem.lessonDescription ?? "",
+      lessonTitle: listItem.className,
+      // lessonDescription: listItem.classroomName ?? "",
       classroomName: listItem.classroomName,
       startTime: listItem.startTime,
       endTime: listItem.endTime,

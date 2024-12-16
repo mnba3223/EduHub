@@ -234,7 +234,7 @@ class _TeacherLessonScreenState extends State<TeacherLessonScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  lesson.lessonTitle,
+                  lesson.className,
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
@@ -279,10 +279,10 @@ class _TeacherLessonScreenState extends State<TeacherLessonScreen> {
                 ),
               ],
             ),
-            if (lesson.lessonDescription != null) ...[
+            if (lesson.courseName != null) ...[
               SizedBox(height: 8.h),
               Text(
-                lesson.lessonDescription!,
+                lesson.courseName!,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: Colors.grey[600],
